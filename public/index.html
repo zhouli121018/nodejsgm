@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    
+</head>
+<body>
+<div class="container-fluid">
+	<!-- 导航 -->
+    <nav class="navbar navbar-default navbar-fixed-top" id="tablist">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button id="navBtn" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    代理管理
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav" id="navlist">
+                    <li  class="active"><a href="#info">代理信息</a></li>
+                    <li><a href="#agent">我的代理</a></li>
+                    <li><a href="#vip">我的会员</a></li>
+                    <li><a href="#detail">账单明细</a></li>
+                </ul>
+            </div>
+            <!--<button type="button" class="btn btn-danger logout" onclick="logout()">退出登录</button>-->
+        </div>
+    </nav>
+
+    <div id="content">
+        <div id="info">
+            <h2>代理信息</h2>
+            <h3>个人信息</h3>
+            <div>
+                <table id="infoTbl" class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>姓名</td>
+                            <td>zhouli</td>
+                        </tr>
+                        <tr>
+                            <td>代理编码</td>
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h3>代理账户信息</h3>
+            <div>
+                <table id="moneyTbl" class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>累计收益(￥)：</td>
+                            <td>888.00</td>
+                        </tr>
+                        <tr>
+                            <td>账户余额(￥)：</td>
+                            <td>200.00</td>
+                        </tr>
+                        <tr>
+                            <td>微信取款：</td>
+                            <td>
+                                <input type="number" min="1" />
+                                <input type="button" class="btn btn-primary btn-sm" value="微信取款"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="agent">
+            <h2>我的代理</h2>
+
+        </div>
+        <div id="vip">
+            <h2>我的会员</h2>
+        </div>
+        <div id="detail">
+            <h2>账单明细</h2>
+        </div>
+    </div>
+
+
+</div>
+<br/><br/>
+<script src="js/jquery-1.11.3.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/bootlint.js"></script>
+<script>
+    bootlint.showLintReportForCurrentDocument([]);
+
+</script>
+<script src="js/index.js"></script>
+</body>
+</html>

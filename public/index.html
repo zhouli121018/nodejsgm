@@ -11,10 +11,36 @@
     <script src="js/html5shiv.min.js"></script>
     <script src="js/respond.min.js"></script>
     <![endif]-->
-    
 </head>
 <body>
 <div class="container-fluid">
+    <div id="login">
+        <h2 class="text-center">代理管理平台</h2>
+        <div class="text-center">
+            <img src="img/logo.png" alt="longqing"/>
+        </div>
+        <form name="loginForm" id="loginForm">
+            <div class="form-group">
+                <label for="uname">用户名：</label>
+                <input type="text" autofocus name="uname" class="form-control" id="uname" placeholder="用户名">
+                <p class="help-block">Example block-level help text here.</p>
+            </div>
+            <div class="form-group">
+                <label for="pwd">密码：</label>
+                <input type="password" class="form-control" name="pwd" id="pwd" placeholder="密码">
+                <p class="help-block">Example block-level help text here.</p>
+            </div>
+            <!--<div class="form-group">-->
+                <!--<label for="code">验证码：</label>-->
+                <!--<input type="text" id="code" class="form-control" placeholder="验证码">-->
+                <!--<div class="text-center">-->
+                    <!--<img src="img/code.png" class="img-responsive" alt="1"/>-->
+                <!--</div>-->
+            <!--</div>-->
+            <button type="button" id="loginBtn" class="btn btn-success btn-block">登 录</button>
+        </form>
+        <p class="text-center">Copyright &copy;2016-2017,LongQing Inc, All rights Reserved </p>
+    </div>
 	<!-- 导航 -->
     <nav class="navbar navbar-default navbar-fixed-top" id="tablist">
         <div class="container-fluid">
@@ -36,9 +62,13 @@
                     <li><a href="#detail">账单明细</a></li>
                 </ul>
             </div>
-            <!--<button type="button" class="btn btn-danger logout" onclick="logout()">退出登录</button>-->
         </div>
     </nav>
+
+    <div class="text-right">
+        <button type="button" class="btn btn-danger logout" onclick="logout()">退出登录</button>
+        <button type="button" class="btn btn-warning logout" onclick="resetPassword()">重置密码</button>
+    </div>
 
     <div id="content">
         <div id="info">
@@ -175,10 +205,10 @@
 <br/><br/>
 <script src="js/jquery-1.11.3.js"></script>
 <script src="js/bootstrap.js"></script>
+<script src="js/md5.js"></script>
 <script src="js/bootlint.js"></script>
 <script>
     bootlint.showLintReportForCurrentDocument([]);
-
 </script>
 <script src="js/index.js"></script>
 </body>

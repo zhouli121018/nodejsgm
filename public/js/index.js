@@ -11,7 +11,33 @@ $('#tablist li a').click(function(e){
     $(this).parent().addClass('active').siblings().removeClass('active');
     $(id).show().siblings().hide();
 });
+
 $(function(){
+    if(sessionStorage['loginInviteCode']){
+        $('#login').hide().siblings().show();
+        console.log(1);
+    }else{
+        $('#login').show().siblings().hide();
+        console.log(2);
+    }
+    $('#loginBtn').click(function(){
+        if($('#uname').val()==''||$('#pwd').val()==''){
+            alert('用户名或密码不能为空！');
+            return;
+        }
+        var str=$('#loginForm').serialize();
+        console.log(str);
+        var md5pwd=$.md5($('#pwd'));
+        cosole.log(md5pwd);
+        $.ajax({
+            url:'/login',
+            data:{uname:$('#uname').val(),pwd:md5pwd},
+            success:function(data){
+                console.log(data);
+            }
+        })
+    })
+
     $.ajax({
         url:'/getAgentInfo',
         data:{managerId:15},

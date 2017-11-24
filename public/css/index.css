@@ -15,3 +15,40 @@ body{
     text-align:center;
     font-size:1.5em;
 }
+#login {
+    position: relative;
+    background: #fff;
+    padding: 2% 5%;
+    width: 500px;
+    margin: 50px auto;
+    border: 1px solid #000;
+    border-radius: 5px;
+    box-shadow: 0 0 26px #041A36;
+    border-top: 8px solid #42EC00;
+}
+
+@media screen and (max-width: 600px) {
+    #login {
+        width: 350px;
+    }
+}
+#content td{
+    vertical-align: middle;
+}
+#agentTbl td span{
+    display:inline-block;
+    width:16px;
+    height:16px;
+}
+.tree-collapse{
+    background-image: url(../img/expand.png);
+}
+.tree-expend{
+    background-image: url(../img/collapse.png);
+}
+.level2{
+    text-indent: 2em;
+}
+.level3{
+    text-indent: 4em;
+}

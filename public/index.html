@@ -23,7 +23,7 @@
             <div class="form-group">
                 <label for="uname">用户名：</label>
                 <input type="text" autofocus name="uname" class="form-control" id="uname" placeholder="用户名">
-                <p class="help-block">Example block-level help text here.</p>
+                <p class="help-block"></p>
             </div>
             <div class="form-group">
                 <label for="pwd">密码：</label>
@@ -31,185 +31,48 @@
                 <p class="help-block">Example block-level help text here.</p>
             </div>
             <!--<div class="form-group">-->
-                <!--<label for="code">验证码：</label>-->
-                <!--<input type="text" id="code" class="form-control" placeholder="验证码">-->
-                <!--<div class="text-center">-->
-                    <!--<img src="img/code.png" class="img-responsive" alt="1"/>-->
-                <!--</div>-->
+            <!--<label for="code">验证码：</label>-->
+            <!--<input type="text" id="code" class="form-control" placeholder="验证码">-->
+            <!--<div class="text-center">-->
+            <!--<img src="img/code.png" class="img-responsive" alt="1"/>-->
+            <!--</div>-->
             <!--</div>-->
             <button type="button" id="loginBtn" class="btn btn-success btn-block">登 录</button>
         </form>
         <p class="text-center">Copyright &copy;2016-2017,LongQing Inc, All rights Reserved </p>
     </div>
-	<!-- 导航 -->
-    <nav class="navbar navbar-default navbar-fixed-top" id="tablist">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button id="navBtn" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">
-                    代理管理
-                </a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav" id="navlist">
-                    <li  class="active"><a href="#info">代理信息</a></li>
-                    <li><a href="#agent">我的代理</a></li>
-                    <li><a href="#vip">我的会员</a></li>
-                    <li><a href="#detail">账单明细</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <div class="text-right">
-        <button type="button" class="btn btn-danger logout" onclick="logout()">退出登录</button>
-        <button type="button" class="btn btn-warning logout" onclick="resetPassword()">重置密码</button>
-    </div>
-
-    <div id="content">
-        <div id="info">
-            <h2>代理信息</h2>
-            <h3>个人信息</h3>
-            <div>
-                <table id="infoTbl" class="table table-bordered table-striped">
-                    <tbody>
-                        <tr>
-                            <td>姓名</td>
-                            <td>zhouli</td>
-                        </tr>
-                        <tr>
-                            <td>代理编码</td>
-                            <td>1</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <h3>代理账户信息</h3>
-            <div>
-                <table id="moneyTbl" class="table table-bordered table-striped">
-                    <tbody>
-                        <tr>
-                            <td>累计收益(￥)：</td>
-                            <td>888.00</td>
-                        </tr>
-                        <tr>
-                            <td>账户余额(￥)：</td>
-                            <td>200.00</td>
-                        </tr>
-                        <tr>
-                            <td>微信取款：</td>
-                            <td>
-                                <input type="number" min="1" />
-                                <input type="button" class="btn btn-primary btn-sm" value="微信取款"/>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div id="agent">
-            <h2>我的代理</h2>
-            <div class="table-responsive">
-                <table id="agentTbl" class="table table-bordered table-striped tree">
-                    <thead>
-                        <tr>
-                            <th>代理编码</th>
-                            <th>游戏ID</th>
-                            <th>昵称</th>
-                            <th>代理级别</th>
-                            <th>真实姓名</th>
-                            <th>手机号码</th>
-                            <th>邀请码</th>
-                            <th>会员数量</th>
-                            <th>代理数量</th>
-                            <th>充值业绩(元)</th>
-                            <th>账户状态</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>zhouli</td>
-                        <td></td>
-                        <td>1</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div id="vip">
-            <h2>我的会员</h2>
-            <div class="text-right">
-                <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>充值</button>
-            </div>
-            <div class="table-responsive">
-                <table id="vipTbl" class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                        <th>游戏ID</th>
-                        <th>昵称</th>
-                        <th>剩余蓝钻</th>
-                        <th>剩余红钻</th>
-                        <th>账号状态</th>
-                        <th>注册时间</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>zhouli</td>
-                        <td></td>
-                        <td>1</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div id="detail">
-            <h2>账单明细</h2>
-            <div class="table-responsive">
-                <table id="detailTbl" class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                        <th>游戏ID</th>
-                        <th>邀请码</th>
-                        <th>真实姓名</th>
-                        <th>代理级别</th>
-                        <th>账户记录</th>
-                        <th>时间</th>
-                        <th>充值游戏ID</th>
-                        <th>充值昵称</th>
-                        <th>充值金额</th>
-                        <th>提成金额</th>
-                        <th>备注</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>zhouli</td>
-                        <td></td>
-                        <td>1</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
 
 
 </div>
 <br/><br/>
-<script src="js/jquery-1.11.3.js"></script>
+<script src="js/jquery-2.1.4.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/md5.js"></script>
-<script src="js/bootlint.js"></script>
 <script>
-    bootlint.showLintReportForCurrentDocument([]);
+    $('#loginBtn').click(function(){
+        if($('#uname').val()==''||$('#pwd').val()==''){
+            alert('用户名或密码不能为空！');
+            return;
+        }
+        var str=$('#loginForm').serialize();
+        console.log(str);
+        var md5pwd=hex_md5($('#pwd').val());
+        console.log(md5pwd);
+        $.ajax({
+            url:'/login',
+            data:{uname:$('#uname').val(),pwd:md5pwd},
+            success:function(data){
+                console.log(data);
+                if(data.logStatus==1){
+                    sessionStorage['loginInviteCode']=data.inviteCode;
+                    location.href="content.html";
+                }else{
+                    alert(data.msg);
+                }
+            }
+        })
+    })
 </script>
-<script src="js/index.js"></script>
 </body>
 </html>

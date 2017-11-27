@@ -66,6 +66,8 @@
                 console.log(data);
                 if(data.logStatus==1){
                     sessionStorage['loginInviteCode']=data.inviteCode;
+                    sessionStorage['powerId']=data.power_id;
+                    sessionStorage['managerId']=data.id;
                     location.href="content.html";
                 }else{
                     alert(data.msg);

@@ -471,7 +471,7 @@ app.post('/updateManagerInfo',(req,res)=>{
 });
 
 
-//修改代理信息
+//代理充值
 app.post('/updateAccount',(req,res)=>{
     if(req.session.user) {
         var user = req.session.user;
@@ -502,7 +502,6 @@ app.post('/updateAccount',(req,res)=>{
                             if(result[0].roomCard<roomCardNum){
                                 res.json({"status": 0});
                             }else{
-
                                 conn.query('UPDATE account SET roomCard =roomCard-? WHERE managerId=?',[roomCardNum,managerId],(err,resu)=>{
                                     console.log(resu);
                                     if(resu.changedRows>0){

@@ -52,3 +52,176 @@ body{
 .level3{
     text-indent: 4em;
 }
+
+
+#add-message,#pw-message,
+#agentDetail,
+#vipDetail,
+#add-config,
+#configDetail,
+#noticeDetail,
+#add-notice,#charge,#agentCharge{
+    z-index: 100;
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+#add-message input,
+#agentDetail input,
+#vipDetail input,
+#add-config input,
+#configDetail input,
+#noticeDetail input,
+#add-notice input,
+#charge input,#pw-message input,#agentCharge input {
+    height: 32px;
+}
+#add-message form,
+#agentDetail form,
+#vipDetail form,
+#add-config form,
+#configDetail form,
+#noticeDetail form,
+#add-notice form,
+#charge form,#pw-message form,#agentCharge form{
+    max-height: 100%;
+    overflow: auto;
+    position: absolute;
+    width: 400px;
+    left: 50%;
+    top: 50px;
+    margin-left: -200px;
+    margin-top: 30px;
+    background: rgb(255, 255, 255);
+    padding: 1% 2% 3%;
+    border-radius: 5px;
+    box-shadow: 0 0 26px #041A36;
+    border-top: 8px solid #42EC00;
+}
+#add-message form>div,
+#agentDetail form>div,
+#vipDetail form>div,
+#add-config form>div,
+#configDetail form>div,
+#noticeDetail form>div,
+#add-notice form>div,
+#charge form>div,#pw-message form>div,#agentCharge form>div{
+    margin-bottom:1em;
+}
+#agentManager #agentDetail{
+    top:12%;
+}
+/*#agentDetail form,#add-message form{*/
+    /*top: -40px;*/
+/*}*/
+#add-message form .form-group,
+#agentDetail form .form-group,
+#vipDetail form .form-group,
+#add-config form .form-group,
+#configDetail form .form-group,
+#agentCharge form .form-group
+{
+    display:flex;
+    align-items: center;
+}
+#add-message form .form-group label,
+#agentDetail form .form-group label,
+#vipDetail form .form-group label,
+#add-config form .form-group label,
+#configDetail form .form-group label
+,#agentCharge form .form-group label
+{
+    width:30%;
+}
+
+
+#add-message form h4,
+#agentDetail form h4,
+#vipDetail form h4,
+#add-config form h4,
+#configDetail form h4,
+#noticeDetail form h4,
+#add-notice form h4,
+#charge form h4,
+#pw-message form h4,#agentCharge form h4{
+    text-align: center;
+    padding: 2% 0;
+    border-bottom: 2px dashed #aaa;
+}
+#add-message form > input,
+#agentDetail form > input,
+#vipDetail form > input,
+#add-config form > input,
+#configDetail form > input,
+#noticeDetail form > input,
+#add-notice form > input,
+#charge form > input ,
+#pw-message form > input,#agentCharge form>input{
+    margin-left: 1%;
+    width: 48%;
+    outline: none;
+}
+#add-message form input.has-err,
+#agentDetail form input.has-err,
+#vipDetail form input.has-err,
+#add-config form input.has-err,
+#configDetail form input.has-err,
+#noticeDetail form input.has-err,
+#add-notice form input.has-err,
+#charge form input.has-err,
+#pw-message form input.has-err,#agentCharge form input.has-err
+{
+    border-color: #e4393c;
+}
+#add-message form input.success,
+#agentDetail form input.success,
+#vipDetail form input.success,
+#add-config form input.success,
+#configDetail form input.success,
+#noticeDetail form input.success,
+#add-notice form input.success,
+#charge form input.success,
+#pw-message form input.success,#agentCharge form input.success{
+    border-color: #42cc22;
+}
+#add-message form p,
+#agentDetail form p,
+#vipDetail form p,
+#add-config form p,
+#configDetail form p,
+#noticeDetail form p,
+#add-notice form p,
+#charge form p,
+#pw-message form p,#agentCharge form p {
+    display: none;
+}
+#add-message form p.error,
+#agentDetail form p.error,
+#vipDetail form p.error,
+#add-config form p.error,
+#configDetail form p.error,
+#noticeDetail form p.error,
+#add-notice form p.error,
+#charge form p.error ,
+#pw-message form p.error,#agentCharge form p.error{
+    display: block;
+    color: #e4393c;
+    padding: 1% 0;
+}
+@media screen and (max-width: 767px) {
+    #add-message form,
+    #agentDetail form,
+    #vipDetail form,
+    #add-config form,
+    #configDetail form,
+    #noticeDetail form,
+    #add-notice form,
+    #charge form ,
+    #pw-message form,#agentCharge form{
+        width: 95%;
+        margin-left: -47.5%;
+    }
+}

@@ -17,7 +17,7 @@ var pool=mysql.createPool({
 });
 var app=express();
 var server=http.createServer(app);
-server.listen(8081);
+server.listen(8082);
 app.use(express.static('./public'));
 app.use(cookieParser('sessiontest'));
 app.use(session({
@@ -69,6 +69,15 @@ app.get('/login',(req,res)=>{
 app.get('/logout',(req,res)=>{
     console.log("++++"+req.session.user);
     req.session.destroy();
+});
+
+//刷新
+app.get('/refresh',(req,res)=>{
+    if(req.session.user){
+        res.json({"status":1});
+    }else{
+        res.json({"status":0});
+    }
 });
 
 //获取代理信息
@@ -306,3 +315,301 @@ app.get('/getDetails',(req,res)=>{
     }
 });
 
+//修改密码/resetPassword
+app.post('/resetPassword',(req,res)=>{
+    if(req.session.user) {
+        var user = req.session.user;
+        var managerId = user.id;
+        req.on("data", (buff)=> {
+            var obj = qs.parse(buff.toString());
+            console.log(obj);
+            var newPwd = obj.newPwd;
+            pool.getConnection((err, conn)=> {
+                if (err) {
+                    console.log(err);
+                } else {
+                    conn.query('UPDATE manager SET password=? WHERE id=?', [newPwd, managerId], (err, result)=> {
+                        console.log(result);
+                        //var oid = result.insertId;
+                        if(result.changedRows>0){
+                            res.json({"status": 1});
+                        }else{
+                            res.json({"status": 0});
+                        }
+                        conn.release();
+                    });
+
+                }
+            })
+        });
+    }
+});
+
+
+//验证邀请码
+app.get('/validInviteCode',(req,res)=>{
+    if(req.session.user){
+        var managerId=req.query.managerId;
+        var inviteCode = req.query.inviteCode;
+
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                conn.query('SELECT * FROM manager  WHERE inviteCode=? and id!=?',[inviteCode,managerId],(err,result)=>{
+                    console.log(result);
+                    res.json(result);
+                })
+            }
+            conn.release();
+        })
+    }
+});
+
+//新增代理验证邀请码addValidInviteCode
+app.get('/addValidInviteCode',(req,res)=>{
+    if(req.session.user){
+        var inviteCode = req.query.inviteCode;
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                conn.query('SELECT * FROM manager  WHERE inviteCode=?',[inviteCode],(err,result)=>{
+                    console.log(result);
+                    res.json(result);
+                })
+            }
+            conn.release();
+        })
+    }
+});
+//验证游戏ID
+app.get('/validUuid',(req,res)=>{
+    if(req.session.user){
+        var managerId=req.query.mid;
+        var uuid = req.query.uuid;
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                conn.query('SELECT * FROM account  WHERE Uuid=? ',[uuid],(err,result)=>{
+                    if(result.length>0){
+                        if(result[0].managerId>0){
+                            if(result[0].managerId==managerId){
+                                res.json({"status":1});
+                            }else{
+                                res.json({"status":0});
+                            }
+                        }else{
+                            res.json({"status":1});
+                        }
+                    }else{
+                        res.json({"status":0});
+                    }
+                })
+            }
+            conn.release();
+        })
+    }
+});
+//新增代理验证游戏ID addValidUuid
+app.get('/addValidUuid',(req,res)=>{
+    if(req.session.user){
+        var managerId=req.query.mid;
+        var uuid = req.query.uuid;
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                conn.query('SELECT * FROM account  WHERE Uuid=? ',[uuid],(err,result)=>{
+                    if(result.length>0){
+                        if(result[0].managerId>0){
+                            res.json({"validuuid":0});
+                        }else{
+                            result[0]['validuuid']=1;
+                            res.json(result[0]);
+                        }
+                    }else{
+                        res.json({"validuuid":0});
+                    }
+                })
+            }
+            conn.release();
+        })
+    }
+});
+//修改代理信息
+app.post('/updateManagerInfo',(req,res)=>{
+    if(req.session.user) {
+        req.on("data", (buff)=> {
+            var obj = qs.parse(buff.toString());
+            console.log(obj);
+            var managerId=obj.mid;
+            var inviteCode = obj.inviteCode;
+            var powerId = obj.powerId;
+            var status = obj.status;
+            var telephone=obj.telephone;
+            var rebate=obj.rebate;
+            pool.getConnection((err, conn)=> {
+                if (err) {
+                    console.log(err);
+                } else {
+                    conn.query('UPDATE  manager SET inviteCode=?,power_id=?,status=?,telephone=?,rebate=?  WHERE id=?', [inviteCode,powerId,status,telephone,rebate,managerId], (err, result)=> {
+                        console.log(result);
+                        if(result.changedRows>0){
+                            res.json({"status": 1});
+                        }else{
+                            res.json({"status": 0});
+                        }
+                        conn.release();
+                    });
+
+                }
+            })
+        });
+    }
+});
+
+
+//修改代理信息
+app.post('/updateAccount',(req,res)=>{
+    if(req.session.user) {
+        var user = req.session.user;
+        var managerId = user.id;
+        var powerId = user.power_id;
+        req.on("data", (buff)=> {
+            var obj = qs.parse(buff.toString());
+            console.log(obj);
+            var uuid=obj.uuid;
+            var roomCardNum = obj.roomCardNum;
+            pool.getConnection((err, conn)=> {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if(powerId==1){
+                        conn.query('UPDATE  account SET roomCard=roomCard+?  WHERE Uuid=?', [roomCardNum,uuid], (err, result)=> {
+                            console.log(result);
+                            if(result.changedRows>0){
+                                res.json({"status": 1});
+                            }else{
+                                res.json({"status": 0});
+                            }
+                            conn.release();
+                        });
+                    }else{
+                        conn.query('SELECT * FROM account WHERE managerId=?', [managerId], (err, result)=> {
+                            console.log(result);
+                            if(result[0].roomCard<roomCardNum){
+                                res.json({"status": 0});
+                            }else{
+
+                                conn.query('UPDATE account SET roomCard =roomCard-? WHERE managerId=?',[roomCardNum,managerId],(err,resu)=>{
+                                    console.log(resu);
+                                    if(resu.changedRows>0){
+                                        conn.query('UPDATE account SET roomCard =roomCard+? WHERE Uuid=?',[roomCardNum,uuid],(err,resul)=>{
+                                            console.log(resul);
+                                            if(resul.changedRows>0){
+                                                res.json({"status": 1});
+                                            }else{
+                                                res.json({"status": 0});
+                                            }
+                                        })
+                                    }else{
+                                        res.json({"status": 0});
+                                    }
+
+                                });
+
+                            }
+                            conn.release();
+                        });
+                    }
+
+
+                }
+            })
+        });
+
+
+    }
+});
+
+//验证上级代理邀请码
+app.get('/validParentInviteCode',(req,res)=>{
+    if(req.session.user){
+        var pinviteCode = req.query.parentInviteCode;
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                conn.query('SELECT * FROM manager  WHERE inviteCode=? ',[pinviteCode],(err,result)=>{
+                    res.json(result);
+                })
+            }
+            conn.release();
+        })
+    }
+});
+
+//新增代理信息 e10adc3949ba59abbe56e057f20f883e
+app.post('/insertManager',(req,res)=>{
+    if(req.session.user) {
+        var user=req.session.user;
+        var powerId=user.power_id;
+        var pmId=user.id;
+        req.on("data", (buff)=> {
+            var obj = qs.parse(buff.toString());
+            console.log(obj);
+            var uname=obj.uname;
+            var uuid=obj.uuid;
+            var inviteCode = obj.inviteCode;
+            var pinviteCode=obj.parentInviteCode;
+            var tel=obj.telephone;
+            var weixin = obj.weixin;
+            var qq = obj.qq;
+            var powerId = obj.powerId;
+            var pmid = obj.pmid;
+            var pwd='e10adc3949ba59abbe56e057f20f883e';
+            var redCard=obj.redCard;
+            var levelStr0=100000000;
+            var levelStr1=parseInt(levelStr0)+parseInt(pmid);
+            var levelStr2=levelStr1+'$';
+            var levelStr = levelStr2.slice(1,levelStr2.length-1);
+            var rebate=0;
+            if(obj.rebate){
+                rebate=obj.rebate;
+            }else{
+                if(powerId==5){
+                    rebate=0.7;
+                }else if(powerId==4){
+                    rebate=0.6;
+                }else if(powerId==3){
+                    rebate=0.5;
+                }else if(powerId==2){
+                    rebate=0.4;
+                }
+            }
+
+            pool.getConnection((err, conn)=> {
+                if (err) {
+                    console.log(err);
+                } else {
+                    conn.query('INSERT INTO manager VALUES(null,?,?,?,?,0,0,?,0,?,?,?,1,?,1,?,?,now(),?)', [powerId,uname,tel,pwd,pmid,inviteCode,weixin,qq,rebate,levelStr,uuid,redCard], (err, result)=> {
+                        console.log(result);
+                        if(result.affectedRows>0){
+                            conn.query('UPDATE account SET manager_up_id=?,managerId=? WHERE Uuid=?',[result.insertId,result.insertId,uuid],(err,resultaccount)=>{
+                                console.log("resultaccount:"+resultaccount);
+                                res.json({"status":1});
+                            })
+                        }else{
+                            res.json({"status":0});
+                        }
+                        conn.release();
+
+                    });
+
+                }
+            })
+        });
+    }
+});

@@ -52,7 +52,9 @@ body{
 .level3{
     text-indent: 4em;
 }
-
+.navbar-brand>img{
+    max-height:100%;
+}
 
 #add-message,#pw-message,
 #agentDetail,

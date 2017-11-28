@@ -9,7 +9,7 @@ const fs   = require("fs");
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var pool=mysql.createPool({
-    host:'127.0.0.1',
+    host:'120.76.100.224',
     user:'mahjong',
     password:'a257joker',
     database:'mahjong_hbe',

@@ -9,9 +9,9 @@ const fs   = require("fs");
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var pool=mysql.createPool({
-    host:'120.76.100.224',
-    user:'mahjong',
-    password:'a257joker',
+    host:'127.0.0.1',
+    user:'root',//mahjong
+    password:'123456',//a257joker
     database:'mahjong_hbe',
     connectionLimit:10
 });
@@ -225,6 +225,22 @@ app.get('/searchAgents',(req,res)=>{
         var managerId = user.id;
         var starttime=req.query.starttime;
         var endtime=req.query.endtime;
+        var now=new Date();
+        now.setDate(now.getDate()+1);
+        var overArr=now.toLocaleDateString().split('/');
+        for(var i=0;i<overArr.length;i++){
+            if(overArr[i]<10){
+                overArr[i]=0+overArr[i];
+            }
+        }
+        var overTime=overArr.join('-');
+        console.log(overTime);
+        if(!starttime){
+            starttime='1970-01-01';
+        }
+        if(!endtime){
+            endtime=overTime;
+        }
         var uname=req.query.uname;
         var inviteCode=req.query.invitecode;
         console.log(starttime,endtime,uname,inviteCode);
@@ -496,23 +512,29 @@ app.get('/getAccounts',(req,res)=>{
             } else {
                 conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id order by a.createTime desc', [managerId], (err, result)=> {
                     //console.log(result);
-                    var progress=0;
-                    for(let account of result){
-                        conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
-                            console.log(sum);
-                            if (sum[0].m) {
-                                account['sumMoney'] = sum[0].m;
-                            } else {
-                                account['sumMoney'] = 0;
-                            }
-                            progress++;
-                            if (progress === result.length ) {
-                                //console.log(result);
-                                res.json(result);
-                                conn.release();
-                            }
-                        });
+                    if(result.length>0){
+                        var progress=0;
+                        for(let account of result){
+                            conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                console.log(sum);
+                                if (sum[0].m) {
+                                    account['sumMoney'] = sum[0].m;
+                                } else {
+                                    account['sumMoney'] = 0;
+                                }
+                                progress++;
+                                if (progress === result.length ) {
+                                    //console.log(result);
+                                    res.json(result);
+                                    conn.release();
+                                }
+                            });
+                        }
+                    }else{
+                        res.json([]);
+                        conn.release();
                     }
+
                 })
             }
 
@@ -731,7 +753,6 @@ app.post('/updateManagerInfo',(req,res)=>{
     }
 });
 
-
 //代理充值
 app.post('/updateAccount',(req,res)=>{
     if(req.session.user) {
@@ -934,5 +955,124 @@ app.post('/insertManager',(req,res)=>{
                 }
             })
         });
+    }
+});
+
+//根据玩家ID查询玩家信息 searchVipByUuid
+app.get('/searchVipByUuid',(req,res)=>{
+    if(req.session.user) {
+        var user = req.session.user;
+        var managerId = user.id;
+        var starttime=req.query.starttime;
+        var endtime=req.query.endtime;
+        var now=new Date();
+        now.setDate(now.getDate()+1);
+        var overArr=now.toLocaleDateString().split('/');
+        for(var i=0;i<overArr.length;i++){
+            if(overArr[i]<10){
+                overArr[i]=0+overArr[i];
+            }
+        }
+        var overTime=overArr.join('-');
+        console.log(overTime);
+        if(!starttime){
+            starttime='1970-01-01';
+        }
+        if(!endtime){
+            endtime=overTime;
+        }
+        var uuid=req.query.uuid;
+        pool.getConnection((err, conn)=> {
+            if (err) {
+                console.log(err);
+            } else {
+                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id and a.Uuid=? order by a.createTime desc', [managerId,uuid], (err, result)=> {
+                    console.log("+++"+result);
+                    if(result.length>0){
+                        var progress=0;
+                        for(let account of result){
+                            conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime between ? and ?', [account.uuid,starttime,endtime], (err, sum)=> {
+                                console.log(sum);
+                                if (sum[0].m) {
+                                    account['sumMoney'] = sum[0].m;
+                                } else {
+                                    account['sumMoney'] = 0;
+                                }
+                                progress++;
+                                if (progress === result.length ) {
+                                    //console.log(result);
+                                    res.json(result);
+                                    conn.release();
+                                }
+                            });
+                        }
+                    }else{
+                        res.json([]);
+                        conn.release();
+                    }
+
+                })
+            }
+
+        })
+    }
+});
+
+// searchVipByTime
+app.get('/searchVipByTime',(req,res)=>{
+    if(req.session.user) {
+        var user = req.session.user;
+        var managerId = user.id;
+        var starttime=req.query.starttime;
+        var endtime=req.query.endtime;
+        var now=new Date();
+        now.setDate(now.getDate()+1);
+        var overArr=now.toLocaleDateString().split('/');
+        for(var i=0;i<overArr.length;i++){
+            if(overArr[i]<10){
+                overArr[i]=0+overArr[i];
+            }
+        }
+        var overTime=overArr.join('-');
+        console.log(overTime);
+        if(!starttime){
+            starttime='1970-01-01';
+        }
+        if(!endtime){
+            endtime=overTime;
+        }
+        pool.getConnection((err, conn)=> {
+            if (err) {
+                console.log(err);
+            } else {
+                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id  order by a.createTime desc', [managerId], (err, result)=> {
+                    console.log("+++"+result);
+                    if(result.length>0){
+                        var progress=0;
+                        for(let account of result){
+                            conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime between ? and ?', [account.uuid,starttime,endtime], (err, sum)=> {
+                                console.log(sum);
+                                if (sum[0].m) {
+                                    account['sumMoney'] = sum[0].m;
+                                } else {
+                                    account['sumMoney'] = 0;
+                                }
+                                progress++;
+                                if (progress === result.length ) {
+                                    //console.log(result);
+                                    res.json(result);
+                                    conn.release();
+                                }
+                            });
+                        }
+                    }else{
+                        res.json([]);
+                        conn.release();
+                    }
+
+                })
+            }
+
+        })
     }
 });

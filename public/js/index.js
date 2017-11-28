@@ -746,5 +746,165 @@ $(function(){
                 }
             })
         }
+    });
+    $('#vip #searchVip').click(function(){
+        var str=$('#searchVipForm').serialize();
+        console.log(str);
+        var now=new Date();
+        now.setDate(now.getDate()+1);
+        var overArr=now.toLocaleDateString().split('/');
+        for(var i=0;i<overArr.length;i++){
+            if(overArr[i]<10){
+                overArr[i]=0+overArr[i];
+            }
+        }
+        var overTime=overArr.join('-');
+        console.log(overTime);
+        var uuid=$("#searchVipForm [name='uuid']").val();
+        if(uuid){
+            var validUuid=false;
+            $.ajax({
+                url:'/vipChargeValidUuid',
+                data:{uuid:uuid},
+                async: false,
+                success:function(data){
+                    console.log(data);
+                    if(data.validuuid==0){
+                        validUuid=false;
+                        alert('未查询到数据！');
+                    }else if(data.validuuid==1){
+                        validUuid=true;
+                    }
+                }
+            });
+            if(validUuid){
+                $.ajax({
+                    url:'/searchVipByUuid',
+                    data:str,
+                    success:function(data){
+                        console.log(data);
+                        if(data.length>0){
+                            $('#vip #vipTbl tbody').html("");
+                            var totalpages=1;
+                            if(data.length%10==0){
+                                totalpages=parseInt(data.length/10);
+                            }else{
+                                totalpages=parseInt(data.length/10)+1;
+                            }
+
+                            var options = {
+                                currentPage: 1,
+                                totalPages:totalpages,
+                                bootstrapMajorVersion: 3,
+                                onPageChanged: function(e,oldPage,newPage){
+                                    var start=(newPage-1)*10;
+                                    var end=start+parseInt(10);
+                                    if(end>data.length)end=data.length;
+                                    rendAccounts(start,end);
+                                }
+                            };
+
+                            $('#vip-pages').bootstrapPaginator(options);
+                            $('#vip .total-number').html(data.length);
+                            var initend=10;
+                            if(initend>data.length)initend=data.length;
+                            rendAccounts(0,initend);
+
+                            function rendAccounts(start,end){
+                                for(var i=start,html='';i<end;i++){
+                                    var o=data[i];
+                                    var redCardStr=0;
+                                    if(o.redCard){
+                                        redCardStr=o.redCard;
+                                    }
+                                    html+=`
+                <tr>
+                    <td>${o.uuid}</td>
+                    <td>${o.nickName}</td>
+                    <td>${o.sumMoney}</td>
+                    <td>${o.roomCard}</td>
+                    <td>${redCardStr}</td>
+                    <td>${o.status==0?'正常':'禁用'}</td>
+                    <td>${new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                    <td>
+                    <button type="button" class="btn btn-default btn-sm" data-id="${o.uuid}">标记红名</button>
+                    <button class="btn btn-primary btn-sm" type="button" data-id="${o.uuid}">禁用</button></td>
+                </tr>
+                `;
+                                }
+                                $('#vip #vipTbl tbody').html(html);
+
+                            }
+                        }else{
+                            alert('未查询到数据，请重新输入！');
+                        }
+                    }
+                })
+            }
+        }else{
+            $.ajax({
+                url:'/searchVipByTime',
+                data:str,
+                success:function(data){
+                    console.log(data);
+                    if(data.length>0){
+                        $('#vip #vipTbl tbody').html("");
+                        var totalpages=1;
+                        if(data.length%10==0){
+                            totalpages=parseInt(data.length/10);
+                        }else{
+                            totalpages=parseInt(data.length/10)+1;
+                        }
+
+                        var options = {
+                            currentPage: 1,
+                            totalPages:totalpages,
+                            bootstrapMajorVersion: 3,
+                            onPageChanged: function(e,oldPage,newPage){
+                                var start=(newPage-1)*10;
+                                var end=start+parseInt(10);
+                                if(end>data.length)end=data.length;
+                                rendAccounts(start,end);
+                            }
+                        };
+
+                        $('#vip-pages').bootstrapPaginator(options);
+                        $('#vip .total-number').html(data.length);
+                        var initend=10;
+                        if(initend>data.length)initend=data.length;
+                        rendAccounts(0,initend);
+
+                        function rendAccounts(start,end){
+                            for(var i=start,html='';i<end;i++){
+                                var o=data[i];
+                                var redCardStr=0;
+                                if(o.redCard){
+                                    redCardStr=o.redCard;
+                                }
+                                html+=`
+                <tr>
+                    <td>${o.uuid}</td>
+                    <td>${o.nickName}</td>
+                    <td>${o.sumMoney}</td>
+                    <td>${o.roomCard}</td>
+                    <td>${redCardStr}</td>
+                    <td>${o.status==0?'正常':'禁用'}</td>
+                    <td>${new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                    <td>
+                    <button type="button" class="btn btn-default btn-sm" data-id="${o.uuid}">标记红名</button>
+                    <button class="btn btn-primary btn-sm" type="button" data-id="${o.uuid}">禁用</button></td>
+                </tr>
+                `;
+                            }
+                            $('#vip #vipTbl tbody').html(html);
+                        }
+                    }else{
+                        alert('未查询到数据，请重新输入！');
+                    }
+                }
+            })
+        }
+
+
     })
 });

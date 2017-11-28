@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <meta charset="UTF-8">
-    <title>首页</title>
+    <title>代理管理</title>
     <link rel="stylesheet" href="css/bootstrap.css"/>
     <link rel="stylesheet" href="css/index.css"/>
     <link rel="stylesheet" href="css/jquery.treegrid.css"/>
@@ -90,6 +90,31 @@
             <h2>我的代理</h2>
             <!--<h4>充值总金额(￥)：<b class="total-money">0</b>元</h4>-->
             <button type="button" class="btn btn-lg btn-success add-agent">新增代理</button>
+            <div class="searchInfo">
+                <form class="form-inline form-btn" name="searchAgentForm" id="searchAgentForm">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">开始时间</span>
+                            <input type="date" name="starttime"  class="form-control" placeholder="开始时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">截止时间</span>
+                            <input type="date" name="endtime"  class="form-control" placeholder="截止时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="uname"  class="form-control" placeholder="请输入代理姓名">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="invitecode"  class="form-control" placeholder="请输入代理邀请码">
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-success" id="searchAgent"  value="查询">
+                    </div>
+                </form>
+            </div>
             <div class="table-responsive">
                 <table id="agentTbl" class="table table-bordered table-striped tree">
                     <thead>
@@ -252,8 +277,36 @@
         </div>
         <div id="vip">
             <h2>我的会员</h2>
-            <div class="text-right">
-                <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>充值</button>
+
+            <button type="button" class="btn btn-success btn-lg charge">
+                <!--<span class="glyphicon glyphicon-plus"></span>-->
+                充值
+            </button>
+
+            <div class="searchInfo">
+                <form class="form-inline form-btn" name="searchVipForm" id="searchVipForm">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">开始时间</span>
+                            <input type="date" name="starttime"  class="form-control" placeholder="开始时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">截止时间</span>
+                            <input type="date" name="endtime"  class="form-control" placeholder="截止时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="nickname"  class="form-control" placeholder="请输入玩家昵称">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="uuid"  class="form-control" placeholder="请输入玩家ID">
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-success" id="searchVip"  value="查询">
+                    </div>
+                </form>
             </div>
             <div class="table-responsive">
                 <table id="vipTbl" class="table table-bordered table-striped">
@@ -276,6 +329,31 @@
             </div>
             <ul id="vip-pages"></ul>
             <p>共有 <b class="total-number">0</b> 条记录</p>
+
+            <div id="vipCharge">
+                <form name="vipChargeForm" id="vipChargeForm">
+                    <button type="button" class="close"><span>&times;</span></button>
+                    <h4>玩家充值信息</h4>
+                    <div>
+                        <div class="form-group">
+                            <label>玩家ID：</label>
+                            <input type="text" name="uuid"  class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>充蓝钻：</label>
+                            <input type="number" name="roomCardNum"  class="form-control">
+                            <p>请输入正确的蓝钻数量</p>
+                        </div>
+                        <div class="form-group">
+                            <label>充红钻：</label>
+                            <input type="number" name="redCardNum"  class="form-control">
+                            <p>请输入正确的红钻数量</p>
+                        </div>
+                    </div>
+                    <input type="button" class="btn  btn-success sure" value="确 定"/>
+                    <input type="button" class="btn  btn-danger cancel" value="取 消"/>
+                </form>
+            </div>
         </div>
         <div id="detail">
             <h2>账单明细</h2>

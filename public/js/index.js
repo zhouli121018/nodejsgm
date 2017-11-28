@@ -325,7 +325,6 @@ $(function(){
         })
     }
     getAgentInfo();
-
     function resetPassword(){
         var str1=prompt('请输入新密码：');
         if(str1==null){
@@ -352,13 +351,9 @@ $(function(){
 
         }
     }
-
     $('#resetPwd').click(function(){
         resetPassword();
     });
-
-
-
     function getChildAgents(id,ele,level){
         console.log(id);
         $.ajax({
@@ -613,5 +608,143 @@ $(function(){
     });
     $('.cancel').click(function(){
         $(this).parents('form').parent().hide();
+    });
+
+    $('#searchAgent').click(function(){
+        var str=$('#searchAgentForm').serialize();
+        console.log(str);
+        $.ajax({
+            url:'/searchAgents',
+            data:str,
+            success:function(data){
+                console.dir(data);
+                console.log(data);
+                if(data.length>0){
+                    $('#agent #agentTbl tbody').html("");
+                    var totalpages=1;
+                    if(data.length%10==0){
+                        totalpages=parseInt(data.length/10);
+                    }else{
+                        totalpages=parseInt(data.length/10)+1;
+                    }
+
+                    var options = {
+                        currentPage: 1,
+                        totalPages:totalpages,
+                        bootstrapMajorVersion: 3,
+                        onPageChanged: function(e,oldPage,newPage){
+                            var start=(newPage-1)*10;
+                            var end=start+parseInt(10);
+                            if(end>data.length)end=data.length;
+                            rendAgent(start,end);
+                        }
+                    };
+
+                    $('#agent-pages').bootstrapPaginator(options);
+                    $('#agent .total-number').html(data.length);
+                    var initend=10;
+                    if(initend>data.length)initend=data.length;
+                    rendAgent(0,initend);
+                    function rendAgent(start,end){
+                        for(var i=start,html='';i<end;i++){
+                            var o=data[i];
+                            if(data[i].agentNumber>0){
+                                html+=`
+                    <tr>
+                        <td data-level="1" class="childAgent level1"><span class="tree-collapse"></span><b>${o.id}</b></td>`;
+                            }else{
+                                html+=`
+                    <tr>
+                        <td data-level="1" class="level1"><span></span><b>${o.id}</b></td>`;
+                            };
+
+                            html+=`
+                    <td>${o.name}</td>
+                    <td>${o.uuid}</td>
+                    <td>${o.nickName}</td>
+                    <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
+                    <td>${o.rebate}</td>
+                    <td>${o.telephone}</td>
+                    <td>${o.inviteCode}</td>
+                    <td>${o.roomCard}</td>
+                    <td>${o.redCard}</td>
+                    <td>${o.accountNumber}</td>
+                    <td>${o.agentNumber}</td>
+                    <td>${o.sumMoney}</td>
+                    <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
+                    <td>
+                    <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
+                    <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button></td>
+                </tr>
+                `;
+                        }
+                        $('#agent #agentTbl tbody').html(html);
+                    }
+                }else{
+                    alert('未查询到符合条件的代理！');
+                }
+
+
+            }
+        })
+    });
+
+    $('#vip>button.charge').click(function(){
+        $('#vip #vipCharge').fadeIn();
+    });
+    $('#vip #vipCharge .sure').click(function(){
+        var uuid=$("#vipChargeForm [name='uuid']").val();
+        var validUuid=false;
+        $.ajax({
+            url:'/vipChargeValidUuid',
+            data:{uuid:uuid},
+            async: false,
+            success:function(data){
+                console.log(data);
+                if(data.validuuid==0){
+                    validUuid=false;
+                    alert('此用户ID不存在或已禁用，请重新输入！');
+                }else if(data.validuuid==1){
+                    validUuid=true;
+                }
+            }
+        });
+        var roomCardNum=$("#vip #vipCharge [name='roomCardNum']").val();
+        var redCardNum=$("#vip #vipCharge [name='redCardNum']").val();
+        if(roomCardNum==''&&redCardNum==''){
+            alert('请输入正确的充钻数量！');
+            return;
+        }
+        if(roomCardNum.length!=0&&roomCardNum%1==0){
+            if(sessionStorage['powerId']!=1&&roomCardNum<=0){
+                alert('请输入正确的充钻数量！');
+                return;
+            }
+        }
+        if(redCardNum.length!=0&&redCardNum%1==0){
+            if(sessionStorage['powerId']!=1&&redCardNum<=0){
+                alert('请输入正确的充钻数量！');
+                return;
+            }
+        }
+        var str=$('#vipChargeForm').serialize();
+        console.log(str);
+        if(validUuid){
+            $.ajax({
+                url:'/vipCharge',
+                data:str,
+                type:'POST',
+                success:function(data){
+                    console.log(data);
+                    if(data.status==1){
+                        $('#vipCharge').hide();
+                        alert('充值成功！');
+                        getAccounts();
+                    }else{
+                        alert('充值失败！');
+                    }
+                }
+            })
+        }
     })
 });

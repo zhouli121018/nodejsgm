@@ -10,8 +10,10 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var pool=mysql.createPool({
     host:'127.0.0.1',
-    user:'root',//mahjong
-    password:'123456',//a257joker
+    //user:'root',//mahjong
+    //password:'123456',//a257joker
+    user:'mahjong',
+    password:'a257joker',
     database:'mahjong_hbe',
     connectionLimit:10
 });
@@ -568,6 +570,81 @@ app.get('/getDetails',(req,res)=>{
                             }
                         })
                     }
+                })
+            }
+
+        });
+    }
+});
+
+//获取充值总额select IFNULL(sum(a.money),0) from paylog a,manager b where a.managerId = b.id and a.payType = 0
+app.get('/getTotalMoney',(req,res)=>{
+    if(req.session.user) {
+        var user = req.session.user;
+        var managerId = user.id;
+        var levelStr='';
+        var n=100000000;
+        var levelStr0=n+parseInt(managerId);
+        var levelStr1=levelStr0+'$%';
+        levelStr=levelStr1.slice(1,levelStr1.length-1);
+        var plevelStr='';
+        plevelStr=user.levelStr;
+        if(plevelStr){
+            levelStr=plevelStr+levelStr;
+        }
+        pool.getConnection((err, conn)=> {
+            if (err) {
+                console.log(err);
+            } else {
+                conn.query('select IFNULL(sum(a.money),0) as totalmoney from paylog a,manager b where a.managerId = b.id and a.payType = 0 and (b.levelStr like ? or b.id =?) and a.status != 2 ', [levelStr,managerId], (err, totalMoney)=> {
+                    console.log('totalMoney:'+totalMoney[0]);
+                    res.json(totalMoney[0]);
+                    conn.release();
+                })
+            }
+
+        });
+    }
+});
+
+//获取账单明细
+app.get('/getPaylogs',(req,res)=>{
+    if(req.session.user) {
+        var user = req.session.user;
+        var managerId = user.id;
+        var levelStr='';
+        var n=100000000;
+        var levelStr0=n+parseInt(managerId);
+        var levelStr1=levelStr0+'$%';
+        levelStr=levelStr1.slice(1,levelStr1.length-1);
+        var plevelStr='';
+        plevelStr=user.levelStr;
+        if(plevelStr){
+            levelStr=plevelStr+levelStr;
+        }
+        pool.getConnection((err, conn)=> {
+            if (err) {
+                console.log(err);
+            } else {
+                conn.query('select a.*,c.nickName from paylog a,manager b,account c where c.Uuid=a.uuid and a.managerId = b.id and a.payType = 0 and (b.levelStr like ? or b.id =?) and a.status != 2 ', [levelStr,managerId], (err, paylogs)=> {
+                    console.log(paylogs);
+                    if(paylogs.length>0){
+                        var progress=0;
+                        for(let paylog of paylogs){
+                            conn.query('select inviteCode,name,rebate,power_id,manager_up_id from manager where id=?',[paylog.managerId],(err,parentM)=>{
+                                console.log('parentM');
+                                console.log(parentM);
+                                if(parentM[0].manager_up_id){
+                                    //conn.query('')
+                                }
+                            })
+                        }
+                    }else{
+                        res.json([]);
+                        conn.release();
+                    }
+                    res.json(paylogs);
+                    conn.release();
                 })
             }
 

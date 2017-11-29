@@ -322,6 +322,20 @@ $(function(){
 
 
             }
+        });
+        $.ajax({
+            url:'/getTotalMoney',
+            success:function(data){
+                console.log(data);
+                $('#detail .totalMoney').html(data.totalmoney);
+            }
+        })
+        $.ajax({
+            url:'/getPaylogs',
+            success:function(data){
+                console.log('paylogs:');
+                console.dir(data);
+            }
         })
     }
     getAgentInfo();

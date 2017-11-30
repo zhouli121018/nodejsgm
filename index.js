@@ -10,16 +10,16 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var pool=mysql.createPool({
     host:'127.0.0.1',
-    //user:'root',//mahjong
-    //password:'123456',//a257joker
-    user:'mahjong',
-    password:'a257joker',
+    user:'root',//mahjong
+    password:'123456',//a257joker
+    //user:'mahjong',
+    //password:'a257joker',
     database:'mahjong_hbe',
     connectionLimit:10
 });
 var app=express();
 var server=http.createServer(app);
-server.listen(8082);
+server.listen(8081);
 app.use(express.static('./public'));
 app.use(cookieParser('sessiontest'));
 app.use(session({
@@ -508,39 +508,181 @@ app.get('/getAccounts',(req,res)=>{
     if(req.session.user) {
         var user = req.session.user;
         var managerId = user.id;
-        pool.getConnection((err, conn)=> {
-            if (err) {
-                console.log(err);
-            } else {
-                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id and a.status!=2 order by a.createTime desc', [managerId], (err, result)=> {
-                    //console.log(result);
-                    if(result.length>0){
-                        var progress=0;
-                        for(let account of result){
-                            conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
-                                console.log(sum);
-                                if (sum[0].m) {
-                                    account['sumMoney'] = sum[0].m;
-                                } else {
-                                    account['sumMoney'] = 0;
-                                }
-                                progress++;
-                                if (progress === result.length ) {
+        var powerId=user.power_id;
+        var inputManagerId = req.query.managerId;
+        var uuid=req.query.uuid;
+        var limitstart=(req.query.page-1)*10;
+        var starttime=req.query.starttime;
+        var endtime=req.query.endtime;
+        var now=new Date();
+        now.setDate(now.getDate()+1);
+        var overArr=now.toLocaleDateString().split('/');
+        for(var i=0;i<overArr.length;i++){
+            if(overArr[i]<10){
+                overArr[i]=0+overArr[i];
+            }
+        }
+        var overTime=overArr.join('-');
+        console.log(overTime);
+        if(!starttime){
+            starttime='1970-01-01';
+        }
+        if(!endtime){
+            endtime=overTime;
+        }
+         pool.getConnection((err, conn)=> {
+                if (err) {
+                    console.log(err);
+                } else {
+                    if(powerId==1){
+                        if(inputManagerId){
+                            if(uuid){
+                                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id and a.Uuid=?', [inputManagerId,uuid], (err, result)=> {
+                                    if(result.length>0) {
+                                        var progress = 0;
+                                        for (let account of result) {
+                                            conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                                console.log(sum);
+                                                account['sumMoney'] = sum[0].m;
+                                                progress++;
+                                                if(progress==result.length){
+                                                    res.json(result);
+                                                    conn.release();
+                                                }
+                                            })
+                                        }
+                                    }else{
+                                        res.json(result);
+                                        conn.release();
+                                    }
+                                })
+                            }else{
+                                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id  order by a.createTime desc limit ?,10', [inputManagerId,limitstart], (err, result)=> {
                                     //console.log(result);
+                                    if(result.length>0) {
+                                        var progress = 0;
+                                        for (let account of result) {
+                                            conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                                console.log(sum);
+                                                account['sumMoney'] = sum[0].m;
+                                                progress++;
+                                                if(progress==result.length){
+                                                    res.json(result);
+                                                    conn.release();
+                                                }
+                                            })
+                                        }
+                                    }else{
+                                        res.json(result);
+                                        conn.release();
+                                    }
+
+                                })
+
+                            }
+                        }else{
+                            if(uuid){
+                                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM account a WHERE a.uuid=?',[uuid], (err, result)=> {
+                                    //console.log(result);
+                                    if(result.length>0) {
+                                        var progress = 0;
+                                        for (let account of result) {
+                                            conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                                console.log(sum);
+                                                account['sumMoney'] = sum[0].m;
+                                                progress++;
+                                                if(progress==result.length){
+                                                    res.json(result);
+                                                    conn.release();
+                                                }
+                                            })
+                                        }
+                                    }else{
+                                        res.json(result);
+                                        conn.release();
+                                    }
+
+                                })
+                            }else{
+                                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM account a  order by a.createTime desc limit ?,10',[limitstart], (err, result)=> {
+                                    //console.log(result);
+                                    console.log(666);
+                                    if(result.length>0) {
+                                        var progress = 0;
+                                        for (let account of result) {
+                                            conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                                console.log(sum);
+                                                account['sumMoney'] = sum[0].m;
+                                                progress++;
+                                                if(progress==result.length){
+                                                    res.json(result);
+                                                    conn.release();
+                                                }
+                                            })
+                                        }
+                                    }else{
+                                        res.json(result);
+                                        conn.release();
+                                    }
+                                })
+
+                            }
+                        }
+
+                    }else{
+                        if(uuid){
+                            conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id and a.Uuid=? and a.status!=2', [managerId,uuid], (err, result)=> {
+                                //console.log(result);
+                                if(result.length>0) {
+                                    var progress = 0;
+                                    for (let account of result) {
+                                        conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                            console.log(sum);
+                                            account['sumMoney'] = sum[0].m;
+                                            progress++;
+                                            if(progress==result.length){
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        })
+                                    }
+                                }else{
                                     res.json(result);
                                     conn.release();
                                 }
-                            });
+
+                            })
+
+                        }else{
+                            conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id  and a.status!=2  order by a.createTime desc limit ?,10', [managerId,limitstart], (err, result)=> {
+                                //console.log(result);
+                                if(result.length>0) {
+                                    var progress = 0;
+                                    for (let account of result) {
+                                        conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                            console.log(sum);
+                                            account['sumMoney'] = sum[0].m;
+                                            progress++;
+                                            if(progress==result.length){
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        })
+                                    }
+                                }else{
+                                    res.json(result);
+                                    conn.release();
+                                }
+
+                            })
+
                         }
-                    }else{
-                        res.json([]);
-                        conn.release();
+
                     }
 
-                })
-            }
+                }
 
-        })
+            })
     }
 });
 
@@ -1013,18 +1155,30 @@ app.get('/vipChargeValidUuid',(req,res)=>{
     if(req.session.user){
         var user=req.session.user;
         var managerId=user.id;
+        var powerId=user.power_id;
         var uuid = req.query.uuid;
         pool.getConnection((err,conn)=>{
             if(err){
                 console.log(err);
             }else{
-                conn.query('SELECT * FROM account  WHERE Uuid=? AND manager_up_id=? AND status!=2',[uuid,managerId],(err,result)=>{
-                    if(result.length>0){
-                        res.json({"validuuid":1});
-                    }else{
-                        res.json({"validuuid":0});
-                    }
-                })
+                if(powerId==1){
+                    conn.query('SELECT * FROM account  WHERE Uuid=? ',[uuid,managerId],(err,result)=>{
+                        if(result.length>0){
+                            res.json({"validuuid":1});
+                        }else{
+                            res.json({"validuuid":0});
+                        }
+                    })
+                }else{
+                    conn.query('SELECT * FROM account  WHERE Uuid=? AND manager_up_id=? AND status!=2',[uuid,managerId],(err,result)=>{
+                        if(result.length>0){
+                            res.json({"validuuid":1});
+                        }else{
+                            res.json({"validuuid":0});
+                        }
+                    })
+                }
+
             }
             conn.release();
         })
@@ -1273,6 +1427,7 @@ app.get('/searchVipByUuid',(req,res)=>{
     if(req.session.user) {
         var user = req.session.user;
         var managerId = user.id;
+        var powerId=user.power_id;
         var starttime=req.query.starttime;
         var endtime=req.query.endtime;
         var now=new Date();
@@ -1296,32 +1451,61 @@ app.get('/searchVipByUuid',(req,res)=>{
             if (err) {
                 console.log(err);
             } else {
-                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id and a.Uuid=? order by a.createTime desc', [managerId,uuid], (err, result)=> {
-                    console.log("+++"+result);
-                    if(result.length>0){
-                        var progress=0;
-                        for(let account of result){
-                            conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime between ? and ?', [account.uuid,starttime,endtime], (err, sum)=> {
-                                console.log(sum);
-                                if (sum[0].m) {
-                                    account['sumMoney'] = sum[0].m;
-                                } else {
-                                    account['sumMoney'] = 0;
-                                }
-                                progress++;
-                                if (progress === result.length ) {
-                                    //console.log(result);
-                                    res.json(result);
-                                    conn.release();
-                                }
-                            });
+                if(powerId==1){
+                    conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM account a WHERE   a.Uuid=? order by a.createTime desc', [uuid], (err, result)=> {
+                        console.log("+++"+result);
+                        if(result.length>0){
+                            var progress=0;
+                            for(let account of result){
+                                conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime between ? and ?', [account.uuid,starttime,endtime], (err, sum)=> {
+                                    console.log(sum);
+                                    if (sum[0].m) {
+                                        account['sumMoney'] = sum[0].m;
+                                    } else {
+                                        account['sumMoney'] = 0;
+                                    }
+                                    progress++;
+                                    if (progress === result.length ) {
+                                        //console.log(result);
+                                        res.json(result);
+                                        conn.release();
+                                    }
+                                });
+                            }
+                        }else{
+                            res.json([]);
+                            conn.release();
                         }
-                    }else{
-                        res.json([]);
-                        conn.release();
-                    }
 
-                })
+                    })
+                }else{
+                    conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id and a.Uuid=? order by a.createTime desc', [managerId,uuid], (err, result)=> {
+                        console.log("+++"+result);
+                        if(result.length>0){
+                            var progress=0;
+                            for(let account of result){
+                                conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime between ? and ?', [account.uuid,starttime,endtime], (err, sum)=> {
+                                    console.log(sum);
+                                    if (sum[0].m) {
+                                        account['sumMoney'] = sum[0].m;
+                                    } else {
+                                        account['sumMoney'] = 0;
+                                    }
+                                    progress++;
+                                    if (progress === result.length ) {
+                                        //console.log(result);
+                                        res.json(result);
+                                        conn.release();
+                                    }
+                                });
+                            }
+                        }else{
+                            res.json([]);
+                            conn.release();
+                        }
+
+                    })
+                }
             }
 
         })
@@ -1333,6 +1517,7 @@ app.get('/searchVipByTime',(req,res)=>{
     if(req.session.user) {
         var user = req.session.user;
         var managerId = user.id;
+        var powerId=user.power_id;
         var starttime=req.query.starttime;
         var endtime=req.query.endtime;
         var now=new Date();
@@ -1355,32 +1540,62 @@ app.get('/searchVipByTime',(req,res)=>{
             if (err) {
                 console.log(err);
             } else {
-                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id and a.status!=2 order by a.createTime desc', [managerId], (err, result)=> {
-                    console.log("+++"+result);
-                    if(result.length>0){
-                        var progress=0;
-                        for(let account of result){
-                            conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime between ? and ?', [account.uuid,starttime,endtime], (err, sum)=> {
-                                console.log(sum);
-                                if (sum[0].m) {
-                                    account['sumMoney'] = sum[0].m;
-                                } else {
-                                    account['sumMoney'] = 0;
-                                }
-                                progress++;
-                                if (progress === result.length ) {
-                                    //console.log(result);
-                                    res.json(result);
-                                    conn.release();
-                                }
-                            });
+                if(powerId==1){
+                    conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM account a  order by a.createTime desc',  (err, result)=> {
+                        console.log("+++"+result);
+                        if(result.length>0){
+                            var progress=0;
+                            for(let account of result){
+                                conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime between ? and ?', [account.uuid,starttime,endtime], (err, sum)=> {
+                                    console.log(sum);
+                                    if (sum[0].m) {
+                                        account['sumMoney'] = sum[0].m;
+                                    } else {
+                                        account['sumMoney'] = 0;
+                                    }
+                                    progress++;
+                                    if (progress === result.length ) {
+                                        //console.log(result);
+                                        res.json(result);
+                                        conn.release();
+                                    }
+                                });
+                            }
+                        }else{
+                            res.json([]);
+                            conn.release();
                         }
-                    }else{
-                        res.json([]);
-                        conn.release();
-                    }
 
-                })
+                    })
+                }else{
+                    conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id and a.status!=2 order by a.createTime desc', [managerId], (err, result)=> {
+                        console.log("+++"+result);
+                        if(result.length>0){
+                            var progress=0;
+                            for(let account of result){
+                                conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime between ? and ?', [account.uuid,starttime,endtime], (err, sum)=> {
+                                    console.log(sum);
+                                    if (sum[0].m) {
+                                        account['sumMoney'] = sum[0].m;
+                                    } else {
+                                        account['sumMoney'] = 0;
+                                    }
+                                    progress++;
+                                    if (progress === result.length ) {
+                                        //console.log(result);
+                                        res.json(result);
+                                        conn.release();
+                                    }
+                                });
+                            }
+                        }else{
+                            res.json([]);
+                            conn.release();
+                        }
+
+                    })
+                }
+
             }
 
         })
@@ -1407,19 +1622,54 @@ app.get('/changeAccountStatus',(req,res)=>{
     }
 });
 
-//修改玩家账号状态
+//获取提现流水
 app.get('/getNotes',(req,res)=>{
     if(req.session.user){
+        var user=req.session.user;
         var status = req.query.status;
         var uuid=req.query.uuid;
+        var managerId=req.query.managerId||user.id;
+        var limitstart=(req.query.page-1)*10;
+        var starttime=req.query.starttime;
+        var endtime=req.query.endtime;
+        var now=new Date();
+        now.setDate(now.getDate()+1);
+        var overArr=now.toLocaleDateString().split('/');
+        for(var i=0;i<overArr.length;i++){
+            if(overArr[i]<10){
+                overArr[i]=0+overArr[i];
+            }
+        }
+        var overTime=overArr.join('-');
+        console.log(overTime);
+        if(!starttime){
+            starttime='1970-01-01';
+        }
+        if(!endtime){
+            endtime=overTime;
+        }
+        var resultJson={notes:[],totalNum:0,totalMoney:0};
         pool.getConnection((err,conn)=>{
             if(err){
                 console.log(err);
             }else{
-                conn.query('update account set status=? where Uuid = ? ',[status,uuid],(err,result)=>{
-                    console.log(222);
-                    console.log(result.affectedRows);
-                    res.json(result.affectedRows);
+                var progress=0;
+                conn.query('select a.id,b.name,b.inviteCode,a.money,a.payTime,a.status from paylog a,manager b where a.managerId = b.id  and a.managerId =? and a.payTime > ? and a.payTime < ? and a.payType = 1 and a.status=1 order by a.payTime DESC limit ?,10 ',[managerId,starttime,endtime,limitstart],(err,result)=>{
+                    console.log(333);
+                    progress++;
+                    resultJson.notes=result;
+                    if(progress==2){
+                        res.json(resultJson);
+                    }
+                })
+                conn.query('select count(a.id) as totalNum,IFNULL(sum(a.money),0) as totalMoney from paylog a,manager b where a.managerId = b.id  and a.managerId =? and a.payTime > ? and a.payTime < ? and a.payType = 1 and a.status=1 ',[managerId,starttime,endtime],(err,result)=>{
+                    console.log(444);
+                    progress++;
+                    resultJson.totalMoney=result[0].totalMoney;
+                    resultJson.totalNum=result[0].totalNum;
+                    if(progress==2){
+                        res.json(resultJson);
+                    }
                 })
             }
             conn.release();

@@ -308,6 +308,7 @@
                     </div>
                 </form>
             </div>
+            <h4>充值总金额：<b class="total-money">0</b> 元</h4>
             <div class="table-responsive">
                 <table id="vipTbl" class="table table-bordered table-striped">
                     <thead>
@@ -357,21 +358,42 @@
         </div>
         <div id="detail">
             <h2>账单明细</h2>
-            <h4>充值总金额：<b class="totalMoney">0</b> 元</h4>
+            <div class="searchInfo">
+                <form class="form-inline form-btn" name="searchDetailForm" id="searchDetailForm">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">开始时间</span>
+                            <input type="date" name="starttime"  class="form-control" placeholder="开始时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">截止时间</span>
+                            <input type="date" name="endtime"  class="form-control" placeholder="截止时间">
+                        </div>
+                    </div>
+                    <div class="form-group agentSearch">
+                    <input type="number" name="managerId"  class="form-control" placeholder="请输入代理ID">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="uuid"  class="form-control" placeholder="请输入玩家ID">
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-success" id="searchDetail"  value="查询">
+                    </div>
+                </form>
+            </div>
+            <h4>充值总额：<b class="total-money">0</b> 元</h4>
+            <h4 id="totalBonus">分成收益：<b>0</b> 元</h4>
             <div class="table-responsive">
                 <table id="detailTbl" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                        <th>游戏ID</th>
-                        <th>邀请码</th>
-                        <th>真实姓名</th>
-                        <th>代理级别</th>
-                        <th>账户记录</th>
-                        <th>时间</th>
-                        <th>充值游戏ID</th>
+                        <th>充值ID</th>
                         <th>充值昵称</th>
                         <th>充值金额</th>
-                        <th>提成金额</th>
+                        <th>充值时间</th>
+                        <th>分成金额</th>
                         <th>备注</th>
                     </tr>
                     <!--<tr>-->
@@ -390,6 +412,50 @@
                 </table>
             </div>
             <ul id="detail-pages"></ul>
+            <p>共有 <b class="total-number">0</b> 条记录</p>
+        </div>
+        <div id="note">
+            <h2>账单明细</h2>
+            <div class="searchInfo">
+                <form class="form-inline form-btn" name="searchNoteForm" id="searchNoteForm">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">开始时间</span>
+                            <input type="date" name="starttime"  class="form-control" placeholder="开始时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">截止时间</span>
+                            <input type="date" name="endtime"  class="form-control" placeholder="截止时间">
+                        </div>
+                    </div>
+                    <div class="form-group agentSearch">
+                        <input type="number" name="managerId"  class="form-control" placeholder="请输入代理ID">
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-success" id="searchNote"  value="查询">
+                    </div>
+                </form>
+            </div>
+            <h4>提现总额：<b class="total-money">0</b> 元</h4>
+            <div class="table-responsive">
+                <table id="noteTbl" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>姓 名</th>
+                        <th>代理邀请码</th>
+                        <th>提现金额(￥)</th>
+                        <th>充值时间</th>
+                        <th>是否处理</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <ul id="note-pages"></ul>
             <p>共有 <b class="total-number">0</b> 条记录</p>
         </div>
     </div>

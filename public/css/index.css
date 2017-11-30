@@ -245,3 +245,11 @@ h2{
         margin-left: -47.5%;
     }
 }
+
+.editStatus{
+    display:flex;
+    justify-content:center;
+}
+.editStatus>select.form-control{
+    width:8em;
+}

@@ -2245,3 +2245,63 @@ app.get('/getNextAgents',(req,res)=>{
         })
     }
 });
+
+//获取下级用户数量
+app.get('/getVipCount',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var managerId=user.id;
+        var levelStr='';
+        var n=100000000;
+        var levelStr0=n+parseInt(managerId);
+        var levelStr1=levelStr0+'$%';
+        levelStr=levelStr1.slice(1);
+        var plevelStr='';
+        plevelStr=user.levelStr;
+        if(plevelStr){
+            levelStr=plevelStr+levelStr;
+        }
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                conn.query('select COUNT(a.id) as vipCount from account a ,manager b where a.manager_up_id = b.id and (a.manager_up_id = ? or  b.levelStr like ?)',[managerId,levelStr],(err,result)=>{
+                    //console.log(9999999999);
+                    //console.log(result);
+                    res.json(result[0]);
+                })
+            }
+            conn.release();
+        })
+    }
+});
+
+//获取下级代理数量
+app.get('/getAgentCount',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var managerId=user.id;
+        var levelStr='';
+        var n=100000000;
+        var levelStr0=n+parseInt(managerId);
+        var levelStr1=levelStr0+'$%';
+        levelStr=levelStr1.slice(1);
+        var plevelStr='';
+        plevelStr=user.levelStr;
+        if(plevelStr){
+            levelStr=plevelStr+levelStr;
+        }
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                conn.query('select COUNT(m.id) as agentCount from manager m WHERE m.manager_up_id=?',[managerId],(err,result)=>{
+                    //console.log(9999999999);
+                    //console.log(result);
+                    res.json(result[0]);
+                })
+            }
+            conn.release();
+        })
+    }
+});

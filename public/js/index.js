@@ -139,6 +139,20 @@ $(function(){
                 })
             }
         });
+        $.ajax({
+            url:'/getVipCount',
+            success:function(data){
+                console.log("vipcount:");
+                console.log(data);
+                $("#vipCount").html(data.vipCount);
+            }
+        })
+        $.ajax({
+            url:'/getAgentCount',
+            success:function(data){
+                $("#agentCount").html(data.agentCount);
+            }
+        })
     }
     function getManagers(){
         $.ajax({

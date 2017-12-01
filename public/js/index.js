@@ -44,7 +44,7 @@ $(function(){
             window.event.returnValue = false;
         var id=$(this).attr('href');
         if(id=="#agent"){
-            getManagers();
+            getNextManagers();
         }else if(id=="#vip"){
             getAccounts(1);
         }else if(id=="#detail"){
@@ -235,49 +235,56 @@ $(function(){
                      totalMoney+=parseFloat(data[k].sumMoney);
                 }
                 $('#vip .total-money').html(totalMoney);
-
-                for(var unfix=data.length-1; unfix>0; unfix--){
-                    /*给进度做个记录，比到未确定位置*/
-                    for(var i=0; i<unfix;i++){
-                        if(parseInt(data[i].sumMoney)<parseInt(data[i+1].sumMoney)){
-                            var temp = data[i];
-                            data.splice(i,1,data[i+1]);
-                            data.splice(i+1,1,temp);
+                if(data.length>0){
+                    for(var unfix=data.length-1; unfix>0; unfix--){
+                        /*给进度做个记录，比到未确定位置*/
+                        for(var i=0; i<unfix;i++){
+                            if(parseInt(data[i].sumMoney)<parseInt(data[i+1].sumMoney)){
+                                var temp = data[i];
+                                data.splice(i,1,data[i+1]);
+                                data.splice(i+1,1,temp);
+                            }
                         }
                     }
-                }
-                var totalpages=1;
-                if(data.length%10==0){
-                    totalpages=parseInt(data.length/10);
-                }else{
-                    totalpages=parseInt(data.length/10)+1;
-                }
-                var options = {
-                    currentPage: page,
-                    totalPages:totalpages,
-                    bootstrapMajorVersion: 3,
-                    onPageChanged: function(e,oldPage,newPage){
-                        getAccounts(newPage);
+                    var totalpages=1;
+                    if(data.length%10==0){
+                        totalpages=parseInt(data.length/10);
+                    }else{
+                        totalpages=parseInt(data.length/10)+1;
                     }
-                };
-                $('#vip-pages').bootstrapPaginator(options);
-                $('#vip .total-number').html(data.length);
-                for(var i=0,html='';i<data.length;i++){
-                    var o=data[i];
-                    var redCardStr=0;
-                    if(o.redCard){
-                        redCardStr=o.redCard;
-                    }
-                    var editStr='';
-                    if(o.status==0){
-                        editStr=`<option value="1">标记红名</option><option value="2">禁用</option>`;
-                    }else if(o.status==1) {
-                        editStr=`<option value="0">取消红名</option><option value="2">禁用</option>`;
-                    }else if(o.status==2) {
-                        editStr=`<option value="0">启用</option>`;
-                    }
+                    var options = {
+                        currentPage: 1,
+                        totalPages:totalpages,
+                        bootstrapMajorVersion: 3,
+                        onPageChanged: function(e,oldPage,newPage){
+                            var start=(newPage-1)*10;
+                            var end=start+parseInt(10);
+                            if(end>data.length)end=data.length;
+                            rendAccount(start,end);
+                        }
+                    };
+                    $('#vip-pages').bootstrapPaginator(options);
+                    var initend=10;
+                    if(initend>data.length)initend=data.length;
+                    rendAccount(0,initend);
+                    $('#vip .total-number').html(data.length);
+                    function rendAccount(start,end){
+                        for(var i=start,html='';i<end;i++){
+                            var o=data[i];
+                            var redCardStr=0;
+                            if(o.redCard){
+                                redCardStr=o.redCard;
+                            }
+                            var editStr='';
+                            if(o.status==0){
+                                editStr=`<option value="1">标记红名</option><option value="2">禁用</option>`;
+                            }else if(o.status==1) {
+                                editStr=`<option value="0">取消红名</option><option value="2">禁用</option>`;
+                            }else if(o.status==2) {
+                                editStr=`<option value="0">启用</option>`;
+                            }
 
-                    html+=`
+                            html+=`
                         <tr>
                             <td>${o.uuid}</td>
                             <td>${o.nickName}</td>
@@ -294,8 +301,18 @@ $(function(){
                             </td>
                         </tr>
                         `;
+                        }
+                        $('#vip #vipTbl tbody').html(html);
+                    }
+                }else{
+                    $('#vip-pages').html('');
+                    $('#vip .total-number').html(0);
+                    $('#vip .total-money').html(0);
+                    $('#vip #vipTbl tbody').html('');
+
                 }
-                $('#vip #vipTbl tbody').html(html);
+
+
             }
         });
     }
@@ -320,7 +337,7 @@ $(function(){
                             <td>${o.name}</td>
                             <td>${o.inviteCode}</td>
                             <td>${o.money}</td>
-                            <td>${o.payTime}</td>
+                            <td>${new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>${o.status==1?'已完成':'提现失败'}</td>
                         </tr>
                     `
@@ -474,6 +491,7 @@ $(function(){
         resetPassword();
     });
     function getChildAgents(id,ele,level){
+
         console.log(id);
         $.ajax({
             url:'/getChildAgents',
@@ -521,7 +539,9 @@ $(function(){
         var ele=$(this).parents('tr');
         $(this).removeClass('tree-collapse').addClass('tree-expend');
         var level=parseInt($(this).parents('td').attr('data-level'))+1;
-        getChildAgents(mid,ele,level);
+        if(sessionStorage['powerId']==1){
+            getChildAgents(mid,ele,level);
+        }
     });
     $("#agent #agentTbl tbody").on("click",'td span.tree-expend',function(){
         var mid=$(this).next().html();
@@ -603,8 +623,8 @@ $(function(){
         $("#agent #agentCharge [name='roomCardNum']").val('');
         $('#agent #agentCharge .uname').val(nowTr.find('td:eq(1)').html());
         $("#agent #agentCharge [name='uuid']").val(nowTr.find('td:eq(2)').html());
-        $("#agent #agentCharge .roomCard").val(nowTr.find('td:eq(7)').html());
-        $("#agent #agentCharge .redCard").val(nowTr.find('td:eq(8)').html());
+        $("#agent #agentCharge .roomCard").val(nowTr.find('td:eq(8)').html());
+        $("#agent #agentCharge .redCard").val(nowTr.find('td:eq(9)').html());
         $('#agent #agentCharge').fadeIn();
     });
     $('#agent #agentCharge .sure').click(function(){
@@ -631,6 +651,8 @@ $(function(){
                     alert('充值成功！');
                     $('#agent #agentCharge').hide();
                     getManagers();
+                }else{
+                    alert('充值失败！(请检查代理钻石数量是否足够)');
                 }
             }
         })
@@ -730,93 +752,7 @@ $(function(){
     });
 
     $('#searchAgent').click(function(){
-        var str=$('#searchAgentForm').serialize();
-        console.log(str);
-        $.ajax({
-            url:'/searchAgents',
-            data:str,
-            success:function(data){
-                console.dir(data);
-                console.log(data);
-                if(data.length>0){
-                    for(var unfix=data.length-1; unfix>0; unfix--){
-                        /*给进度做个记录，比到未确定位置*/
-                        for(var i=0; i<unfix;i++){
-                            if(parseInt(data[i].sumMoney)<parseInt(data[i+1].sumMoney)){
-                                var temp = data[i];
-                                data.splice(i,1,data[i+1]);
-                                data.splice(i+1,1,temp);
-                            }
-                        }
-                    }
-
-                    $('#agent #agentTbl tbody').html("");
-                    var totalpages=1;
-                    if(data.length%10==0){
-                        totalpages=parseInt(data.length/10);
-                    }else{
-                        totalpages=parseInt(data.length/10)+1;
-                    }
-
-                    var options = {
-                        currentPage: 1,
-                        totalPages:totalpages,
-                        bootstrapMajorVersion: 3,
-                        onPageChanged: function(e,oldPage,newPage){
-                            var start=(newPage-1)*10;
-                            var end=start+parseInt(10);
-                            if(end>data.length)end=data.length;
-                            rendAgent(start,end);
-                        }
-                    };
-
-                    $('#agent-pages').bootstrapPaginator(options);
-                    $('#agent .total-number').html(data.length);
-                    var initend=10;
-                    if(initend>data.length)initend=data.length;
-                    rendAgent(0,initend);
-                    function rendAgent(start,end){
-                        for(var i=start,html='';i<end;i++){
-                            var o=data[i];
-                            if(data[i].agentNumber>0){
-                                html+=`
-                    <tr>
-                        <td data-level="1" class="childAgent level1"><span class="tree-collapse"></span><b>${o.id}</b></td>`;
-                            }else{
-                                html+=`
-                    <tr>
-                        <td data-level="1" class="level1"><span></span><b>${o.id}</b></td>`;
-                            };
-
-                            html+=`
-                    <td>${o.name}</td>
-                    <td>${o.uuid}</td>
-                    <td>${o.nickName}</td>
-                    <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
-                    <td>${o.rebate}</td>
-                    <td>${o.telephone}</td>
-                    <td>${o.inviteCode}</td>
-                    <td>${o.roomCard}</td>
-                    <td>${o.redCard}</td>
-                    <td>${o.accountNumber}</td>
-                    <td>${o.agentNumber}</td>
-                    <td>${o.sumMoney}</td>
-                    <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
-                    <td>
-                    <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
-                    <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button></td>
-                </tr>
-                `;
-                        }
-                        $('#agent #agentTbl tbody').html(html);
-                    }
-                }else{
-                    alert('未查询到符合条件的代理！');
-                }
-
-
-            }
-        })
+        getNextManagers();
     });
 
     $('#vip>button.charge').click(function(){
@@ -871,7 +807,7 @@ $(function(){
                         alert('充值成功！');
                         getAccounts();
                     }else{
-                        alert('充值失败！');
+                        alert('充值失败！(请检查代理钻石数量是否足够)');
                     }
                 }
             })
@@ -1104,6 +1040,8 @@ $(function(){
     }else{
         $('#detail .agentSearch').hide();
         $("#searchNoteForm .agentId").hide();
+        $("#searchAgentForm .agentId").hide();
+        $("#searchVipForm .agentId").hide();
     }
     function getPaylogs(indexPage){
         var starttime=$("#searchDetailForm [name=starttime]").val();
@@ -1131,7 +1069,7 @@ $(function(){
                     <td>${o.uuid}</td>
                     <td>${o.nickName}</td>
                     <td>${o.money}</td>
-                    <td>${o.payTime}</td>
+                    <td>${new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
                     <td>${o.bonus||'---'}</td>
                     <td>${o.gameId}</td>
                 </tr>
@@ -1169,4 +1107,97 @@ $(function(){
     $('#searchNote').click(function(){
         getNotes(1);
     })
+
+    function getNextManagers(){
+        var str=$('#searchAgentForm').serialize();
+        console.log(str);
+        $.ajax({
+            url:'/getNextManagers',
+            data:str,
+            success:function(data){
+                console.dir(data);
+                console.log(data);
+                if(data.length>0){
+                    var totalMoney=0;
+                    for(var k=0;k<data.length;k++){
+                        totalMoney+=parseFloat(data[k].sumMoney);
+                    }
+                    $('#agent .total-money').html(totalMoney);
+                    for(var unfix=data.length-1; unfix>0; unfix--){
+                        /*给进度做个记录，比到未确定位置*/
+                        for(var i=0; i<unfix;i++){
+                            if(parseInt(data[i].sumMoney)<parseInt(data[i+1].sumMoney)){
+                                var temp = data[i];
+                                data.splice(i,1,data[i+1]);
+                                data.splice(i+1,1,temp);
+                            }
+                        }
+                    }
+
+                    $('#agent #agentTbl tbody').html("");
+                    var totalpages=1;
+                    if(data.length%10==0){
+                        totalpages=parseInt(data.length/10);
+                    }else{
+                        totalpages=parseInt(data.length/10)+1;
+                    }
+
+                    var options = {
+                        currentPage: 1,
+                        totalPages:totalpages,
+                        bootstrapMajorVersion: 3,
+                        onPageChanged: function(e,oldPage,newPage){
+                            var start=(newPage-1)*10;
+                            var end=start+parseInt(10);
+                            if(end>data.length)end=data.length;
+                            rendAgent(start,end);
+                        }
+                    };
+
+                    $('#agent-pages').bootstrapPaginator(options);
+                    $('#agent .total-number').html(data.length);
+                    var initend=10;
+                    if(initend>data.length)initend=data.length;
+                    rendAgent(0,initend);
+                    function rendAgent(start,end){
+                        for(var i=start,html='';i<end;i++){
+                            var o=data[i];
+                            html+=`
+                            <tr>
+                                <td>${o.id}</td>
+                                <td>${o.name}</td>
+                                <td>${o.uuid}</td>
+                                <td>${o.nickName}</td>
+                                <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
+                                <td>${o.rebate}</td>
+                                <td>${o.telephone}</td>
+                                <td>${o.inviteCode}</td>
+                                <td>${o.roomCard}</td>
+                                <td>${o.redCard}</td>
+                                <td>${o.accountNumber}</td>
+                                <td>${o.agentNumber}</td>
+                                <td>${o.sumMoney}</td>
+                                <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
+                                <td>${o.manager_up_id}</td>
+                                <td>
+                                <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
+                                <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button></td>
+                            </tr>
+                            `;
+                        }
+                        $('#agentTbl tbody').html(html);
+                        //console.log(html);
+                    }
+                }else{
+                    $('#agent #agentTbl tbody').html("");
+                    $('#agent-pages').html('');
+                    $('#agent .total-number').html(0);
+                    $('#agent .total-money').html(0);
+                    alert('未查询到符合条件的代理！');
+                }
+
+
+            }
+        })
+    }
 });

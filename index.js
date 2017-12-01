@@ -10,10 +10,10 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var pool=mysql.createPool({
     host:'127.0.0.1',
-    user:'root',//mahjong
-    password:'123456',//a257joker
-    //user:'mahjong',
-    //password:'a257joker',
+    //user:'root',//mahjong
+    //password:'123456',//a257joker
+    user:'mahjong',
+    password:'a257joker',
     database:'mahjong_hbe',
     connectionLimit:10
 });
@@ -221,10 +221,14 @@ app.get('/getManagers',(req,res)=>{
 });
 
 //根据时间等条件查询代理数据
-app.get('/searchAgents',(req,res)=>{
+app.get('/getNextManagers',(req,res)=>{
     if(req.session.user) {
         var user = req.session.user;
         var managerId = user.id;
+        if(req.query.managerId){
+            managerId=req.query.managerId
+        }
+        var powerId=user.power_id;
         var starttime=req.query.starttime;
         var endtime=req.query.endtime;
         var now=new Date();
@@ -246,228 +250,681 @@ app.get('/searchAgents',(req,res)=>{
         var uname=req.query.uname;
         var inviteCode=req.query.invitecode;
         console.log(starttime,endtime,uname,inviteCode);
-        if(!uname&&!inviteCode){
-            pool.getConnection((err, conn)=> {
-                if (err) {
-                    console.log(err);
-                } else {
-                    conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId', [managerId], (err, result)=> {
-                        //console.log(result);
-                        if (result.length>0) {
-                            var progress = 0;
-                            var progress2 = 0;
-                            var progress3 = 0;
-                            for (let manager of result) {
-                                conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
+        if(powerId==1){
+            if(req.query.managerId){
+                if(!uname&&!inviteCode){
+                    pool.getConnection((err, conn)=> {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId and a.status!=2', [managerId], (err, result)=> {
+                                //console.log(result);
+                                if (result.length>0) {
+                                    var progress = 0;
+                                    var progress2 = 0;
+                                    var progress3 = 0;
+                                    for (let manager of result) {
+                                        conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
 
-                                    if (sum[0].m) {
-                                        manager['sumMoney'] = sum[0].m;
-                                    } else {
-                                        manager['sumMoney'] = 0;
-                                    }
-                                    progress++;
-                                    if (progress === result.length && progress2 === result.length && progress3 === result.length) {
-                                        //console.log(result);
-                                        res.json(result);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+                                            if (sum[0].m) {
+                                                manager['sumMoney'] = sum[0].m;
+                                            } else {
+                                                manager['sumMoney'] = 0;
+                                            }
+                                            progress++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
 
-                                    manager['accountNumber'] = count[0].cou;
-                                    progress2++;
-                                    if (progress === result.length && progress2 === result.length && progress3 === result.length) {
-                                        //console.log(result);
-                                        res.json(result);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+                                            manager['accountNumber'] = count[0].cou;
+                                            progress2++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
 
-                                    manager['agentNumber'] = count[0].cou;
-                                    progress3++;
-                                    if (progress === result.length && progress2 === result.length && progress2 === result.length) {
-                                        //console.log(result);
-                                        res.json(result);
-                                        conn.release();
-                                    }
-                                })
+                                            manager['agentNumber'] = count[0].cou;
+                                            progress3++;
+                                            if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        })
 
-                            }
-                        }else{
-                            res.json([]);
-                            conn.release();
+                                    }
+                                }else{
+                                    res.json([]);
+                                    conn.release();
+                                }
+                            })
+                        }
+                    })
+                }else if(uname&&inviteCode){
+                    pool.getConnection((err, conn)=> {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId and m.name=? and m.inviteCode=?', [managerId,uname,inviteCode], (err, result)=> {
+                                console.log("---::"+result);
+                                if (result.length>0) {
+                                    var progress = 0;
+                                    var progress2 = 0;
+                                    var progress3 = 0;
+                                    for (let manager of result) {
+                                        conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
+
+                                            if (sum[0].m) {
+                                                manager['sumMoney'] = sum[0].m;
+                                            } else {
+                                                manager['sumMoney'] = 0;
+                                            }
+                                            progress++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+
+                                            manager['accountNumber'] = count[0].cou;
+                                            progress2++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+
+                                            manager['agentNumber'] = count[0].cou;
+                                            progress3++;
+                                            if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        })
+
+                                    }
+                                }else{
+                                    console.log('else');
+                                    res.json([]);
+                                    conn.release();
+                                }
+                            })
+                        }
+                    })
+                }else if(uname&&!inviteCode){
+                    pool.getConnection((err, conn)=> {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId and m.name=? ', [managerId,uname], (err, result)=> {
+                                //console.log(result);
+                                if (result.length>0) {
+                                    var progress = 0;
+                                    var progress2 = 0;
+                                    var progress3 = 0;
+                                    for (let manager of result) {
+                                        conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
+
+                                            if (sum[0].m) {
+                                                manager['sumMoney'] = sum[0].m;
+                                            } else {
+                                                manager['sumMoney'] = 0;
+                                            }
+                                            progress++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+
+                                            manager['accountNumber'] = count[0].cou;
+                                            progress2++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+
+                                            manager['agentNumber'] = count[0].cou;
+                                            progress3++;
+                                            if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        })
+
+                                    }
+                                }else{
+                                    res.json([]);
+                                    conn.release();
+                                }
+                            })
+                        }
+                    })
+                }else if(inviteCode&&!uname){
+                    pool.getConnection((err, conn)=> {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId and m.inviteCode=?', [managerId,inviteCode], (err, result)=> {
+                                //console.log(result);
+                                if (result.length>0) {
+                                    var progress = 0;
+                                    var progress2 = 0;
+                                    var progress3 = 0;
+                                    for (let manager of result) {
+                                        conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
+
+                                            if (sum[0].m) {
+                                                manager['sumMoney'] = sum[0].m;
+                                            } else {
+                                                manager['sumMoney'] = 0;
+                                            }
+                                            progress++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+
+                                            manager['accountNumber'] = count[0].cou;
+                                            progress2++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+
+                                            manager['agentNumber'] = count[0].cou;
+                                            progress3++;
+                                            if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        })
+
+                                    }
+                                }else{
+                                    res.json([]);
+                                    conn.release();
+                                }
+                            })
                         }
                     })
                 }
-            })
-        }else if(uname&&inviteCode){
-            pool.getConnection((err, conn)=> {
-                if (err) {
-                    console.log(err);
-                } else {
-                    conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId and m.name=? and m.inviteCode=?', [managerId,uname,inviteCode], (err, result)=> {
-                        console.log("---::"+result);
-                        if (result.length>0) {
-                            var progress = 0;
-                            var progress2 = 0;
-                            var progress3 = 0;
-                            for (let manager of result) {
-                                conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
+            }else{
+                if(!uname&&!inviteCode){
+                    pool.getConnection((err, conn)=> {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId and a.status!=2', [managerId], (err, result)=> {
+                                console.log(888888);
+                                console.log(result);
+                                if (result.length>0) {
+                                    var progress = 0;
+                                    var progress2 = 0;
+                                    var progress3 = 0;
+                                    for (let manager of result) {
+                                        conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
 
-                                    if (sum[0].m) {
-                                        manager['sumMoney'] = sum[0].m;
-                                    } else {
-                                        manager['sumMoney'] = 0;
-                                    }
-                                    progress++;
-                                    if (progress === result.length && progress2 === result.length && progress3 === result.length) {
-                                        //console.log(result);
-                                        res.json(result);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+                                            if (sum[0].m) {
+                                                manager['sumMoney'] = sum[0].m;
+                                            } else {
+                                                manager['sumMoney'] = 0;
+                                            }
+                                            progress++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
 
-                                    manager['accountNumber'] = count[0].cou;
-                                    progress2++;
-                                    if (progress === result.length && progress2 === result.length && progress3 === result.length) {
-                                        //console.log(result);
-                                        res.json(result);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+                                            manager['accountNumber'] = count[0].cou;
+                                            progress2++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
 
-                                    manager['agentNumber'] = count[0].cou;
-                                    progress3++;
-                                    if (progress === result.length && progress2 === result.length && progress2 === result.length) {
-                                        //console.log(result);
-                                        res.json(result);
-                                        conn.release();
-                                    }
-                                })
+                                            manager['agentNumber'] = count[0].cou;
+                                            progress3++;
+                                            if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        })
 
-                            }
-                        }else{
-                            console.log('else');
-                            res.json([]);
-                            conn.release();
+                                    }
+                                }else{
+                                    res.json([]);
+                                    conn.release();
+                                }
+                            })
+                        }
+                    })
+                }else if(uname&&inviteCode){
+                    pool.getConnection((err, conn)=> {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE  m.id = a.managerId and m.name=? and m.inviteCode=?', [uname,inviteCode], (err, result)=> {
+                                console.log("---::"+result);
+                                if (result.length>0) {
+                                    var progress = 0;
+                                    var progress2 = 0;
+                                    var progress3 = 0;
+                                    for (let manager of result) {
+                                        conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
+
+                                            if (sum[0].m) {
+                                                manager['sumMoney'] = sum[0].m;
+                                            } else {
+                                                manager['sumMoney'] = 0;
+                                            }
+                                            progress++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+
+                                            manager['accountNumber'] = count[0].cou;
+                                            progress2++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+
+                                            manager['agentNumber'] = count[0].cou;
+                                            progress3++;
+                                            if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        })
+
+                                    }
+                                }else{
+                                    console.log('else');
+                                    res.json([]);
+                                    conn.release();
+                                }
+                            })
+                        }
+                    })
+                }else if(uname&&!inviteCode){
+                    pool.getConnection((err, conn)=> {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE  m.id = a.managerId and m.name=? ', [uname], (err, result)=> {
+                                //console.log(result);
+                                if (result.length>0) {
+                                    var progress = 0;
+                                    var progress2 = 0;
+                                    var progress3 = 0;
+                                    for (let manager of result) {
+                                        conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
+
+                                            if (sum[0].m) {
+                                                manager['sumMoney'] = sum[0].m;
+                                            } else {
+                                                manager['sumMoney'] = 0;
+                                            }
+                                            progress++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+
+                                            manager['accountNumber'] = count[0].cou;
+                                            progress2++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+
+                                            manager['agentNumber'] = count[0].cou;
+                                            progress3++;
+                                            if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        })
+
+                                    }
+                                }else{
+                                    res.json([]);
+                                    conn.release();
+                                }
+                            })
+                        }
+                    })
+                }else if(inviteCode&&!uname){
+                    pool.getConnection((err, conn)=> {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE  m.id = a.managerId and m.inviteCode=?', [inviteCode], (err, result)=> {
+                                //console.log(result);
+                                if (result.length>0) {
+                                    var progress = 0;
+                                    var progress2 = 0;
+                                    var progress3 = 0;
+                                    for (let manager of result) {
+                                        conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
+
+                                            if (sum[0].m) {
+                                                manager['sumMoney'] = sum[0].m;
+                                            } else {
+                                                manager['sumMoney'] = 0;
+                                            }
+                                            progress++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+
+                                            manager['accountNumber'] = count[0].cou;
+                                            progress2++;
+                                            if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        });
+                                        conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+
+                                            manager['agentNumber'] = count[0].cou;
+                                            progress3++;
+                                            if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                                //console.log(result);
+                                                res.json(result);
+                                                conn.release();
+                                            }
+                                        })
+
+                                    }
+                                }else{
+                                    res.json([]);
+                                    conn.release();
+                                }
+                            })
                         }
                     })
                 }
-            })
-        }else if(uname&&!inviteCode){
-            pool.getConnection((err, conn)=> {
-                if (err) {
-                    console.log(err);
-                } else {
-                    conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId and m.name=? ', [managerId,uname], (err, result)=> {
-                        //console.log(result);
-                        if (result.length>0) {
-                            var progress = 0;
-                            var progress2 = 0;
-                            var progress3 = 0;
-                            for (let manager of result) {
-                                conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
+            }
 
-                                    if (sum[0].m) {
-                                        manager['sumMoney'] = sum[0].m;
-                                    } else {
-                                        manager['sumMoney'] = 0;
-                                    }
-                                    progress++;
-                                    if (progress === result.length && progress2 === result.length && progress3 === result.length) {
-                                        //console.log(result);
-                                        res.json(result);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+        }else{
+            if(!uname&&!inviteCode){
+                pool.getConnection((err, conn)=> {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId and a.status!=2', [managerId], (err, result)=> {
+                            //console.log(result);
+                            if (result.length>0) {
+                                var progress = 0;
+                                var progress2 = 0;
+                                var progress3 = 0;
+                                for (let manager of result) {
+                                    conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
 
-                                    manager['accountNumber'] = count[0].cou;
-                                    progress2++;
-                                    if (progress === result.length && progress2 === result.length && progress3 === result.length) {
-                                        //console.log(result);
-                                        res.json(result);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+                                        if (sum[0].m) {
+                                            manager['sumMoney'] = sum[0].m;
+                                        } else {
+                                            manager['sumMoney'] = 0;
+                                        }
+                                        progress++;
+                                        if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                            //console.log(result);
+                                            res.json(result);
+                                            conn.release();
+                                        }
+                                    });
+                                    conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
 
-                                    manager['agentNumber'] = count[0].cou;
-                                    progress3++;
-                                    if (progress === result.length && progress2 === result.length && progress2 === result.length) {
-                                        //console.log(result);
-                                        res.json(result);
-                                        conn.release();
-                                    }
-                                })
+                                        manager['accountNumber'] = count[0].cou;
+                                        progress2++;
+                                        if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                            //console.log(result);
+                                            res.json(result);
+                                            conn.release();
+                                        }
+                                    });
+                                    conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
 
+                                        manager['agentNumber'] = count[0].cou;
+                                        progress3++;
+                                        if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                            //console.log(result);
+                                            res.json(result);
+                                            conn.release();
+                                        }
+                                    })
+
+                                }
+                            }else{
+                                res.json([]);
+                                conn.release();
                             }
-                        }else{
-                            res.json([]);
-                            conn.release();
-                        }
-                    })
-                }
-            })
-        }else if(inviteCode&&!uname){
-            pool.getConnection((err, conn)=> {
-                if (err) {
-                    console.log(err);
-                } else {
-                    conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId and m.inviteCode=?', [managerId,inviteCode], (err, result)=> {
-                        //console.log(result);
-                        if (result.length>0) {
-                            var progress = 0;
-                            var progress2 = 0;
-                            var progress3 = 0;
-                            for (let manager of result) {
-                                conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
+                        })
+                    }
+                })
+            }else if(uname&&inviteCode){
+                pool.getConnection((err, conn)=> {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId and m.name=? and m.inviteCode=?', [managerId,uname,inviteCode], (err, result)=> {
+                            console.log("---::"+result);
+                            if (result.length>0) {
+                                var progress = 0;
+                                var progress2 = 0;
+                                var progress3 = 0;
+                                for (let manager of result) {
+                                    conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
 
-                                    if (sum[0].m) {
-                                        manager['sumMoney'] = sum[0].m;
-                                    } else {
-                                        manager['sumMoney'] = 0;
-                                    }
-                                    progress++;
-                                    if (progress === result.length && progress2 === result.length && progress3 === result.length) {
-                                        //console.log(result);
-                                        res.json(result);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+                                        if (sum[0].m) {
+                                            manager['sumMoney'] = sum[0].m;
+                                        } else {
+                                            manager['sumMoney'] = 0;
+                                        }
+                                        progress++;
+                                        if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                            //console.log(result);
+                                            res.json(result);
+                                            conn.release();
+                                        }
+                                    });
+                                    conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
 
-                                    manager['accountNumber'] = count[0].cou;
-                                    progress2++;
-                                    if (progress === result.length && progress2 === result.length && progress3 === result.length) {
-                                        //console.log(result);
-                                        res.json(result);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+                                        manager['accountNumber'] = count[0].cou;
+                                        progress2++;
+                                        if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                            //console.log(result);
+                                            res.json(result);
+                                            conn.release();
+                                        }
+                                    });
+                                    conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
 
-                                    manager['agentNumber'] = count[0].cou;
-                                    progress3++;
-                                    if (progress === result.length && progress2 === result.length && progress2 === result.length) {
-                                        //console.log(result);
-                                        res.json(result);
-                                        conn.release();
-                                    }
-                                })
+                                        manager['agentNumber'] = count[0].cou;
+                                        progress3++;
+                                        if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                            //console.log(result);
+                                            res.json(result);
+                                            conn.release();
+                                        }
+                                    })
 
+                                }
+                            }else{
+                                console.log('else');
+                                res.json([]);
+                                conn.release();
                             }
-                        }else{
-                            res.json([]);
-                            conn.release();
-                        }
-                    })
-                }
-            })
+                        })
+                    }
+                })
+            }else if(uname&&!inviteCode){
+                pool.getConnection((err, conn)=> {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId and m.name=? ', [managerId,uname], (err, result)=> {
+                            //console.log(result);
+                            if (result.length>0) {
+                                var progress = 0;
+                                var progress2 = 0;
+                                var progress3 = 0;
+                                for (let manager of result) {
+                                    conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
+
+                                        if (sum[0].m) {
+                                            manager['sumMoney'] = sum[0].m;
+                                        } else {
+                                            manager['sumMoney'] = 0;
+                                        }
+                                        progress++;
+                                        if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                            //console.log(result);
+                                            res.json(result);
+                                            conn.release();
+                                        }
+                                    });
+                                    conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+
+                                        manager['accountNumber'] = count[0].cou;
+                                        progress2++;
+                                        if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                            //console.log(result);
+                                            res.json(result);
+                                            conn.release();
+                                        }
+                                    });
+                                    conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+
+                                        manager['agentNumber'] = count[0].cou;
+                                        progress3++;
+                                        if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                            //console.log(result);
+                                            res.json(result);
+                                            conn.release();
+                                        }
+                                    })
+
+                                }
+                            }else{
+                                res.json([]);
+                                conn.release();
+                            }
+                        })
+                    }
+                })
+            }else if(inviteCode&&!uname){
+                pool.getConnection((err, conn)=> {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId and m.inviteCode=?', [managerId,inviteCode], (err, result)=> {
+                            //console.log(result);
+                            if (result.length>0) {
+                                var progress = 0;
+                                var progress2 = 0;
+                                var progress3 = 0;
+                                for (let manager of result) {
+                                    conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? and p.payTime BETWEEN ? AND ?', [manager.id,starttime,endtime], (err, sum)=> {
+
+                                        if (sum[0].m) {
+                                            manager['sumMoney'] = sum[0].m;
+                                        } else {
+                                            manager['sumMoney'] = 0;
+                                        }
+                                        progress++;
+                                        if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                            //console.log(result);
+                                            res.json(result);
+                                            conn.release();
+                                        }
+                                    });
+                                    conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+
+                                        manager['accountNumber'] = count[0].cou;
+                                        progress2++;
+                                        if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                            //console.log(result);
+                                            res.json(result);
+                                            conn.release();
+                                        }
+                                    });
+                                    conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+
+                                        manager['agentNumber'] = count[0].cou;
+                                        progress3++;
+                                        if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                            //console.log(result);
+                                            res.json(result);
+                                            conn.release();
+                                        }
+                                    })
+
+                                }
+                            }else{
+                                res.json([]);
+                                conn.release();
+                            }
+                        })
+                    }
+                })
+            }
         }
+
 
     }
 });
@@ -541,7 +998,7 @@ app.get('/getAccounts',(req,res)=>{
                                     if(result.length>0) {
                                         var progress = 0;
                                         for (let account of result) {
-                                            conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                            conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime>? and p.payTime< ?', [account.uuid,starttime,endtime], (err, sum)=> {
                                                 console.log(sum);
                                                 account['sumMoney'] = sum[0].m;
                                                 progress++;
@@ -557,12 +1014,12 @@ app.get('/getAccounts',(req,res)=>{
                                     }
                                 })
                             }else{
-                                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id  order by a.createTime desc limit ?,10', [inputManagerId,limitstart], (err, result)=> {
+                                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id  order by a.createTime desc ', [inputManagerId], (err, result)=> {
                                     //console.log(result);
                                     if(result.length>0) {
                                         var progress = 0;
                                         for (let account of result) {
-                                            conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                            conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime>? and p.payTime< ?', [account.uuid,starttime,endtime], (err, sum)=> {
                                                 console.log(sum);
                                                 account['sumMoney'] = sum[0].m;
                                                 progress++;
@@ -587,7 +1044,7 @@ app.get('/getAccounts',(req,res)=>{
                                     if(result.length>0) {
                                         var progress = 0;
                                         for (let account of result) {
-                                            conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                            conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime>? and p.payTime< ?', [account.uuid,starttime,endtime], (err, sum)=> {
                                                 console.log(sum);
                                                 account['sumMoney'] = sum[0].m;
                                                 progress++;
@@ -604,13 +1061,13 @@ app.get('/getAccounts',(req,res)=>{
 
                                 })
                             }else{
-                                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM account a  order by a.createTime desc limit ?,10',[limitstart], (err, result)=> {
+                                conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM account a  order by a.createTime desc', (err, result)=> {
                                     //console.log(result);
                                     console.log(666);
                                     if(result.length>0) {
                                         var progress = 0;
                                         for (let account of result) {
-                                            conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                            conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime>? and p.payTime< ?', [account.uuid,starttime,endtime], (err, sum)=> {
                                                 console.log(sum);
                                                 account['sumMoney'] = sum[0].m;
                                                 progress++;
@@ -636,7 +1093,7 @@ app.get('/getAccounts',(req,res)=>{
                                 if(result.length>0) {
                                     var progress = 0;
                                     for (let account of result) {
-                                        conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                        conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime>? and p.payTime< ?', [account.uuid,starttime,endtime], (err, sum)=> {
                                             console.log(sum);
                                             account['sumMoney'] = sum[0].m;
                                             progress++;
@@ -654,12 +1111,12 @@ app.get('/getAccounts',(req,res)=>{
                             })
 
                         }else{
-                            conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id  and a.status!=2  order by a.createTime desc limit ?,10', [managerId,limitstart], (err, result)=> {
+                            conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id  and a.status!=2  order by a.createTime desc', [managerId], (err, result)=> {
                                 //console.log(result);
                                 if(result.length>0) {
                                     var progress = 0;
                                     for (let account of result) {
-                                        conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =?', [account.uuid], (err, sum)=> {
+                                        conn.query('select IFNULL(sum(p.money),0) as m from paylog p where p.payType=0 and p.status = 1 and p.uuid =? and p.payTime>? and p.payTime< ?', [account.uuid,starttime,endtime], (err, sum)=> {
                                             console.log(sum);
                                             account['sumMoney'] = sum[0].m;
                                             progress++;
@@ -1677,3 +2134,114 @@ app.get('/getNotes',(req,res)=>{
     }
 });
 
+
+//获取单级代理
+app.get('/getNextAgents',(req,res)=>{
+    if(req.session.user) {
+        var user = req.session.user;
+        var managerId = user.managerId;
+        var powerId=user.power_id;
+        pool.getConnection((err, conn)=> {
+            if (err) {
+                console.log(err);
+            } else {
+                if(powerId==1){
+                    conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE  and m.id = a.managerId', [managerId], (err, result)=> {
+                        //console.log(result);
+                        if (result != null) {
+                            var progress = 0;
+                            var progress2 = 0;
+                            var progress3 = 0;
+                            for (let manager of result) {
+                                conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? ', [manager.id], (err, sum)=> {
+
+                                    if (sum[0].m) {
+                                        manager['sumMoney'] = sum[0].m;
+                                    } else {
+                                        manager['sumMoney'] = 0;
+                                    }
+                                    progress++;
+                                    if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                        //console.log(result);
+                                        res.json(result);
+                                        conn.release();
+                                    }
+                                });
+                                conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+
+                                    manager['accountNumber'] = count[0].cou;
+                                    progress2++;
+                                    if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                        //console.log(result);
+                                        res.json(result);
+                                        conn.release();
+                                    }
+                                });
+                                conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+
+                                    manager['agentNumber'] = count[0].cou;
+                                    progress3++;
+                                    if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                        //console.log(result);
+                                        res.json(result);
+                                        conn.release();
+                                    }
+                                })
+
+                            }
+                        }
+                    })
+
+                }else{
+                    conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.manager_up_id=? and m.id = a.managerId', [managerId], (err, result)=> {
+                        //console.log(result);
+                        if (result != null) {
+                            var progress = 0;
+                            var progress2 = 0;
+                            var progress3 = 0;
+                            for (let manager of result) {
+                                conn.query('select sum(p.money) as m from paylog p where p.payType=0 and p.status = 1 and p.managerId =? ', [manager.id], (err, sum)=> {
+
+                                    if (sum[0].m) {
+                                        manager['sumMoney'] = sum[0].m;
+                                    } else {
+                                        manager['sumMoney'] = 0;
+                                    }
+                                    progress++;
+                                    if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                        //console.log(result);
+                                        res.json(result);
+                                        conn.release();
+                                    }
+                                });
+                                conn.query('select count(a.id) as cou from account a,manager g where  a.manager_up_id=? and g.id=a.manager_up_id', [manager.id], (err, count)=> {
+
+                                    manager['accountNumber'] = count[0].cou;
+                                    progress2++;
+                                    if (progress === result.length && progress2 === result.length && progress3 === result.length) {
+                                        //console.log(result);
+                                        res.json(result);
+                                        conn.release();
+                                    }
+                                });
+                                conn.query('select count(id) as cou from manager  where  manager_up_id=?', [manager.id], (err, count)=> {
+
+                                    manager['agentNumber'] = count[0].cou;
+                                    progress3++;
+                                    if (progress === result.length && progress2 === result.length && progress2 === result.length) {
+                                        //console.log(result);
+                                        res.json(result);
+                                        conn.release();
+                                    }
+                                })
+
+                            }
+                        }
+                    })
+                }
+
+
+            }
+        })
+    }
+});

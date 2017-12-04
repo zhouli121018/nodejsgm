@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "express-session": "^1.15.6"
+    "body-parser-xml": "^1.1.0",
+    "crypto": "^1.0.1",
+    "express-session": "^1.15.6",
+    "xml2js": "^0.4.19"
   }
 }

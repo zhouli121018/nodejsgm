@@ -1,19 +1,24 @@
 /**
  * Created by 51216 on 2017/11/22.
  */
+var url = require('url');
+var crypto = require('crypto');
+var request = require('request');
+var xml2jsparseString = require('xml2js').parseString;
 const http=require('http');
 const express=require('express');
 const mysql=require('mysql');
 const qs=require('querystring');
 const fs   = require("fs");
+//require('body-parser-xml')(bodyParser);
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var pool=mysql.createPool({
     host:'127.0.0.1',
-    user:'root',//mahjong
-    password:'123456',//a257joker
-    //user:'mahjong',
-    //password:'a257joker',
+    //user:'root',//mahjong
+    //password:'123456',//a257joker
+    user:'mahjong',
+    password:'a257joker',
     database:'mahjong_hbe',
     connectionLimit:10
 });
@@ -27,6 +32,121 @@ app.use(session({
     resave: true,
     saveUninitialized:true
 }));
+
+
+
+var config = {
+    wxappid:"wx07022b5bc486f279",
+    mch_id:"1370897202",
+    wxpaykey:"LQ0929xxfy982fjielx39093ooxx3987"
+};
+//生成随机字符串
+function randomString(len) {
+    len = len || 32;
+    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+    var maxPos = $chars.length;
+    var pwd = '';
+    for (i = 0; i < len; i++) {
+        pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return pwd;
+}
+
+//获取微信支付的签名
+//function getSign(signParams){
+//    // 按 key 值的ascll 排序
+//    var keys = Object.keys(signParams);
+//    keys = keys.sort();
+//    var newArgs = {};
+//    keys.forEach(function (val, key) {
+//        if (signParams[val]){
+//            newArgs[val] = signParams[val];
+//        }
+//    })
+//    var string = queryString.stringify(newArgs)+'&key='+config.wxpaykey;
+//    // 生成签名
+//    return crypto.createHash('md5').update(queryString.unescape(string), 'utf8').digest("hex").toUpperCase();
+//}
+
+function getSign(arr){
+    // 按 key 值的ascll 排序
+    var keys=[];
+    for(var key in arr){
+        keys.push(key);
+    }
+    keys = keys.sort();
+    var newArgs = {};
+    keys.forEach(function (val, key) {
+        if (arr[val]){
+            newArgs[val] = arr[val];
+        }
+    })
+    var string = qs.stringify(newArgs)+'&key='+config.wxpaykey;
+    // 生成签名
+    return crypto.createHash('md5').update(qs.unescape(string), 'utf8').digest("hex").toUpperCase();
+}
+
+
+var transferUrl = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+function cb(){
+    console.log('callbackcallback');
+}
+function doTransfer(openId,money,desc,ip,cb){
+    var arr=[];
+    arr['mch_appid']=config.wxappid;
+    arr['mchid']=config.mch_id;
+    arr['partner_trade_no']=randomString(32);
+    arr['nonce_str']=randomString(32);
+    arr['openid']=openId;
+    arr['check_name']="NO_CHECK";
+    arr['amount']=money*100;
+    arr['desc']=desc;
+    arr['spbill_create_ip']=ip;
+    //console.dir(arr);
+    var sign = getSign(arr);
+    console.log('--------------------');
+    console.log(sign);
+
+    var xml = "<xml>" +
+        "<mch_appid>" + config.wxappid + "</mch_appid>" +
+        "<mchid>" + config.mch_id + "</mchid>" +
+        "<nonce_str>" + arr['nonce_str'] + "</nonce_str>" +
+        "<partner_trade_no>" + arr['partner_trade_no'] + "</partner_trade_no>" +
+        "<openid>" + openId + "</openid>" +
+        "<check_name>" + arr['check_name'] + "</check_name>" +
+//                "<re_user_name>" + name + "</re_user_name>" +
+        "<amount>" + arr['amount'] + "</amount>" +
+        "<desc>" + desc + "</desc>" +
+        "<sign>" + sign + "</sign>" +
+        "<spbill_create_ip>"+arr['spbill_create_ip']+"</spbill_create_ip>" +
+        "</xml>";
+
+    var url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
+    request.post({url : url, body:xml}, function (error, response, body) {
+        cb();
+        console.log(body);
+        console.log(response.statusCode == 200);
+        var prepay_id = '';
+        if (!error && response.statusCode == 200) {
+            // 微信返回的数据为 xml 格式， 需要装换为 json 数据， 便于使用
+            xml2jsparseString(body, {async:true}, function (error, result) {
+                prepay_id = result.xml.prepay_id[0];
+                console.log('**************');
+                console.log(result);
+                // 放回数组的第一个元素
+                resolve(prepay_id);
+            });
+        } else {
+            console.log('+++++++++++++');
+            reject(body);
+        }
+    });
+
+
+}
+doTransfer('oAnM9xDHgFr9UL7VRf_gu1Zml54g',1,'测试','127.0.0.1',cb);
+
+
 
 app.get('/login',(req,res)=>{
     var uname = req.query.uname;
@@ -960,7 +1080,14 @@ app.get('/getNextManagers',(req,res)=>{
 //    }
 //});
 
+//select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM account a WHERE a.manager_up_id=209)n LEFT JOIN paylog p on p.payTime>'2017-01-01' and p.payTime<'2017-11-01' and p.uuid=n.uuid group by n.uuid order by totalMoney desc limit 0,10
 //获取我的会员
+app.get('/getAccount',(req,res)=>{
+    if(req.session.user){
+        var user = req.session.user;
+        var managerId
+    }
+})
 app.get('/getAccounts',(req,res)=>{
     if(req.session.user) {
         var user = req.session.user;

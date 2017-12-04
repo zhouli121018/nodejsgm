@@ -46,7 +46,7 @@ $(function(){
         if(id=="#agent"){
             getNextManagers();
         }else if(id=="#vip"){
-            getAccounts(1);
+            getAccount(1);
         }else if(id=="#detail"){
             //getDetails();
             getPaylogs(1);
@@ -398,7 +398,79 @@ $(function(){
             }
         })
     }
+    function getAccount(page){
+        var starttime=$("#searchVipForm [name=starttime]").val();
+        var endtime=$("#searchVipForm [name=endtime]").val();
+        var managerId=$("#searchVipForm [name=managerId]").val();
+        var uuid=$("#searchVipForm [name=uuid]").val();
+        $.ajax({
+            url:'/getAccount',
+            data:{starttime:starttime,managerId:managerId,endtime:endtime,uuid:uuid,page:page},
+            success:function(datas){
+                console.dir(datas);
+                var data=datas.accounts;
+                var totalNum=datas.totalNum;
+                if(data.length>0){
+                    for(var i=0,html='';i<data.length;i++){
+                        var o=data[i];
+                        var redCardStr=0;
+                        if(o.redCard){
+                            redCardStr=o.redCard;
+                        }
+                        var editStr='';
+                        if(o.status==0){
+                            editStr=`<option value="1">标记红名</option><option value="2">禁用</option>`;
+                        }else if(o.status==1) {
+                            editStr=`<option value="0">取消红名</option><option value="2">禁用</option>`;
+                        }else if(o.status==2) {
+                            editStr=`<option value="0">启用</option>`;
+                        }
 
+                        html+=`
+                        <tr>
+                            <td>${o.uuid}</td>
+                            <td>${o.nickName}</td>
+                            <td>${o.manager_up_id}</td>
+                            <td>${o.totalMoney}</td>
+                            <td>${o.roomCard}</td>
+                            <td>${redCardStr}</td>
+                            <td><b>${o.status==0?'正常':'禁用'}</b></td>
+                            <td>${new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                            <td>
+                                <span class="input-group editStatus">
+                                <select class="form-control">${editStr}</select>
+                                <button data-id="${o.uuid}" class="btn btn-warning updateStatus">确定</button>
+                                </span>
+                            </td>
+                        </tr>
+                        `;
+                    }
+                    $('#vip #vipTbl tbody').html(html);
+                    var totalpages=1;
+                    if(totalNum%10==0){
+                        totalpages=parseInt(totalNum/10);
+                    }else{
+                        totalpages=parseInt(totalNum/10)+1;
+                    }
+                    var options = {
+                        currentPage: page,
+                        totalPages:totalpages,
+                        bootstrapMajorVersion: 3,
+                        onPageChanged: function(e,oldPage,newPage){
+                            getAccount(newPage);
+                        }
+                    };
+                    $('#vip-pages').bootstrapPaginator(options);
+                    $('#vip .total-number').html(totalNum);
+                }else{
+                    $('#vip-pages').html('');
+                    $('#vip .total-number').html(0);
+                    $('#vip #vipTbl tbody').html('');
+                }
+
+            }
+        });
+    }
     $('#vip').on('click','.updateStatus',function(){
         var uuid=$(this).attr('data-id');
         var status=$(this).prev().val();
@@ -413,7 +485,7 @@ $(function(){
                     }else{
                         alert('修改失败！');
                     }
-                    getAccounts();
+                    getAccount(1);
                 }
             })
         }
@@ -640,7 +712,7 @@ $(function(){
                     if(data.status==1){
                         alert('修改成功！');
                         $('#agent #agentDetail').hide();
-                        getManagers();
+                        getNextManagers();
                     }
                 }
             })
@@ -680,7 +752,7 @@ $(function(){
                 if(data.status==1){
                     alert('充值成功！');
                     $('#agent #agentCharge').hide();
-                    getManagers();
+                    getNextManagers();
                 }else{
                     alert('充值失败！(请检查代理钻石数量是否足够)');
                 }
@@ -764,7 +836,7 @@ $(function(){
                     if(data.status==1){
                         alert('新增代理成功！');
                         $("#agent #add-message").hide();
-                        getManagers();
+                        getNextManagers();
                     }else{
                         alert('新增代理失败！')
                     }
@@ -835,7 +907,7 @@ $(function(){
                     if(data.status==1){
                         $('#vipCharge').hide();
                         alert('充值成功！');
-                        getAccounts();
+                        getAccoun(1);
                     }else{
                         alert('充值失败！(请检查代理钻石数量是否足够)');
                     }
@@ -843,224 +915,9 @@ $(function(){
             })
         }
     });
-    //$('#vip #searchVip').click(function(){
-    //    var str=$('#searchVipForm').serialize();
-    //    console.log(str);
-    //    var now=new Date();
-    //    now.setDate(now.getDate()+1);
-    //    var overArr=now.toLocaleDateString().split('/');
-    //    for(var i=0;i<overArr.length;i++){
-    //        if(overArr[i]<10){
-    //            overArr[i]=0+overArr[i];
-    //        }
-    //    }
-    //    var overTime=overArr.join('-');
-    //    console.log(overTime);
-    //    var uuid=$("#searchVipForm [name='uuid']").val();
-    //    if(uuid){
-    //        var validUuid=false;
-    //        $.ajax({
-    //            url:'/vipChargeValidUuid',
-    //            data:{uuid:uuid},
-    //            async: false,
-    //            success:function(data){
-    //                console.log(data);
-    //                if(data.validuuid==0){
-    //                    validUuid=false;
-    //                    alert('未查询到数据！');
-    //                }else if(data.validuuid==1){
-    //                    validUuid=true;
-    //                }
-    //            }
-    //        });
-    //        if(validUuid){
-    //            $.ajax({
-    //                url:'/searchVipByUuid',
-    //                data:str,
-    //                success:function(data){
-    //                    console.log(data);
-    //                    if(data.length>0){
-    //                        var totalMoney=0;
-    //                        for(var k=0;k<data.length;k++){
-    //                            totalMoney+=parseFloat(data[k].sumMoney);
-    //                        }
-    //                        $('#vip .total-money').html(totalMoney);
-    //                        for(var unfix=data.length-1; unfix>0; unfix--){
-    //                            /*给进度做个记录，比到未确定位置*/
-    //                            for(var i=0; i<unfix;i++){
-    //                                if(parseInt(data[i].sumMoney)<parseInt(data[i+1].sumMoney)){
-    //                                    var temp = data[i];
-    //                                    data.splice(i,1,data[i+1]);
-    //                                    data.splice(i+1,1,temp);
-    //                                }
-    //                            }
-    //                        }
-    //                        $('#vip #vipTbl tbody').html("");
-    //                        var totalpages=1;
-    //                        if(data.length%10==0){
-    //                            totalpages=parseInt(data.length/10);
-    //                        }else{
-    //                            totalpages=parseInt(data.length/10)+1;
-    //                        }
-    //
-    //                        var options = {
-    //                            currentPage: 1,
-    //                            totalPages:totalpages,
-    //                            bootstrapMajorVersion: 3,
-    //                            onPageChanged: function(e,oldPage,newPage){
-    //                                var start=(newPage-1)*10;
-    //                                var end=start+parseInt(10);
-    //                                if(end>data.length)end=data.length;
-    //                                rendAccounts(start,end);
-    //                            }
-    //                        };
-    //
-    //                        $('#vip-pages').bootstrapPaginator(options);
-    //                        $('#vip .total-number').html(data.length);
-    //                        var initend=10;
-    //                        if(initend>data.length)initend=data.length;
-    //                        rendAccounts(0,initend);
-    //
-    //                        function rendAccounts(start,end){
-    //                            for(var i=start,html='';i<end;i++){
-    //                                var o=data[i];
-    //                                var redCardStr=0;
-    //                                if(o.redCard){
-    //                                    redCardStr=o.redCard;
-    //                                }
-    //                                var editStr='';
-    //                                if(o.status==0){
-    //                                    editStr=`<option value="1">标记红名</option><option value="2">禁用</option>`;
-    //                                }else if(o.status==1) {
-    //                                    editStr=`<option value="0">取消红名</option><option value="2">禁用</option>`;
-    //                                }else if(o.status==2) {
-    //                                    editStr=`<option value="0">启用</option>`;
-    //                                }
-    //
-    //                                html+=`
-    //                                    <tr>
-    //                                        <td>${o.uuid}</td>
-    //                                        <td>${o.nickName}</td>
-    //                                        <td>${o.sumMoney}</td>
-    //                                        <td>${o.roomCard}</td>
-    //                                        <td>${redCardStr}</td>
-    //                                        <td><b>${o.status==0?'正常':'禁用'}</b></td>
-    //                                        <td>${new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
-    //                                        <td>
-    //                                            <span class="input-group editStatus">
-    //                                            <select class="form-control">${editStr}</select>
-    //                                            <button data-id="${o.uuid}" class="btn btn-warning updateStatus">确定</button>
-    //                                            </span>
-    //                                        </td>
-    //                                    </tr>
-    //                                    `;
-    //                            }
-    //                            $('#vip #vipTbl tbody').html(html);
-    //
-    //                        }
-    //                    }else{
-    //                        $('#vip .total-money').html(0);
-    //                        alert('未查询到数据，请重新输入！');
-    //                    }
-    //                }
-    //            })
-    //        }
-    //    }else{
-    //        $.ajax({
-    //            url:'/searchVipByTime',
-    //            data:str,
-    //            success:function(data){
-    //                console.log(data);
-    //                if(data.length>0){
-    //                    var totalMoney=0;
-    //                    for(var k=0;k<data.length;k++){
-    //                        totalMoney+=parseFloat(data[k].sumMoney);
-    //                    }
-    //                    $('#vip .total-money').html(totalMoney);
-    //                    for(var unfix=data.length-1; unfix>0; unfix--){
-    //                        /*给进度做个记录，比到未确定位置*/
-    //                        for(var i=0; i<unfix;i++){
-    //                            if(parseInt(data[i].sumMoney)<parseInt(data[i+1].sumMoney)){
-    //                                var temp = data[i];
-    //                                data.splice(i,1,data[i+1]);
-    //                                data.splice(i+1,1,temp);
-    //                            }
-    //                        }
-    //                    }
-    //                    $('#vip #vipTbl tbody').html("");
-    //                    var totalpages=1;
-    //                    if(data.length%10==0){
-    //                        totalpages=parseInt(data.length/10);
-    //                    }else{
-    //                        totalpages=parseInt(data.length/10)+1;
-    //                    }
-    //
-    //                    var options = {
-    //                        currentPage: 1,
-    //                        totalPages:totalpages,
-    //                        bootstrapMajorVersion: 3,
-    //                        onPageChanged: function(e,oldPage,newPage){
-    //                            var start=(newPage-1)*10;
-    //                            var end=start+parseInt(10);
-    //                            if(end>data.length)end=data.length;
-    //                            rendAccounts(start,end);
-    //                        }
-    //                    };
-    //
-    //                    $('#vip-pages').bootstrapPaginator(options);
-    //                    $('#vip .total-number').html(data.length);
-    //                    var initend=10;
-    //                    if(initend>data.length)initend=data.length;
-    //                    rendAccounts(0,initend);
-    //
-    //                    function rendAccounts(start,end){
-    //                        for(var i=start,html='';i<end;i++){
-    //                            var o=data[i];
-    //                            var redCardStr=0;
-    //                            if(o.redCard){
-    //                                redCardStr=o.redCard;
-    //                            }
-    //                            var editStr='';
-    //                            if(o.status==0){
-    //                                editStr=`<option value="1">标记红名</option><option value="2">禁用</option>`;
-    //                            }else if(o.status==1) {
-    //                                editStr=`<option value="0">取消红名</option><option value="2">禁用</option>`;
-    //                            }else if(o.status==2) {
-    //                                editStr=`<option value="0">启用</option>`;
-    //                            }
-    //
-    //                            html+=`
-    //                                <tr>
-    //                                    <td>${o.uuid}</td>
-    //                                    <td>${o.nickName}</td>
-    //                                    <td>${o.sumMoney}</td>
-    //                                    <td>${o.roomCard}</td>
-    //                                    <td>${redCardStr}</td>
-    //                                    <td><b>${o.status==0?'正常':'禁用'}</b></td>
-    //                                    <td>${new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
-    //                                    <td>
-    //                                        <span class="input-group editStatus">
-    //                                        <select class="form-control">${editStr}</select>
-    //                                        <button data-id="${o.uuid}" class="btn btn-warning updateStatus">确定</button>
-    //                                        </span>
-    //                                    </td>
-    //                                </tr>
-    //                                `;
-    //                        }
-    //                        $('#vip #vipTbl tbody').html(html);
-    //                    }
-    //                }else{
-    //                    $('#vip .total-money').html(0);
-    //                    alert('未查询到数据，请重新输入！');
-    //                }
-    //            }
-    //        })
-    //    }
-    //
-    //
-    //});
+
     $('#vip #searchVip').click(function(){
-        getAccounts(1);
+        getAccount(1);
      })
 
 

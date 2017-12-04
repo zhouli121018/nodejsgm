@@ -10,10 +10,10 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var pool=mysql.createPool({
     host:'127.0.0.1',
-    //user:'root',//mahjong
-    //password:'123456',//a257joker
-    user:'mahjong',
-    password:'a257joker',
+    user:'root',//mahjong
+    password:'123456',//a257joker
+    //user:'mahjong',
+    //password:'a257joker',
     database:'mahjong_hbe',
     connectionLimit:10
 });
@@ -2298,6 +2298,94 @@ app.get('/getAgentCount',(req,res)=>{
                 conn.query('select COUNT(m.id) as agentCount from manager m WHERE m.manager_up_id=?',[managerId],(err,result)=>{
                     //console.log(9999999999);
                     //console.log(result);
+                    res.json(result[0]);
+                })
+            }
+            conn.release();
+        })
+    }
+});
+
+//获取下级用户充值金额，计算收益
+app.get('/getmineone',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var managerId=user.id;
+        var starttime=req.query.starttime;
+        var endtime=req.query.endtime;
+        var now=new Date();
+        now.setDate(now.getDate()+1);
+        var overArr=now.toLocaleDateString().split('/');
+        for(var i=0;i<overArr.length;i++){
+            if(overArr[i]<10){
+                overArr[i]=0+overArr[i];
+            }
+        }
+        var overTime=overArr.join('-');
+        console.log(overTime);
+        if(!starttime){
+            starttime='1970-01-01';
+        }
+        if(!endtime){
+            endtime=overTime;
+        }
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                conn.query('select IFNULL(sum(money),0)as mineone from paylog where managerId =? and payTime > ? and payTime < ? and payType = 0 and status%10 = 0  and (gameId = 1 or gameId = 3)and payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and (payType = 1 or payType = 2) and status = 1)',[managerId,starttime,endtime,managerId],(err,result)=>{
+                    console.log('mineone=====');
+                    console.log(result);
+                    res.json(result[0]);
+                })
+            }
+            conn.release();
+        })
+    }
+});
+
+//获取下级代理用户充值金额，计算收益
+app.get('/getminetwo',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var managerId=user.id;
+        var starttime=req.query.starttime;
+        var endtime=req.query.endtime;
+        var now=new Date();
+        now.setDate(now.getDate()+1);
+        var overArr=now.toLocaleDateString().split('/');
+        for(var i=0;i<overArr.length;i++){
+            if(overArr[i]<10){
+                overArr[i]=0+overArr[i];
+            }
+        }
+        var overTime=overArr.join('-');
+        console.log(overTime);
+        if(!starttime){
+            starttime='1970-01-01';
+        }
+        if(!endtime){
+            endtime=overTime;
+        }
+        var levelStr='';
+        var n=100000000;
+        var levelStr0=n+parseInt(managerId);
+        var levelStr1=levelStr0+'$%';
+        levelStr=levelStr1.slice(1);
+        var plevelStr='';
+        plevelStr=user.levelStr;
+        if(plevelStr){
+            levelStr=plevelStr+levelStr;
+        }
+        var length=levelStr.length;
+        var rebate=parseFloat(user.rebate);
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                conn.query('select IFNULL(sum(n.money*(?-(o.rebate+0.0))),0.0) as minetwo from (select sum(m.money) as money,m.top1mid from (select sum(a.money) as money,b.id,(case when (substring(b.levelStr,?,8)+0)=0 then b.id else (substring(b.levelStr,?,8)+0) end) as top1mid from paylog a,manager b where a.managerId = b.id and (a.gameId = 1 or a.gameId = 3) and a.payType = 0 and a.payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1) and b.levelStr like ? group by id,top1mid) m group by m.top1mid) n,manager o where n.top1mid = o.id',[rebate,length,length,managerId,levelStr],(err,result)=>{
+                    console.log('minetwo=====');
+                    console.log(result);
                     res.json(result[0]);
                 })
             }

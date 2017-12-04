@@ -153,6 +153,22 @@ $(function(){
                 $("#agentCount").html(data.agentCount);
             }
         })
+        $.ajax({
+            url:'/getmineone',
+            success:function(data){
+                console.log(123456789);
+                console.log(data);
+                $('#mineone').html(data.mineone.toFixed(2));
+            }
+        })
+        $.ajax({
+            url:'/getminetwo',
+            success:function(data){
+                console.log("minetwo");
+                console.log(data);
+                $('#minetwo').html(data.minetwo.toFixed(2));
+            }
+        })
     }
     function getManagers(){
         $.ajax({

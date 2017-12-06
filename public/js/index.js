@@ -1087,4 +1087,57 @@ $(function(){
             }
         })
     }
+    function getMyAgents(page){
+        var starttime=$("#searchAgentForm [name=starttime]").val();
+        var endtime=$("#searchAgentForm [name=endtime]").val();
+        var managerId=$("#searchAgentForm [name=managerId]").val();
+        var uname=$("#searchAgentForm [name=uname]").val();
+        var invitecode=$("#searchAgentForm [name=invitecode]").val();
+        $.ajax({
+            url:'/getMyAgents',
+            data:{starttime:starttime,endtime:endtime,page:page,managerId:managerId,uname:uname,invitecode:invitecode},
+            success:function(datas){
+                var data=datas.managers;
+                var totalNum=datas.totalNum;
+                $('#note .total-number').html(totalNum);
+                $('#note .total-money').html(totalMoney);
+                if(data.length>0){
+                    for(var i=0,html='';i<data.length;i++){
+                        var o=data[i];
+                        html+=`
+                        <tr>
+                            <td>${o.name}</td>
+                            <td>${o.inviteCode}</td>
+                            <td>${o.money}</td>
+                            <td>${new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                            <td>${o.status==1?'已完成':'提现失败'}</td>
+                        </tr>
+                    `
+                    }
+                    $('#noteTbl tbody').html(html);
+                    var totalpages=1;
+                    if(totalNum%10==0){
+                        totalpages=totalNum/10;
+                    }else{
+                        totalpages=totalNum/10+1;
+                    }
+                    var options = {
+                        currentPage: page,
+                        totalPages:totalpages,
+                        bootstrapMajorVersion: 3,
+                        onPageChanged: function(e,oldPage,newPage){
+                            getNotes(newPage);
+                        }
+                    };
+
+                    $('#note-pages').bootstrapPaginator(options);
+                }else{
+                    $('#noteTbl tbody').html('');
+                    $('#note-pages').html('');
+                }
+
+
+            }
+        })
+    }
 });

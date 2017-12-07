@@ -44,7 +44,7 @@ $(function(){
             window.event.returnValue = false;
         var id=$(this).attr('href');
         if(id=="#agent"){
-            getNextManagers();
+            getMyAgents(1);
         }else if(id=="#vip"){
             getAccount(1);
         }else if(id=="#detail"){
@@ -170,181 +170,74 @@ $(function(){
             }
         })
     }
-    function getManagers(){
+    function getMyAgents(page){
+        var starttime=$("#searchAgentForm [name=starttime]").val();
+        var endtime=$("#searchAgentForm [name=endtime]").val();
+        var managerId=$("#searchAgentForm [name=managerId]").val();
+        var uname=$("#searchAgentForm [name=uname]").val();
+        var invitecode=$("#searchAgentForm [name=invitecode]").val();
+        var powerId=$("#searchAgentForm [name=powerId]").val();
+        if(powerId==0){powerId=''};
         $.ajax({
-            url:'/getManagers',
-            data:{managerId:15},
-            success:function(data){
-                console.dir(data);
-                for(var unfix=data.length-1; unfix>0; unfix--){
-                    /*给进度做个记录，比到未确定位置*/
-                    for(var i=0; i<unfix;i++){
-                        if(parseInt(data[i].sumMoney)<parseInt(data[i+1].sumMoney)){
-                            var temp = data[i];
-                            data.splice(i,1,data[i+1]);
-                            data.splice(i+1,1,temp);
-                        }
-                    }
-                }
-                var totalpages=1;
-                if(data.length%10==0){
-                    totalpages=parseInt(data.length/10);
-                }else{
-                    totalpages=parseInt(data.length/10)+1;
-                }
-
-                var options = {
-                    currentPage: 1,
-                    totalPages:totalpages,
-                    bootstrapMajorVersion: 3,
-                    onPageChanged: function(e,oldPage,newPage){
-                        var start=(newPage-1)*10;
-                        var end=start+parseInt(10);
-                        if(end>data.length)end=data.length;
-                        rendAgent(start,end);
-                    }
-                };
-
-                $('#agent-pages').bootstrapPaginator(options);
-                $('#agent .total-number').html(data.length);
-                var initend=10;
-                if(initend>data.length)initend=data.length;
-                rendAgent(0,initend);
-                function rendAgent(start,end){
-                    for(var i=start,html='';i<end;i++){
-                        var o=data[i];
-                        if(data[i].agentNumber>0){
-                            html+=`
-                    <tr>
-                        <td data-level="1" class="childAgent level1"><span class="tree-collapse"></span><b>${o.id}</b></td>`;
-                        }else{
-                            html+=`
-                    <tr>
-                        <td data-level="1" class="level1"><span></span><b>${o.id}</b></td>`;
-                        };
-
-                        html+=`
-                    <td>${o.name}</td>
-                    <td>${o.uuid}</td>
-                    <td>${o.nickName}</td>
-                    <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
-                    <td>${o.rebate}</td>
-                    <td>${o.telephone}</td>
-                    <td>${o.inviteCode}</td>
-                    <td>${o.roomCard}</td>
-                    <td>${o.redCard}</td>
-                    <td>${o.accountNumber}</td>
-                    <td>${o.agentNumber}</td>
-                    <td>${o.sumMoney}</td>
-                    <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
-                    <td>
-                    <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
-                    <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button></td>
-                </tr>
-                `;
-                    }
-                    $('#agent #agentTbl tbody').html(html);
-                }
-
-
-            }
-        });
-    }
-    function getAccounts(page){
-        var starttime=$("#searchVipForm [name=starttime]").val();
-        var endtime=$("#searchVipForm [name=endtime]").val();
-        var managerId=$("#searchVipForm [name=managerId]").val();
-        var uuid=$("#searchVipForm [name=uuid]").val();
-        $.ajax({
-            url:'/getAccounts',
-            data:{starttime:starttime,managerId:managerId,endtime:endtime,uuid:uuid,page:page},
-            success:function(data){
-                console.dir(data);
-                var totalMoney=0;
-                for(var k=0;k<data.length;k++){
-                     totalMoney+=parseFloat(data[k].sumMoney);
-                }
-                $('#vip .total-money').html(totalMoney);
+            url:'/getMyAgents',
+            data:{starttime:starttime,endtime:endtime,page:page,managerId:managerId,uname:uname,invitecode:invitecode,powerId:powerId},
+            success:function(datas){
+                var data=datas.managers;
+                var totalNum=datas.totalNum;
+                var totalMoney=datas.totalMoney;
+                $('#agent .total-number').html(totalNum);
+                $('#agent .total-money').html(totalMoney);
                 if(data.length>0){
-                    for(var unfix=data.length-1; unfix>0; unfix--){
-                        /*给进度做个记录，比到未确定位置*/
-                        for(var i=0; i<unfix;i++){
-                            if(parseInt(data[i].sumMoney)<parseInt(data[i+1].sumMoney)){
-                                var temp = data[i];
-                                data.splice(i,1,data[i+1]);
-                                data.splice(i+1,1,temp);
-                            }
-                        }
+                    for(var i=0,html='';i<data.length;i++){
+                        var o=data[i];
+                        html+=`
+                        <tr>
+                            <td>${o.id}</td>
+                            <td>${o.name}</td>
+                            <td>${o.uuid||''}</td>
+                            <td>${o.nickName||''}</td>
+                            <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
+                            <td>${o.rebate}</td>
+                            <td>${o.telephone}</td>
+                            <td>${o.inviteCode}</td>
+                            <td>${o.roomCard||0}</td>
+                            <td>${o.bmount||0}</td>
+                            <td>${o.userCounts}</td>
+                            <td>${o.agentNum}</td>
+                            <td>${o.totalMoney}</td>
+                            <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
+                            <td>${o.manager_up_id}</td>
+                            <td>
+                            <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
+                            <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button></td>
+                        </tr>
+                    `
                     }
+                    $('#agentTbl tbody').html(html);
                     var totalpages=1;
-                    if(data.length%10==0){
-                        totalpages=parseInt(data.length/10);
+                    if(totalNum%10==0){
+                        totalpages=totalNum/10;
                     }else{
-                        totalpages=parseInt(data.length/10)+1;
+                        totalpages=totalNum/10+1;
                     }
                     var options = {
-                        currentPage: 1,
+                        currentPage: page,
                         totalPages:totalpages,
                         bootstrapMajorVersion: 3,
                         onPageChanged: function(e,oldPage,newPage){
-                            var start=(newPage-1)*10;
-                            var end=start+parseInt(10);
-                            if(end>data.length)end=data.length;
-                            rendAccount(start,end);
+                            getMyAgents(newPage);
                         }
                     };
-                    $('#vip-pages').bootstrapPaginator(options);
-                    var initend=10;
-                    if(initend>data.length)initend=data.length;
-                    rendAccount(0,initend);
-                    $('#vip .total-number').html(data.length);
-                    function rendAccount(start,end){
-                        for(var i=start,html='';i<end;i++){
-                            var o=data[i];
-                            var redCardStr=0;
-                            if(o.redCard){
-                                redCardStr=o.redCard;
-                            }
-                            var editStr='';
-                            if(o.status==0){
-                                editStr=`<option value="1">标记红名</option><option value="2">禁用</option>`;
-                            }else if(o.status==1) {
-                                editStr=`<option value="0">取消红名</option><option value="2">禁用</option>`;
-                            }else if(o.status==2) {
-                                editStr=`<option value="0">启用</option>`;
-                            }
 
-                            html+=`
-                        <tr>
-                            <td>${o.uuid}</td>
-                            <td>${o.nickName}</td>
-                            <td>${o.sumMoney}</td>
-                            <td>${o.roomCard}</td>
-                            <td>${redCardStr}</td>
-                            <td><b>${o.status==0?'正常':'禁用'}</b></td>
-                            <td>${new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
-                            <td>
-                                <span class="input-group editStatus">
-                                <select class="form-control">${editStr}</select>
-                                <button data-id="${o.uuid}" class="btn btn-warning updateStatus">确定</button>
-                                </span>
-                            </td>
-                        </tr>
-                        `;
-                        }
-                        $('#vip #vipTbl tbody').html(html);
-                    }
+                    $('#agent-pages').bootstrapPaginator(options);
                 }else{
-                    $('#vip-pages').html('');
-                    $('#vip .total-number').html(0);
-                    $('#vip .total-money').html(0);
-                    $('#vip #vipTbl tbody').html('');
-
+                    $('#agentTbl tbody').html('');
+                    $('#agent-pages').html('');
                 }
 
 
             }
-        });
+        })
     }
     function getNotes(page){
         var starttime=$("#searchNoteForm [name=starttime]").val();
@@ -712,7 +605,7 @@ $(function(){
                     if(data.status==1){
                         alert('修改成功！');
                         $('#agent #agentDetail').hide();
-                        getNextManagers();
+                        getMyAgents(1);
                     }
                 }
             })
@@ -752,7 +645,7 @@ $(function(){
                 if(data.status==1){
                     alert('充值成功！');
                     $('#agent #agentCharge').hide();
-                    getNextManagers();
+                    getMyAgents();
                 }else{
                     alert('充值失败！(请检查代理钻石数量是否足够)');
                 }
@@ -828,7 +721,7 @@ $(function(){
         });
         if(validInviteCode&&validUuid&&validParentInviteCode){
             $.ajax({
-                url:'insertManager',
+                url:'/insertManager',
                 data:str+"&pmid="+pmid+"&redCard="+addRedCard,
                 type:'POST',
                 success:function(data){
@@ -836,7 +729,7 @@ $(function(){
                     if(data.status==1){
                         alert('新增代理成功！');
                         $("#agent #add-message").hide();
-                        getNextManagers();
+                        getMyAgents(1);
                     }else{
                         alert('新增代理失败！')
                     }
@@ -854,7 +747,7 @@ $(function(){
     });
 
     $('#searchAgent').click(function(){
-        getNextManagers();
+        getMyAgents(1);
     });
 
     $('#vip>button.charge').click(function(){
@@ -994,150 +887,4 @@ $(function(){
     $('#searchNote').click(function(){
         getNotes(1);
     })
-
-    function getNextManagers(){
-        var str=$('#searchAgentForm').serialize();
-        console.log(str);
-        $.ajax({
-            url:'/getNextManagers',
-            data:str,
-            success:function(data){
-                console.dir(data);
-                console.log(data);
-                if(data.length>0){
-                    var totalMoney=0;
-                    for(var k=0;k<data.length;k++){
-                        totalMoney+=parseFloat(data[k].sumMoney);
-                    }
-                    $('#agent .total-money').html(totalMoney);
-                    for(var unfix=data.length-1; unfix>0; unfix--){
-                        /*给进度做个记录，比到未确定位置*/
-                        for(var i=0; i<unfix;i++){
-                            if(parseInt(data[i].sumMoney)<parseInt(data[i+1].sumMoney)){
-                                var temp = data[i];
-                                data.splice(i,1,data[i+1]);
-                                data.splice(i+1,1,temp);
-                            }
-                        }
-                    }
-
-                    $('#agent #agentTbl tbody').html("");
-                    var totalpages=1;
-                    if(data.length%10==0){
-                        totalpages=parseInt(data.length/10);
-                    }else{
-                        totalpages=parseInt(data.length/10)+1;
-                    }
-
-                    var options = {
-                        currentPage: 1,
-                        totalPages:totalpages,
-                        bootstrapMajorVersion: 3,
-                        onPageChanged: function(e,oldPage,newPage){
-                            var start=(newPage-1)*10;
-                            var end=start+parseInt(10);
-                            if(end>data.length)end=data.length;
-                            rendAgent(start,end);
-                        }
-                    };
-
-                    $('#agent-pages').bootstrapPaginator(options);
-                    $('#agent .total-number').html(data.length);
-                    var initend=10;
-                    if(initend>data.length)initend=data.length;
-                    rendAgent(0,initend);
-                    function rendAgent(start,end){
-                        for(var i=start,html='';i<end;i++){
-                            var o=data[i];
-                            html+=`
-                            <tr>
-                                <td>${o.id}</td>
-                                <td>${o.name}</td>
-                                <td>${o.uuid}</td>
-                                <td>${o.nickName}</td>
-                                <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
-                                <td>${o.rebate}</td>
-                                <td>${o.telephone}</td>
-                                <td>${o.inviteCode}</td>
-                                <td>${o.roomCard}</td>
-                                <td>${o.redCard}</td>
-                                <td>${o.accountNumber}</td>
-                                <td>${o.agentNumber}</td>
-                                <td>${o.sumMoney}</td>
-                                <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
-                                <td>${o.manager_up_id}</td>
-                                <td>
-                                <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
-                                <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button></td>
-                            </tr>
-                            `;
-                        }
-                        $('#agentTbl tbody').html(html);
-                        //console.log(html);
-                    }
-                }else{
-                    $('#agent #agentTbl tbody').html("");
-                    $('#agent-pages').html('');
-                    $('#agent .total-number').html(0);
-                    $('#agent .total-money').html(0);
-                    alert('未查询到符合条件的代理！');
-                }
-
-
-            }
-        })
-    }
-    function getMyAgents(page){
-        var starttime=$("#searchAgentForm [name=starttime]").val();
-        var endtime=$("#searchAgentForm [name=endtime]").val();
-        var managerId=$("#searchAgentForm [name=managerId]").val();
-        var uname=$("#searchAgentForm [name=uname]").val();
-        var invitecode=$("#searchAgentForm [name=invitecode]").val();
-        $.ajax({
-            url:'/getMyAgents',
-            data:{starttime:starttime,endtime:endtime,page:page,managerId:managerId,uname:uname,invitecode:invitecode},
-            success:function(datas){
-                var data=datas.managers;
-                var totalNum=datas.totalNum;
-                $('#note .total-number').html(totalNum);
-                $('#note .total-money').html(totalMoney);
-                if(data.length>0){
-                    for(var i=0,html='';i<data.length;i++){
-                        var o=data[i];
-                        html+=`
-                        <tr>
-                            <td>${o.name}</td>
-                            <td>${o.inviteCode}</td>
-                            <td>${o.money}</td>
-                            <td>${new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
-                            <td>${o.status==1?'已完成':'提现失败'}</td>
-                        </tr>
-                    `
-                    }
-                    $('#noteTbl tbody').html(html);
-                    var totalpages=1;
-                    if(totalNum%10==0){
-                        totalpages=totalNum/10;
-                    }else{
-                        totalpages=totalNum/10+1;
-                    }
-                    var options = {
-                        currentPage: page,
-                        totalPages:totalpages,
-                        bootstrapMajorVersion: 3,
-                        onPageChanged: function(e,oldPage,newPage){
-                            getNotes(newPage);
-                        }
-                    };
-
-                    $('#note-pages').bootstrapPaginator(options);
-                }else{
-                    $('#noteTbl tbody').html('');
-                    $('#note-pages').html('');
-                }
-
-
-            }
-        })
-    }
 });

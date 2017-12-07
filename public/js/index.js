@@ -48,7 +48,6 @@ $(function(){
         }else if(id=="#vip"){
             getAccount(1);
         }else if(id=="#detail"){
-            //getDetails();
             getPaylogs(1);
         }else if(id=="#info"){
             getAgentInfo();
@@ -77,6 +76,7 @@ $(function(){
     function getAgentInfo(){
         $.ajax({
             url:'/getAgentInfo',
+            async: false,
             data:{managerId:15},
             success:function(data){
                 console.log(data);
@@ -129,6 +129,14 @@ $(function(){
                 <tr>
                     <td>分成比例：</td>
                     <td>${data.rebate}</td>
+                </tr>
+                <tr>
+                    <td>下级代理数量：</td>
+                    <td id="agentCount"></td>
+                </tr>
+                <tr>
+                    <td>下级会员数量：</td>
+                    <td id="vipCount"></td>
                 </tr>
             `;
                 $('#info table#infoTbl tbody').html(html);
@@ -235,6 +243,64 @@ $(function(){
                     $('#agent-pages').html('');
                 }
 
+
+            }
+        })
+    }
+    function getPaylogs(indexPage){
+        var starttime=$("#searchDetailForm [name=starttime]").val();
+        var endtime=$("#searchDetailForm [name=endtime]").val();
+        var uuid=$("#searchDetailForm [name=uuid]").val();
+        var managerId=$("#searchDetailForm [name=managerId]").val();
+        $.ajax({
+            url:'/getPaylogs',
+            data:{page:indexPage,starttime:starttime,endtime:endtime,uuid:uuid,managerId:managerId},
+            success:function(data){
+                console.log(data);
+                var paylogs=data.paylogs;
+                var totalBonus=data.totalBonus;
+                var totalNum=data.totalNum;
+                var totalMoney=data.totalMoney;
+
+                $('#totalBonus b').html(totalBonus);
+                $('#detail .total-number').html(totalNum);
+                $('#detail .total-money').html(totalMoney);
+                if(paylogs.length>0){
+                    for(var i=0,html='';i<paylogs.length;i++){
+                        var o=paylogs[i];
+                        html+=`
+                <tr>
+                    <td>${o.uuid}</td>
+                    <td>${o.nickName}</td>
+                    <td>${o.money}</td>
+                    <td>${new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                    <td>${o.bonus||'---'}</td>
+                    <td>${o.gameId}</td>
+                </tr>
+                `
+                    }
+                    $('#detailTbl tbody').html(html);
+
+                    var totalpages=1;
+                    if(totalNum%10==0){
+                        totalpages=totalNum/10;
+                    }else{
+                        totalpages=totalNum/10+1;
+                    }
+                    var options = {
+                        currentPage: indexPage,
+                        totalPages:totalpages,
+                        bootstrapMajorVersion: 3,
+                        onPageChanged: function(e,oldPage,newPage){
+                            getPaylogs(newPage);
+                        }
+                    };
+
+                    $('#detail-pages').bootstrapPaginator(options);
+                }else{
+                    $('#detailTbl tbody').html('');
+                    $('#detail-pages').html('');
+                }
 
             }
         })
@@ -384,77 +450,6 @@ $(function(){
         }
 
     })
-    function getDetails(){
-        $.ajax({
-            url:'/getDetails',
-            data:{managerId:15},
-            success:function(data){
-                console.dir(data);
-                var totalpages=1;
-                if(data.length%10==0){
-                    totalpages=parseInt(data.length/10);
-                }else{
-                    totalpages=parseInt(data.length/10)+1;
-                }
-
-                var options = {
-                    currentPage: 1,
-                    totalPages:totalpages,
-                    bootstrapMajorVersion: 3,
-                    onPageChanged: function(e,oldPage,newPage){
-                        var start=(newPage-1)*10;
-                        var end=start+parseInt(10);
-                        if(end>data.length)end=data.length;
-                        rendDetails(start,end);
-                    }
-                };
-
-                $('#detail-pages').bootstrapPaginator(options);
-                $('#detail .total-number').html(data.length);
-                var initend=10;
-                if(initend>data.length)initend=data.length;
-                rendDetails(0,initend);
-
-                function rendDetails(start,end){
-                    for(var i=start,html='';i<end;i++){
-                        var o=data[i];
-                        html+=`
-                <tr>
-                    <td>${o.muuid}</td>
-                    <td>${o.inviteCode}</td>
-                    <td>${o.name}</td>
-                    <td>${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
-                    <td>${(o.money*o.rebate).toFixed(2)}</td>
-                    <td>${new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
-                    <td>${(o.payType==0&&o.status==1)?o.uuid:''}</td>
-                    <td>${(o.payType==0&&o.status==1)?o.nickName:''}</td>
-                    <td>${(o.payType==0&&o.status==1)?o.money:''}</td>
-                    <td>${(o.payType==0&&o.status==1)?o.money*o.rebate:''}</td>
-                    <td>${o.payType==0?'分成':'提现'}</td>
-                </tr>
-                `;
-                    }
-                    $('#detail #detailTbl tbody').html(html);
-                }
-
-
-            }
-        });
-        $.ajax({
-            url:'/getTotalMoney',
-            success:function(data){
-                console.log(data);
-                $('#detail .totalMoney').html(data.totalmoney);
-            }
-        })
-        $.ajax({
-            url:'/getPaylogs',
-            success:function(data){
-                console.log('paylogs:');
-                console.dir(data);
-            }
-        })
-    }
     getAgentInfo();
     function resetPassword(){
         var str1=prompt('请输入新密码：');
@@ -817,69 +812,12 @@ $(function(){
 
     if(sessionStorage['powerId']==1){
         $('#totalBonus').hide();
+        $('#info .info-hide').hide();
     }else{
         $('#detail .agentSearch').hide();
         $("#searchNoteForm .agentId").hide();
         $("#searchAgentForm .agentId").hide();
         $("#searchVipForm .agentId").hide();
-    }
-    function getPaylogs(indexPage){
-        var starttime=$("#searchDetailForm [name=starttime]").val();
-        var endtime=$("#searchDetailForm [name=endtime]").val();
-        var uuid=$("#searchDetailForm [name=uuid]").val();
-        var managerId=$("#searchDetailForm [name=managerId]").val();
-        $.ajax({
-            url:'/getPaylogs',
-            data:{page:indexPage,starttime:starttime,endtime:endtime,uuid:uuid,managerId:managerId},
-            success:function(data){
-                console.log(data);
-                var paylogs=data.paylogs;
-                var totalBonus=data.totalBonus;
-                var totalNum=data.totalNum;
-                var totalMoney=data.totalMoney;
-
-                $('#totalBonus b').html(totalBonus);
-                $('#detail .total-number').html(totalNum);
-                $('#detail .total-money').html(totalMoney);
-                if(paylogs.length>0){
-                    for(var i=0,html='';i<paylogs.length;i++){
-                        var o=paylogs[i];
-                        html+=`
-                <tr>
-                    <td>${o.uuid}</td>
-                    <td>${o.nickName}</td>
-                    <td>${o.money}</td>
-                    <td>${new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
-                    <td>${o.bonus||'---'}</td>
-                    <td>${o.gameId}</td>
-                </tr>
-                `
-                    }
-                    $('#detailTbl tbody').html(html);
-
-                    var totalpages=1;
-                    if(totalNum%10==0){
-                        totalpages=totalNum/10;
-                    }else{
-                        totalpages=totalNum/10+1;
-                    }
-                    var options = {
-                        currentPage: indexPage,
-                        totalPages:totalpages,
-                        bootstrapMajorVersion: 3,
-                        onPageChanged: function(e,oldPage,newPage){
-                            getPaylogs(newPage);
-                        }
-                    };
-
-                    $('#detail-pages').bootstrapPaginator(options);
-                }else{
-                    $('#detailTbl tbody').html('');
-                    $('#detail-pages').html('');
-                }
-
-            }
-        })
     }
     $('#searchDetail').click(function(){
         getPaylogs(1);

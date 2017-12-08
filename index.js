@@ -949,6 +949,7 @@ app.get('/addValidInviteCode',(req,res)=>{
         })
     }
 });
+
 //验证游戏ID
 app.get('/validUuid',(req,res)=>{
     if(req.session.user){
@@ -1218,7 +1219,7 @@ app.post('/insertManager',(req,res)=>{
     if(req.session.user) {
         var user=req.session.user;
         var userPowerId=user.power_id;
-        var pmId=user.id;
+        var pmid=user.id;
         req.on("data", (buff)=> {
             var obj = qs.parse(buff.toString());
             console.log(obj);
@@ -1230,16 +1231,18 @@ app.post('/insertManager',(req,res)=>{
             var weixin = obj.weixin;
             var qq = obj.qq;
             var powerId = obj.powerId;
-            var pmid = obj.pmid;
+            pmid = obj.pmid;
             var pwd='e10adc3949ba59abbe56e057f20f883e';
             var redCard=obj.redCard;
-            var levelStr0=100000000;
-            var levelStr1=parseInt(levelStr0)+parseInt(pmid);
-            var levelStr2=levelStr1+'$';
-            var levelStr = levelStr2.slice(1,levelStr2.length-1);
-            if(userPowerId>1){
-                if(user.levelStr){
-                    levelStr=user.levelStr+levelStr;
+            var plevelStr=obj.plevelStr;
+            var levelStr='';
+            if(pmid>3){
+                var levelStr0=100000000;
+                var levelStr1=parseInt(levelStr0)+parseInt(pmid);
+                var levelStr2=levelStr1+'$';
+                levelStr = levelStr2.slice(1);
+                if(plevelStr){
+                    levelStr=plevelStr+levelStr;
                 }
             }
             var rebate=0;
@@ -1261,7 +1264,7 @@ app.post('/insertManager',(req,res)=>{
                 if (err) {
                     console.log(err);
                 } else {
-                    conn.query('INSERT INTO manager VALUES(null,?,?,?,?,0,0,?,0,?,?,?,1,?,1,?,?,now(),?)', [powerId,uname,tel,pwd,pmid,inviteCode,weixin,qq,rebate,levelStr,uuid,redCard], (err, result)=> {
+                    conn.query('INSERT INTO manager VALUES(null,?,?,?,?,0,0,?,0,?,?,?,1,?,1,?,?,now(),?,null)', [powerId,uname,tel,pwd,pmid,inviteCode,weixin,qq,rebate,levelStr,uuid,redCard], (err, result)=> {
                         console.log(result);
                         if(result.affectedRows>0){
                             conn.query('UPDATE account SET manager_up_id=?,managerId=? WHERE Uuid=?',[result.insertId,result.insertId,uuid],(err,resultaccount)=>{

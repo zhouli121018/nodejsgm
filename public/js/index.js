@@ -655,6 +655,7 @@ $(function(){
     $('#agent #add-message .sure').click(function(){
         var str=$('#addAgentForm').serialize();
         var pmid=sessionStorage['managerId'];
+        var plevelStr='';
         var addRedCard=0;
         var validParentInviteCode=false;
         console.log(str);
@@ -698,7 +699,7 @@ $(function(){
             }
         });
         $.ajax({
-            url:'validParentInviteCode',
+            url:'/validParentInviteCode',
             async: false,
             data:{parentInviteCode:$("#agent #add-message [name='parentInviteCode']").val()},
             success:function(data){
@@ -710,6 +711,7 @@ $(function(){
                 }else{
                     console.log(data[0].id+"++++");
                     pmid=data[0].id;
+                    plevelStr=data[0].levelStr||'';
                     validParentInviteCode=true;
                 }
             }
@@ -717,7 +719,7 @@ $(function(){
         if(validInviteCode&&validUuid&&validParentInviteCode){
             $.ajax({
                 url:'/insertManager',
-                data:str+"&pmid="+pmid+"&redCard="+addRedCard,
+                data:str+"&pmid="+pmid+"&redCard="+addRedCard+"&plevelStr="+plevelStr,
                 type:'POST',
                 success:function(data){
                     console.log(data);

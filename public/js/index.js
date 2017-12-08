@@ -600,7 +600,8 @@ $(function(){
                     if(data.status==1){
                         alert('修改成功！');
                         $('#agent #agentDetail').hide();
-                        getMyAgents(1);
+                        var page=parseInt($('#agent-pages li.active a').html());
+                        getMyAgents(page);
                     }
                 }
             })
@@ -640,7 +641,8 @@ $(function(){
                 if(data.status==1){
                     alert('充值成功！');
                     $('#agent #agentCharge').hide();
-                    getMyAgents(1);
+                    var page=parseInt($('#agent-pages li.active a').html());
+                    getMyAgents(page);
                 }else{
                     alert('充值失败！(请检查代理钻石数量是否足够)');
                 }
@@ -797,7 +799,8 @@ $(function(){
                     if(data.status==1){
                         $('#vipCharge').hide();
                         alert('充值成功！');
-                        getAccoun(1);
+                        var page=parseInt($('#vip-pages li.active a').html());
+                        getAccoun(page);
                     }else{
                         alert('充值失败！(请检查代理钻石数量是否足够)');
                     }

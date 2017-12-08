@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta charset="UTF-8">
+  <title>title</title>
+  <link rel="stylesheet" href="css/food.css"/>
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.min.js"></script>
+  <script src="js/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="container-fluid">
+  <div id="header"></div>
+  <div id="rightFixed"></div>
+  <!--<div id="banner">-->
+    <!--<img src="img1/01.jpg" class="img-responsive active" alt="1"/>-->
+  <!--</div>-->
+  <h3 class="userh">用户中心</h3>
+  <div id="usercenter" class="search-details">
+    <ul>
+      <li class="active"><a href="#orderList">我的订单</a></li>
+      <li><a href="#buyCount">消费统计</a></li>
+      <li><a href="#luck-lottery">幸运抽奖</a></li>
+    </ul>
+    <div class="box">
+      <div id="orderList" class="active">
+        <!--<table border="1" style="width:100%">-->
+          <!--<thead>-->
+          <!--<tr>-->
+            <!--<th>订单信息</th>-->
+            <!--<th>收货人</th>-->
+            <!--<th>订单金额</th>-->
+            <!--<th>订单时间</th>-->
+            <!--<th>订单状态</th>-->
+            <!--<th>操作</th>-->
+          <!--</tr>-->
+          <!--</thead>-->
+          <!--<tbody>-->
+          <!--<tr>-->
+            <!--<td colspan="6">订单编号：999999999</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td>-->
+              <!--<a href="#"><img src="img1/1.jpg" style="width:120px;height:100px"></a>-->
+              <!--<a href="#"><img src="img1/02.jpg" style="width:120px;height:100px"></a>-->
+            <!--</td>-->
+            <!--<td>强东</td>-->
+            <!--<td>￥39.90<br>在线支付</td>-->
+            <!--<td>2010-10-25<br>11:25:33</td>-->
+            <!--<td>等待发货</td>-->
+            <!--<td>-->
+              <!--<a href="#">查看</a><br/>-->
+              <!--<a href="#">评价</a>-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--</tbody>-->
+        <!--</table>-->
+      </div>
+      <div id="buyCount">
+        <h3>消费统计</h3>
+        <ul>
+          <li class="active"><a href="line">线形图</a></li>
+          <li><a href="doughnut3d">环形图</a></li>
+          <li><a href="column3d">柱状图</a></li>
+          <li><a href="pie3d">饼状图</a></li>
+          <li><a href="bar3d">横向柱状图</a></li>
+        </ul>
+        <div id="buyCountSvg"></div>
+      </div>
+      <div id="luck-lottery">
+        <h3>幸运抽奖</h3>
+        <button id="bt">开始抽奖</button>
+        <br><br>
+        <canvas id="c1"></canvas>
+      </div>
+    </div>
+
+  </div>
+  <div id="footer"></div>
+</div>
+<br/><br/>
+<script src="js/jquery-1.11.3.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/bootlint.js"></script>
+<script src="js/banner.js"></script>
+<script src="js/usercenter.js"></script>
+<script src="js/shoppingCart.js"></script>
+<script src="js/all.js"></script>
+<script src="js/lottery.js"></script>
+<script src="js/fusioncharts.js"></script>
+<script>
+  //bootlint.showLintReportForCurrentDocument([]);
+</script>
+</body>
+</html>

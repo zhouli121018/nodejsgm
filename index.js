@@ -14,7 +14,7 @@ const fs   = require("fs");
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var pool=mysql.createPool({
-    host:'127.0.0.1',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247//
+    host:'183.131.200.109',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247//
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'mahjong',
@@ -2384,3 +2384,230 @@ app.get('/getMyAgents',(req,res)=>{
 
     }
 });
+
+//获取一周内每天新增会员数量
+app.get('/getAddVipCount/day',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var managerId=user.id;
+        if(req.query.managerId){
+            managerId=req.query.managerId;
+        }
+        var powerId=user.power_id;
+        var resultJson=[
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0}
+        ];
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                   if(powerId>1||req.query.managerId){
+                       var progress=0;
+                       function getcount(day){
+                           conn.query('select count(id) as c from account where manager_up_id=? and createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[managerId,day+1,day],(err,result)=>{
+                               //console.log(9999999999);
+                               console.log(result);
+                               progress++;
+                               var now=new Date();
+                               now.setDate(now.getDate()-day);
+                               resultJson[6-day].label=now.toLocaleDateString();
+                               resultJson[6-day].value=result[0].c;
+                               if(progress==7){
+                                   console.log(resultJson);
+                                   res.json(resultJson);
+                                   conn.release();
+                               }
+                           })
+                       }
+                       for(let i=6;i>=0;i--){
+                           getcount(i);
+                           console.log(123456789);
+                       }
+                   }else{
+                       var progress=0;
+                       function getcount(day){
+                           conn.query('select count(id) as c from account where createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[day+1,day],(err,result)=>{
+                               //console.log(9999999999);
+                               console.log(result);
+                               progress++;
+                               var now=new Date();
+                               now.setDate(now.getDate()-day);
+                               resultJson[6-day].label=now.toLocaleDateString();
+                               resultJson[6-day].value=result[0].c;
+                               if(progress==7){
+                                   console.log(resultJson);
+                                   res.json(resultJson);
+                                   conn.release();
+                               }
+                           })
+                       }
+                       for(let i=6;i>=0;i--){
+                           getcount(i);
+                           console.log(123456789);
+                       }
+                   }
+
+            }
+
+        })
+    }
+});
+
+//获取近六周新增会员数量
+app.get('/getAddVipCount/week',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var managerId=user.id;
+        var powerId=user.power_id;
+        if(req.query.managerId){
+            managerId=req.query.managerId;
+        }
+        var resultJson=[
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0}
+        ];
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                if(powerId>1||req.query.managerId){
+                    var progress=0;
+                    function getcount(month){
+                        conn.query("select count(id) as c from account where manager_up_id=? and createTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY)) and createTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY))",[managerId,1+7*month,7*month-5],(err,result)=>{
+                            //console.log(9999999999);
+                            console.log(result);
+                            progress++;
+                            if(month==0){
+                                resultJson[5-month].label='本周';
+                            }else{
+                                resultJson[5-month].label='上'+month+'周';
+                            }
+                            resultJson[5-month].value=result[0].c;
+                            if(progress==6){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                    for(let i=0;i<6;i++){
+                        getcount(i);
+                    }
+                }else{
+                    var progress=0;
+                    function getcount(month){
+                        conn.query("select count(id) as c from account where  createTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY)) and createTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY))",[1+7*month,7*month-5],(err,result)=>{
+                            //console.log(9999999999);
+                            console.log(result);
+                            progress++;
+                            if(month==0){
+                                resultJson[5-month].label='本周';
+                            }else{
+                                resultJson[5-month].label='上'+month+'周';
+                            }
+                            resultJson[5-month].value=result[0].c;
+                            if(progress==6){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                    for(let i=0;i<6;i++){
+                        getcount(i);
+                    }
+                }
+
+            }
+
+        })
+    }
+});
+
+//获取半年内每月新增会员数量
+app.get('/getAddVipCount/month',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var managerId=user.id;
+        var powerId=user.power_id;
+        if(req.query.managerId){
+            managerId=req.query.managerId;
+        }
+        var resultJson=[
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0}
+        ];
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                if(powerId>1||req.query.managerId){
+                    var progress=0;
+                    function getcount(month){
+                        conn.query("select count(id) as c from account where manager_up_id=? and createTime>(SELECT concat(date_format(LAST_DAY(now() - interval ? month),'%Y-%m-'),'01')) and createTime<=(SELECT LAST_DAY(now() - interval ? month))",[managerId,month,month],(err,result)=>{
+                            //console.log(9999999999);
+                            console.log(result);
+                            progress++;
+                            var now=new Date();
+                            now.setMonth(now.getMonth()-month);
+                            var m=parseInt(now.getMonth())+1;
+                            resultJson[5-month].label=m+'月';
+                            resultJson[5-month].value=result[0].c;
+                            if(progress==6){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                    for(let i=0;i<6;i++){
+                        getcount(i);
+                        console.log(123456789);
+                    }
+                }else{
+                    var progress=0;
+                    function getcount(month){
+                        conn.query("select count(id) as c from account where createTime>(SELECT concat(date_format(LAST_DAY(now() - interval ? month),'%Y-%m-'),'01')) and createTime<=(SELECT LAST_DAY(now() - interval ? month))",[month,month],(err,result)=>{
+                            //console.log(9999999999);
+                            console.log(result);
+                            progress++;
+                            var now=new Date();
+                            now.setMonth(now.getMonth()-month);
+                            console.log('+++++++++++++++++');
+                            console.log(month,now.getMonth());
+                            var m=parseInt(now.getMonth())+1;
+                            resultJson[5-month].label=m+'月';
+                            resultJson[5-month].value=result[0].c;
+                            if(progress==6){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                    for(let i=0;i<6;i++){
+                        getcount(i);
+                        console.log(123456789);
+                    }
+                }
+
+            }
+
+        })
+    }
+});
+

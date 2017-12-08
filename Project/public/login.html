@@ -1,0 +1,110 @@
+<div id="login">
+  <div class="box">
+    <button type="button" class="close">&times;</button>
+    <h3>用户登录</h3>
+    <form class="form-horizontal">
+      <!--用户名-->
+      <div class="form-group">
+        <div class="col-sm-2">
+          <label for="uname" class="control-label">用户名：</label>
+        </div>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" name="uname" placeholder="请输入用户名" autofocus id="uname"
+                 required/>
+        </div>
+        <div class="col-sm-5">
+          <span class="help-block">用户名可以包含数字、字母</span>
+        </div>
+      </div>
+      <!--密码-->
+      <div class="form-group">
+        <div class="col-sm-2">
+          <label for="upwd" name="upwd" class="control-label">密码：</label>
+        </div>
+        <div class="col-sm-5">
+          <input type="password" class="form-control" placeholder="请输入密码"  name="upwd" id="upwd" required
+                 minlength="6" maxlength="12">
+        </div>
+        <div class="col-sm-5">
+          <span class="help-block">密码长度在6~12位之间</span>
+        </div>
+      </div>
+      <!--提交按钮-->
+      <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-2">
+          <input type="button" value="登录" id="loginBtn" class="btn btn-success btn-block">
+        </div>
+        <div class="col-sm-4">
+          <input type="button" value="去注册" id="lregBtn" class="btn btn-success btn-block">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="register">
+  <div class="box">
+    <button type="button" class="close">&times;</button>
+    <h3>新用户注册</h3>
+    <form class="form-horizontal">
+      <!--用户名-->
+      <div class="form-group">
+        <div class="col-sm-2">
+          <label for="uname" class="control-label">用户名：</label>
+        </div>
+        <div class="col-sm-5">
+          <input type="text" name="uname" class="form-control" placeholder="请输入用户名" required/>
+        </div>
+        <div class="col-sm-5">
+          <span class="help-block">用户名可以包含数字、字母</span>
+        </div>
+      </div>
+      <!--密码-->
+      <div class="form-group">
+        <div class="col-sm-2">
+          <label for="upwd" class="control-label">密码：</label>
+        </div>
+        <div class="col-sm-5">
+          <input type="password" name="upwd" class="form-control" placeholder="请输入密码" required
+                 minlength="6" maxlength="12">
+        </div>
+        <div class="col-sm-5">
+          <span class="help-block">密码长度在6~12位之间</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-2">
+          <label for="upwd" class="control-label">确认密码：</label>
+        </div>
+        <div class="col-sm-5">
+          <input type="password" class="form-control" placeholder="请再次输入密码" name="upwdre" id="upwdre" required
+                 minlength="6" maxlength="12">
+        </div>
+        <div class="col-sm-5">
+          <span class="help-block">请再次输入密码</span>
+        </div>
+      </div>
+      <!--//邮箱-->
+      <div class="form-group">
+        <div class="col-sm-2">
+          <label for="uname" class="control-label">邮箱：</label>
+        </div>
+        <div class="col-sm-5">
+          <input type="email"  class="form-control" placeholder="请输入邮箱" required/>
+        </div>
+        <div class="col-sm-5">
+          <span class="help-block">请输入正确的邮箱</span>
+        </div>
+      </div>
+      <!--提交按钮-->
+      <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-2">
+          <input type="button" value="注册" id="regBtn" class="btn btn-success btn-block">
+        </div>
+        <div class="col-sm-4">
+          <input type="button" value="去登录" id="rloginBtn" class="btn btn-success btn-block">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

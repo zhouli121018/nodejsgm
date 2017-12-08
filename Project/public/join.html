@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <title>JOIN US</title>
+    <link rel="stylesheet" href="css/food.css"/>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        #header nav li:nth-child(4){
+            background-color:#ff6637;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid" id="join">
+    <div id="logAreg"></div>
+    <!--页面头部-->
+    <header id="header"></header>
+    <!--右侧固定部分-->
+    <div id="rightFixed"></div>
+    <!--页面主体-->
+    <div id="banner">
+        <img src="img1/402.jpg"  alt="1"/>
+    </div>
+    <div id="cultrue" class="search-details">
+        <h1>企业文化</h1>
+        <p>
+            产品总数多达数十种，但我们总是不厌其烦地逐一检查，鲜度是否合格、每个甜点的
+            样式是否有瑕疵…不符标准的，立刻全部验退！每一道甜点或每一杯饮品，都是我们对于食材和口味的挑剔，坚持的程度是远远超越您
+            所能想像的。金钱，根本不能用来衡量我们对这点的坚持。
+        </p>
+        <div>
+            <img src="img1/42.png" class="img-responsive" alt="402"/>
+            <img src="img1/41.png" class="img-responsive" alt="401"/>
+        </div>
+    </div>
+    <p>
+        <img src="img1/403.jpg" class="img-responsive" alt="403"/>
+    </p>
+    <div id="joinUs">
+        <form class="form">
+            <div class="form-group">
+                <label class="control-label">联系人</label>
+                <input type="text" name="uname" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">联系方式</label>
+                <input type="text" name="connStyle" class="form-control"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">联系时间</label><br/>
+                <label class="control-label"><input type="radio" name="rdo" value="workdays"/> 工作日</label>
+                <label class="control-label"> <input type="radio" name="rdo" value="weekends"/> 周末</label>
+                <label class="control-label"> <input type="radio" name="rdo" value="anytime"/> 随时</label>
+            </div>
+            <div class="form-group">
+                <label class="control-label">留言内容</label>
+                <textarea class="form-control" name="content" id="content" rows="5"></textarea>
+            </div>
+            <input type="button" id="btnJoin" class="btn btn-default btn-lg" value="提交"/>
+
+        </form>
+    </div>
+    <!--页面底部-->
+    <footer id="footer"></footer>
+</div>
+<br/><br/>
+<script src="js/jquery-1.11.3.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/bootlint.js"></script>
+<script src="js/all.js"></script>
+<script>
+   // bootlint.showLintReportForCurrentDocument([]);
+</script>
+</body>
+</html>

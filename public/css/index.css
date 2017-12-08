@@ -253,3 +253,10 @@ h2{
 .editStatus>select.form-control{
     width:8em;
 }
+.fusion-charts{
+    /*max-width:800px;*/
+    border-top:4px dashed #aaa;
+    padding-top:.5em;
+}
+
+

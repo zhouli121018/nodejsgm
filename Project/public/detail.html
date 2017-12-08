@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+  <meta charset="UTF-8">
+  <title>title</title>
+  <link rel="stylesheet" href="css/food.css"/>
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.min.js"></script>
+  <script src="js/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<div class="container-fluid">
+<header id="header"></header>
+<!--banner-->
+<!--<div id="banner">-->
+  <!--<img src="img1/01.jpg" class="img-responsive active" alt="1"/>-->
+<!--</div>-->
+<!--右侧固定部分-->
+<div id="rightFixed"></div>
+
+<div id="logAreg"></div>
+<!--详细信息-->
+<div id="details" class="search-details">
+  <div class="left">
+    <p>
+      <img src="img1/11.png" alt="蔓越莓" style="width:100%;"/>
+    </p>
+    <p>
+      <a href="#"><span class="glyphicon glyphicon-star-empty"></span> 收藏</a>
+      <a href="#"><span class="glyphicon glyphicon-star-empty"></span> 分享</a>
+    </p>
+    <ul class="pager">
+      <li class="previous">
+        <a href="#">上一个</a>
+      </li>
+      <li class="next">
+        <a href="#">下一个</a>
+      </li>
+    </ul>
+  </div>
+  <div class="right">
+    <h3>蔓越莓100gx2袋</h3>
+    <div class="price">价格：<b>&yen;45.00</b> <i>&yen;55.00</i></div>
+    <p>评论：0条 <span>收藏：0</span></p>
+    <div class="count-buy">
+        <span>购买数量：</span>
+        <button type="button">-</button>
+        <input type="number" required min="1" name="scount" value="1"/>
+        <button type="button">+</button>
+    </div>
+    <button type="button" class="btn1">
+      <span class="glyphicon glyphicon-shopping-cart"></span>
+      加入购物车
+    </button>
+    <button type="button" class="btn2">
+      立即购买
+    </button>
+  </div>
+
+
+
+  <ul class="details-list">
+    <li class="active"><a href="#">产品详情</a></li>
+    <li><a href="#">产品评价</a></li>
+  </ul>
+  <br>
+  <div class="product_details active">
+    请编辑产品详情......
+  </div>
+  <div class="comment">
+    产品评价......
+  </div>
+</div>
+
+<!--页面底部-->
+<footer id="footer"></footer>
+</div>
+<br/><br/>
+<script src="js/jquery-1.11.3.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/bootlint.js"></script>
+<script src="js/banner.js"></script>
+<script src="js/login.js"></script>
+<script src="js/all.js"></script>
+<script src="js/detail.js"></script>
+<script>
+  //bootlint.showLintReportForCurrentDocument([]);
+</script>
+
+</body>
+</html>

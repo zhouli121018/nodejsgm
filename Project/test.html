@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    div#box{
+      overflow: hidden;
+      position: absolute;
+      top:0;
+      left:0;
+      width:100%;
+      transition:all 0.3s linear;
+    }
+    #d1{
+      background: #faa;
+      height:850px;
+
+    }
+    #d2{
+      background: #afa;
+      height:850px;
+    }
+    #d3{
+      background: #ffa;
+      height:850px;
+    }
+  </style>
+</head>
+<body>
+<div id="box">
+  <div id="d1">
+    <h1>第一段</h1>
+  </div>
+  <div id="d2">
+    <h1>第er段</h1>
+  </div>
+  <div id="d3">
+    <h1>第san段</h1>
+  </div>
+</div>
+  <script src="js/jquery-1.11.3.js"></script>
+  <script>
+
+      $(document).scroll(function(){
+        var scrollTop=$("body").scrollTop();
+        console.log(scrollTop);
+        if(scrollTop<100){
+          document.getElementById('box').style.top=0;
+        }else if(scrollTop=100){
+          document.getElementById('box').style.top=-850+"px";
+        }else if(scrollTop=200){
+          document.getElementById('box').style.top=-1750+'px';
+        }
+      });
+
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<title></title>
+	<meta charset="utf-8">
+	<style type="text/css">
+		div{
+			width:100%;
+			height:2000px;
+			background:#ddd;
+		}
+		#right_side{
+				width:261px;
+				height:337px;
+				background:url(2wm.png);
+				position:absolute;
+				top:300px;
+				right:0;
+		}
+	</style>
+	</head>
+	<body>
+
+	<div></div>
+	<aside id="right_side"></aside>
+
+<!-- <script type="text/javascript">
+		document.onscroll=function(){
+			var scrollTop=document.body.scrollTop;
+			console.log(scrollTop);
+			var right=document.getElementById('right_side');
+			var timer=setTimeout(function(){
+					right.style.top=scrollTop+100+'px';
+			},600);
+		}
+	</script> -->
+
+<script src="js/jquery-1.11.3.js"></script>
+	<script type="text/javascript">
+			$(document).scroll(function(){
+				var scrollTop=$("body").scrollTop();
+				console.log(scrollTop);
+				$('#right_side').animate({top:scrollTop+200},60);
+			});
+	</script>
+	
+	<!--scrollTop/scrollLeft有set钩子（hooks）。钩子代表例外的意思  ,对于通常使用动画的属性，需要钩子的很少。
+		scrollTop/scrollLeft的钩子 的作用主要是缓冲的作用
+	意味着 	时间过了百分之50，并不代表需要运动百分之50的距离-->
+	</body>
+</html>

@@ -14,7 +14,7 @@ const fs   = require("fs");
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var pool=mysql.createPool({
-    host:'127.0.0.1',//qingyuan 183.131.200.109 //
+    host:'127.0.0.1',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247//
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'mahjong',

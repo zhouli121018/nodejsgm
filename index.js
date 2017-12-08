@@ -2410,7 +2410,7 @@ app.get('/getAddVipCount/day',(req,res)=>{
                    if(powerId>1||req.query.managerId){
                        var progress=0;
                        function getcount(day){
-                           conn.query('select count(id) as c from account where manager_up_id=? and createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[managerId,day+1,day],(err,result)=>{
+                           conn.query('select count(id) as c from account where manager_up_id=? and createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[managerId,day,day-1],(err,result)=>{
                                //console.log(9999999999);
                                console.log(result);
                                progress++;
@@ -2432,7 +2432,7 @@ app.get('/getAddVipCount/day',(req,res)=>{
                    }else{
                        var progress=0;
                        function getcount(day){
-                           conn.query('select count(id) as c from account where createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[day+1,day],(err,result)=>{
+                           conn.query('select count(id) as c from account where createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[day,day-1],(err,result)=>{
                                //console.log(9999999999);
                                console.log(result);
                                progress++;
@@ -2611,3 +2611,227 @@ app.get('/getAddVipCount/month',(req,res)=>{
     }
 });
 
+//获取一周内每天充值总金额
+app.get('/getTotalMoney/day',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var managerId=user.id;
+        if(req.query.managerId){
+            managerId=req.query.managerId;
+        }
+        var powerId=user.power_id;
+        var resultJson=[
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0}
+        ];
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                if(powerId>1||req.query.managerId){
+                    var progress=0;
+                    function getcount(day){
+                        conn.query('select IFNULL(sum(money),0) as c from paylog where managerId=? and payType=0 and status!=2 and payTime>(CurDate()-?) and payTime <=(CurDate()-?)',[managerId,day,day-1],(err,result)=>{
+                            console.log(result);
+                            progress++;
+                            var now=new Date();
+                            now.setDate(now.getDate()-day);
+                            resultJson[6-day].label=now.toLocaleDateString();
+                            resultJson[6-day].value=result[0].c;
+                            if(progress==7){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                    for(let i=6;i>=0;i--){
+                        getcount(i);
+                        console.log(123456789);
+                    }
+                }else{
+                    var progress=0;
+                    function getcount(day){
+                        conn.query('select IFNULL(sum(money),0) as c from paylog where payType=0 and status!=2 and payTime>(CurDate()-?) and payTime <=(CurDate()-?)',[day,day-1],(err,result)=>{
+                            //console.log(9999999999);
+                            console.log(result);
+                            progress++;
+                            var now=new Date();
+                            now.setDate(now.getDate()-day);
+                            resultJson[6-day].label=now.toLocaleDateString();
+                            resultJson[6-day].value=result[0].c;
+                            if(progress==7){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                    for(let i=6;i>=0;i--){
+                        getcount(i);
+                        console.log(123456789);
+                    }
+                }
+
+            }
+
+        })
+    }
+});
+
+//获取近六周每周充值总金额
+app.get('/getTotalMoney/week',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var managerId=user.id;
+        var powerId=user.power_id;
+        if(req.query.managerId){
+            managerId=req.query.managerId;
+        }
+        var resultJson=[
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0}
+        ];
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                if(powerId>1||req.query.managerId){
+                    var progress=0;
+                    function getcount(month){
+                        conn.query("select IFNULL(sum(money),0) as c from paylog where managerId=? and payType=0 and status!=2 and payTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY)) and payTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY))",[managerId,1+7*month,7*month-5],(err,result)=>{
+                            //console.log(9999999999);
+                            console.log(result);
+                            progress++;
+                            if(month==0){
+                                resultJson[5-month].label='本周';
+                            }else{
+                                resultJson[5-month].label='上'+month+'周';
+                            }
+                            resultJson[5-month].value=result[0].c;
+                            if(progress==6){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                    for(let i=0;i<6;i++){
+                        getcount(i);
+                    }
+                }else{
+                    var progress=0;
+                    function getcount(month){
+                        conn.query("select IFNULL(sum(money),0) as c from paylog where payType=0 and status!=2 and payTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY)) and payTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY))",[1+7*month,7*month-5],(err,result)=>{
+                            //console.log(9999999999);
+                            console.log(result);
+                            progress++;
+                            if(month==0){
+                                resultJson[5-month].label='本周';
+                            }else{
+                                resultJson[5-month].label='上'+month+'周';
+                            }
+                            resultJson[5-month].value=result[0].c;
+                            if(progress==6){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                    for(let i=0;i<6;i++){
+                        getcount(i);
+                    }
+                }
+
+            }
+
+        })
+    }
+});
+
+//获取半年内每月充值总金额
+app.get('/getTotalMoney/month',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var managerId=user.id;
+        var powerId=user.power_id;
+        if(req.query.managerId){
+            managerId=req.query.managerId;
+        }
+        var resultJson=[
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0},
+            {label: '', value: 0}
+        ];
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                if(powerId>1||req.query.managerId){
+                    var progress=0;
+                    function getcount(month){
+                        conn.query("select IFNULL(sum(money),0) as c from paylog where managerId=? and payType=0 and status!=2 and payTime>(SELECT concat(date_format(LAST_DAY(now() - interval ? month),'%Y-%m-'),'01')) and payTime<=(SELECT LAST_DAY(now() - interval ? month))",[managerId,month,month],(err,result)=>{
+                            //console.log(9999999999);
+                            console.log(result);
+                            progress++;
+                            var now=new Date();
+                            now.setMonth(now.getMonth()-month);
+                            var m=parseInt(now.getMonth())+1;
+                            resultJson[5-month].label=m+'月';
+                            resultJson[5-month].value=result[0].c;
+                            if(progress==6){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                    for(let i=0;i<6;i++){
+                        getcount(i);
+                        console.log(123456789);
+                    }
+                }else{
+                    var progress=0;
+                    function getcount(month){
+                        conn.query("select IFNULL(sum(money),0) as c from paylog where payType=0 and status!=2 and payTime>(SELECT concat(date_format(LAST_DAY(now() - interval ? month),'%Y-%m-'),'01')) and payTime<=(SELECT LAST_DAY(now() - interval ? month))",[month,month],(err,result)=>{
+                            //console.log(9999999999);
+                            console.log(result);
+                            progress++;
+                            var now=new Date();
+                            now.setMonth(now.getMonth()-month);
+                            console.log('+++++++++++++++++');
+                            console.log(month,now.getMonth());
+                            var m=parseInt(now.getMonth())+1;
+                            resultJson[5-month].label=m+'月';
+                            resultJson[5-month].value=result[0].c;
+                            if(progress==6){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                    for(let i=0;i<6;i++){
+                        getcount(i);
+                        console.log(123456789);
+                    }
+                }
+
+            }
+
+        })
+    }
+});

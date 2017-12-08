@@ -890,4 +890,64 @@ $(function(){
         rendFusionCharts(day,title,type,managerId);
     })
 
+
+    function fusionDetail(day,title,type,managerId){
+        $.ajax({
+            type: 'GET',
+            data:{managerId:managerId},
+            url: '/getTotalMoney/'+day,
+            success: function(list){
+                console.log(list);
+                //创建一个图表对象
+                //var type=$(that).attr('href');
+                //console.log(type);
+                var c = new FusionCharts({
+                    type: type,//'doughnut3d',//'doughnut2d',//'pie3d',//'pie2d',//'line',//'bar3d',//'bar2d',//'column3d',//'column2d',
+                    renderAt: 'fusionTotalMoney',
+                    width: '100%',
+                    height: 300,
+                    dataSource: {
+                        "chart": {
+                            "caption": title+"新增会员数量",
+                            //"subCaption": "一周",
+                            //"xAxisName": "日期",
+                            "yAxisName": "新增会员数量"
+                            //Making the chart export enabled in various formats
+                        },
+                        data: list    //[{label:x, value:x}]
+                    }
+                });
+                //渲染出来
+                c.render();
+            }
+        });
+    }
+    fusionDetail('day','每日','column2d');
+    $('#detail .fusion-charts ul.nav-pills li a').click(function(e){
+        if ( e && e.preventDefault )
+            e.preventDefault();
+        else
+            window.event.returnValue = false;
+        $(this).parent().addClass('active').siblings().removeClass('active');
+        var type=$('#fusion-detail-select').val();
+        var day=$(this).attr('href');
+        var title=$(this).attr('title');
+        var managerId=$('#detail-managerId').val();
+        fusionDetail(day,title,type,managerId);
+    })
+    $('#fusion-detail-search').click(function(){
+        var managerId=$('#detail-managerId').val();
+        var day=$('#detail .fusion-charts ul.nav-pills li.active a').attr('href');
+        var title=$('#detail .fusion-charts ul.nav-pills li.active a').attr('title');
+        var type=$('#fusion-detail-select').val();
+        fusionDetail(day,title,type,managerId);
+    })
+    $('#fusion-detail-type').click(function(){
+        var managerId=$('#detail-managerId').val();
+        var day=$('#detail .fusion-charts ul.nav-pills li.active a').attr('href');
+        var title=$('#detail .fusion-charts ul.nav-pills li.active a').attr('title');
+        var type=$('#fusion-detail-select').val();
+        fusionDetail(day,title,type,managerId);
+    })
+
 });

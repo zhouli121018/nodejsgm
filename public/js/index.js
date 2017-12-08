@@ -27,6 +27,7 @@ $(function(){
 
     $.ajax({
         url:'/refresh',
+        async: false,
         success:function(data){
             console.log(data);
             if(data.status>0){
@@ -908,10 +909,10 @@ $(function(){
                     height: 300,
                     dataSource: {
                         "chart": {
-                            "caption": title+"新增会员数量",
+                            "caption": title+"充值金额",
                             //"subCaption": "一周",
                             //"xAxisName": "日期",
-                            "yAxisName": "新增会员数量"
+                            "yAxisName": "充值金额"
                             //Making the chart export enabled in various formats
                         },
                         data: list    //[{label:x, value:x}]

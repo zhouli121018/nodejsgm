@@ -444,7 +444,8 @@ $(function(){
                     }else{
                         alert('修改失败！');
                     }
-                    getAccount(1);
+                    var page=parseInt($('#vip-pages li.active a').html());
+                    getAccount(page);
                 }
             })
         }

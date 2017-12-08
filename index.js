@@ -1217,7 +1217,7 @@ app.get('/validParentInviteCode',(req,res)=>{
 app.post('/insertManager',(req,res)=>{
     if(req.session.user) {
         var user=req.session.user;
-        var powerId=user.power_id;
+        var userPowerId=user.power_id;
         var pmId=user.id;
         req.on("data", (buff)=> {
             var obj = qs.parse(buff.toString());
@@ -1237,6 +1237,11 @@ app.post('/insertManager',(req,res)=>{
             var levelStr1=parseInt(levelStr0)+parseInt(pmid);
             var levelStr2=levelStr1+'$';
             var levelStr = levelStr2.slice(1,levelStr2.length-1);
+            if(userPowerId>1){
+                if(user.levelStr){
+                    levelStr=user.levelStr+levelStr;
+                }
+            }
             var rebate=0;
             if(obj.rebate){
                 rebate=obj.rebate;

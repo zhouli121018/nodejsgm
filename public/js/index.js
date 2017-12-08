@@ -640,7 +640,7 @@ $(function(){
                 if(data.status==1){
                     alert('充值成功！');
                     $('#agent #agentCharge').hide();
-                    getMyAgents();
+                    getMyAgents(1);
                 }else{
                     alert('充值失败！(请检查代理钻石数量是否足够)');
                 }

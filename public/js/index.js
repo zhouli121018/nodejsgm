@@ -25,18 +25,24 @@ $(function(){
         location.href="index.html";
     }
 
-    $.ajax({
-        url:'/refresh',
-        async: false,
-        success:function(data){
-            console.log(data);
-            if(data.status>0){
-
-            }else{
-                location.href="index.html";
+    function refresh(){
+        console.log('refresh');
+        $.ajax({
+            url:'/refresh',
+            success:function(data){
+                console.log(data);
+                if(data.status>0){
+                    console.log(11211);
+                    getAgentInfo();
+                }else{
+                    console.log(11211211);
+                    sessionStorage.clear();
+                    location.href="index.html";
+                }
             }
-        }
-    })
+        });
+    }
+    refresh();
 
     $('#tablist li a').click(function(e){
         if ( e && e.preventDefault )
@@ -78,7 +84,6 @@ $(function(){
         $.ajax({
             url:'/getAgentInfo',
             async: false,
-            data:{managerId:15},
             success:function(data){
                 console.log(data);
                 var html='';
@@ -161,23 +166,48 @@ $(function(){
             success:function(data){
                 $("#agentCount").html(data.agentCount);
             }
-        })
+        });
+        var total=0;
         $.ajax({
             url:'/getmineone',
+            async: false,
             success:function(data){
                 console.log(123456789);
                 console.log(data);
                 $('#mineone').html(data.mineone.toFixed(2));
+                total+=parseFloat(data.mineone.toFixed(2));
+                console.log(total);
             }
-        })
+        });
         $.ajax({
             url:'/getminetwo',
+            async: false,
             success:function(data){
                 console.log("minetwo");
                 console.log(data);
                 $('#minetwo').html(data.minetwo.toFixed(2));
+                total+=parseFloat(data.minetwo.toFixed(2));
+                console.log(total);
             }
-        })
+        });
+        $.ajax({
+            url:'/getRemain',
+            async: false,
+            success:function(data){
+                console.log("getRemain");
+                console.log(data);
+                var remain=0.00;
+                if(data.length>0){
+                    remain=data[0].money.toFixed(2);
+                }
+                console.log(remain);
+                $('#remain').html(remain);
+                total+=parseFloat(remain);
+                console.log(total);
+            }
+        });
+        $('#total-bonus').html(total.toFixed(2));
+
     }
     function getMyAgents(page){
         var starttime=$("#searchAgentForm [name=starttime]").val();
@@ -216,6 +246,7 @@ $(function(){
                             <td>${o.totalMoney}</td>
                             <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
                             <td>${o.manager_up_id}</td>
+                            <td>${o.lastLoginTime?new Date(o.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             <td>
                             <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
                             <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button></td>
@@ -304,7 +335,9 @@ $(function(){
                 }
 
             }
-        })
+        });
+
+        fusionDetail('day','每日','column2d');
     }
     function getNotes(page){
         var starttime=$("#searchNoteForm [name=starttime]").val();
@@ -430,6 +463,8 @@ $(function(){
 
             }
         });
+
+        rendFusionCharts('day','每日','column2d');
     }
     $('#vip').on('click','.updateStatus',function(){
         var uuid=$(this).attr('data-id');
@@ -452,7 +487,7 @@ $(function(){
         }
 
     })
-    getAgentInfo();
+    //getAgentInfo();
     function resetPassword(){
         var str1=prompt('请输入新密码：');
         if(str1==null){
@@ -863,7 +898,7 @@ $(function(){
         });
     }
 
-    rendFusionCharts('day','每日','column2d');
+
     $('.fusion-charts ul.nav-pills li a').click(function(e){
         if ( e && e.preventDefault )
             e.preventDefault();
@@ -923,7 +958,6 @@ $(function(){
             }
         });
     }
-    fusionDetail('day','每日','column2d');
     $('#detail .fusion-charts ul.nav-pills li a').click(function(e){
         if ( e && e.preventDefault )
             e.preventDefault();
@@ -951,4 +985,26 @@ $(function(){
         fusionDetail(day,title,type,managerId);
     })
 
+
+    $('#tixianbtn').click(function(){
+        $(this).prop('disabled',true);
+        var sel=this;
+        setTimeout(function (){
+            $(sel).prop('disabled',false);
+        },3000);
+        $.ajax({
+            url:'/tixian',
+            type:'POST',
+            data:{money:$('#tixianmoney').val(),ip:returnCitySN["cip"]},
+            success:function(data){
+                console.log(data);
+                getAgentInfo();
+                alert(data.msg);
+            }
+        })
+    })
 });
+
+
+
+

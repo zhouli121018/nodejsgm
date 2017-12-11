@@ -14,12 +14,12 @@ const fs   = require("fs");
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var pool=mysql.createPool({
-    host:'127.0.0.1',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247//
+    host:'183.131.200.109',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247//
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'mahjong',
-    password:'a257joker',
-    database:'mahjong_hbe',
+    password:'a257joker',//a257joker!@#Q
+    database:'mahjong_hbe',//mahjong_cy
     connectionLimit:10
 });
 var app=express();
@@ -33,12 +33,10 @@ app.use(session({
     saveUninitialized:true
 }));
 
-
-
 var config = {
-    wxappid:"wx0b0da56105e931d5",//wx07022b5bc486f279
-    mch_id:"1481903462",//  1370897202
-    wxpaykey:"cce50ed3d4d110d68ebdc2872885c2a5"// LQ0929xxfy982fjielx39093ooxx3987
+    wxappid:"wx07022b5bc486f279",//wx07022b5bc486f279 //wx0b0da56105e931d5
+    mch_id:"1370897202",//  1370897202 //1481903462
+    wxpaykey:"LQ0929xxfy982fjielx39093ooxx3987"// LQ0929xxfy982fjielx39093ooxx3987 //cce50ed3d4d110d68ebdc2872885c2a5
 };
 //生成随机字符串
 function randomString(len) {
@@ -108,18 +106,19 @@ function doTransfer(openId,money,desc,ip,cb){
     var url = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers';
 
     var SEND_REDPACK_URL = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
-    var PFX = '/root/apiclient_cert.p12';
+    var PFX = 'apiclient_cert.p12';
     request({
             url: url,
             method: 'POST',
             body: xml,
-            //agentOptions: {
-            //    pfx: fs.readFileSync(PFX),
-            //    passphrase: config.mch_id
-            //}
+            agentOptions: {
+                pfx: fs.readFileSync(PFX),
+                passphrase: config.mch_id
+            }
         },
         function(err, response, body){
             console.log(body);
+
         });
 
     //request.post({url : url, body:xml}, function (error, response, body) {
@@ -156,7 +155,7 @@ function doTransfer(openId,money,desc,ip,cb){
 
 
 }
-doTransfer('oAnM9xDHgFr9UL7VRf_gu1Zml54g',1,'测试','127.0.0.1',cb);
+//doTransfer('oAnM9xDHgFr9UL7VRf_gu1Zml54g',1,'测试','127.0.0.1',cb);
 app.get('/login',(req,res)=>{
     var uname = req.query.uname;
     var pwd = req.query.pwd;
@@ -177,18 +176,16 @@ app.get('/login',(req,res)=>{
             }else{
                 conn.query('SELECT * FROM manager WHERE inviteCode=? and password = ? and status = 0',[uname,pwd],(err,result)=>{
 
-                    if(result.length==0){
-                        result.push({msg:'用户名或密码不正确！',logStatus:0});
-                    }else{
+                    console.log('loginlogin');
+                    console.log(result);
+                    if(result.length>0){
                         result[0]['msg']='登录成功！';
                         result[0]['logStatus']=1;
                         req.session.user=result[0];
+                        res.json(result[0]);
+                    }else{
+                        res.json({msg:'用户名或密码不正确！',logStatus:0})
                     }
-                    console.log(result);
-                    res.json(result[0]);
-
-                    //res.json({msg:'用户名或密码不正确！',status:0});
-
                     conn.release();
                 })
             }
@@ -1615,6 +1612,7 @@ app.get('/getmineone',(req,res)=>{
         var managerId=user.id;
         var starttime=req.query.starttime;
         var endtime=req.query.endtime;
+        var rebate=parseFloat(user.rebate);
         var now=new Date();
         now.setDate(now.getDate()+1);
         var overArr=now.toLocaleDateString().split('/');
@@ -1635,10 +1633,11 @@ app.get('/getmineone',(req,res)=>{
             if(err){
                 console.log(err);
             }else{
-                conn.query('select IFNULL(sum(money),0)as mineone from paylog where managerId =? and payTime > ? and payTime < ? and payType = 0 and status%10 = 0  and (gameId = 1 or gameId = 3)and payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and (payType = 1 or payType = 2) and status = 1)',[managerId,starttime,endtime,managerId],(err,result)=>{
+                conn.query('select IFNULL(sum(money),0)as mineone from paylog where managerId =? and payTime > ? and payTime < ? and payType = 0   and (gameId = 1 or gameId = 3)and payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and (payType = 1 or payType = 2) and status = 1)',[managerId,starttime,endtime,managerId],(err,result)=>{
                     console.log('mineone=====');
                     console.log(result);
-                    res.json(result[0]);
+                    req.session.mineone=(result[0].mineone)*rebate;
+                    res.json({"mineone":(result[0].mineone)*rebate});
                 })
             }
             conn.release();
@@ -1688,6 +1687,7 @@ app.get('/getminetwo',(req,res)=>{
                 conn.query('select IFNULL(sum(n.money*(?-(o.rebate+0.0))),0.0) as minetwo from (select sum(m.money) as money,m.top1mid from (select sum(a.money) as money,b.id,(case when (substring(b.levelStr,?,8)+0)=0 then b.id else (substring(b.levelStr,?,8)+0) end) as top1mid from paylog a,manager b where a.managerId = b.id and (a.gameId = 1 or a.gameId = 3) and a.payType = 0 and a.payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1) and b.levelStr like ? group by id,top1mid) m group by m.top1mid) n,manager o where n.top1mid = o.id',[rebate,length,length,managerId,levelStr],(err,result)=>{
                     console.log('minetwo=====');
                     console.log(result);
+                    req.session.minetwo=result[0].minetwo;
                     res.json(result[0]);
                 })
             }
@@ -2833,5 +2833,112 @@ app.get('/getTotalMoney/month',(req,res)=>{
             }
 
         })
+    }
+});
+
+//获取代理上次提现剩余的收益
+app.get('/getRemain',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var managerId=user.id;
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                conn.query('select money from paylog where payType = 9 and managerId = ? and payTime = (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and (payType = 9) and status = 1) ',[managerId,managerId],(err,result)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        console.log('remainremain');
+                        console.log(result);
+                        if(result.length>0){
+                            req.session.remain=result[0].money;
+                        }else{
+                            req.session.remain=0;
+                        }
+                        console.log('req.session.remain'+req.session.remain);
+                        //req.session.remain=result[0].money||0;
+                        res.json(result);
+                    }
+                })
+            }
+            conn.release();
+        })
+    }
+});
+
+//代理提现
+app.post('/tixian',(req,res)=>{
+    if(req.session.user) {
+        var user = req.session.user;
+        var managerId = user.id;
+        var uuid = user.uuid;
+        var powerId = user.power_id;
+        req.on("data", (buff)=> {
+            var obj = qs.parse(buff.toString());
+            console.log(obj);
+            var ip=obj.ip;
+            var money = parseFloat(obj.money);
+            var totalBonus=parseFloat(req.session.mineone)+parseFloat(req.session.minetwo)+parseFloat(req.session.remain);
+            if(req.session[managerId]&&req.session[managerId].day==new Date().toLocaleDateString()&&req.session[managerId].times>=2){
+                res.json({"status":0,"msg":"一天只能提现2次，如有疑问请联系管理员！"});
+                return;
+            }
+            if(money>0){
+                if(money>totalBonus){
+                    res.json({"status":0,"msg":"提现金额超出收益，如有疑问请联系管理员！"});
+                }else if(money>5000){
+                    res.json({"status":0,"msg":"单次提现金额不超过5000元，如有疑问请联系管理员！"});
+                }else if(money<100){
+                    res.json({"status":0,"msg":"提现金额不足100元！"});
+                }else{
+                    pool.getConnection((err, conn)=> {
+                        conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),1,1,0,3)',[managerId,uuid,money],(err,result)=>{
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log('paylogpaylog');
+                                console.log(result);
+                                var insertId=0;
+                                if(result.affectedRows>0){
+                                    insertId=result.insertId;
+                                    conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),9,1,0,0)',[managerId,uuid,totalBonus-money],(err,result)=>{
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            if(result.affectedRows>0){
+                                                conn.query('select openid from account where Uuid = ? and status!=2',[uuid],(err,result)=>{
+                                                    if(result.length>0){
+                                                        doTransfer(result[0].openid,money,'代理提现',ip,cb);
+                                                        console.log('openid'+result[0].openid);
+                                                        if(req.session[managerId]&&req.session[managerId].day==new Date().toLocaleDateString()){
+                                                            req.session[managerId]={day:new Date().toLocaleDateString(),times:2};
+                                                        }else{
+                                                            req.session[managerId]={day:new Date().toLocaleDateString(),times:1};
+                                                        }
+
+                                                        console.log(req.session[managerId]);
+                                                        res.json({"status":1,"msg":"你的提现人民币"+money+"元的请求已经发出！请留意你的微信转账记录！"})
+
+                                                    }
+                                                })
+
+                                            }
+                                        }
+                                    })
+                                }
+                            }
+                        })
+                        conn.release();
+                    })
+                }
+            }else{
+                res.json({"status":0,"msg":"请输入正确的提现金额！"})
+            }
+
+
+        });
+
+
     }
 });

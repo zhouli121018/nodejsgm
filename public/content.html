@@ -63,15 +63,11 @@
                     <tbody>
                         <tr>
                             <td>可用金额(￥)：</td>
-                            <td>0.00</td>
+                            <td id="total-bonus">0.00</td>
                         </tr>
                         <tr>
                             <td>上次提现余额(￥)：</td>
-                            <td>0.00</td>
-                        </tr>
-                        <tr>
-                            <td>累计收益：</td>
-                            <td>未统计</td>
+                            <td id="remain">0.00</td>
                         </tr>
                         <tr>
                             <td>下属用户收益：</td>
@@ -85,9 +81,9 @@
                             <td>微信取款：</td>
                             <td>
                                 <div class="input-group">
-                                  <input type="number" class="form-control"  value="" />
+                                  <input type="number" id="tixianmoney" class="form-control"  value="" />
                                   <span class="input-group-btn">
-                                  <input type="button" class="btn btn-primary"   value="提现"/>
+                                  <input type="button" class="btn btn-primary" id="tixianbtn"  value="提现"/>
                                   <!--<input type="button" class="btn btn-primary"  onclick="refreshIncome()" value="刷新"/>-->
                                   </span>
                                 </div>
@@ -160,6 +156,7 @@
                             <th>充值业绩(元)</th>
                             <th>账户状态</th>
                             <th>上级代理ID</th>
+                            <th>上次登录</th>
                             <th>操作</th>
                         </tr>
                     </thead>
@@ -540,7 +537,6 @@
         </div>
     </div>
 
-
 </div>
 <br/><br/>
 <script src="js/jquery-2.1.4.js"></script>
@@ -550,6 +546,11 @@
 <script src="js/md5.js"></script>
 <script src="js/fusioncharts.js"></script>
 <script src="js/bootlint.js"></script>
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script type="text/javascript">
+   // document.write(returnCitySN["cip"]+','+returnCitySN["cname"]);
+    console.log(returnCitySN["cip"]);
+</script>
 <script>
     //bootlint.showLintReportForCurrentDocument([]);
 </script>

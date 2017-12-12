@@ -26,7 +26,7 @@ var session = require('express-session');
 //}
 
 var pool=mysql.createPool({
-    host:'127.0.0.1',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 //
+    host:'183.131.200.109',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 //
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'mahjong',
@@ -573,7 +573,7 @@ app.get('/getPaylogs',(req,res)=>{
                             console.log(err);
                         } else {
                             var progress=0;
-                            conn.query('select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ?    ORDER BY payTime desc limit ?,? ', [starttime,endtime,limitstart,limitend], (err, paylogs)=> {
+                            conn.query('select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ?    ORDER BY payTime desc limit ?,10 ', [starttime,endtime,limitstart], (err, paylogs)=> {
                                 console.log(paylogs);
                                 resultjson.paylogs=paylogs;
                                 progress++;
@@ -582,7 +582,7 @@ app.get('/getPaylogs',(req,res)=>{
                                     conn.release();
                                 }
                             });
-                            conn.query('select count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney  from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ?    ) n  ', [starttime,endtime], (err, totalBonus)=> {
+                            conn.query('select count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney  from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? ) n  ', [starttime,endtime], (err, totalBonus)=> {
                                 console.log(11111);
                                 console.log(totalBonus);
                                 if(totalBonus){
@@ -634,8 +634,6 @@ app.get('/getPaylogs',(req,res)=>{
                                 conn.release();
                             }
                         });
-
-
                     }
 
                 });

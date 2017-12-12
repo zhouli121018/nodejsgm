@@ -318,6 +318,8 @@ $(function(){
                         var o=paylogs[i];
                         html+=`
                 <tr>
+                    <td>${o.managerId}</td>
+                    <td>${o.name}</td>
                     <td>${o.uuid}</td>
                     <td>${o.nickName}</td>
                     <td>${o.money}</td>

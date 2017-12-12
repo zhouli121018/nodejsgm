@@ -26,12 +26,12 @@ var session = require('express-session');
 //}
 
 var pool=mysql.createPool({
-    host:'127.0.0.1',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 //
+    host:'47.95.239.253',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 //
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'mahjong',
     password:'a257joker',//a257joker!@#Q
-    database:'mahjong_hbe',//mahjong_cy mahjong_hbe
+    database:'mahjong_cy',//mahjong_cy mahjong_hbe
     connectionLimit:10
 });
 var app=express();
@@ -486,9 +486,11 @@ app.get('/getPaylogs',(req,res)=>{
                             console.log(err);
                         } else {
                             var progress=0;
-                            conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode from paylog a,manager b  where a.managerId = b.id and  a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) and a.uuid=?  ) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ?,? ', [starttime,endtime,levelStr,managerId,uuid,managerId,limitstart,limitend], (err, paylogs)=> {
+                            conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and  a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) and a.uuid=?  ) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ?,? ', [starttime,endtime,levelStr,managerId,uuid,managerId,limitstart,limitend], (err, paylogs)=> {
                                 //console.log(paylogs);
-                                resultjson.paylogs=paylogs;
+                                if(paylogs){
+                                    resultjson.paylogs=paylogs;
+                                }
                                 progress++;
                                 if(progress==2){
                                     res.json(resultjson);
@@ -522,10 +524,12 @@ app.get('/getPaylogs',(req,res)=>{
                             var progress=0;
                             console.log(77777777777777);
                             console.log(starttime,endtime,levelStr,managerId,limitstart,limitend,managerId);
-                            conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode from paylog a,manager b  where a.managerId = b.id and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) ) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ?,?', [starttime,endtime,levelStr,managerId,managerId,limitstart,limitend], (err, paylogs)=> {
+                            conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) ) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ?,?', [starttime,endtime,levelStr,managerId,managerId,limitstart,limitend], (err, paylogs)=> {
                                 console.log('paylogspaylogs:');
                                 console.log(paylogs);
-                                resultjson.paylogs=paylogs;
+                                if(paylogs){
+                                    resultjson.paylogs=paylogs;
+                                }
                                 progress++;
                                 if(progress==2){
                                     res.json(resultjson);
@@ -559,9 +563,11 @@ app.get('/getPaylogs',(req,res)=>{
                             console.log(err);
                         } else {
                             var progress=0;
-                            conn.query('select q.*,c.nickName from(select a.*,b.inviteCode from paylog a,manager b  where a.managerId = b.id and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ?  and a.uuid=?)q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ?,? ', [starttime,endtime,uuid,limitstart,limitend], (err, paylogs)=> {
+                            conn.query('select q.*,c.nickName from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ?  and a.uuid=?)q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ?,? ', [starttime,endtime,uuid,limitstart,limitend], (err, paylogs)=> {
                                 console.log(paylogs);
-                                resultjson.paylogs=paylogs;
+                                if(paylogs){
+                                    resultjson.paylogs=paylogs;
+                                }
                                 progress++;
                                 if(progress==2){
                                     res.json(resultjson);
@@ -593,9 +599,11 @@ app.get('/getPaylogs',(req,res)=>{
                             console.log(err);
                         } else {
                             var progress=0;
-                            conn.query('select q.*,c.nickName from(select a.*,b.inviteCode from paylog a,manager b where a.managerId = b.id  and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? )q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ?,10 ', [starttime,endtime,limitstart], (err, paylogs)=> {
+                            conn.query('select q.*,c.nickName from(select a.*,b.inviteCode,b.name from paylog a,manager b where a.managerId = b.id  and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? )q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ?,10 ', [starttime,endtime,limitstart], (err, paylogs)=> {
                                 console.log(paylogs);
-                                resultjson.paylogs=paylogs;
+                                if(paylogs){
+                                    resultjson.paylogs=paylogs;
+                                }
                                 progress++;
                                 if(progress==2){
                                     res.json(resultjson);
@@ -631,9 +639,11 @@ app.get('/getPaylogs',(req,res)=>{
                         console.log(err);
                     } else {
                         var progress=0;
-                        conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode from paylog a,manager b  where a.managerId = b.id and  a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) and a.uuid=?  ) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ?,? ', [starttime,endtime,levelStr,managerId,uuid,managerId,limitstart,limitend], (err, paylogs)=> {
+                        conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and  a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) and a.uuid=?  ) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ?,? ', [starttime,endtime,levelStr,managerId,uuid,managerId,limitstart,limitend], (err, paylogs)=> {
                             console.log(paylogs);
-                            resultjson.paylogs=paylogs;
+                            if(paylogs){
+                                resultjson.paylogs=paylogs;
+                            }
                             progress++;
                             if(progress==2){
                                 res.json(resultjson);
@@ -663,9 +673,11 @@ app.get('/getPaylogs',(req,res)=>{
                         console.log(err);
                     } else {
                         var progress=0;
-                        conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode from paylog a,manager b where a.managerId = b.id and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? )) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ?,?', [starttime,endtime,levelStr,managerId,managerId,limitstart,limitend], (err, paylogs)=> {
+                        conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b where a.managerId = b.id and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? )) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ?,?', [starttime,endtime,levelStr,managerId,managerId,limitstart,limitend], (err, paylogs)=> {
                             console.log(paylogs);
-                            resultjson.paylogs=paylogs;
+                            if(paylogs){
+                                resultjson.paylogs=paylogs;
+                            }
                             progress++;
                             if(progress==2){
                                 res.json(resultjson);

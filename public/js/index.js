@@ -167,46 +167,49 @@ $(function(){
                 $("#agentCount").html(data.agentCount);
             }
         });
-        var total=0;
-        $.ajax({
-            url:'/getmineone',
-            async: false,
-            success:function(data){
-                console.log(123456789);
-                console.log(data);
-                $('#mineone').html(data.mineone.toFixed(2));
-                total+=parseFloat(data.mineone.toFixed(2));
-                console.log(total);
-            }
-        });
-        $.ajax({
-            url:'/getminetwo',
-            async: false,
-            success:function(data){
-                console.log("minetwo");
-                console.log(data);
-                $('#minetwo').html(data.minetwo.toFixed(2));
-                total+=parseFloat(data.minetwo.toFixed(2));
-                console.log(total);
-            }
-        });
-        $.ajax({
-            url:'/getRemain',
-            async: false,
-            success:function(data){
-                console.log("getRemain");
-                console.log(data);
-                var remain=0.00;
-                if(data.length>0){
-                    remain=data[0].money.toFixed(2);
+        if(sessionStorage['powerId']>1){
+            var total=0;
+            $.ajax({
+                url:'/getmineone',
+                async: false,
+                success:function(data){
+                    console.log(123456789);
+                    console.log(data);
+                    $('#mineone').html(data.mineone.toFixed(2));
+                    total+=parseFloat(data.mineone.toFixed(2));
+                    console.log(total);
                 }
-                console.log(remain);
-                $('#remain').html(remain);
-                total+=parseFloat(remain);
-                console.log(total);
-            }
-        });
-        $('#total-bonus').html(total.toFixed(2));
+            });
+            $.ajax({
+                url:'/getminetwo',
+                async: false,
+                success:function(data){
+                    console.log("minetwo");
+                    console.log(data);
+                    $('#minetwo').html(data.minetwo.toFixed(2));
+                    total+=parseFloat(data.minetwo.toFixed(2));
+                    console.log(total);
+                }
+            });
+            $.ajax({
+                url:'/getRemain',
+                async: false,
+                success:function(data){
+                    console.log("getRemain");
+                    console.log(data);
+                    var remain=0.00;
+                    if(data.length>0){
+                        remain=data[0].money.toFixed(2);
+                    }
+                    console.log(remain);
+                    $('#remain').html(remain);
+                    total+=parseFloat(remain);
+                    console.log(total);
+                }
+            });
+            $('#total-bonus').html(total.toFixed(2));
+        }
+
 
     }
     function getMyAgents(page){
@@ -403,7 +406,7 @@ $(function(){
                 console.dir(datas);
                 var data=datas.accounts;
                 var totalNum=datas.totalNum;
-                if(data.length>0){
+                if(data&&data.length>0){
                     for(var i=0,html='';i<data.length;i++){
                         var o=data[i];
                         var redCardStr=0;

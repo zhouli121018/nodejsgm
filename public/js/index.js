@@ -287,9 +287,22 @@ $(function(){
         var endtime=$("#searchDetailForm [name=endtime]").val();
         var uuid=$("#searchDetailForm [name=uuid]").val();
         var managerId=$("#searchDetailForm [name=managerId]").val();
+        var plevelStr='';
+        if(managerId){
+            $.ajax({
+                url:'/getlevelStr',
+                async: false,
+                data:{managerId:managerId},
+                success:function(data){
+                    console.log('levelstr');
+                    console.log(data);
+                    plevelStr=data[0].levelStr;
+                }
+            })
+        }
         $.ajax({
             url:'/getPaylogs',
-            data:{page:indexPage,starttime:starttime,endtime:endtime,uuid:uuid,managerId:managerId},
+            data:{page:indexPage,starttime:starttime,endtime:endtime,uuid:uuid,managerId:managerId,plevelStr:plevelStr},
             success:function(data){
                 console.log(data);
                 var paylogs=data.paylogs;

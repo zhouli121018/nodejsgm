@@ -360,11 +360,12 @@ $(function(){
                         var o=data[i];
                         html+=`
                         <tr>
+                            <td>${o.managerId||o.id}</td>
                             <td>${o.name}</td>
                             <td>${o.inviteCode}</td>
                             <td>${o.money}</td>
-                            <td>${new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
-                            <td>${o.status==1?'已完成':'提现失败'}</td>
+                            <td>${o.payTime?new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss"):'----'}</td>
+                            <!--<td>${o.status==1?'已完成':'提现失败'}</td>-->
                         </tr>
                     `
                     }

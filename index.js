@@ -26,12 +26,12 @@ var session = require('express-session');
 //}
 
 var pool=mysql.createPool({
-    host:'47.95.239.253',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 //
+    host:'127.0.0.1',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 //
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'mahjong',
     password:'a257joker',//a257joker!@#Q
-    database:'mahjong_cy',//mahjong_cy mahjong_hbe
+    database:'mahjong_hbe',//mahjong_cy mahjong_hbe
     connectionLimit:10
 });
 var app=express();
@@ -1288,6 +1288,7 @@ app.get('/getNotes',(req,res)=>{
         var user=req.session.user;
         var status = req.query.status;
         var uuid=req.query.uuid;
+        var powerId=user.power_id;
         var managerId=req.query.managerId||user.id;
         var limitstart=(req.query.page-1)*10;
         var starttime=req.query.starttime;
@@ -1313,24 +1314,47 @@ app.get('/getNotes',(req,res)=>{
             if(err){
                 console.log(err);
             }else{
-                var progress=0;
-                conn.query('select a.id,b.name,b.inviteCode,a.money,a.payTime,a.status from paylog a,manager b where a.managerId = b.id  and a.managerId =? and a.payTime > ? and a.payTime < ? and a.payType = 1 and a.status=1 order by a.payTime DESC limit ?,10 ',[managerId,starttime,endtime,limitstart],(err,result)=>{
-                    console.log(333);
-                    progress++;
-                    resultJson.notes=result;
-                    if(progress==2){
-                        res.json(resultJson);
-                    }
-                })
-                conn.query('select count(a.id) as totalNum,IFNULL(sum(a.money),0) as totalMoney from paylog a,manager b where a.managerId = b.id  and a.managerId =? and a.payTime > ? and a.payTime < ? and a.payType = 1 and a.status=1 ',[managerId,starttime,endtime],(err,result)=>{
-                    console.log(444);
-                    progress++;
-                    resultJson.totalMoney=result[0].totalMoney;
-                    resultJson.totalNum=result[0].totalNum;
-                    if(progress==2){
-                        res.json(resultJson);
-                    }
-                })
+                if(powerId>1||req.query.managerId){
+                    var progress=0;
+                    conn.query('select a.id,a.managerId,b.name,b.inviteCode,a.money,a.payTime,a.status from paylog a,manager b where a.managerId = b.id  and a.managerId =? and a.payTime > ? and a.payTime < ? and a.payType = 1 and a.status=1 order by a.payTime DESC limit ?,10 ',[managerId,starttime,endtime,limitstart],(err,result)=>{
+                        console.log(333);
+                        progress++;
+                        resultJson.notes=result;
+                        if(progress==2){
+                            res.json(resultJson);
+                        }
+                    })
+                    conn.query('select count(a.id) as totalNum,IFNULL(sum(a.money),0) as totalMoney from paylog a,manager b where a.managerId = b.id  and a.managerId =? and a.payTime > ? and a.payTime < ? and a.payType = 1 and a.status=1 ',[managerId,starttime,endtime],(err,result)=>{
+                        console.log(444);
+                        progress++;
+                        resultJson.totalMoney=result[0].totalMoney;
+                        resultJson.totalNum=result[0].totalNum;
+                        if(progress==2){
+                            res.json(resultJson);
+                        }
+                    })
+                }else{
+                    var progress=0;
+                    conn.query('select m.*,IFNULL(SUM(p.money),0) as money from (select * from manager where id>3)m left JOIN paylog p on p.managerId=m.id and p.payTime>? and p.payTime<? and p.payType=1 and p.status =1 GROUP BY m.id ORDER BY money desc LIMIT ?,10 ',[starttime,endtime,limitstart],(err,result)=>{
+                        console.log(333);
+                        console.log(result);
+                        progress++;
+                        resultJson.notes=result;
+                        if(progress==2){
+                            res.json(resultJson);
+                        }
+                    })
+                    conn.query('select count(a.id) as totalNum,IFNULL(sum(a.totalMoney),0) as sumMoney from (select m.*,IFNULL(SUM(p.money),0) as totalMoney from (select * from manager where id>3)m left JOIN paylog p on p.managerId=m.id and p.payTime>? and p.payTime<? and p.payType=1 and p.status =1 GROUP BY m.id) a',[starttime,endtime],(err,result)=>{
+                        console.log(444);
+                        progress++;
+                        resultJson.totalMoney=result[0].sumMoney;
+                        resultJson.totalNum=result[0].totalNum;
+                        if(progress==2){
+                            res.json(resultJson);
+                        }
+                    })
+
+                }
             }
             conn.release();
         })

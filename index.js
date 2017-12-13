@@ -1445,15 +1445,25 @@ app.get('/getAgentCount',(req,res)=>{
         if(plevelStr){
             levelStr=plevelStr+levelStr;
         }
+        var powerId=user.power_id;
         pool.getConnection((err,conn)=>{
             if(err){
                 console.log(err);
             }else{
-                conn.query('select COUNT(m.id) as agentCount from manager m WHERE m.manager_up_id=?',[managerId],(err,result)=>{
-                    //console.log(9999999999);
-                    //console.log(result);
-                    res.json(result[0]);
-                })
+                if(powerId==1){
+                    conn.query('select COUNT(m.id) as agentCount from manager m WHERE m.id>1',(err,result)=>{
+                        //console.log(9999999999);
+                        //console.log(result);
+                        res.json(result[0]);
+                    })
+                }else{
+                    conn.query('select COUNT(m.id) as agentCount from manager m WHERE m.manager_up_id=?',[managerId],(err,result)=>{
+                        //console.log(9999999999);
+                        //console.log(result);
+                        res.json(result[0]);
+                    })
+                }
+
             }
             conn.release();
         })

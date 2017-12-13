@@ -219,10 +219,12 @@ $(function(){
         var uname=$("#searchAgentForm [name=uname]").val();
         var invitecode=$("#searchAgentForm [name=invitecode]").val();
         var powerId=$("#searchAgentForm [name=powerId]").val();
+        var gameId=$("#searchAgentForm [name=gameId]").val();
         if(powerId==0){powerId=''};
+        if(gameId==0){gameId=''};
         $.ajax({
             url:'/getMyAgents',
-            data:{starttime:starttime,endtime:endtime,page:page,managerId:managerId,uname:uname,invitecode:invitecode,powerId:powerId},
+            data:{starttime:starttime,endtime:endtime,page:page,managerId:managerId,uname:uname,invitecode:invitecode,powerId:powerId,gameId:gameId},
             success:function(datas){
                 var data=datas.managers;
                 var totalNum=datas.totalNum;
@@ -287,6 +289,8 @@ $(function(){
         var endtime=$("#searchDetailForm [name=endtime]").val();
         var uuid=$("#searchDetailForm [name=uuid]").val();
         var managerId=$("#searchDetailForm [name=managerId]").val();
+        var gameId=$("#searchDetailForm [name=gameId]").val();
+        if(gameId==0){gameId=''};
         var plevelStr='';
         if(managerId){
             $.ajax({
@@ -302,7 +306,7 @@ $(function(){
         }
         $.ajax({
             url:'/getPaylogs',
-            data:{page:indexPage,starttime:starttime,endtime:endtime,uuid:uuid,managerId:managerId,plevelStr:plevelStr},
+            data:{page:indexPage,starttime:starttime,endtime:endtime,uuid:uuid,managerId:managerId,plevelStr:plevelStr,gameId:gameId},
             success:function(data){
                 console.log(data);
                 var paylogs=data.paylogs;

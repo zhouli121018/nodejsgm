@@ -192,6 +192,13 @@ app.get('/login',(req,res)=>{
                     console.log('loginlogin');
                     console.log(result);
                     if(result.length>0){
+                        conn.query('UPDATE manager SET lastLoginTime=now() WHERE inviteCode=?',[uname],(err,result)=>{
+                            if(err){
+                                console.log(err);
+                            }else{
+                                console.log(result);
+                            }
+                        });
                         result[0]['msg']='登录成功！';
                         result[0]['logStatus']=1;
                         req.session.user=result[0];

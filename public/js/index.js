@@ -860,7 +860,7 @@ $(function(){
                         $('#vipCharge').hide();
                         alert('充值成功！');
                         var page=parseInt($('#vip-pages li.active a').html());
-                        getAccoun(page);
+                        getAccount(page);
                     }else{
                         alert('充值失败！(请检查代理钻石数量是否足够)');
                     }

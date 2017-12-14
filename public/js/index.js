@@ -25,6 +25,29 @@ $(function(){
         location.href="index.html";
     }
 
+    var now=new Date();
+    var begin=new Date();
+    // begin.setDate(begin.getDate());
+    now.setDate(now.getDate()+1);
+
+    var overArr=now.toLocaleDateString().split('/');
+    for(var i=0;i<overArr.length;i++){
+        if(overArr[i]<10){
+            overArr[i]=0+overArr[i];
+        }
+    }
+    var overTime=overArr.join('-');
+    var beginArr=begin.toLocaleDateString().split('/');
+    for(var i=0;i<beginArr.length;i++){
+        if(beginArr[i]<10){
+            beginArr[i]=0+beginArr[i];
+        }
+    }
+    var beginTime=beginArr.join('-');
+    $('[name=endtime]').val(overTime);
+    $('[name=starttime]').val(beginTime);
+
+
     function refresh(){
         console.log('refresh');
         $.ajax({

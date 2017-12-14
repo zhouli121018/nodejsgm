@@ -444,7 +444,7 @@ $(function(){
 
                         html+=`
                         <tr>
-                            <td>${o.uuid}</td>
+                            <td>${o.Uuid}</td>
                             <td>${o.nickName}</td>
                             <td>${o.manager_up_id}</td>
                             <td>${o.totalMoney}</td>

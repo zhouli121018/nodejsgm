@@ -341,7 +341,7 @@ app.get('/getAccount',(req,res)=>{
                             })
                         }else{
                             var progress=0;
-                            conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime,a.manager_up_id FROM account a )n LEFT JOIN paylog p on p.payType=0 and p.payTime between ? and ? and p.uuid=n.uuid group by n.uuid order by totalMoney desc limit ?,10',[starttime,endtime,limitstart],(err,result)=>{
+                            conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from account n LEFT JOIN paylog p on p.uuid=n.uuid where p.payType=0 and p.payTime>? and p.payTime<? group by n.uuid order by totalMoney desc limit ?,10',[starttime,endtime,limitstart],(err,result)=>{
                                 resultJson.accounts=result;
                                 progress++;
                                 if(progress==2){

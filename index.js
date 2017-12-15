@@ -1069,13 +1069,24 @@ app.post('/updateManagerInfo',(req,res)=>{
             var status = obj.status;
             var telephone=obj.telephone;
             var rebate=obj.rebate;
+            var uuid=obj.uuid;
             pool.getConnection((err, conn)=> {
                 if (err) {
                     console.log(err);
                 } else {
-                    conn.query('UPDATE  manager SET inviteCode=?,power_id=?,status=?,telephone=?,rebate=?  WHERE id=?', [inviteCode,powerId,status,telephone,rebate,managerId], (err, result)=> {
+                    conn.query('UPDATE  manager SET inviteCode=?,power_id=?,status=?,telephone=?,rebate=?,uuid=?  WHERE id=?', [inviteCode,powerId,status,telephone,rebate,uuid,managerId], (err, result)=> {
                         console.log(result);
                         if(result.changedRows>0){
+                            conn.query('UPDATE account SET managerId=?,manager_up_id=? WHERE Uuid=?',[managerId,managerId,uuid],(err,result1)=>{
+                                if(err){
+                                    console.log(err);
+                                }
+                            })
+                            conn.query('UPDATE account SET managerId=0 WHERE managerId=? and uuid!=?',[managerId,uuid],(err,result2)=>{
+                                if(err){
+                                    console.log(err);
+                                }
+                            })
                             res.json({"status": 1});
                         }else{
                             res.json({"status": 0});

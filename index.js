@@ -42,8 +42,20 @@ app.use(cookieParser('sessiontest'));
 app.use(session({
     secret: 'sessiontest',//与cookieParser中的一致
     resave: true,
-    saveUninitialized:true
+    saveUninitialized:true,
+    cookie:{
+        maxAge: 1000*60*30 // default session expiration is set to 1 hour
+    }
 }));
+app.use(function(req, res, next){
+    var url = req.path;
+    console.log(url);
+    if(url=='/login'||url=='/logout'||url=='/refresh'||req.session.user){
+        next();
+    }else{
+        return res.json({"timeout":1});
+    }
+});
 
 
 var config = {

@@ -53,7 +53,7 @@ app.use(session({
 app.use(function(req, res, next){
     var url = req.path;
     console.log(url);
-    if(url=='/login'||url=='/logout'||url=='/refresh'||req.session.user){
+    if(url=='/login'||url=='/logout'||req.session.user){
         req.session._garbage = Date();
         req.session.touch();
         next();

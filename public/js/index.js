@@ -99,6 +99,8 @@ $(function(){
             getAgentInfo();
         }else if(id=="#note"){
             getNotes(1);
+        }else if(id=="#notice"){
+            getNotice();
         }
         console.log(id);
         $(this).parent().addClass('active').siblings().removeClass('active');
@@ -1180,6 +1182,29 @@ $(function(){
             }
         })
     })
+
+    function getNotice(){
+        $.ajax({
+            url:'/getNotice',
+            success:function(data){
+                console.log(data);
+                for(var i=0,html='';i<data.length;i++){
+                    var o=data[i];
+                    html+=`
+                        <tr>
+                            <td>${o.id}</td>
+                            <td>${o.content}</td>
+                            <td>${o.managerId||'----'}</td>
+                            <td>${o.type==0?'代理公告':(o.type==1?'消息公告':o.type==3?'给全体代理的公告':'全服图片公告')}</td>
+                        </tr>
+                    `;
+                }
+                $('#noticeTbl tbody').html(html);
+            }
+        })
+    }
+
+
 });
 
 

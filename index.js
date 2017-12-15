@@ -3450,3 +3450,26 @@ app.post('/tixian',(req,res)=>{
 
     }
 });
+
+//获取公告
+app.get('/getNotice',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var powerId=user.power_id;
+        var managerId=req.query.managerId||user.id;
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                if(powerId==1){
+                    conn.query('(select * from noticetable where type = 3  order by id DESC limit 0,1 ) union (select * from noticetable where type = 2  order by id DESC limit 0,1 ) union  (select *  from noticetable where type = 1 order by id DESC limit 0,1 ) union (select* from noticetable where type = 0 and managerId is null  order by id DESC  limit 0,1) ',(err,result)=>{
+
+                            res.json(result);
+                    })
+                }
+            }
+            conn.release();
+        })
+    }
+});
+

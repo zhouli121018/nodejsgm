@@ -50,6 +50,7 @@
 <script src="js/bootstrap.js"></script>
 <script src="js/md5.js"></script>
 <script>
+    sessionStorage.clear();
     $('#loginBtn').click(function(){
         if($('#uname').val()==''||$('#pwd').val()==''){
             alert('用户名或密码不能为空！');

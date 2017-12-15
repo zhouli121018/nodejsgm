@@ -67,6 +67,22 @@ $(function(){
     }
     refresh();
 
+    function getRoom(){
+        $.ajax({
+            url:'/getRoomNumber',
+            success:function(data){
+                console.log('dangqianrenshu');
+                console.log(data);
+                var dataArr=data.split(/\s+/);
+                for(var i=0,html='';i<dataArr.length;i++){
+                    html+=`
+                <li><b>${dataArr[i]}</b></li>
+                `;
+                }
+                $('#nowInfo').html(html);
+            }
+        })
+    }
     $('#tablist li a').click(function(e){
         if ( e && e.preventDefault )
             e.preventDefault();
@@ -340,6 +356,7 @@ $(function(){
         })
     }
     function getPaylogs(indexPage){
+        getRoom();
         var starttime=$("#searchDetailForm [name=starttime]").val();
         var endtime=$("#searchDetailForm [name=endtime]").val();
         var uuid=$("#searchDetailForm [name=uuid]").val();
@@ -1005,6 +1022,7 @@ $(function(){
         $("#vip .redcard-hide").hide();
         $("#searchVipForm .agentId").hide();
         $('.fusion-charts>form .fusion-hide').hide();
+        $('.detail-hide').hide();
     }
     $('#searchDetail').click(function(){
         getPaylogs(1);

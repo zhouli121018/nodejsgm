@@ -879,6 +879,7 @@ $(function(){
         $('#detail .agentSearch').hide();
         $("#searchNoteForm .agentId").hide();
         $("#searchAgentForm .agentId").hide();
+        $("#vip .redcard-hide").hide();
         $("#searchVipForm .agentId").hide();
         $('.fusion-charts>form').hide();
     }

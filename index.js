@@ -54,6 +54,8 @@ app.use(function(req, res, next){
     var url = req.path;
     console.log(url);
     if(url=='/login'||url=='/logout'||url=='/refresh'||req.session.user){
+        req.session._garbage = Date();
+        req.session.touch();
         next();
     }else{
         return res.json({"timeout":1});

@@ -109,6 +109,10 @@ $(function(){
             async: false,
             success:function(data){
                 console.log(data);
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 var html='';
                 html=`
                 <tr>
@@ -179,6 +183,10 @@ $(function(){
         $.ajax({
             url:'/getVipCount',
             success:function(data){
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 console.log("vipcount:");
                 console.log(data);
                 $("#vipCount").html(data.vipCount);
@@ -187,6 +195,10 @@ $(function(){
         $.ajax({
             url:'/getAgentCount',
             success:function(data){
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 $("#agentCount").html(data.agentCount);
             }
         });
@@ -197,6 +209,10 @@ $(function(){
                 async: false,
                 success:function(data){
                     console.log(123456789);
+                    if(data.timeout==1){
+                        location.href="index.html";
+                        return;
+                    }
                     console.log(data);
                     $('#mineone').html(data.mineone.toFixed(2));
                     total+=parseFloat(data.mineone.toFixed(2));
@@ -209,6 +225,10 @@ $(function(){
                 success:function(data){
                     console.log("minetwo");
                     console.log(data);
+                    if(data.timeout==1){
+                        location.href="index.html";
+                        return;
+                    }
                     $('#minetwo').html(data.minetwo.toFixed(2));
                     total+=parseFloat(data.minetwo.toFixed(2));
                     console.log(total);
@@ -218,6 +238,10 @@ $(function(){
                 url:'/getRemain',
                 async: false,
                 success:function(data){
+                    if(data.timeout==1){
+                        location.href="index.html";
+                        return;
+                    }
                     console.log("getRemain");
                     console.log(data);
                     var remain=0.00;
@@ -249,6 +273,10 @@ $(function(){
             url:'/getMyAgents',
             data:{starttime:starttime,endtime:endtime,page:page,managerId:managerId,uname:uname,invitecode:invitecode,powerId:powerId,gameId:gameId},
             success:function(datas){
+                if(datas.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 var data=datas.managers;
                 var totalNum=datas.totalNum;
                 var totalMoney=datas.totalMoney;
@@ -321,6 +349,10 @@ $(function(){
                 async: false,
                 data:{managerId:managerId},
                 success:function(data){
+                    if(data.timeout==1){
+                        location.href="index.html";
+                        return;
+                    }
                     console.log('levelstr');
                     console.log(data);
                     plevelStr=data[0].levelStr;
@@ -332,6 +364,10 @@ $(function(){
             data:{page:indexPage,starttime:starttime,endtime:endtime,uuid:uuid,managerId:managerId,plevelStr:plevelStr,gameId:gameId},
             success:function(data){
                 console.log(data);
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 var paylogs=data.paylogs;
                 var totalBonus=data.totalBonus;
                 var totalNum=data.totalNum;
@@ -392,6 +428,10 @@ $(function(){
             url:'/getNotes',
             data:{starttime:starttime,endtime:endtime,page:page,managerId:managerId},
             success:function(datas){
+                if(datas.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 var data=datas.notes;
                 var totalNum=datas.totalNum;
                 var totalMoney=datas.totalMoney;
@@ -447,6 +487,10 @@ $(function(){
             data:{starttime:starttime,managerId:managerId,endtime:endtime,uuid:uuid,page:page},
             success:function(datas){
                 console.dir(datas);
+                if(datas.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 var data=datas.accounts;
                 var totalNum=datas.totalNum;
                 if(data&&data.length>0){
@@ -520,6 +564,10 @@ $(function(){
                 url:'/changeAccountStatus',
                 data:{uuid:uuid,status:status},
                 success:function(data){
+                    if(data.timeout==1){
+                        location.href="index.html";
+                        return;
+                    }
                     console.log(data);
                     if(data>0){
                        alert('修改成功！');
@@ -550,6 +598,10 @@ $(function(){
                 url:"/resetPassword",
                 data: {newPwd:hex_md5(str1)},
                 success: function data(data){
+                    if(data.timeout==1){
+                        location.href="index.html";
+                        return;
+                    }
                     console.log(data);
                     if(data.status==1)
                         alert('修改密码成功！');
@@ -571,6 +623,10 @@ $(function(){
             data:{managerId:id},
             success:function(data){
                 console.dir(data);
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 for(var i=0,html='';i<data.length;i++){
                     var o=data[i];
                     if(o.agentNumber>0){
@@ -648,6 +704,10 @@ $(function(){
             async: false,
             success:function(data){
                 console.log(data);
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 if(data.length>0){
                     alert('该邀请码不可用！请重新输入！');
                     validInviteCode=false;
@@ -664,6 +724,10 @@ $(function(){
             data:str,
             success:function(data){
                 console.log(data);
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 if(data.status==0){
                     alert('该游戏ID不存在或该游戏ID已设置为代理！');
                     $("#agent #agentDetail [name='uuid']").focus();
@@ -680,6 +744,10 @@ $(function(){
                 data:str,
                 success:function(data){
                     console.log(data);
+                    if(data.timeout==1){
+                        location.href="index.html";
+                        return;
+                    }
                     if(data.status==1){
                         alert('修改成功！');
                         $('#agent #agentDetail').hide();
@@ -721,6 +789,10 @@ $(function(){
             data:str,
             success:function(data){
                 console.log(data);
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 if(data.status==1){
                     alert('充值成功！');
                     $('#agent #agentCharge').hide();
@@ -754,6 +826,10 @@ $(function(){
             async: false,
             success:function(data){
                 console.log(data);
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 if(data.length>0){
                     alert('该邀请码不可用！请重新输入！');
                     validInviteCode=false;
@@ -769,6 +845,10 @@ $(function(){
             data:{uuid:inputUuid},
             success:function(data){
                 console.log(data);
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 console.log(data.validuuid);
                 if(data.validuuid==0){
                     alert('该游戏ID不存在或该游戏ID已设置为代理！');
@@ -789,6 +869,10 @@ $(function(){
             data:{parentInviteCode:$("#agent #add-message [name='parentInviteCode']").val()},
             success:function(data){
                 console.log(data);
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 if(data.length==0){
                     alert('上级代理邀请码不存在，请重新输入！');
                     validParentInviteCode=false;
@@ -808,6 +892,10 @@ $(function(){
                 type:'POST',
                 success:function(data){
                     console.log(data);
+                    if(data.timeout==1){
+                        location.href="index.html";
+                        return;
+                    }
                     if(data.status==1){
                         alert('新增代理成功！');
                         $("#agent #add-message").hide();
@@ -844,6 +932,10 @@ $(function(){
             async: false,
             success:function(data){
                 console.log(data);
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 if(data.validuuid==0){
                     validUuid=false;
                     alert('此用户ID不存在或已禁用，请重新输入！');
@@ -879,6 +971,10 @@ $(function(){
                 type:'POST',
                 success:function(data){
                     console.log(data);
+                    if(data.timeout==1){
+                        location.href="index.html";
+                        return;
+                    }
                     if(data.status==1){
                         $('#vipCharge').hide();
                         alert('充值成功！');
@@ -920,6 +1016,10 @@ $(function(){
             url: '/getAddVipCount/'+day,
             success: function(list){
                 console.log(list);
+                if(list.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 //创建一个图表对象
                 //var type=$(that).attr('href');
                 //console.log(type);
@@ -981,6 +1081,10 @@ $(function(){
             url: '/getTotalMoney/'+day,
             success: function(list){
                 console.log(list);
+                if(list.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 //创建一个图表对象
                 //var type=$(that).attr('href');
                 //console.log(type);
@@ -1045,6 +1149,10 @@ $(function(){
             data:{money:$('#tixianmoney').val(),ip:returnCitySN["cip"]},
             success:function(data){
                 console.log(data);
+                if(data.timeout==1){
+                    location.href="index.html";
+                    return;
+                }
                 getAgentInfo();
                 alert(data.msg);
             }

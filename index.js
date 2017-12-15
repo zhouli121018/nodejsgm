@@ -255,6 +255,7 @@ app.get('/getAgentInfo',(req,res)=>{
             }else{
                 conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.id=? and m.id = a.managerId',[managerId],(err,result)=>{
                     //console.log(result);
+                    result[0].lastLoginTime=user.lastLoginTime;
                     res.json(result[0]);
                 })
             }

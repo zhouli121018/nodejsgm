@@ -175,6 +175,10 @@ $(function(){
                     <td>下级会员数量：</td>
                     <td id="vipCount"></td>
                 </tr>
+                <tr>
+                    <td>上次登录时间：</td>
+                    <td>${data.lastLoginTime?new Date(data.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
+                </tr>
             `;
                 $('#info table#infoTbl tbody').html(html);
                 $('#info table#infoTbl td').each(function(i,dom){
@@ -511,7 +515,7 @@ $(function(){
 
                         html+=`
                         <tr>
-                            <td>${o.Uuid}</td>
+                            <td>${o.Uuid||o.uuid}</td>
                             <td>${o.nickName}</td>
                             <td>${o.manager_up_id}</td>
                             <td>${o.totalMoney}</td>
@@ -999,7 +1003,7 @@ $(function(){
         $("#searchNoteForm .agentId").hide();
         $("#searchAgentForm .agentId").hide();
         $("#searchVipForm .agentId").hide();
-        $('.fusion-charts>form').hide();
+        $('.fusion-charts>form .fusion-hide').hide();
     }
     $('#searchDetail').click(function(){
         getPaylogs(1);

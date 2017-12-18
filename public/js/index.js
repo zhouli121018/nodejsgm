@@ -1025,6 +1025,7 @@ $(function(){
         $("#searchVipForm .agentId").hide();
         $('.fusion-charts>form .fusion-hide').hide();
         $('.detail-hide').hide();
+        $('#tablist .powerId-hide').hide();
     }
     $('#searchDetail').click(function(){
         getPaylogs(1);
@@ -1203,6 +1204,34 @@ $(function(){
             }
         })
     }
+
+    $('#notice .add-notice').click(function(){
+        $('#add-notice').show();
+    })
+    $('#addNoticeForm .sure').click(function(){
+        var content=$('#addNoticeForm [name=content]').val().trim();
+        var ntype=$('#addNoticeForm [name=ntype]').val();
+        var managerId=$('#addNoticeForm [name=managerId]').val();
+        if(content.length==0){
+            alert('请输入公告内容！');
+            return;
+        }
+        $.ajax({
+            url:'/addNotice',
+            data:{content:content,type:ntype,managerId:managerId},
+            success:function(data){
+                console.log('addnotice');
+                console.log(data);
+                if(data.status>0){
+                    $('#add-notice').hide();
+                    alert('公告添加成功！');
+                    getNotice();
+                }else{
+                    alert('公告添加失败！');
+                }
+            }
+        })
+    });
 
 
 });

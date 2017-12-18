@@ -273,4 +273,6 @@ h2{
     background:#f0ad4e;
     color:#f0f;
 }
-
+button.add-notice{
+    margin:5px;
+}

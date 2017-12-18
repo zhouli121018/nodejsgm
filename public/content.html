@@ -36,7 +36,7 @@
                     <li><a href="#vip">我的会员</a></li>
                     <li><a href="#detail">账单明细</a></li>
                     <li><a href="#note">提现流水</a></li>
-                    <li><a href="#notice">公告管理</a></li>
+                    <li class="powerId-hide"><a href="#notice">公告管理</a></li>
                 </ul>
             </div>
         </div>
@@ -575,6 +575,34 @@
                     <tbody>
                     </tbody>
                 </table>
+            </div>
+            <div id="add-notice">
+                <form name="addNoticeForm" id="addNoticeForm">
+                    <button type="button" class="close"><span>&times;</span></button>
+                    <h4>新增公告信息</h4>
+                    <div>
+                        <div class="form-group">
+                            <label>公告类型：</label>
+                            <select name="ntype" class="form-control">
+                                <option value="0">代理公告</option>
+                                <option value="1">消息公告</option>
+                                <option value="2">全服图片公告</option>
+                                <option value="3">给所有代理公告</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>公告内容：</label>
+                            <textarea name="content" class="form-control" rows="5">
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>代理ID：</label>
+                            <input type="text" name="managerId" placeholder="请输入代理ID，没有则不填"  class="form-control">
+                        </div>
+                    </div>
+                    <input type="button" class="btn  btn-success sure" value="确 定"/>
+                    <input type="button" class="btn  btn-danger cancel" value="取 消"/>
+                </form>
             </div>
         </div>
     </div>

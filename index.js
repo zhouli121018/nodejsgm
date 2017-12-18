@@ -2316,7 +2316,7 @@ app.get('/getMyAgents',(req,res)=>{
                                         }
                                     });
                                 }else{
-                                    conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from  manager m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  WHERE p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [starttime,endtime,limitstart], (err, result)=> {
+                                    conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from  manager m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on  p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [starttime,endtime,limitstart], (err, result)=> {
                                         //console.log(result);
                                         resultJson.managers=result;
                                         progress++;
@@ -3473,3 +3473,35 @@ app.get('/getNotice',(req,res)=>{
     }
 });
 
+//新增公告
+app.get('/addNotice',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var powerId=user.power_id;
+        var managerId=0;
+        if(req.query.managerId){
+            managerId=req.query.managerId;
+        }else{
+            managerId=null;
+        }
+        var type=req.query.type;
+        var content=req.query.content;
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+
+                    conn.query('insert into noticetable values(null,?,?,?,2)',[content,type,managerId],(err,result)=>{
+                        console.log(result);
+                        if(result.affectedRows>0){
+                            res.json({"status":1});
+                        }else{
+                            res.json({"status":0});
+                        }
+                    })
+
+            }
+            conn.release();
+        })
+    }
+});

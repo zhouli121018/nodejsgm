@@ -64,6 +64,36 @@ $(function(){
                 }
             }
         });
+        var paths=window.location.href;
+        // alert(paths);
+        var path=paths.slice(paths.indexOf('#'));
+        // alert(path);
+        $('#tablist li').removeClass('active');
+        $('#tablist li a').each(function(i,dom){
+            if($(dom).attr('href')==path){
+                $(dom).parent().addClass('active');
+
+            }
+        })
+        $(path).show().siblings().hide();
+        var id=path;
+        if(id=="#agent"){
+            getMyAgents(1);
+        }else if(id=="#vip"){
+            getAccount(1);
+        }else if(id=="#detail"){
+            getPaylogs(1);
+        }else if(id=="#info"){
+            getAgentInfo();
+        }else if(id=="#note"){
+            getNotes(1);
+        }else if(id=="#notice"){
+            getNotice();
+        }else{
+            $('#tablist li a[href=#info]').parent().addClass('active').siblings().removeClass('active');
+            getAgentInfo();
+        }
+
     }
     refresh();
 
@@ -84,10 +114,10 @@ $(function(){
         })
     }
     $('#tablist li a').click(function(e){
-        if ( e && e.preventDefault )
-            e.preventDefault();
-        else
-            window.event.returnValue = false;
+        // if ( e && e.preventDefault )
+        //     e.preventDefault();
+        // else
+        //     window.event.returnValue = false;
         var id=$(this).attr('href');
         if(id=="#agent"){
             getMyAgents(1);
@@ -467,7 +497,7 @@ $(function(){
                         <tr>
                             <td>${o.managerId||o.id}</td>
                             <td>${o.name}</td>
-                            <td>${o.inviteCode}</td>
+                            <td>${o.inviteCode||''}</td>
                             <td>${o.money}</td>
                             <td>${o.payTime?new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss"):'----'}</td>
                             <!--<td>${o.status==1?'已完成':'提现失败'}</td>-->
@@ -719,8 +749,30 @@ $(function(){
         console.log(str);
         var mid=$("#agent #agentDetail [name='mid']").val();
         var inputInviteCode=$("#agent #agentDetail [name='inviteCode']").val();
+        var telephone=$("#agent #agentDetail [name='telephone']").val();
+        var rebate=$("#agent #agentDetail [name='rebate']").val();
+        var powerId=$("#agent #agentDetail [name='powerId']").val();
         var validInviteCode=false;
         var validUuid=false;
+        if(inputInviteCode==''){
+            alert('邀请码不能为空！请输入邀请码！');
+            return;
+        }
+        var rebetreg=/^0\.\d{1,2}$/;
+        if(rebate!=""&& (!rebetreg.test(rebate))){
+            $("#agent #agentDetail [name='rebate']").focus();
+            alert('分成比例格式不正确！请重新输入！如：0.5 ');
+            return;
+        }
+        if(rebate==''||rebate>=sessionStorage['rebate']){
+            alert('请输入正确的分成比例！');
+            return;
+        }
+        if(sessionStorage['powerId']!=1&&parseFloat(powerId)>=parseFloat(sessionStorage['powerId'])){
+            alert('代理级别不能高于等于上级代理级别！请重新选择！');
+            $("#agent #agentDetail [name='powerId']").focus();
+            return;
+        }
         $.ajax({
             url:'/validInviteCode',
             data:{managerId:mid,inviteCode:inputInviteCode},
@@ -843,6 +895,41 @@ $(function(){
         var validUuid=false;
         var inputInviteCode=$("#agent #add-message [name='inviteCode']").val();
         var inputUuid=$("#agent #add-message [name='uuid']").val();
+        var uname=$("#agent #add-message [name='uname']").val();
+        var telephone=$("#agent #add-message [name='telephone']").val();
+        var weixin=$("#agent #add-message [name='weixin']").val();
+        var rebate=$("#agent #add-message [name='rebate']").val();
+        var powerId=$("#agent #add-message [name='powerId']").val();
+        var nreg=/^([\u4e00-\u9fa5]){2,4}$/;
+        var prebate=0;
+        var ppowerId=0;
+        if(!nreg.test(uname)){
+            $("#agent #add-message [name='uname']").focus();
+            alert('姓名格式不正确！请重新输入！');
+            return;
+        }
+        var reg=/^1[34578]\d{9}$/;
+        if(!reg.test(telephone)){
+            $("#agent #add-message [name='telephone']").focus();
+            alert('手机号码格式不正确！请重新输入！');
+            return;
+        }
+        if(weixin==''){
+            alert('微信号不能为空！请输入微信号！');
+            $("#agent #add-message [name='weixin']").focus();
+            return;
+        }
+        var rebetreg=/^0\.\d{1,2}$/;
+        if(rebate!=""&& (!rebetreg.test(rebate))){
+            $("#agent #add-message [name='rebate']").focus();
+            alert('分成比例格式不正确！请重新输入！如：0.5 ');
+            return;
+        }
+        if(inputInviteCode==''){
+            alert('邀请码不能为空！请输入邀请码！');
+            $("#agent #add-message [name='inviteCode']").focus();
+            return;
+        }
         $.ajax({
             url:'/addValidInviteCode',
             data:{inviteCode:inputInviteCode},
@@ -904,10 +991,22 @@ $(function(){
                     console.log(data[0].id+"++++");
                     pmid=data[0].id;
                     plevelStr=data[0].levelStr||'';
+                    prebate=data[0].rebate;
+                    ppowerId=data[0].power_id;
                     validParentInviteCode=true;
                 }
             }
         });
+        if(ppowerId!=1&&parseFloat(powerId)>=parseFloat(ppowerId)){
+            alert('代理级别不能高于等于上级代理级别！请重新选择！');
+            $("#agent #add-message [name='powerId']").focus();
+            return;
+        }
+        if(parseFloat(rebate)>=parseFloat(prebate)){
+            alert('分成比例不能高于等于上级代理分成比例！请重新输入！');
+            $("#agent #add-message [name='rebate']").focus();
+            return;
+        }
         if(validInviteCode&&validUuid&&validParentInviteCode){
             $.ajax({
                 url:'/insertManager',
@@ -1026,6 +1125,7 @@ $(function(){
         $('.fusion-charts>form .fusion-hide').hide();
         $('.detail-hide').hide();
         $('#tablist .powerId-hide').hide();
+        $('#vip button.edit').hide();
     }
     $('#searchDetail').click(function(){
         getPaylogs(1);
@@ -1233,6 +1333,62 @@ $(function(){
         })
     });
 
+    $('#vip .edit').click(function(){
+        $('#vipDetail').show();
+    })
+    $('#vipDetail .sure').click(function(){
+        var uuid=$('#vipDetailForm [name=uuid]').val();
+        var invitecode=$('#vipDetailForm [name=invitecode]').val();
+        console.log(uuid,managerUpId);
+        var validUuid=false;
+        var validInviteCode=false;
+        var managerUpId=0;
+        $.ajax({
+            url:'/validUuidReManagerUpId',
+            async: false,
+            data:{uuid:uuid},
+            success:function(data){
+                console.log(data);
+                if(data.validuuid>0){
+                    validUuid=true;
+                }else{
+                    alert('此玩家ID不存在，请重新输入！')
+                }
+            }
+        })
+        $.ajax({
+            url:'/validInviteCodeReManagerUpId',
+            async: false,
+            data:{inviteCode:invitecode},
+            success:function(data){
+                console.log(data);
+                if(data.length==1){
+                    validInviteCode=true;
+                    managerUpId=data[0].id;
+                }else{
+                    alert('请输入正确的代理邀请码！')
+                }
+            }
+        })
+        if(validUuid&&validInviteCode){
+            $.ajax({
+                url:'/reManagerUpId',
+                data:{uuid:uuid,managerUpId:managerUpId},
+                success:function(data){
+                    console.log(data);
+                    if(data.status==1){
+                        alert('重新绑定代理邀请码成功！');
+                        $('#vipDetail').hide();
+                        var page=parseInt($('#vip-pages li.active a').html());
+                        getAccount(page);
+                    }else{
+                        alert('重新绑定代理邀请码失败！')
+                    }
+                }
+            })
+        }
+
+    })
 
 });
 

@@ -26,7 +26,7 @@ var session = require('express-session');
 //}
 
 var pool=mysql.createPool({
-    host:'103.73.206.31',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 // qingyuan1213 103.73.206.31
+    host:'120.79.23.45',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 // qingyuan1213 103.73.206.31
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'mahjong',
@@ -1037,6 +1037,68 @@ app.get('/addValidUuid',(req,res)=>{
                         }
                     }else{
                         res.json({"validuuid":0});
+                    }
+                })
+            }
+            conn.release();
+        })
+    }
+});
+//重新绑定上级代理邀请码 验证uuidvalidInviteCodeReManagerUpId
+app.get('/validUuidReManagerUpId',(req,res)=>{
+    if(req.session.user){
+        var uuid = req.query.uuid;
+        var powerId=req.session.user.power_id;
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                if(powerId==1){
+                    conn.query('SELECT * FROM account  WHERE Uuid=? ',[uuid],(err,result)=>{
+                        if(result.length>0){
+                            res.json({"validuuid":1});
+                        }else{
+                            res.json({"validuuid":0});
+                        }
+                    })
+                }else{
+                    res.json({"validuuid":0});
+                }
+            }
+            conn.release();
+        })
+    }
+});
+//重新绑定上级代理邀请码 验证invitecode
+app.get('/validInviteCodeReManagerUpId',(req,res)=>{
+    if(req.session.user){
+        var inviteCode = req.query.inviteCode;
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                conn.query('SELECT * FROM manager  WHERE inviteCode=? ',[inviteCode],(err,result)=>{
+                    res.json(result);
+                })
+            }
+            conn.release();
+        })
+    }
+});
+//重新绑定上级代理邀请码
+app.get('/reManagerUpId',(req,res)=>{
+    if(req.session.user){
+        var uuid=req.query.uuid;
+        var managerUpId = req.query.managerUpId;
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                conn.query('update account set manager_up_id=? where uuid=?',[managerUpId,uuid],(err,result)=>{
+                    if(result.changedRows>0){
+                        res.json({"status":1})
+                    }else{
+                        res.json({"status":0})
                     }
                 })
             }
@@ -3397,9 +3459,11 @@ app.post('/tixian',(req,res)=>{
                     res.json({"status":0,"msg":"提现金额超出收益，如有疑问请联系管理员！"});
                 }else if(money>5000){
                     res.json({"status":0,"msg":"单次提现金额不超过5000元，如有疑问请联系管理员！"});
-                }else if(money<100){
-                    res.json({"status":0,"msg":"提现金额不足100元！"});
-                }else{
+                }
+                //else if(money<100){
+                //    res.json({"status":0,"msg":"提现金额不足100元！"});
+                //}
+                else{
                     pool.getConnection((err, conn)=> {
                         conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),1,1,0,3)',[managerId,uuid,money],(err,result)=>{
                             if (err) {
@@ -3417,7 +3481,8 @@ app.post('/tixian',(req,res)=>{
                                             if(result.affectedRows>0){
                                                 conn.query('select openid from account where Uuid = ? and status!=2',[uuid],(err,result)=>{
                                                     if(result.length>0){
-                                                        doTransfer(result[0].openid,money,'代理提现',ip,cb);
+                                                        console.log(result[0].openid,money,'代理提现',ip,cb);
+                                                        // doTransfer(result[0].openid,money,'代理提现',ip,cb);
                                                         console.log('openid'+result[0].openid);
                                                         if(req.session[managerId]&&req.session[managerId].day==new Date().toLocaleDateString()){
                                                             req.session[managerId]={day:new Date().toLocaleDateString(),times:2};

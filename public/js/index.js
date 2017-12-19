@@ -623,7 +623,7 @@ $(function(){
                     }
                     console.log(data);
                     if(data>0){
-                       alert('修改成功！');
+                        alert('修改成功！');
                     }else{
                         alert('修改失败！');
                     }
@@ -1040,6 +1040,7 @@ $(function(){
 
     $('#searchAgent').click(function(){
         getMyAgents(1);
+        getManagers2();
     });
 
     $('#vip>button.charge').click(function(){
@@ -1112,7 +1113,7 @@ $(function(){
 
     $('#vip #searchVip').click(function(){
         getAccount(1);
-     })
+    })
     if(sessionStorage['powerId']==1){
         $('#totalBonus').hide();
         $('#info .info-hide').hide();
@@ -1390,6 +1391,56 @@ $(function(){
 
     })
 
+    function getManagers2(){
+        var starttime=$("#searchAgentForm [name=starttime]").val();
+        var endtime=$("#searchAgentForm [name=endtime]").val();
+        var managerId=$("#searchAgentForm [name=managerId]").val();
+        var uname=$("#searchAgentForm [name=uname]").val();
+        var invitecode=$("#searchAgentForm [name=invitecode]").val();
+        var powerId=$("#searchAgentForm [name=powerId]").val();
+        var gameId=$("#searchAgentForm [name=gameId]").val();
+        if(powerId==0){powerId=''};
+        if(gameId==0){gameId=''};
+        $.ajax({
+            url:'/getManagers',
+            data:{starttime:starttime,endtime:endtime,managerId:managerId,powerId:powerId,inviteCode:invitecode,uname:uname},
+            success:function(data){
+                for(var m of data){
+                    m['childAgent']=[];
+                }
+                console.dir(data);
+                var hash=[];
+                for(var i=0;i<data.length;i++){
+                    if(data[i].manager_up_id== (managerId||sessionStorage['managerId'])){
+                        hash.push(data[i]);
+                        data.splice(i,1);
+                        i--;
+                    }
+                }
+                for(var j=0;j<data.length;j++){
+                    for(var key in hash){
+                        if(data[j].manager_up_id==hash[key].id){
+                            data[j].push(hash[key]['childAgent']);
+                            data.splice(j,1);
+                            j--;
+                        }
+                    }
+                }
+                for(var k=0;k<data.length;k++){
+                    for(var key in hash){
+                        for(var n=0;n<hash[key]['childAgent'].length;n++){
+                            if(data[k].manager_up_id==hash[key]['childAgent'][n].id){
+                                data[k].push(hash[key]['childAgent'][n]['childAgent']);
+                                data.splice(k,1);
+                                k--;
+                            }
+                        }
+                    }
+                }
+                console.dir(hash);
+            }
+        })
+    }
 });
 
 

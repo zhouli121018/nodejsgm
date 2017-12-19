@@ -26,7 +26,7 @@ var session = require('express-session');
 //}
 
 var pool=mysql.createPool({
-    host:'120.79.23.45',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 // qingyuan1213 103.73.206.31
+    host:'103.73.206.31',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 // qingyuan1213 103.73.206.31 //测试 120.79.23.45
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'mahjong',
@@ -2977,51 +2977,51 @@ app.get('/getAddVipCount/day',(req,res)=>{
             if(err){
                 console.log(err);
             }else{
-                   if(powerId>1||req.query.managerId){
-                       var progress=0;
-                       function getcount(day){
-                           conn.query('select count(id) as c from account where manager_up_id=? and createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[managerId,day,day-1],(err,result)=>{
-                               //console.log(9999999999);
-                               console.log(result);
-                               progress++;
-                               var now=new Date();
-                               now.setDate(now.getDate()-day);
-                               resultJson[6-day].label=now.toLocaleDateString();
-                               resultJson[6-day].value=result[0].c;
-                               if(progress==7){
-                                   console.log(resultJson);
-                                   res.json(resultJson);
-                                   conn.release();
-                               }
-                           })
-                       }
-                       for(let i=6;i>=0;i--){
-                           getcount(i);
-                           console.log(123456789);
-                       }
-                   }else{
-                       var progress=0;
-                       function getcount(day){
-                           conn.query('select count(id) as c from account where createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[day,day-1],(err,result)=>{
-                               //console.log(9999999999);
-                               console.log(result);
-                               progress++;
-                               var now=new Date();
-                               now.setDate(now.getDate()-day);
-                               resultJson[6-day].label=now.toLocaleDateString();
-                               resultJson[6-day].value=result[0].c;
-                               if(progress==7){
-                                   console.log(resultJson);
-                                   res.json(resultJson);
-                                   conn.release();
-                               }
-                           })
-                       }
-                       for(let i=6;i>=0;i--){
-                           getcount(i);
-                           console.log(123456789);
-                       }
-                   }
+                if(powerId>1||req.query.managerId){
+                    var progress=0;
+                    function getcount(day){
+                        conn.query('select count(id) as c from account where manager_up_id=? and createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[managerId,day,day-1],(err,result)=>{
+                            //console.log(9999999999);
+                            console.log(result);
+                            progress++;
+                            var now=new Date();
+                            now.setDate(now.getDate()-day);
+                            resultJson[6-day].label=now.toLocaleDateString();
+                            resultJson[6-day].value=result[0].c;
+                            if(progress==7){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                    for(let i=6;i>=0;i--){
+                        getcount(i);
+                        console.log(123456789);
+                    }
+                }else{
+                    var progress=0;
+                    function getcount(day){
+                        conn.query('select count(id) as c from account where createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[day,day-1],(err,result)=>{
+                            //console.log(9999999999);
+                            console.log(result);
+                            progress++;
+                            var now=new Date();
+                            now.setDate(now.getDate()-day);
+                            resultJson[6-day].label=now.toLocaleDateString();
+                            resultJson[6-day].value=result[0].c;
+                            if(progress==7){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                    for(let i=6;i>=0;i--){
+                        getcount(i);
+                        console.log(123456789);
+                    }
+                }
 
             }
 
@@ -3481,8 +3481,7 @@ app.post('/tixian',(req,res)=>{
                                             if(result.affectedRows>0){
                                                 conn.query('select openid from account where Uuid = ? and status!=2',[uuid],(err,result)=>{
                                                     if(result.length>0){
-                                                        console.log(result[0].openid,money,'代理提现',ip,cb);
-                                                        // doTransfer(result[0].openid,money,'代理提现',ip,cb);
+                                                        doTransfer(result[0].openid,money,'代理提现',ip,cb);
                                                         console.log('openid'+result[0].openid);
                                                         if(req.session[managerId]&&req.session[managerId].day==new Date().toLocaleDateString()){
                                                             req.session[managerId]={day:new Date().toLocaleDateString(),times:2};
@@ -3529,7 +3528,7 @@ app.get('/getNotice',(req,res)=>{
                 if(powerId==1){
                     conn.query('(select * from noticetable where type = 3  order by id DESC limit 0,1 ) union (select * from noticetable where type = 2  order by id DESC limit 0,1 ) union  (select *  from noticetable where type = 1 order by id DESC limit 0,1 ) union (select* from noticetable where type = 0 and managerId is null  order by id DESC  limit 0,1) ',(err,result)=>{
 
-                            res.json(result);
+                        res.json(result);
                     })
                 }
             }
@@ -3556,15 +3555,290 @@ app.get('/addNotice',(req,res)=>{
                 console.log(err);
             }else{
 
-                    conn.query('insert into noticetable values(null,?,?,?,2)',[content,type,managerId],(err,result)=>{
-                        console.log(result);
-                        if(result.affectedRows>0){
-                            res.json({"status":1});
-                        }else{
-                            res.json({"status":0});
-                        }
-                    })
+                conn.query('insert into noticetable values(null,?,?,?,2)',[content,type,managerId],(err,result)=>{
+                    console.log(result);
+                    if(result.affectedRows>0){
+                        res.json({"status":1});
+                    }else{
+                        res.json({"status":0});
+                    }
+                })
 
+            }
+            conn.release();
+        })
+    }
+});
+
+//获取我的代理数据
+app.get('/getManagers',(req,res)=>{
+    if(req.session.user){
+        var user=req.session.user;
+        var managerId=user.id;
+        var powerId=user.power_id;
+        var inputManagerId=req.query.managerId;
+        var uname =req.query.uname;
+        var inviteCode=req.query.inviteCode;
+        var inputPowerId=req.query.powerId;
+        var uuid=req.query.uuid;
+        if(inputManagerId){
+            managerId=req.query.managerId;
+        }
+        var levelStr='';
+        var n=100000000;
+        var levelStr0=n+parseInt(managerId);
+        var levelStr1=levelStr0+'$%';
+        levelStr=levelStr1.slice(1);
+        var plevelStr='';
+        plevelStr=user.levelStr;
+        if(plevelStr){
+            levelStr=plevelStr+levelStr;
+        }
+        var starttime=req.query.starttime;
+        var endtime=req.query.endtime;
+        var now=new Date();
+        now.setDate(now.getDate()+1);
+        var overArr=now.toLocaleDateString().split('/');
+        for(var i=0;i<overArr.length;i++){
+            if(overArr[i]<10){
+                overArr[i]=0+overArr[i];
+            }
+        }
+        var overTime=overArr.join('-');
+        console.log(overTime);
+        if(!starttime){
+            starttime='1970-01-01';
+        }
+        if(!endtime){
+            endtime=overTime;
+        }
+        pool.getConnection((err,conn)=>{
+            if(err){
+                console.log(err);
+            }else{
+                if(powerId>1||inputManagerId){
+                    if(uname){
+                        if(inviteCode){
+                            if(uuid){
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.name=? and b.inviteCode=? and b.uuid=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,uname,inviteCode,uuid,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.name=? and b.inviteCode=? and b.uuid=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,uname,inviteCode,uuid,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }else{
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.name=? and b.inviteCode=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,uname,inviteCode,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.name=? and b.inviteCode=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,uname,inviteCode,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }
+                        }else{
+                            if(uuid){
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.name=? and b.uuid=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,uname,uuid,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.name=? and b.uuid=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,uname,uuid,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }else{
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.name=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,uname,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.name=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,uname,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }
+                        }
+                    }else{
+                        if(inviteCode){
+                            if(uuid){
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.inviteCode=? and b.uuid=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,inviteCode,uuid,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.inviteCode=? and b.uuid=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,inviteCode,uuid,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+
+                                }
+                            }else{
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.inviteCode=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,inviteCode,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.inviteCode=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,inviteCode,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }
+                        }else{
+                            if(uuid){
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.uuid=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,uuid,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.uuid=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,uuid,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }else{
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.levelStr like ?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[levelStr,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }
+                        }
+
+                    }
+                }else{
+                    if(uname){
+                        if(inviteCode){
+                            if(uuid){
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.name=? and b.inviteCode=? and b.uuid=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[uname,inviteCode,uuid,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.name=? and b.inviteCode=? and b.uuid=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[uname,inviteCode,uuid,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }else{
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.name=? and b.inviteCode=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[uname,inviteCode,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.name=? and b.inviteCode=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[uname,inviteCode,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }
+                        }else{
+                            if(uuid){
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.name=? and b.uuid=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[uname,uuid,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.name=? and b.uuid=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[uname,uuid,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }else{
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.name=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[uname,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.name=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[uname,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }
+                        }
+                    }else{
+                        if(inviteCode){
+                            if(uuid){
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.inviteCode=? and b.uuid=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[inviteCode,uuid,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.inviteCode=? and b.uuid=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[inviteCode,uuid,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }else{
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.inviteCode=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[inviteCode,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.inviteCode=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[inviteCode,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }
+                        }else{
+                            if(uuid){
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.uuid=? and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[uuid,inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.uuid=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[uuid,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }else{
+                                if(inputPowerId){
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3 and b.power_id=?) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[inputPowerId,starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }else{
+                                    conn.query("select m.*,IFNULL(sum(n.money),0) as totalMoney from  (select b.*,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$%') as totalLevelStr,IFNULL(count(a.id),0) as userCounts  from account a right join manager b on a.manager_up_id = b.id group by b.id having b.id>3) m left join(select b.id,concat(IFNULL(b.levelStr,''),LPAD(b.id, 8, 0),'$') as levelStr,IFNULL(sum(a.money),0) as money from manager b left join paylog a on a.managerId = b.id and a.payTime >? and a.payTime <? and  b.pid=1  and (a.gameId = 1 or a.gameId = 3) and payType = 0 group by b.id having b.id>2 ) n on n.levelStr like m.totalLevelStr group by m.id ORDER BY totalMoney desc,totalCards desc ",[starttime,endtime],(err,result)=>{
+                                        //console.log(result);
+                                        res.json(result);
+                                    })
+                                }
+                            }
+                        }
+                    }
+                }
             }
             conn.release();
         })

@@ -60,6 +60,9 @@ h2{
 .level3{
     text-indent: 4em;
 }
+.level4{
+    text-indent: 6em;
+}
 .navbar-brand>img{
     max-height:100%;
 }

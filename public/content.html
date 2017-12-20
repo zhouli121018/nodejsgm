@@ -99,7 +99,7 @@
         <div id="agent">
             <h2>我的代理</h2>
             <!--<h4>充值总金额(￥)：<b class="total-money">0</b>元</h4>-->
-            <button type="button" class="btn btn-lg btn-success add-agent">新增代理</button>
+            <button type="button" class="btn btn-success add-agent">新增代理</button>
             <div class="searchInfo">
                 <form class="form-inline form-btn" name="searchAgentForm" id="searchAgentForm">
                     <div class="form-group">
@@ -150,8 +150,8 @@
                 <table id="agentTbl" class="table table-bordered table-striped tree">
                     <thead>
                         <tr>
-                            <th>代理编码</th>
                             <th>真实姓名</th>
+                            <th>代理ID</th>
                             <th>游戏ID</th>
                             <th>昵称</th>
                             <th>代理级别</th>
@@ -164,7 +164,8 @@
                             <th>代理数量</th>
                             <th>充值业绩(元)</th>
                             <th>账户状态</th>
-                            <th>上级代理ID</th>
+                            <th>微信号</th>
+                            <th>创建时间</th>
                             <th>上次登录</th>
                             <th>操作</th>
                         </tr>
@@ -244,6 +245,10 @@
                         <div class="form-group">
                             <label>手机号：</label>
                             <input type="number" name="telephone"  class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>微信号：</label>
+                            <input type="text" name="weixin"  class="form-control">
                         </div>
                         <div class="form-group">
                             <label>邀请码：</label>
@@ -638,6 +643,7 @@
 <script src="js/fusioncharts.js"></script>
 <script src="js/bootlint.js"></script>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script src="js/jquery.treegrid.min.js"></script>
 <script type="text/javascript">
    // document.write(returnCitySN["cip"]+','+returnCitySN["cname"]);
     console.log(returnCitySN["cip"]);

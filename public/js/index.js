@@ -311,6 +311,7 @@ $(function(){
 
 
     }
+
     function getMyAgents(page){
         var starttime=$("#searchAgentForm [name=starttime]").val();
         var endtime=$("#searchAgentForm [name=endtime]").val();
@@ -337,10 +338,15 @@ $(function(){
                 if(data.length>0){
                     for(var i=0,html='';i<data.length;i++){
                         var o=data[i];
+                        if(o.agentNum>0){
+                            html+=`<tr>
+                                   <td data-level="1"><span class="tree-collapse"></span><b>${o.name}</b></td>`
+                        }else{
+                            html+=`<tr>
+                                   <td><span></span><b>${o.name}</b></td>`
+                        }
                         html+=`
-                        <tr>
                             <td>${o.id}</td>
-                            <td>${o.name}</td>
                             <td>${o.uuid||''}</td>
                             <td>${o.nickName||''}</td>
                             <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
@@ -353,7 +359,8 @@ $(function(){
                             <td>${o.agentNum}</td>
                             <td>${o.totalMoney}</td>
                             <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
-                            <td>${o.manager_up_id}</td>
+                            <td>${o.weixin}</td>
+                            <td>${o.createTime?new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             <td>${o.lastLoginTime?new Date(o.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             <td>
                             <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
@@ -668,73 +675,133 @@ $(function(){
     $('#resetPwd').click(function(){
         resetPassword();
     });
-    function getChildAgents(id,ele,level){
-
+    function getChildAgents(id,ele,level,oldClass){
         console.log(id);
+        var starttime=$("#searchAgentForm [name=starttime]").val();
+        var endtime=$("#searchAgentForm [name=endtime]").val();
         $.ajax({
             url:'/getChildAgents',
-            data:{managerId:id},
+            data:{starttime:starttime,endtime:endtime,managerId:id},
             success:function(data){
-                console.dir(data);
                 if(data.timeout==1){
                     location.href="index.html";
                     return;
                 }
-                for(var i=0,html='';i<data.length;i++){
-                    var o=data[i];
-                    if(o.agentNumber>0){
+                if(data.length>0){
+                    for(var i=0,html='';i<data.length;i++){
+                        var o=data[i];
+                        if(o.agentNum>0){
+                            html+=`
+                              <tr data-parent="${id}" class="${"close"+id} ${oldClass}">
+                              <td data-level="${level}" class="childAgent ${"level"+level}"><span class="tree-collapse"></span><b>${o.name}</b></td>`
+                        }else{
+                            html+=`
+                              <tr data-parent="${id}" class="${"close"+id} ${oldClass}">
+                              <td data-level="${level}" class="${"level"+level}"><span></span><b>${o.name}</b></td>`
+                        }
                         html+=`
-                <tr data-parent="${id}">
-                    <td data-level="${level}" class="childAgent ${"level"+level}"><span class="tree-collapse"></span><b>${o.id}</b></td>`
-                    }else{
-                        html+=`
-                <tr data-parent="${id}">
-                    <td data-level="${level}" class="${"level"+level}"><span></span><b>${o.id}</b></td>`
+                            <td>${o.id}</td>
+                            <td>${o.uuid||''}</td>
+                            <td>${sessionStorage['powerId']==1?o.nickName:'----'}</td>
+                            <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
+                            <td>${o.rebate}</td>
+                            <td>${sessionStorage['powerId']==1?o.telephone:'----'}</td>
+                            <td>${o.inviteCode}</td>
+                            <td>${o.roomCard||0}</td>
+                            <td>${o.bmount||0}</td>
+                            <td>${o.userCounts}</td>
+                            <td>${o.agentNum}</td>
+                            <td>${o.totalMoney}</td>
+                            <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
+                            <td>${sessionStorage['powerId']==1?o.weixin:'----'}</td>
+                            <td>${o.createTime?new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
+                            <td>${o.lastLoginTime?new Date(o.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
+                            `;
+                        if(sessionStorage['powerId']==1){
+                            html+=`<td>
+                                    <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
+                                    <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button>
+                                   </td>`;
+                        }else{
+                            html+=`<td></td>`;
+                        }
+                        html+=`</tr>`;
+
                     }
 
-                    html+=`
-                    <td>${o.name}</td>
-                    <td>${o.uuid}</td>
-                    <td>${o.nickName}</td>
-                    <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
-                    <td>${o.rebate}</td>
-                    <td>${o.telephone}</td>
-                    <td>${o.inviteCode}</td>
-                    <td>${o.roomCard}</td>
-                    <td>${o.redCard}</td>
-                    <td>${o.accountNumber}</td>
-                    <td>${o.agentNumber}</td>
-                    <td>${o.sumMoney}</td>
-                    <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
-                    <td>
-                    <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
-                    <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button></td>
-                </tr>
-                `;
+                    ele.after(html);
+
                 }
-                ele.after(html);
+
+
             }
         })
+        // $.ajax({
+        //     url:'/getChildAgents',
+        //     data:{managerId:id},
+        //     success:function(data){
+        //         console.dir(data);
+        //         if(data.timeout==1){
+        //             location.href="index.html";
+        //             return;
+        //         }
+        //         for(var i=0,html='';i<data.length;i++){
+        //             var o=data[i];
+        //             if(o.agentNumber>0){
+        //                 html+=`
+        //         <tr data-parent="${id}">
+        //             <td data-level="${level}" class="childAgent ${"level"+level}"><span class="tree-collapse"></span><b>${o.id}</b></td>`
+        //             }else{
+        //                 html+=`
+        //         <tr data-parent="${id}">
+        //             <td data-level="${level}" class="${"level"+level}"><span></span><b>${o.id}</b></td>`
+        //             }
+        //
+        //             html+=`
+        //             <td>${o.name}</td>
+        //             <td>${o.uuid}</td>
+        //             <td>${o.nickName}</td>
+        //             <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
+        //             <td>${o.rebate}</td>
+        //             <td>${o.telephone}</td>
+        //             <td>${o.inviteCode}</td>
+        //             <td>${o.roomCard}</td>
+        //             <td>${o.redCard}</td>
+        //             <td>${o.accountNumber}</td>
+        //             <td>${o.agentNumber}</td>
+        //             <td>${o.sumMoney}</td>
+        //             <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
+        //             <td>
+        //             <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
+        //             <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button></td>
+        //         </tr>
+        //         `;
+        //         }
+        //         ele.after(html);
+        //     }
+        // })
     }
     $("#agent #agentTbl tbody").on("click",'td span.tree-collapse',function(){
-        var mid=$(this).next().html();
+        var mid=$(this).parent().next().html();
         var ele=$(this).parents('tr');
         $(this).removeClass('tree-collapse').addClass('tree-expend');
         var level=parseInt($(this).parents('td').attr('data-level'))+1;
-        if(sessionStorage['powerId']==1){
-            getChildAgents(mid,ele,level);
-        }
+        var oldClass=$(this).parents('tr').attr('class');
+        //if(sessionStorage['powerId']==1){
+            getChildAgents(mid,ele,level,oldClass);
+        //}
     });
     $("#agent #agentTbl tbody").on("click",'td span.tree-expend',function(){
-        var mid=$(this).next().html();
+        var mid=$(this).parent().next().html();
         $(this).removeClass('tree-expend').addClass('tree-collapse');
-        $("#agentTbl [data-parent='"+mid+"']").hide();
+        //$("#agentTbl [data-parent='"+mid+"']").hide();
+        $("#agentTbl tr.close"+mid).hide();
     })
 
     $('#agent #agentTbl').on('click','.editAgent',function(){
         var mid=$(this).attr('data-id');
         var nowTr=$(this).parents('tr');
-        $('#agent #agentDetail .uname').val(nowTr.find('td:eq(1)').html());
+        $('#agent #agentDetail .uname').val(nowTr.find('td:eq(0)').text());
         $("#agent #agentDetail [name='mid']").val(mid);
         $("#agent #agentDetail [name='uuid']").val(nowTr.find('td:eq(2)').html());
         $("#agent #agentDetail [name='rebate']").val(nowTr.find('td:eq(5)').html());
@@ -742,6 +809,7 @@ $(function(){
         $("#agent #agentDetail [name='inviteCode']").val(nowTr.find('td:eq(7)').html());
         $("#agent #agentDetail [name='powerId']").val(nowTr.find('td:eq(4)').attr('data-powerId'));
         $("#agent #agentDetail [name='status']").val(nowTr.find('td:eq(13)').attr('data-status'));
+        $("#agent #agentDetail [name='weixin']").val(nowTr.find('td:eq(14)').html());
         $('#agent #agentDetail').fadeIn();
     });
     $('#agent #agentDetail .sure').click(function(){
@@ -752,10 +820,15 @@ $(function(){
         var telephone=$("#agent #agentDetail [name='telephone']").val();
         var rebate=$("#agent #agentDetail [name='rebate']").val();
         var powerId=$("#agent #agentDetail [name='powerId']").val();
+        var weixin=$("#agent #agentDetail [name='weixin']").val();
         var validInviteCode=false;
         var validUuid=false;
         if(inputInviteCode==''){
             alert('邀请码不能为空！请输入邀请码！');
+            return;
+        }
+        if(weixin==''){
+            alert('微信号不能为空！请输入邀请码！');
             return;
         }
         var rebetreg=/^0\.\d{1,2}$/;
@@ -838,7 +911,7 @@ $(function(){
         var mid=$(this).attr('data-id');
         var nowTr=$(this).parents('tr');
         $("#agent #agentCharge [name='roomCardNum']").val('');
-        $('#agent #agentCharge .uname').val(nowTr.find('td:eq(1)').html());
+        $('#agent #agentCharge .uname').val(nowTr.find('td:eq(0)').text());
         $("#agent #agentCharge [name='uuid']").val(nowTr.find('td:eq(2)').html());
         $("#agent #agentCharge .roomCard").val(nowTr.find('td:eq(8)').html());
         $("#agent #agentCharge .redCard").val(nowTr.find('td:eq(9)').html());
@@ -1413,7 +1486,7 @@ $(function(){
             },
             success: function (data) {
                 for (var m of data) {
-                    m['childAgent'] = [];
+                    m['childagent'] = [];
                 }
                 console.dir(data);
                 var hash = [];
@@ -1427,7 +1500,7 @@ $(function(){
                 for (var j = 0; j < data.length; j++) {
                     for (var key = 0; key < hash.length; key++) {
                         if (data[j]['manager_up_id'] == hash[key]['id']) {
-                            hash[key]['childAgent'].push(data[j]);
+                            hash[key]['childagent'].push(data[j]);
                             break;
                         }
                     }
@@ -1438,13 +1511,13 @@ $(function(){
                 }
                 for (var k = 0; k < data.length; k++) {
                     for (var e = 0; e < hash.length; e++) {
-                        for (var n = 0; n < hash[e]['childAgent'].length; n++) {
-                            if (data[k]['manager_up_id'] == hash[e]['childAgent'][n]['id']) {
-                                hash[e]['childAgent'][n]['childAgent'].push(data[k]);
+                        for (var n = 0; n < hash[e]['childagent'].length; n++) {
+                            if (data[k]['manager_up_id'] == hash[e]['childagent'][n]['id']) {
+                                hash[e]['childagent'][n]['childagent'].push(data[k]);
                                 break;
                             }
                         }
-                        if (n < hash[e]['childAgent'].length) {
+                        if (n < hash[e]['childagent'].length) {
                             break;
                         }
                     }
@@ -1453,6 +1526,138 @@ $(function(){
                         k++;
                     }
                 }
+                for(var o=0;o<data.length;o++){
+                    for(var x=0;x<hash.length;x++){
+                        for(var y=0;y<hash[x]['childagent'].length;y++){
+                            for(var z=0;z<hash[x]['childagent'][y]['childagent'].length;z++){
+                                if(data[o]['manager_up_id']==hash[x]['childagent'][y]['childagent'][z]['id']){
+                                    hash[x]['childagent'][y]['childagent'][z]['childagent'].push(data[o]);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                console.dir(data);
+                console.dir(hash);
+
+                // var arr=hash;
+                // for(var i=0,html='';i<arr.length;i++){
+                //     n++;
+                //     var m=n;
+                //     html+=`<tr class="treegrid-${n}" mark="${arr[i].id}">
+			     //     <td class="uname"><b>${arr[i].name}</b></td>
+			     //     <td>${arr[i].id}</td>
+			     //     <td>${arr[i].telephone}</td>
+			     //     <td>${arr[i].weixin}</td>
+			     //     <td>${arr[i].qq}</td>
+			     //     <td>${arr[i].inviteCode}</td>
+			     //     <td>${arr[i].uuid}</td>
+			     //     <td>${arr[i].createTimeStr}</td>
+			     //     <td>${arr[i].lastLoginTimeStr}</td>
+			     //     <td>${arr[i].userCounts}</td>
+			     //     <td>${arr[i].totalMoney}</td>
+			     //     <td>${arr[i].actualcard}</td>
+			     //     <td>${arr[i].rebate}</td>`;
+                //     if(sessionStorage['powerId']>1){
+                //         html+=`<td>${arr[i].name2}</td>
+			     //     <td>${arr[i].inviteCode2}</td>`;
+                //     }
+                //     html+=`<td>${arr[i].rootManager==1?'是':'否'}</td>
+			     //     <td class="grade" grd="${arr[i].powerId}">${arr[i].powerId==5?"皇冠代理":(arr[i].powerId==4?"钻石代理":(arr[i].powerId==3?"铂金代理":(arr[i].powerId==2?"黄金代理":"超级管理员")))}</td>
+			     //     <td class="adminEdit"><a href="${arr[i]}.id" class='btn btn-sm btn-warning'>修改</a> <a href="${arr[i]}.id" class='btn btn-sm btn-success charge'>充房卡</a> <a class='btn btn-sm btn-danger delete' href="${arr[i]}.id">删除</a> <a href="${arr[i].id}" class='btn btn-sm btn-primary resetPwd'>密码重置</a></td>
+			     //
+			     //    </tr>`;
+                //     if(arr[i].childagent.length!=0){
+                //         for(var j=0;j<arr[i].childagent.length;j++){
+                //             n++;
+                //             var l=n;
+                //             var o=arr[i].childagent[j];
+                //             html+=`<tr class="treegrid-${n} treegrid-parent-${m}" mark="${arr[i].id}" mark1="${o.id}">
+			     //     <td class="uname"><b>${o.name}</b></td>
+			     //     <td>${o.id}</td>
+			     //     <td>${o.telephone}</td>
+			     //     <td>${o.weixin}</td>
+			     //     <td>${o.qq}</td>
+			     //     <td>${o.inviteCode}</td>
+			     //     <td>${o.uuid}</td>
+			     //     <td>${o.createTimeStr}</td>
+			     //     <td>${o.lastLoginTimeStr}</td>
+			     //     <td>${o.userCounts}</td>
+			     //     <td>${o.totalMoney}</td>
+			     //     <td>${arr[i].actualcard}</td>
+			     //     <td>${o.rebate}</td>
+			     //     <td>${o.rootManager==1?'是':'否'}</td>
+			     //     <td class="grade" grd="${o.powerId}">${o.powerId==5?"皇冠代理":(o.powerId==4?"钻石代理":(o.powerId==3?"铂金代理":(o.powerId==2?"黄金代理":"超级管理员")))}</td>
+			     //     <td class="adminEdit"><a href="${o.id}" class='btn btn-sm btn-warning'>修改</a> <a href="${arr[i]}.id" class='btn btn-sm btn-success charge'>充房卡</a>  <a class='btn btn-sm btn-danger delete' href="${o.id}">删除</a> <a href="${o.id}" class='btn btn-sm btn-primary resetPwd'>密码重置</a></td>
+			     //
+			     //    </tr>`;
+                //             if(o.childagent.length!=0){
+                //                 for(var k=0;k<o.childagent.length;k++){
+                //                     n++;
+                //                     var q=n;
+                //                     var obj=o.childagent[k];
+                //                     html+=`<tr class="treegrid-${n} treegrid-parent-${l}" mark="${arr[i].id}" mark1="${o.id}" mark2="${obj.id}" >
+			     //                     <td class="uname"><b>${obj.name}</b></td>
+			     //                     <td>${obj.id}</td>
+			     //                     <td>${obj.telephone}</td>
+			     //                     <td>${obj.weixin}</td>
+			     //                     <td>${obj.qq}</td>
+			     //                     <td>${obj.inviteCode}</td>
+			     //                     <td>${obj.uuid}</td>
+			     //                     <td>${obj.createTimeStr}</td>
+			     //                     <td>${obj.lastLoginTimeStr}</td>
+			     //                     <td>${obj.userCounts}</td>
+			     //                     <td>${obj.totalMoney}</td>
+			     //                     <td>${arr[i].actualcard}</td>
+			     //                     </td>
+			     //                     <td>${obj.rebate}</td>
+			     //                     <td>${obj.rootManager==1?'是':'否'}</td>
+			     //                     <td class="grade" grd="${obj.powerId}">${obj.powerId==5?"皇冠代理":(obj.powerId==4?"钻石代理":(obj.powerId==3?"铂金代理":(obj.powerId==2?"黄金代理":"超级管理员")))}</td>
+			     //                     <td class="adminEdit"><a href="${obj.id}" class='btn btn-sm btn-warning'>修改</a> <a href="${arr[i]}.id" class='btn btn-sm btn-success charge'>充房卡</a>  <a class='btn btn-sm btn-danger delete'  href="${obj.id}">删除</a> <a class='btn btn-sm btn-primary resetPwd' href="${obj.id}">密码重置</a></td>
+			     //
+			     //                    </tr>`;
+                //
+                //                     if(obj.childagent.length!=0){
+                //                         for(var x=0;x<obj.childagent.length;x++) {
+                //                             n++;
+                //                             var p = obj.childagent[x];
+                //                             html += `<tr class="treegrid-${n} treegrid-parent-${q}" mark="${arr[i].id}" mark1="${o.id}" mark2="${obj.id}" mark3="${p.id}">
+			     //                     <td class="uname"><b>${p.name}</b></td>
+			     //                     <td>${p.id}</td>
+			     //                     <td>${p.telephone}</td>
+			     //                     <td>${p.weixin}</td>
+			     //                     <td>${p.qq}</td>
+			     //                     <td>${p.inviteCode}</td>
+			     //                     <td>${p.uuid}</td>
+			     //                     <td>${p.createTimeStr}</td>
+			     //                     <td>${p.lastLoginTimeStr}</td>
+			     //                     <td>${p.userCounts}</td>
+			     //                     <td>${p.totalMoney}</td>
+			     //                     <td>${arr[i].actualcard}</td>
+			     //                     </td>
+			     //                     <td>${p.rebate}</td>
+			     //                     <td>${p.rootManager==1?'是':'否'}</td>
+			     //                     <td class="grade" grd="${p.powerId}">${p.powerId==5?"皇冠代理":(p.powerId==4?"钻石代理":(p.powerId==3?"铂金代理":(p.powerId==2?"黄金代理":"超级管理员")))}</td>
+			     //                     <td class="adminEdit"><a href="${p.id}" class='btn btn-sm btn-warning'>修改</a> <a href="${arr[i]}.id" class='btn btn-sm btn-success charge'>充房卡</a> <a class='btn btn-sm btn-danger delete'  href="${p.id}">删除</a>  <a href="${p.id}" class='btn btn-sm btn-primary resetPwd'>密码重置</a></td>
+			     //
+			     //                    </tr>`;
+                //
+                //
+                //                         } }
+                //
+                //                 }
+                //             }
+                //
+                //
+                //         }
+                //     }
+                //
+                // }
+                // $('#agentTbl tbody').html(html);
+                // $('.tree').treegrid();
+                // $('.tree').treegrid('collapseAll');
+
             }
         })
     }

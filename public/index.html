@@ -28,21 +28,21 @@
             <div class="form-group">
                 <label for="pwd">密码：</label>
                 <input type="password" class="form-control" name="pwd" id="pwd" placeholder="密码">
-                <p class="help-block">Example block-level help text here.</p>
+                <!--<p class="help-block">Example block-level help text here.</p>-->
             </div>
-            <!--<div class="form-group">-->
-            <!--<label for="code">验证码：</label>-->
-            <!--<input type="text" id="code" class="form-control" placeholder="验证码">-->
-            <!--<div class="text-center">-->
-            <!--<img src="img/code.png" class="img-responsive" alt="1"/>-->
-            <!--</div>-->
-            <!--</div>-->
+            <div class="form-group">
+            <label for="code">验证码：</label>
+            <input type="text" id="code" class="form-control" placeholder="请输入下图中的验证码">
+            </div>
+            <div class="form-group">
+                <div class="text-center">
+                    <img id="nodeCode" src="/getCode" title="点击切换" class="img-responsive" alt="验证码"/>
+                </div>
+            </div>
             <button type="button" id="loginBtn" class="btn btn-success btn-block">登 录</button>
         </form>
         <p class="text-center">Copyright &copy;2016-2017,LongQing Inc, All rights Reserved </p>
     </div>
-
-
 
 </div>
 <br/><br/>
@@ -62,7 +62,7 @@
         console.log(md5pwd);
         $.ajax({
             url:'/login',
-            data:{uname:$('#uname').val(),pwd:md5pwd},
+            data:{uname:$('#uname').val(),pwd:md5pwd,code:$('#code').val()},
             success:function(data){
                 console.log(data);
                 if(data.logStatus==1){
@@ -76,7 +76,19 @@
                 }
             }
         })
+    });
+    function changeCode(){
+        $.ajax({
+            url:'/getCode',
+            success:function(data){
+                $('#nodeCode').attr('src','/getCode');
+            }
+        })
+    }
+    $('#nodeCode').click(function(){
+        changeCode();
     })
+
 </script>
 </body>
 </html>

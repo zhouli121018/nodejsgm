@@ -10,6 +10,7 @@ const express=require('express');
 const mysql=require('mysql');
 const qs=require('querystring');
 const fs   = require("fs");
+var captchapng = require('captchapng');
 //require('body-parser-xml')(bodyParser);
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
@@ -57,9 +58,31 @@ app.use(function(req, res, next){
         req.session._garbage = Date();
         req.session.touch();
         next();
+    }else if(url=='/getCode'){
+        next();
     }else{
         return res.json({"timeout":1});
     }
+});
+app.get('/getCode',(req,res)=>{
+    var code = '0123456789';
+    var length = 4;
+    var randomcode = '';
+    for (var i = 0; i < length; i++) {
+        randomcode += code[parseInt(Math.random() * 1000) % code.length];
+    }
+    req.session.code=randomcode;
+    console.log('验证码：'+req.session.code);
+    // 输出图片
+    var p = new captchapng(300,50,parseInt(randomcode)); // width,height,numeric captcha
+    p.color(255, 255, 255, 0);  // First color: background (red, green, blue, alpha)
+    p.color(80, 80, 80, 150); // Second color: paint (red, green, blue, alpha)
+    var img = p.getBase64();
+    var imgbase64 = new Buffer(img,'base64');
+    res.writeHead(200, {
+        'Content-Type': 'image/png'
+    });
+    res.end(imgbase64);
 });
 
 var config = {
@@ -188,16 +211,8 @@ function doTransfer(openId,money,desc,ip,cb){
 app.get('/login',(req,res)=>{
     var uname = req.query.uname;
     var pwd = req.query.pwd;
-    if(req.session.user){
-        var user=req.session.user;
-        if(uname==user.inviteCode&&pwd==user.password){
-            res.json(user);
-        }else{
-            login();
-        }
-    }else{
-        login();
-    }
+    var code = req.query.code;
+
     function login(){
         pool.getConnection((err,conn)=>{
             if(err){
@@ -220,13 +235,28 @@ app.get('/login',(req,res)=>{
                         req.session.user=result[0];
                         res.json(result[0]);
                     }else{
-                        res.json({msg:'用户名或密码不正确！',logStatus:0})
+                        res.json({"msg":'用户名或密码不正确！',"logStatus":0})
                     }
                     conn.release();
                 })
             }
         })
     }
+    if(req.session.code==code){
+        if(req.session.user){
+            var user=req.session.user;
+            if(uname==user.inviteCode&&pwd==user.password){
+                res.json(user);
+            }else{
+                login();
+            }
+        }else{
+            login();
+        }
+    }else{
+        res.json({"msg":"验证码不正确！请重新输入","logStatus":0})
+    }
+
 
 });
 

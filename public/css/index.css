@@ -276,3 +276,7 @@ h2{
 button.add-notice{
     margin:5px;
 }
+#nodeCode{
+    width:100%;
+    background:url("../img/code.jpg");
+}

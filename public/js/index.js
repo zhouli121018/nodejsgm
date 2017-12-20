@@ -1040,7 +1040,7 @@ $(function(){
 
     $('#searchAgent').click(function(){
         getMyAgents(1);
-        getManagers2();
+        //getManagers2();
     });
 
     $('#vip>button.charge').click(function(){
@@ -1391,56 +1391,73 @@ $(function(){
 
     })
 
-    function getManagers2(){
-        var starttime=$("#searchAgentForm [name=starttime]").val();
-        var endtime=$("#searchAgentForm [name=endtime]").val();
-        var managerId=$("#searchAgentForm [name=managerId]").val();
-        var uname=$("#searchAgentForm [name=uname]").val();
-        var invitecode=$("#searchAgentForm [name=invitecode]").val();
-        var powerId=$("#searchAgentForm [name=powerId]").val();
-        var gameId=$("#searchAgentForm [name=gameId]").val();
-        if(powerId==0){powerId=''};
-        if(gameId==0){gameId=''};
+    function getManagers2() {
+        var starttime = $("#searchAgentForm [name=starttime]").val();
+        var endtime = $("#searchAgentForm [name=endtime]").val();
+        var managerId = $("#searchAgentForm [name=managerId]").val();
+        var uname = $("#searchAgentForm [name=uname]").val();
+        var invitecode = $("#searchAgentForm [name=invitecode]").val();
+        var powerId = $("#searchAgentForm [name=powerId]").val();
+        if (powerId == 0) {
+            powerId = ''
+        }
         $.ajax({
-            url:'/getManagers',
-            data:{starttime:starttime,endtime:endtime,managerId:managerId,powerId:powerId,inviteCode:invitecode,uname:uname},
-            success:function(data){
-                for(var m of data){
-                    m['childAgent']=[];
+            url: '/getManagers',
+            data: {
+                starttime: starttime,
+                endtime: endtime,
+                managerId: managerId,
+                powerId: powerId,
+                inviteCode: invitecode,
+                uname: uname
+            },
+            success: function (data) {
+                for (var m of data) {
+                    m['childAgent'] = [];
                 }
                 console.dir(data);
-                var hash=[];
-                for(var i=0;i<data.length;i++){
-                    if(data[i].manager_up_id== (managerId||sessionStorage['managerId'])){
+                var hash = [];
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i]['manager_up_id'] == (managerId || sessionStorage['managerId'])) {
                         hash.push(data[i]);
-                        data.splice(i,1);
+                        data.splice(i, 1);
                         i--;
                     }
                 }
-                for(var j=0;j<data.length;j++){
-                    for(var key in hash){
-                        if(data[j].manager_up_id==hash[key].id){
-                            data[j].push(hash[key]['childAgent']);
-                            data.splice(j,1);
-                            j--;
+                for (var j = 0; j < data.length; j++) {
+                    for (var key = 0; key < hash.length; key++) {
+                        if (data[j]['manager_up_id'] == hash[key]['id']) {
+                            hash[key]['childAgent'].push(data[j]);
+                            break;
                         }
                     }
+                    if (key < hash.length) {
+                        data.splice(j, 1);
+                        j--;
+                    }
                 }
-                for(var k=0;k<data.length;k++){
-                    for(var key in hash){
-                        for(var n=0;n<hash[key]['childAgent'].length;n++){
-                            if(data[k].manager_up_id==hash[key]['childAgent'][n].id){
-                                data[k].push(hash[key]['childAgent'][n]['childAgent']);
-                                data.splice(k,1);
-                                k--;
+                for (var k = 0; k < data.length; k++) {
+                    for (var e = 0; e < hash.length; e++) {
+                        for (var n = 0; n < hash[e]['childAgent'].length; n++) {
+                            if (data[k]['manager_up_id'] == hash[e]['childAgent'][n]['id']) {
+                                hash[e]['childAgent'][n]['childAgent'].push(data[k]);
+                                break;
                             }
                         }
+                        if (n < hash[e]['childAgent'].length) {
+                            break;
+                        }
+                    }
+                    if(e<hash.length){
+                        data.splice(k,1);
+                        k++;
                     }
                 }
-                console.dir(hash);
             }
         })
     }
+
+
 });
 
 

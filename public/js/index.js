@@ -574,6 +574,7 @@ $(function(){
                             <td>${o.Uuid||o.uuid}</td>
                             <td>${o.nickName}</td>
                             <td>${o.manager_up_id}</td>
+                            <td>${o.name}</td>
                             <td>${o.totalMoney}</td>
                             <td>${o.roomCard}</td>
                             <td>${redCardStr}</td>

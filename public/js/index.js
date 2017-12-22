@@ -176,12 +176,8 @@ $(function(){
                     <td>${data.nickName}</td>
                 </tr>
                 <tr>
-                    <td>剩余蓝钻：</td>
+                    <td>剩余房卡：</td>
                     <td>${data.roomCard}</td>
-                </tr>
-                <tr>
-                    <td>剩余红钻：</td>
-                    <td>${data.redCard}</td>
                 </tr>
                 <tr>
                     <td>代理编码：</td>
@@ -218,10 +214,6 @@ $(function(){
                 <tr>
                     <td>下级会员数量：</td>
                     <td id="vipCount"></td>
-                </tr>
-                <tr>
-                    <td>上次登录时间：</td>
-                    <td>${data.lastLoginTime?new Date(data.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                 </tr>
             `;
                 $('#info table#infoTbl tbody').html(html);

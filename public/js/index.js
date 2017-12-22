@@ -339,7 +339,7 @@ $(function(){
                         }
                         html+=`
                             <td>${o.id}</td>
-                            <td>${o.uuid||''}</td>
+                            <td>${o.Uuid||''}</td>
                             <td>${o.nickName||''}</td>
                             <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
                             <td>${o.rebate}</td>
@@ -694,7 +694,7 @@ $(function(){
                         }
                         html+=`
                             <td>${o.id}</td>
-                            <td>${o.uuid||''}</td>
+                            <td>${o.Uuid||''}</td>
                             <td>${sessionStorage['powerId']==1?o.nickName:'----'}</td>
                             <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
                             <td>${o.rebate}</td>

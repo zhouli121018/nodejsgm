@@ -36,6 +36,7 @@
                     <li><a href="#vip">我的会员</a></li>
                     <li><a href="#detail">账单明细</a></li>
                     <li><a href="#note">提现流水</a></li>
+                    <li class="powerId-hide"><a href="#notice">公告管理</a></li>
                 </ul>
             </div>
         </div>
@@ -98,7 +99,7 @@
         <div id="agent">
             <h2>我的代理</h2>
             <!--<h4>充值总金额(￥)：<b class="total-money">0</b>元</h4>-->
-            <button type="button" class="btn btn-lg btn-success add-agent">新增代理</button>
+            <button type="button" class="btn btn-success add-agent">新增代理</button>
             <div class="searchInfo">
                 <form class="form-inline form-btn" name="searchAgentForm" id="searchAgentForm">
                     <div class="form-group">
@@ -141,8 +142,8 @@
                 <table id="agentTbl" class="table table-bordered table-striped tree">
                     <thead>
                         <tr>
-                            <th>代理编码</th>
                             <th>真实姓名</th>
+                            <th>代理ID</th>
                             <th>游戏ID</th>
                             <th>昵称</th>
                             <th>代理级别</th>
@@ -155,7 +156,8 @@
                             <th>代理数量</th>
                             <th>充值业绩(元)</th>
                             <th>账户状态</th>
-                            <th>上级代理ID</th>
+                            <th>微信号</th>
+                            <th>创建时间</th>
                             <th>上次登录</th>
                             <th>操作</th>
                         </tr>
@@ -237,6 +239,10 @@
                             <input type="number" name="telephone"  class="form-control">
                         </div>
                         <div class="form-group">
+                            <label>微信号：</label>
+                            <input type="text" name="weixin"  class="form-control">
+                        </div>
+                        <div class="form-group">
                             <label>邀请码：</label>
                             <input type="number" name="inviteCode"  class="form-control">
                         </div>
@@ -251,7 +257,7 @@
                         </div>
                         <div class="form-group">
                             <label>分成比例：</label>
-                            <input type="text" name="rebate" placeholder="不填则默认；正确格式（0.5）" class="form-control">
+                            <input type="text" name="rebate"  class="form-control">
                         </div>
                         <div class="form-group">
                             <label>代理状态：</label>
@@ -302,11 +308,14 @@
         <div id="vip">
             <h2>我的会员</h2>
 
-            <button type="button" class="btn btn-success btn-lg charge">
+            <button type="button" class="btn btn-success charge">
                 <!--<span class="glyphicon glyphicon-plus"></span>-->
-                充值
+                玩家充值
             </button>
-
+            <button type="button" class="btn btn-primary  edit">
+                <!--<span class="glyphicon glyphicon-plus"></span>-->
+                重新绑定玩家上级代理
+            </button>
             <div class="searchInfo">
                 <form class="form-inline form-btn" name="searchVipForm" id="searchVipForm">
                     <div class="form-group">
@@ -343,6 +352,7 @@
                         <th>游戏ID</th>
                         <th>昵称</th>
                         <th>所属代理ID</th>
+                        <th>所属代理姓名</th>
                         <th>充值金额</th>
                         <th>剩余蓝钻</th>
                         <th>剩余红钻</th>
@@ -373,10 +383,28 @@
                             <input type="number" name="roomCardNum"  class="form-control">
                             <p>请输入正确的蓝钻数量</p>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group redcard-hide" style="display:none;">
                             <label>充红钻：</label>
                             <input type="number" name="redCardNum"  class="form-control">
                             <p>请输入正确的红钻数量</p>
+                        </div>
+                    </div>
+                    <input type="button" class="btn  btn-success sure" value="确 定"/>
+                    <input type="button" class="btn  btn-danger cancel" value="取 消"/>
+                </form>
+            </div>
+            <div id="vipDetail">
+                <form name="vipDetailForm" id="vipDetailForm">
+                    <button type="button" class="close"><span>&times;</span></button>
+                    <h4>重新绑定玩家上级代理</h4>
+                    <div>
+                        <div class="form-group">
+                            <label>玩家ID：</label>
+                            <input type="text" name="uuid"  class="form-control">
+                        </div>
+                        <div class="form-group redcard-hide">
+                            <label>上级代理邀请码：</label>
+                            <input type="number" name="invitecode"  class="form-control">
                         </div>
                     </div>
                     <input type="button" class="btn  btn-success sure" value="确 定"/>
@@ -410,6 +438,10 @@
 
         </div>
         <div id="detail">
+            <h2 class="detail-hide">实时统计信息</h2>
+            <div class="detail-hide">
+                <ul id="nowInfo"></ul>
+            </div>
             <h2>账单明细</h2>
             <div class="searchInfo">
                 <form class="form-inline form-btn" name="searchDetailForm" id="searchDetailForm">
@@ -425,11 +457,11 @@
                             <input type="date" name="endtime"  class="form-control" placeholder="截止时间">
                         </div>
                     </div>
-                    <div class="form-group agentSearch">
-                    <input type="number" name="managerId"  class="form-control" placeholder="请输入代理ID">
-                    </div>
                     <div class="form-group">
                         <input type="number" name="uuid"  class="form-control" placeholder="请输入玩家ID">
+                    </div>
+                    <div class="form-group agentSearch">
+                        <input type="number" name="managerId"  class="form-control" placeholder="请输入代理ID">
                     </div>
                     <div class="form-group">
                         <input type="button" class="btn btn-success" id="searchDetail"  value="查询">
@@ -538,6 +570,52 @@
             <ul id="note-pages"></ul>
             <p>共有 <b class="total-number">0</b> 条记录</p>
         </div>
+        <div id="notice">
+            <h2>公告管理</h2>
+            <button type="button" class="btn  btn-success add-notice">新增公告</button>
+            <div class="table-responsive">
+                <table id="noticeTbl" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>公告编号</th>
+                        <th>公告内容</th>
+                        <th>代理ID</th>
+                        <th>公告类型</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div id="add-notice">
+                <form name="addNoticeForm" id="addNoticeForm">
+                    <button type="button" class="close"><span>&times;</span></button>
+                    <h4>新增公告信息</h4>
+                    <div>
+                        <div class="form-group">
+                            <label>公告类型：</label>
+                            <select name="ntype" class="form-control">
+                                <option value="0">代理公告</option>
+                                <option value="1">消息公告</option>
+                                <option value="2">全服图片公告</option>
+                                <option value="3">给所有代理公告</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>公告内容：</label>
+                            <textarea name="content" class="form-control" rows="5">
+                            </textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>代理ID：</label>
+                            <input type="text" name="managerId" placeholder="请输入代理ID，没有则不填"  class="form-control">
+                        </div>
+                    </div>
+                    <input type="button" class="btn  btn-success sure" value="确 定"/>
+                    <input type="button" class="btn  btn-danger cancel" value="取 消"/>
+                </form>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -550,6 +628,7 @@
 <script src="js/fusioncharts.js"></script>
 <script src="js/bootlint.js"></script>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script src="js/jquery.treegrid.min.js"></script>
 <script type="text/javascript">
    // document.write(returnCitySN["cip"]+','+returnCitySN["cname"]);
     console.log(returnCitySN["cip"]);

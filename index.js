@@ -14,12 +14,12 @@ var captchapng = require('captchapng');
 //require('body-parser-xml')(bodyParser);
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-//process.on('uncaughtException', function (err) {
-//    //打印出错误
-//    console.log(err);
-//    //打印出错误的调用栈方便调试
-//    console.log(err.stack);
-//});
+process.on('uncaughtException', function (err) {
+   //打印出错误
+   console.log(err);
+   //打印出错误的调用栈方便调试
+   console.log(err.stack);
+});
 //try{
 //    var ok = req.params;
 //}catch(e){
@@ -27,7 +27,7 @@ var session = require('express-session');
 //}
 
 var pool=mysql.createPool({
-    host:'103.73.206.31',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 // qingyuan1213 103.73.206.31 //测试 120.79.23.45
+    host:'39.106.132.18',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 // qingyuan1213 103.73.206.31 //测试 120.79.23.45
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'mahjong',

@@ -60,6 +60,9 @@ h2{
 .level3{
     text-indent: 4em;
 }
+.level4{
+    text-indent: 6em;
+}
 .navbar-brand>img{
     max-height:100%;
 }
@@ -258,5 +261,25 @@ h2{
     border-top:4px dashed #faa;
     padding-top:.5em;
 }
-
-
+#nowInfo{
+    padding:0;
+    margin:0;
+    list-style:none;
+    display:flex;
+    justify-content: space-between;
+}
+#nowInfo li{
+    flex-grow:1;
+    text-align:center;
+    margin:2px;
+    padding:10px 0;
+    background:#f0ad4e;
+    color:#f0f;
+}
+button.add-notice{
+    margin:5px;
+}
+#nodeCode{
+    width:100%;
+    background:url("../img/code.jpg");
+}

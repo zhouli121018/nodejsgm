@@ -121,14 +121,6 @@
                         <input type="text" name="invitecode"  class="form-control" placeholder="请输入代理邀请码">
                     </div>
                     <div class="form-group agentId">
-                        <select name="gameId" class="form-control">
-                            <option value="0">全部充值</option>
-                            <option value="1">牛牛充值</option>
-                            <option value="2">挖乐28充值</option>
-                            <option value="3">清远麻将充值</option>
-                        </select>
-                    </div>
-                    <div class="form-group agentId">
                         <input type="number" name="managerId"  class="form-control" placeholder="请输入代理ID查询下级代理">
                     </div>
                     <div class="form-group agentId">
@@ -158,8 +150,8 @@
                             <th>分成比例</th>
                             <th>手机号码</th>
                             <th>邀请码</th>
-                            <th>剩余蓝钻</th>
-                            <th>剩余红钻</th>
+                            <th>剩余房卡</th>
+                            <th style="display:none;">剩余红钻</th>
                             <th>会员数量</th>
                             <th>代理数量</th>
                             <th>充值业绩(元)</th>
@@ -212,7 +204,7 @@
                         </div>
                         <div class="form-group">
                             <label>分成比例：</label>
-                            <input type="text" name="rebate" placeholder="不填则默认；正确格式（0.5）"  class="form-control">
+                            <input type="text" name="rebate" placeholder="不填则默认；正确格式（0.5:0.15）"  class="form-control">
                         </div>
                         <div class="form-group">
                             <label>代理级别：</label>
@@ -235,7 +227,7 @@
                     <div>
                         <div class="form-group">
                             <label>代理姓名：</label>
-                            <input type="text"  disabled class="uname form-control">
+                            <input type="text" name="uname"  class="uname form-control">
                             <input type="hidden"  name="mid" class="form-control">
                         </div>
                         <div class="form-group">
@@ -294,15 +286,11 @@
                             <input type="hidden"  name="uuid" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label>剩余蓝钻：</label>
+                            <label>剩余房卡：</label>
                             <input type="number"  disabled class="roomCard form-control">
                         </div>
                         <div class="form-group">
-                            <label>剩余红钻：</label>
-                            <input type="number"  disabled class="redCard form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>充蓝钻：</label>
+                            <label>充房卡：</label>
                             <input type="number" name="roomCardNum"  class="form-control">
                             <p>请输入正确的充钻数量</p>
                         </div>
@@ -387,11 +375,11 @@
                             <input type="text" name="uuid"  class="form-control">
                         </div>
                         <div class="form-group">
-                            <label>充蓝钻：</label>
+                            <label>充房卡：</label>
                             <input type="number" name="roomCardNum"  class="form-control">
                             <p>请输入正确的蓝钻数量</p>
                         </div>
-                        <div class="form-group redcard-hide">
+                        <div class="form-group redcard-hide mount-hide">
                             <label>充红钻：</label>
                             <input type="number" name="redCardNum"  class="form-control">
                             <p>请输入正确的红钻数量</p>
@@ -469,14 +457,6 @@
                         <input type="number" name="uuid"  class="form-control" placeholder="请输入玩家ID">
                     </div>
                     <div class="form-group agentSearch">
-                        <select name="gameId" class="form-control">
-                            <option value="0">全部充值</option>
-                            <option value="1">牛牛充值</option>
-                            <option value="2">挖乐28充值</option>
-                            <option value="3">清远麻将充值</option>
-                        </select>
-                    </div>
-                    <div class="form-group agentSearch">
                         <input type="number" name="managerId"  class="form-control" placeholder="请输入代理ID">
                     </div>
                     <div class="form-group">
@@ -485,7 +465,7 @@
                 </form>
             </div>
             <h4>充值总额：<b class="total-money">0</b> 元</h4>
-            <h4 id="totalBonus">分成收益：<b>0</b> 元</h4>
+            <h4 id="totalBonus" style="display:none;">分成收益：<b>0</b> 元</h4>
             <div class="table-responsive">
                 <table id="detailTbl" class="table table-bordered table-striped">
                     <thead>

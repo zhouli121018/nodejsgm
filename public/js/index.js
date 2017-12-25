@@ -311,12 +311,10 @@ $(function(){
         var uname=$("#searchAgentForm [name=uname]").val();
         var invitecode=$("#searchAgentForm [name=invitecode]").val();
         var powerId=$("#searchAgentForm [name=powerId]").val();
-        var gameId=$("#searchAgentForm [name=gameId]").val();
         if(powerId==0){powerId=''};
-        if(gameId==0){gameId=''};
         $.ajax({
             url:'/getMyAgents',
-            data:{starttime:starttime,endtime:endtime,page:page,managerId:managerId,uname:uname,invitecode:invitecode,powerId:powerId,gameId:gameId},
+            data:{starttime:starttime,endtime:endtime,page:page,managerId:managerId,uname:uname,invitecode:invitecode,powerId:powerId},
             success:function(datas){
                 if(datas.timeout==1){
                     location.href="index.html";
@@ -342,11 +340,11 @@ $(function(){
                             <td>${o.Uuid||''}</td>
                             <td>${o.nickName||''}</td>
                             <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
-                            <td>${o.rebate}</td>
+                            <td>${o.rebate?o.rebate:(o.power_id==5?"0.6:0.15":o.power_id==4?"0.5:0.12":o.power_id==3?"0.4:0.1":"0.35:0.0")}</td>
                             <td>${o.telephone}</td>
                             <td>${o.inviteCode}</td>
                             <td>${o.roomCard||0}</td>
-                            <td>${o.bmount||0}</td>
+                            <td style="display:none;">${o.bmount||0}</td>
                             <td>${o.userCounts}</td>
                             <td>${o.agentNum}</td>
                             <td>${o.totalMoney}</td>
@@ -392,8 +390,6 @@ $(function(){
         var endtime=$("#searchDetailForm [name=endtime]").val();
         var uuid=$("#searchDetailForm [name=uuid]").val();
         var managerId=$("#searchDetailForm [name=managerId]").val();
-        var gameId=$("#searchDetailForm [name=gameId]").val();
-        if(gameId==0){gameId=''};
         var plevelStr='';
         if(managerId){
             $.ajax({
@@ -413,7 +409,7 @@ $(function(){
         }
         $.ajax({
             url:'/getPaylogs',
-            data:{page:indexPage,starttime:starttime,endtime:endtime,uuid:uuid,managerId:managerId,plevelStr:plevelStr,gameId:gameId},
+            data:{page:indexPage,starttime:starttime,endtime:endtime,uuid:uuid,managerId:managerId,plevelStr:plevelStr},
             success:function(data){
                 console.log(data);
                 if(data.timeout==1){
@@ -440,7 +436,7 @@ $(function(){
                     <td>${o.money}</td>
                     <td>${new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
                     <td>${o.bonus||'---'}</td>
-                    <td>${o.gameId}</td>
+                    <td>${""}</td>
                 </tr>
                 `
                     }
@@ -569,7 +565,6 @@ $(function(){
                             <td>${o.name}</td>
                             <td>${o.totalMoney}</td>
                             <td>${o.roomCard}</td>
-                            <td>${redCardStr}</td>
                             <td><b>${o.status==0?'正常':'禁用'}</b></td>
                             <td>${new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>
@@ -697,11 +692,11 @@ $(function(){
                             <td>${o.Uuid||''}</td>
                             <td>${sessionStorage['powerId']==1?o.nickName:'----'}</td>
                             <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
-                            <td>${o.rebate}</td>
+                            <td>${o.rebate?o.rebate:(o.power_id==5?"0.6:0.15":o.power_id==4?"0.5:0.12":o.power_id==3?"0.4:0.1":"0.35:0.0")}</td>
                             <td>${sessionStorage['powerId']==1?o.telephone:'----'}</td>
                             <td>${o.inviteCode}</td>
                             <td>${o.roomCard||0}</td>
-                            <td>${o.bmount||0}</td>
+                            <td style="display:none;">${o.bmount||0}</td>
                             <td>${o.userCounts}</td>
                             <td>${o.agentNum}</td>
                             <td>${o.totalMoney}</td>
@@ -824,16 +819,16 @@ $(function(){
             alert('微信号不能为空！请输入邀请码！');
             return;
         }
-        var rebetreg=/^0\.\d{1,2}$/;
+        var rebetreg=/^0\.\d{1,2}[\:|\;]0\.\d{1,2}$/;
         if(rebate!=""&& (!rebetreg.test(rebate))){
             $("#agent #agentDetail [name='rebate']").focus();
-            alert('分成比例格式不正确！请重新输入！如：0.5 ');
+            alert('分成比例格式不正确！请重新输入！如：0.5:0.12 ');
             return;
         }
-        if(rebate==''||rebate>=sessionStorage['rebate']){
-            alert('请输入正确的分成比例！');
-            return;
-        }
+        // if(rebate==''||rebate>=sessionStorage['rebate']){
+        //     alert('请输入正确的分成比例！');
+        //     return;
+        // }
         if(sessionStorage['powerId']!=1&&parseFloat(powerId)>=parseFloat(sessionStorage['powerId'])){
             alert('代理级别不能高于等于上级代理级别！请重新选择！');
             $("#agent #agentDetail [name='powerId']").focus();
@@ -907,7 +902,6 @@ $(function(){
         $('#agent #agentCharge .uname').val(nowTr.find('td:eq(0)').text());
         $("#agent #agentCharge [name='uuid']").val(nowTr.find('td:eq(2)').html());
         $("#agent #agentCharge .roomCard").val(nowTr.find('td:eq(8)').html());
-        $("#agent #agentCharge .redCard").val(nowTr.find('td:eq(9)').html());
         $('#agent #agentCharge').fadeIn();
     });
     $('#agent #agentCharge .sure').click(function(){
@@ -985,10 +979,10 @@ $(function(){
             $("#agent #add-message [name='weixin']").focus();
             return;
         }
-        var rebetreg=/^0\.\d{1,2}$/;
+        var rebetreg=/^0\.\d{1,2}[\:|\;]0\.\d{1,2}$/;
         if(rebate!=""&& (!rebetreg.test(rebate))){
             $("#agent #add-message [name='rebate']").focus();
-            alert('分成比例格式不正确！请重新输入！如：0.5 ');
+            alert('分成比例格式不正确！请重新输入！如：0.5:0.15 ');
             return;
         }
         if(inputInviteCode==''){
@@ -1068,11 +1062,11 @@ $(function(){
             $("#agent #add-message [name='powerId']").focus();
             return;
         }
-        if(parseFloat(rebate)>=parseFloat(prebate)){
-            alert('分成比例不能高于等于上级代理分成比例！请重新输入！');
-            $("#agent #add-message [name='rebate']").focus();
-            return;
-        }
+        // if(parseFloat(rebate)>=parseFloat(prebate)){
+        //     alert('分成比例不能高于等于上级代理分成比例！请重新输入！');
+        //     $("#agent #add-message [name='rebate']").focus();
+        //     return;
+        // }
         if(validInviteCode&&validUuid&&validParentInviteCode){
             $.ajax({
                 url:'/insertManager',
@@ -1183,6 +1177,8 @@ $(function(){
     if(sessionStorage['powerId']==1){
         $('#totalBonus').hide();
         $('#info .info-hide').hide();
+        $('#vip .mount-hide').hide();
+        $('.detail-hide').hide();
     }else{
         $('#detail .agentSearch').hide();
         $("#searchNoteForm .agentId").hide();

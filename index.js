@@ -31,7 +31,7 @@ var pool=mysql.createPool({
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'mahjong',
-    password:'a257joker!@#Q',//a257joker!@#Q
+    password:'a257joker',//a257joker!@#Q
     database:'mahjong_hbe',//mahjong_cy mahjong_hbe
     connectionLimit:10
 });
@@ -86,9 +86,9 @@ app.get('/getCode',(req,res)=>{
 });
 
 var config = {
-    wxappid:"wx07022b5bc486f279",//wx07022b5bc486f279 //wx0b0da56105e931d5
-    mch_id:"1370897202",//  1370897202 //1481903462
-    wxpaykey:"LQ0929xxfy982fjielx39093ooxx3987"// LQ0929xxfy982fjielx39093ooxx3987 //cce50ed3d4d110d68ebdc2872885c2a5
+    wxappid:"wx52678fb166cd31a1",
+    mch_id:"1486225732",
+    wxpaykey:"gcmj3BC098jkhmcvsewxEEccooXXkr08"
 };
 //生成随机字符串
 function randomString(len) {
@@ -218,7 +218,7 @@ app.get('/login',(req,res)=>{
             if(err){
                 console.log(err);
             }else{
-                conn.query('SELECT * FROM manager WHERE inviteCode=? and password = ? and status = 0',[uname,pwd],(err,result)=>{
+                conn.query('SELECT m.*,a.uuid FROM manager m left join account a on a.managerId=m.id WHERE m.inviteCode=? and m.password = ? and m.status = 0',[uname,pwd],(err,result)=>{
 
                     console.log('loginlogin');
                     console.log(result);
@@ -1010,15 +1010,28 @@ app.post('/updateManagerInfo',(req,res)=>{
             var status = obj.status;
             var telephone=obj.telephone;
             var rebate=obj.rebate;
+            var uname=obj.uname;
+            if(obj.rebate){
+                rebate=obj.rebate;
+            }else{
+                if(powerId==5){
+                    rebate="0.6:0.15";
+                }else if(powerId==4){
+                    rebate="0.5:0.12";
+                }else if(powerId==3){
+                    rebate="0.4:0.1";
+                }else if(powerId==2){
+                    rebate="0.35:0";
+                }
+            }
             var uuid=obj.uuid;
             var weixin=obj.weixin;
             pool.getConnection((err, conn)=> {
                 if (err) {
                     console.log(err);
                 } else {
-                    conn.query('UPDATE  manager SET inviteCode=?,power_id=?,status=?,telephone=?,rebate=?,uuid=?,weixin=?  WHERE id=?', [inviteCode,powerId,status,telephone,rebate,uuid,weixin,managerId], (err, result)=> {
+                    conn.query('UPDATE  manager SET name=?,inviteCode=?,power_id=?,status=?,telephone=?,rebate=?,weixin=?  WHERE id=?', [uname,inviteCode,powerId,status,telephone,rebate,weixin,managerId], (err, result)=> {
                         console.log(result);
-                        if(result.changedRows>0){
                             conn.query('UPDATE account SET managerId=?,manager_up_id=? WHERE Uuid=?',[managerId,managerId,uuid],(err,result1)=>{
                                 if(err){
                                     console.log(err);
@@ -1030,13 +1043,11 @@ app.post('/updateManagerInfo',(req,res)=>{
                                 }
                             })
                             res.json({"status": 1});
-                        }else{
-                            res.json({"status": 0});
-                        }
-                        conn.release();
+
                     });
 
                 }
+                conn.release();
             })
         });
     }
@@ -1218,13 +1229,13 @@ app.post('/insertManager',(req,res)=>{
                 rebate=obj.rebate;
             }else{
                 if(powerId==5){
-                    rebate=0.7;
+                    rebate="0.6:0.15";
                 }else if(powerId==4){
-                    rebate=0.6;
+                    rebate="0.5:0.12";
                 }else if(powerId==3){
-                    rebate=0.5;
+                    rebate="0.4:0.1";
                 }else if(powerId==2){
-                    rebate=0.4;
+                    rebate="0.35:0";
                 }
             }
 
@@ -1232,7 +1243,7 @@ app.post('/insertManager',(req,res)=>{
                 if (err) {
                     console.log(err);
                 } else {
-                    conn.query('INSERT INTO manager VALUES(null,?,?,?,?,0,0,?,0,?,?,?,1,?,1,?,?,now(),?,null)', [powerId,uname,tel,pwd,pmid,inviteCode,weixin,qq,rebate,levelStr,uuid], (err, result)=> {
+                    conn.query('INSERT INTO manager VALUES(null,?,?,?,?,0,0,?,0,?,?,?,1,?,?)', [powerId,uname,tel,pwd,pmid,inviteCode,weixin,qq,rebate,levelStr], (err, result)=> {
                         console.log(result);
                         if(result.affectedRows>0){
                             conn.query('UPDATE account SET manager_up_id=?,managerId=? WHERE Uuid=?',[result.insertId,result.insertId,uuid],(err,resultaccount)=>{
@@ -1282,7 +1293,7 @@ app.get('/searchVipByUuid',(req,res)=>{
                 console.log(err);
             } else {
                 if(powerId==1){
-                    conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM account a WHERE   a.Uuid=? order by a.createTime desc', [uuid], (err, result)=> {
+                    conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.status,a.createTime FROM account a WHERE   a.Uuid=? order by a.createTime desc', [uuid], (err, result)=> {
                         console.log("+++"+result);
                         if(result.length>0){
                             var progress=0;
@@ -1309,7 +1320,7 @@ app.get('/searchVipByUuid',(req,res)=>{
 
                     })
                 }else{
-                    conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id and a.Uuid=? order by a.createTime desc', [managerId,uuid], (err, result)=> {
+                    conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id and a.Uuid=? order by a.createTime desc', [managerId,uuid], (err, result)=> {
                         console.log("+++"+result);
                         if(result.length>0){
                             var progress=0;
@@ -1371,7 +1382,7 @@ app.get('/searchVipByTime',(req,res)=>{
                 console.log(err);
             } else {
                 if(powerId==1){
-                    conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM account a  order by a.createTime desc',  (err, result)=> {
+                    conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.status,a.createTime FROM account a  order by a.createTime desc',  (err, result)=> {
                         console.log("+++"+result);
                         if(result.length>0){
                             var progress=0;
@@ -1398,7 +1409,7 @@ app.get('/searchVipByTime',(req,res)=>{
 
                     })
                 }else{
-                    conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.redCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id and a.status!=2 order by a.createTime desc', [managerId], (err, result)=> {
+                    conn.query('SELECT a.uuid,a.nickName,a.roomCard,a.status,a.createTime FROM manager m,account a WHERE a.manager_up_id=? and m.id = a.manager_up_id and a.status!=2 order by a.createTime desc', [managerId], (err, result)=> {
                         console.log("+++"+result);
                         if(result.length>0){
                             var progress=0;
@@ -1616,7 +1627,22 @@ app.get('/getmineone',(req,res)=>{
         var managerId=user.id;
         var starttime=req.query.starttime;
         var endtime=req.query.endtime;
-        var rebate=parseFloat(user.rebate);
+        var powerId=user.power_id;
+        var rebate=0;
+        if(user.rebate){
+            var rebateArr=user.rebate.split(":|;");
+            rebate=parseFloat(rebateArr[0]);
+        }else{
+            if(powerId==5){
+                rebate=0.6;
+            }else if(powerId==4){
+                rebate=0.5;
+            }else if(powerId==3){
+                rebate=0.4;
+            }else if(powerId==2){
+                rebate=0.35;
+            }
+        }
         var now=new Date();
         now.setDate(now.getDate()+1);
         var overArr=now.toLocaleDateString().split('/');
@@ -1637,7 +1663,7 @@ app.get('/getmineone',(req,res)=>{
             if(err){
                 console.log(err);
             }else{
-                conn.query('select IFNULL(sum(money),0)as mineone from paylog where managerId =? and payTime > ? and payTime < ? and payType = 0  and payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and (payType = 1 or payType = 2) and status = 1)',[managerId,starttime,endtime,managerId],(err,result)=>{
+                conn.query('select IFNULL(sum(money),0)as mineone from paylog where managerId =? and payTime > ? and payTime < ? and payType = 0  and payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1)',[managerId,starttime,endtime,managerId],(err,result)=>{
                     console.log('mineone=====');
                     console.log(result);
                     req.session.mineone=(result[0].mineone)*rebate;
@@ -1654,6 +1680,24 @@ app.get('/getminetwo',(req,res)=>{
     if(req.session.user){
         var user=req.session.user;
         var managerId=user.id;
+        var powerId=user.power_id;
+        var rebate=0;
+        if(user.rebate){
+            var rebateArr=user.rebate.split(":");
+            rebate=parseFloat(rebateArr[1]);
+            console.dir(rebateArr);
+            console.log("rebate2:"+rebateArr[1]);
+        }else{
+            if(powerId==5){
+                rebate=0.15;
+            }else if(powerId==4){
+                rebate=0.12;
+            }else if(powerId==3){
+                rebate=0.1;
+            }else if(powerId==2){
+                rebate=0;
+            }
+        }
         var starttime=req.query.starttime;
         var endtime=req.query.endtime;
         var now=new Date();
@@ -1683,22 +1727,43 @@ app.get('/getminetwo',(req,res)=>{
             levelStr=plevelStr+levelStr;
         }
         var length=levelStr.length;
-        var rebate=parseFloat(user.rebate);
         pool.getConnection((err,conn)=>{
             if(err){
                 console.log(err);
             }else{
-                conn.query('select IFNULL(sum(n.money*(?-(o.rebate+0.0))),0.0) as minetwo from (select sum(m.money) as money,m.top1mid from (select sum(a.money) as money,b.id,(case when (substring(b.levelStr,?,8)+0)=0 then b.id else (substring(b.levelStr,?,8)+0) end) as top1mid from paylog a,manager b where a.managerId = b.id  and a.payType = 0  and a.payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1) and b.levelStr like ? group by id,top1mid) m group by m.top1mid) n,manager o where n.top1mid = o.id',[rebate,length,length,managerId,levelStr],(err,result)=>{
-                    console.log('minetwo=====');
-                    console.log(result);
-                    req.session.minetwo=result[0].minetwo;
-                    res.json(result[0]);
-                })
+                var minetwo=0;
+                conn.query('select IFNULL(sum(a.money),0) as minetwo from paylog a,manager b where a.managerId = b.id and b.manager_up_id = ? and a.payTime > ? and a.payTime <?  and a.payType = 0  and a.status%100 <10 and payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1)',[managerId,starttime,endtime,managerId],(err,result)=>{
+                    minetwo+=parseFloat(result[0].minetwo);
+                    if(powerId>3){
+                        conn.query(' select IFNULL(sum(a.money),0) as minetwo  from paylog a,manager b,manager c where a.managerId = b.id and b.manager_up_id = c.id and c.manager_up_id = ? and (c.power_id = 3||c.power_id = 4)and a.payTime >? and a.payTime <?  and a.payType = 0   and a.status%1000 <100    and payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1)',[managerId,starttime,endtime,managerId],(err,result)=>{
+                            minetwo+=parseFloat(result[0].minetwo);
+                            console.log(result);
+                            if(powerId>4){
+                                conn.query('select IFNULL(sum(a.money),0) as minetwo  from paylog a,manager b,manager c,manager d   where a.managerId = b.id and b.manager_up_id = c.id and c.manager_up_id = d.id  and d.manager_up_id =?   and d.power_id = 4  and a.payTime >? and a.payTime <? and a.payType = 0 and a.status<1000 and payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1)',[managerId,starttime,endtime,managerId],(err,result)=>{
+                                    minetwo+=parseFloat(result[0].minetwo);
+                                    req.session.minetwo=minetwo*rebate;
+                                    res.json({"minetwo":minetwo*rebate});
+
+                                })
+                            }else{
+                                req.session.minetwo=minetwo*rebate;
+                                res.json({"minetwo":minetwo*rebate});
+                            }
+                        })
+                    }else{
+                        req.session.minetwo=minetwo*rebate;
+                        res.json({"minetwo":minetwo*rebate});
+                    }
+                    console.log('minetwominetow----:');
+                    console.log(req.session.minetwo,rebate);
+                });
             }
             conn.release();
         })
     }
 });
+
+
 
 //查询我的代理
 app.get('/getMyAgents',(req,res)=>{
@@ -2937,12 +3002,12 @@ app.post('/tixian',(req,res)=>{
                 }else if(money>5000){
                     res.json({"status":0,"msg":"单次提现金额不超过5000元，如有疑问请联系管理员！"});
                 }
-                //else if(money<100){
-                //    res.json({"status":0,"msg":"提现金额不足100元！"});
-                //}
+                else if(money<100){
+                   res.json({"status":0,"msg":"提现金额不足100元！"});
+                }
                 else{
                     pool.getConnection((err, conn)=> {
-                        conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),1,1,0,3)',[managerId,uuid,money],(err,result)=>{
+                        conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),1,1)',[managerId,uuid,money],(err,result)=>{
                             if (err) {
                                 console.log(err);
                             } else {
@@ -2951,7 +3016,7 @@ app.post('/tixian',(req,res)=>{
                                 var insertId=0;
                                 if(result.affectedRows>0){
                                     insertId=result.insertId;
-                                    conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),9,1,0,0)',[managerId,uuid,totalBonus-money],(err,result)=>{
+                                    conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),9,1)',[managerId,uuid,totalBonus-money],(err,result)=>{
                                         if (err) {
                                             console.log(err);
                                         } else {
@@ -2965,7 +3030,6 @@ app.post('/tixian',(req,res)=>{
                                                         }else{
                                                             req.session[managerId]={day:new Date().toLocaleDateString(),times:1};
                                                         }
-
                                                         console.log(req.session[managerId]);
                                                         res.json({"status":1,"msg":"你的提现人民币"+money+"元的请求已经发出！请留意你的微信转账记录！"})
 

@@ -1191,6 +1191,7 @@ $(function(){
     if(sessionStorage['powerId']==1){
         $('#totalBonus').hide();
         $('#info .info-hide').hide();
+        $('#vip .mount-hide').hide();
     }else{
         $('#detail .agentSearch').hide();
         $("#searchNoteForm .agentId").hide();

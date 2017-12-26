@@ -73,7 +73,7 @@ h2{
 #add-config,
 #configDetail,
 #noticeDetail,
-#add-notice,#charge,#agentCharge,#vipCharge{
+#add-notice,#charge,#agentCharge,#vipCharge,#edit-notice{
     z-index: 100;
     display: none;
     position: absolute;
@@ -88,7 +88,7 @@ h2{
 #add-config input,
 #configDetail input,
 #noticeDetail input,
-#add-notice input,
+#add-notice input,#edit-notice input,
 #charge input,#pw-message input,#agentCharge input,#vipCharge input {
     height: 32px;
 }
@@ -98,7 +98,7 @@ h2{
 #add-config form,
 #configDetail form,
 #noticeDetail form,
-#add-notice form,
+#add-notice form,#edit-notice form,
 #charge form,#pw-message form,#agentCharge form,#vipCharge form{
     max-height: 100%;
     overflow: auto;
@@ -120,7 +120,7 @@ h2{
 #add-config form>div,
 #configDetail form>div,
 #noticeDetail form>div,
-#add-notice form>div,
+#add-notice form>div,#edit-notice form>div,
 #charge form>div,#pw-message form>div,#agentCharge form>div,#vipCharge form>div{
     margin-bottom:1em;
 }
@@ -161,7 +161,7 @@ h2{
 #configDetail form h4,
 #noticeDetail form h4,
 #add-notice form h4,
-#charge form h4,
+#charge form h4,#edit-notice form h4,
 #pw-message form h4,#agentCharge form h4,
 #vipCharge form h4{
     text-align: center;
@@ -175,7 +175,7 @@ h2{
 #configDetail form > input,
 #noticeDetail form > input,
 #add-notice form > input,
-#charge form > input ,
+#charge form > input ,#edit-notice form>input,
 #pw-message form > input,#agentCharge form>input,
 #vipCharge form >input{
     margin-left: 1%;
@@ -189,7 +189,7 @@ h2{
 #configDetail form input.has-err,
 #noticeDetail form input.has-err,
 #add-notice form input.has-err,
-#charge form input.has-err,
+#charge form input.has-err,#edit-notice form input.has-err,
 #pw-message form input.has-err,#agentCharge form input.has-err,
 #vipCharge form input.has-err
 {
@@ -202,7 +202,7 @@ h2{
 #configDetail form input.success,
 #noticeDetail form input.success,
 #add-notice form input.success,
-#charge form input.success,
+#charge form input.success,#edit-notice form input.success,
 #pw-message form input.success,#agentCharge form input.success,
 #vipCharge form input.success{
     border-color: #42cc22;
@@ -213,7 +213,7 @@ h2{
 #add-config form p,
 #configDetail form p,
 #noticeDetail form p,
-#add-notice form p,
+#add-notice form p,#edit-notice form p,
 #charge form p,
 #pw-message form p,#agentCharge form p,
 #vipCharge form p{
@@ -226,7 +226,7 @@ h2{
 #configDetail form p.error,
 #noticeDetail form p.error,
 #add-notice form p.error,
-#charge form p.error ,
+#charge form p.error ,#edit-notice form p.error,
 #pw-message form p.error,#agentCharge form p.error,
 #vipCharge form p.error{
     display: block;
@@ -241,7 +241,7 @@ h2{
     #configDetail form,
     #noticeDetail form,
     #add-notice form,
-    #charge form ,
+    #charge form ,#edit-notice form,
     #pw-message form,#agentCharge form,
     #vipCharge form{
         width: 95%;

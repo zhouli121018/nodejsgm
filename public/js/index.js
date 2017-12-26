@@ -88,7 +88,8 @@ $(function(){
         }else if(id=="#note"){
             getNotes(1);
         }else if(id=="#notice"){
-            getNotice();
+            //getNotice();
+            getAllNotice(1);
         }else{
             $('#tablist li a[href=#info]').parent().addClass('active').siblings().removeClass('active');
             getAgentInfo();
@@ -130,7 +131,8 @@ $(function(){
         }else if(id=="#note"){
             getNotes(1);
         }else if(id=="#notice"){
-            getNotice();
+            //getNotice();
+            getAllNotice(1);
         }
         console.log(id);
         $(this).parent().addClass('active').siblings().removeClass('active');
@@ -824,12 +826,25 @@ $(function(){
         var weixin=$("#agent #agentDetail [name='weixin']").val();
         var validInviteCode=false;
         var validUuid=false;
-        if(inputInviteCode==''){
-            alert('邀请码不能为空！请输入邀请码！');
+        var uname=$("#agent #agentDetail [name='uname']").val();
+        var nreg=/^([\u4e00-\u9fa5]){2,4}$/;
+        if(!nreg.test(uname)){
+            $("#agentDetail [name='uname']").focus();
+            alert('姓名格式不正确！请重新输入！');
+            return;
+        }
+        var reg=/^1[34578]\d{9}$/;
+        if(!reg.test(telephone)){
+            $("#agentDetail [name='telephone']").focus();
+            alert('手机号码格式不正确！请重新输入！');
             return;
         }
         if(weixin==''){
             alert('微信号不能为空！请输入邀请码！');
+            return;
+        }
+        if(inputInviteCode==''){
+            alert('邀请码不能为空！请输入邀请码！');
             return;
         }
         var rebetreg=/^0\.\d{1,2}$/;
@@ -1388,20 +1403,31 @@ $(function(){
         var content=$('#addNoticeForm [name=content]').val().trim();
         var ntype=$('#addNoticeForm [name=ntype]').val();
         var managerId=$('#addNoticeForm [name=managerId]').val();
+        var startTime=$('#addNoticeForm [name=startTime]').val();
+        var endTime=$('#addNoticeForm [name=endTime]').val();
         if(content.length==0){
             alert('请输入公告内容！');
             return;
         }
+        if(startTime.length==0){
+            alert('请输入公告开始时间！');
+            return;
+        }
+        if(endTime.length==0){
+            alert('请输入公告结束时间！');
+            return;
+        }
         $.ajax({
             url:'/addNotice',
-            data:{content:content,type:ntype,managerId:managerId},
+            data:{content:content,type:ntype,managerId:managerId,startTime:startTime,endTime:endTime},
             success:function(data){
                 console.log('addnotice');
                 console.log(data);
                 if(data.status>0){
                     $('#add-notice').hide();
                     alert('公告添加成功！');
-                    getNotice();
+                    //getNotice();
+                    getAllNotice(1);
                 }else{
                     alert('公告添加失败！');
                 }
@@ -1543,126 +1569,103 @@ $(function(){
                 console.dir(data);
                 console.dir(hash);
 
-                // var arr=hash;
-                // for(var i=0,html='';i<arr.length;i++){
-                //     n++;
-                //     var m=n;
-                //     html+=`<tr class="treegrid-${n}" mark="${arr[i].id}">
-			     //     <td class="uname"><b>${arr[i].name}</b></td>
-			     //     <td>${arr[i].id}</td>
-			     //     <td>${arr[i].telephone}</td>
-			     //     <td>${arr[i].weixin}</td>
-			     //     <td>${arr[i].qq}</td>
-			     //     <td>${arr[i].inviteCode}</td>
-			     //     <td>${arr[i].uuid}</td>
-			     //     <td>${arr[i].createTimeStr}</td>
-			     //     <td>${arr[i].lastLoginTimeStr}</td>
-			     //     <td>${arr[i].userCounts}</td>
-			     //     <td>${arr[i].totalMoney}</td>
-			     //     <td>${arr[i].actualcard}</td>
-			     //     <td>${arr[i].rebate}</td>`;
-                //     if(sessionStorage['powerId']>1){
-                //         html+=`<td>${arr[i].name2}</td>
-			     //     <td>${arr[i].inviteCode2}</td>`;
-                //     }
-                //     html+=`<td>${arr[i].rootManager==1?'是':'否'}</td>
-			     //     <td class="grade" grd="${arr[i].powerId}">${arr[i].powerId==5?"皇冠代理":(arr[i].powerId==4?"钻石代理":(arr[i].powerId==3?"铂金代理":(arr[i].powerId==2?"黄金代理":"超级管理员")))}</td>
-			     //     <td class="adminEdit"><a href="${arr[i]}.id" class='btn btn-sm btn-warning'>修改</a> <a href="${arr[i]}.id" class='btn btn-sm btn-success charge'>充房卡</a> <a class='btn btn-sm btn-danger delete' href="${arr[i]}.id">删除</a> <a href="${arr[i].id}" class='btn btn-sm btn-primary resetPwd'>密码重置</a></td>
-			     //
-			     //    </tr>`;
-                //     if(arr[i].childagent.length!=0){
-                //         for(var j=0;j<arr[i].childagent.length;j++){
-                //             n++;
-                //             var l=n;
-                //             var o=arr[i].childagent[j];
-                //             html+=`<tr class="treegrid-${n} treegrid-parent-${m}" mark="${arr[i].id}" mark1="${o.id}">
-			     //     <td class="uname"><b>${o.name}</b></td>
-			     //     <td>${o.id}</td>
-			     //     <td>${o.telephone}</td>
-			     //     <td>${o.weixin}</td>
-			     //     <td>${o.qq}</td>
-			     //     <td>${o.inviteCode}</td>
-			     //     <td>${o.uuid}</td>
-			     //     <td>${o.createTimeStr}</td>
-			     //     <td>${o.lastLoginTimeStr}</td>
-			     //     <td>${o.userCounts}</td>
-			     //     <td>${o.totalMoney}</td>
-			     //     <td>${arr[i].actualcard}</td>
-			     //     <td>${o.rebate}</td>
-			     //     <td>${o.rootManager==1?'是':'否'}</td>
-			     //     <td class="grade" grd="${o.powerId}">${o.powerId==5?"皇冠代理":(o.powerId==4?"钻石代理":(o.powerId==3?"铂金代理":(o.powerId==2?"黄金代理":"超级管理员")))}</td>
-			     //     <td class="adminEdit"><a href="${o.id}" class='btn btn-sm btn-warning'>修改</a> <a href="${arr[i]}.id" class='btn btn-sm btn-success charge'>充房卡</a>  <a class='btn btn-sm btn-danger delete' href="${o.id}">删除</a> <a href="${o.id}" class='btn btn-sm btn-primary resetPwd'>密码重置</a></td>
-			     //
-			     //    </tr>`;
-                //             if(o.childagent.length!=0){
-                //                 for(var k=0;k<o.childagent.length;k++){
-                //                     n++;
-                //                     var q=n;
-                //                     var obj=o.childagent[k];
-                //                     html+=`<tr class="treegrid-${n} treegrid-parent-${l}" mark="${arr[i].id}" mark1="${o.id}" mark2="${obj.id}" >
-			     //                     <td class="uname"><b>${obj.name}</b></td>
-			     //                     <td>${obj.id}</td>
-			     //                     <td>${obj.telephone}</td>
-			     //                     <td>${obj.weixin}</td>
-			     //                     <td>${obj.qq}</td>
-			     //                     <td>${obj.inviteCode}</td>
-			     //                     <td>${obj.uuid}</td>
-			     //                     <td>${obj.createTimeStr}</td>
-			     //                     <td>${obj.lastLoginTimeStr}</td>
-			     //                     <td>${obj.userCounts}</td>
-			     //                     <td>${obj.totalMoney}</td>
-			     //                     <td>${arr[i].actualcard}</td>
-			     //                     </td>
-			     //                     <td>${obj.rebate}</td>
-			     //                     <td>${obj.rootManager==1?'是':'否'}</td>
-			     //                     <td class="grade" grd="${obj.powerId}">${obj.powerId==5?"皇冠代理":(obj.powerId==4?"钻石代理":(obj.powerId==3?"铂金代理":(obj.powerId==2?"黄金代理":"超级管理员")))}</td>
-			     //                     <td class="adminEdit"><a href="${obj.id}" class='btn btn-sm btn-warning'>修改</a> <a href="${arr[i]}.id" class='btn btn-sm btn-success charge'>充房卡</a>  <a class='btn btn-sm btn-danger delete'  href="${obj.id}">删除</a> <a class='btn btn-sm btn-primary resetPwd' href="${obj.id}">密码重置</a></td>
-			     //
-			     //                    </tr>`;
-                //
-                //                     if(obj.childagent.length!=0){
-                //                         for(var x=0;x<obj.childagent.length;x++) {
-                //                             n++;
-                //                             var p = obj.childagent[x];
-                //                             html += `<tr class="treegrid-${n} treegrid-parent-${q}" mark="${arr[i].id}" mark1="${o.id}" mark2="${obj.id}" mark3="${p.id}">
-			     //                     <td class="uname"><b>${p.name}</b></td>
-			     //                     <td>${p.id}</td>
-			     //                     <td>${p.telephone}</td>
-			     //                     <td>${p.weixin}</td>
-			     //                     <td>${p.qq}</td>
-			     //                     <td>${p.inviteCode}</td>
-			     //                     <td>${p.uuid}</td>
-			     //                     <td>${p.createTimeStr}</td>
-			     //                     <td>${p.lastLoginTimeStr}</td>
-			     //                     <td>${p.userCounts}</td>
-			     //                     <td>${p.totalMoney}</td>
-			     //                     <td>${arr[i].actualcard}</td>
-			     //                     </td>
-			     //                     <td>${p.rebate}</td>
-			     //                     <td>${p.rootManager==1?'是':'否'}</td>
-			     //                     <td class="grade" grd="${p.powerId}">${p.powerId==5?"皇冠代理":(p.powerId==4?"钻石代理":(p.powerId==3?"铂金代理":(p.powerId==2?"黄金代理":"超级管理员")))}</td>
-			     //                     <td class="adminEdit"><a href="${p.id}" class='btn btn-sm btn-warning'>修改</a> <a href="${arr[i]}.id" class='btn btn-sm btn-success charge'>充房卡</a> <a class='btn btn-sm btn-danger delete'  href="${p.id}">删除</a>  <a href="${p.id}" class='btn btn-sm btn-primary resetPwd'>密码重置</a></td>
-			     //
-			     //                    </tr>`;
-                //
-                //
-                //                         } }
-                //
-                //                 }
-                //             }
-                //
-                //
-                //         }
-                //     }
-                //
-                // }
-                // $('#agentTbl tbody').html(html);
-                // $('.tree').treegrid();
-                // $('.tree').treegrid('collapseAll');
+
 
             }
         })
     }
+
+    function getAllNotice(page){
+        var starttime=$('#notice [name=starttime]').val();
+        var endtime=$('#notice [name=endtime]').val();
+        var type=$('#notice [name=type]').val();
+        if(type==10){
+            type='';
+        }
+        $.ajax({
+            url:'/getAllNotice',
+            data:{page:page,starttime:starttime,endtime:endtime,type:type},
+            success:function(datas){
+                console.log(datas);
+                var data=datas.notices;
+                var totalNum=datas.totalNum;
+                $('#notice .total-number').html(totalNum);
+                if(data.length>0){
+                    for(var i=0,html='';i<data.length;i++){
+                        var o=data[i];
+                        html+=`
+                        <tr>
+                            <td>${o.id}</td>
+                            <td>${o.content}</td>
+                            <td>${new Date(o.startTime).Format("yyyy-MM-dd")}</td>
+                            <td>${new Date(o.endTime).Format("yyyy-MM-dd")}</td>
+                            <td>${new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
+                            <td>${o.managerId||'----'}</td>
+                            <td>${o.type==0?'代理公告':(o.type==1?'消息公告':o.type==3?'给全体代理的公告':'全服图片公告')}</td>
+                            <td><button class="btn btn-warning" data-id="${o.id}">修改</button></td>
+                        </tr>
+                    `;
+                    }
+
+                    $('#noticeTbl tbody').html(html);
+
+                    var totalpages=1;
+                    if(totalNum%10==0){
+                        totalpages=totalNum/10;
+                    }else{
+                        totalpages=totalNum/10+1;
+                    }
+                    var options = {
+                        currentPage: page,
+                        totalPages:totalpages,
+                        bootstrapMajorVersion: 3,
+                        onPageChanged: function(e,oldPage,newPage){
+                            getAllNotice(newPage);
+                        }
+                    };
+
+                    $('#notice-pages').bootstrapPaginator(options);
+                }else{
+                    $('#noticeTbl tbody').html('');
+                    $('#notice-pages').html('');
+                }
+
+            }
+        })
+    }
+
+    $('#searchNotice').click(function(){
+        getAllNotice(1);
+    })
+    $('#noticeTbl').on('click','td:last-child .btn',function(){
+        var nowTr=$(this).parents('tr');
+        var nowTd=$(this).parent();
+        $('#edit-notice [name=type]').val(nowTd.prev().html()=='代理公告'?'0':(nowTd.prev().html()=='消息公告'?'1':nowTd.prev().html()=='全服图片公告'?'2':3));
+        $('#edit-notice [name=nid]').val($(this).attr('data-id'));
+        $('#edit-notice [name=content]').val(nowTr.find('td:eq(1)').html())
+        $('#edit-notice [name=startTime]').val(nowTr.find('td:eq(2)').html())
+        $('#edit-notice [name=endTime]').val(nowTr.find('td:eq(3)').html())
+        $('#edit-notice [name=managerId]').val(nowTr.find('td:eq(5)').html()=='----'?'':nowTr.find('td:eq(5)').html());
+        $('#edit-notice').fadeIn();
+    })
+    $('#edit-notice .sure').click(function(){
+        var str=$('#editNoticeForm').serialize();
+        console.log(str);
+        $.ajax({
+            url:'/editNotice',
+            data:str,
+            success:function(data){
+                console.log(data);
+                if(data.status>0){
+                    alert('修改成功！');
+                    $('#edit-notice').hide();
+                    getAllNotice(1);
+                }else{
+                    alert('修改失败！');
+                }
+            }
+        })
+    })
 
 
 });

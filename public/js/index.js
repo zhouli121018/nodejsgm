@@ -156,6 +156,13 @@ $(function(){
     });
     function getAgentInfo(){
         $.ajax({
+            url:'/getAgentNotice',
+            success:function(data){
+                console.log(data);
+                $('#info .well').html(data.content);
+            }
+        })
+        $.ajax({
             url:'/getAgentInfo',
             async: false,
             success:function(data){

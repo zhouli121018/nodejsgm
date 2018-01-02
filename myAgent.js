@@ -2007,6 +2007,25 @@ module.exports = {
                 conn.release();
             })
         }
+    },
+    getAgentNotice:(req,res)=>{
+        if(req.session.user){
+            var user=req.session.user;
+            pool.getConnection((err,conn)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    conn.query('select * from noticetable where type=3 order by createTime desc limit 0,1',(err,result)=>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            res.json(result[0]);
+                        }
+                    })
+                }
+                conn.release();
+            })
+        }
     }
 }
 

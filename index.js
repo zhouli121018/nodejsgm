@@ -113,6 +113,8 @@ app.get('/changeAccountStatus',myVip.changeAccountStatus);
 app.get('/getNotes',note.getNotes);
 //获取下级用户数量
 app.get('/getVipCount',myAgent.getVipCount);
+//获取给所有代理的公告
+app.get('/getAgentNotice',myAgent.getAgentNotice);
 //获取下级代理数量
 app.get('/getAgentCount',myAgent.getAgentCount);
 //获取下级用户充值金额，计算收益

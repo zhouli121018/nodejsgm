@@ -73,7 +73,7 @@ h2{
 #add-config,
 #configDetail,
 #noticeDetail,
-#add-notice,#charge,#agentCharge,#vipCharge,#edit-notice{
+#add-notice,#charge,#agentCharge,#vipCharge,#edit-notice,#reParentId{
     z-index: 100;
     display: none;
     position: absolute;
@@ -89,7 +89,7 @@ h2{
 #configDetail input,
 #noticeDetail input,
 #add-notice input,#edit-notice input,
-#charge input,#pw-message input,#agentCharge input,#vipCharge input {
+#charge input,#pw-message input,#agentCharge input,#vipCharge input,#reParentId input {
     height: 32px;
 }
 #add-message form,
@@ -99,7 +99,7 @@ h2{
 #configDetail form,
 #noticeDetail form,
 #add-notice form,#edit-notice form,
-#charge form,#pw-message form,#agentCharge form,#vipCharge form{
+#charge form,#pw-message form,#agentCharge form,#vipCharge form,#reParentId form{
     max-height: 100%;
     overflow: auto;
     position: absolute;
@@ -121,7 +121,7 @@ h2{
 #configDetail form>div,
 #noticeDetail form>div,
 #add-notice form>div,#edit-notice form>div,
-#charge form>div,#pw-message form>div,#agentCharge form>div,#vipCharge form>div{
+#charge form>div,#pw-message form>div,#agentCharge form>div,#vipCharge form>div,#reParentId form>div{
     margin-bottom:1em;
 }
 #agentManager #agentDetail{
@@ -163,7 +163,7 @@ h2{
 #add-notice form h4,
 #charge form h4,#edit-notice form h4,
 #pw-message form h4,#agentCharge form h4,
-#vipCharge form h4{
+#vipCharge form h4,#reParentId form h4{
     text-align: center;
     padding: 2% 0;
     border-bottom: 2px dashed #aaa;
@@ -177,7 +177,7 @@ h2{
 #add-notice form > input,
 #charge form > input ,#edit-notice form>input,
 #pw-message form > input,#agentCharge form>input,
-#vipCharge form >input{
+#vipCharge form >input,#reParentId form > input{
     margin-left: 1%;
     width: 48%;
     outline: none;
@@ -191,7 +191,7 @@ h2{
 #add-notice form input.has-err,
 #charge form input.has-err,#edit-notice form input.has-err,
 #pw-message form input.has-err,#agentCharge form input.has-err,
-#vipCharge form input.has-err
+#vipCharge form input.has-err,#reParentId form input.has-err
 {
     border-color: #e4393c;
 }
@@ -204,7 +204,7 @@ h2{
 #add-notice form input.success,
 #charge form input.success,#edit-notice form input.success,
 #pw-message form input.success,#agentCharge form input.success,
-#vipCharge form input.success{
+#vipCharge form input.success,#reParentId form input.success{
     border-color: #42cc22;
 }
 #add-message form p,
@@ -216,7 +216,7 @@ h2{
 #add-notice form p,#edit-notice form p,
 #charge form p,
 #pw-message form p,#agentCharge form p,
-#vipCharge form p{
+#vipCharge form p,#reParentId form p{
     display: none;
 }
 #add-message form p.error,
@@ -228,7 +228,7 @@ h2{
 #add-notice form p.error,
 #charge form p.error ,#edit-notice form p.error,
 #pw-message form p.error,#agentCharge form p.error,
-#vipCharge form p.error{
+#vipCharge form p.error,#reParentId form p.error{
     display: block;
     color: #e4393c;
     padding: 1% 0;
@@ -243,7 +243,7 @@ h2{
     #add-notice form,
     #charge form ,#edit-notice form,
     #pw-message form,#agentCharge form,
-    #vipCharge form{
+    #vipCharge form,#reParentId form{
         width: 95%;
         margin-left: -47.5%;
     }
@@ -274,7 +274,7 @@ h2{
     margin:2px;
     padding:10px 0;
     background:#f0ad4e;
-    color:#f0f;
+    color:#fff;
 }
 button.add-notice{
     margin:5px;
@@ -288,7 +288,5 @@ button.add-notice{
     color:#ffa;
 }
 #roomCardBox{
-    border:4px dashed #faa;
-    border-left:none;
-    border-right:none;
+    border-top:4px dashed #faa;
 }

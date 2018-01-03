@@ -703,6 +703,9 @@ module.exports = {
             var user = req.session.user;
             var powerId=user.power_id;
             var managerId = user.id;
+            if(req.query.managerId){
+                managerId=req.query.managerId;
+            }
             var page=req.query.page;
             var limitstart=(page-1)*10;
             var uuid=req.query.uuid;
@@ -726,14 +729,14 @@ module.exports = {
                 endtime=overTime;
             }
             var resultjson={roomcardLogs:[],totalNum:0,totalCard:0};
-            if(powerId==1){
+            if(powerId>1||req.query.managerId){
                 if(uuid){
                     pool.getConnection((err, conn)=> {
                         if (err) {
                             console.log(err);
                         } else {
                             var progress=0;
-                            conn.query('select q.*,m.name from (select r.*,a.nickName,a.managerId as mid from roomcardlog r left join account a on r.accountId=a.Uuid where r.managerId=1 and r.accountId=? and r.createtime>? and r.createtime<?)q left join manager m on q.mid=m.id order by createtime desc limit ?,10', [uuid,starttime,endtime,limitstart], (err, paylogs)=> {
+                            conn.query('select q.*,m.name from (select r.*,a.nickName,a.managerId as mid from roomcardlog r left join account a on r.accountId=a.Uuid where r.managerId=? and r.accountId=? and r.createtime>? and r.createtime<?)q left join manager m on q.mid=m.id order by createtime desc limit ?,10', [managerId,uuid,starttime,endtime,limitstart], (err, paylogs)=> {
                                 // console.log(paylogs);
                                 if(paylogs){
                                     resultjson.roomcardLogs=paylogs;
@@ -744,7 +747,7 @@ module.exports = {
                                     conn.release();
                                 }
                             });
-                            conn.query('select count(n.id) as totalNum,IFNULL(sum(n.roomCard),0) as totalMoney  from(select r.* from roomcardlog r  where r.managerId=1 and r.accountId=? and r.createtime>? and r.createtime<?) n  ', [uuid,starttime,endtime], (err, totalBonus)=> {
+                            conn.query('select count(n.id) as totalNum,IFNULL(sum(n.roomCard),0) as totalMoney  from(select r.* from roomcardlog r  where r.managerId=? and r.accountId=? and r.createtime>? and r.createtime<?) n  ', [managerId,uuid,starttime,endtime], (err, totalBonus)=> {
                                 // console.log(11111);
                                 // console.log(totalBonus);
                                 if(totalBonus){
@@ -767,7 +770,7 @@ module.exports = {
                             console.log(err);
                         } else {
                             var progress=0;
-                            conn.query('select q.*,m.name from (select r.*,a.nickName,a.managerId as mid from roomcardlog r left join account a on r.accountId=a.Uuid where r.managerId=1 and r.createtime>? and r.createtime<?)q left join manager m on q.mid=m.id order by createtime desc limit ?,10', [starttime,endtime,limitstart], (err, paylogs)=> {
+                            conn.query('select q.*,m.name from (select r.*,a.nickName,a.managerId as mid from roomcardlog r left join account a on r.accountId=a.Uuid where r.managerId=? and r.createtime>? and r.createtime<?)q left join manager m on q.mid=m.id order by createtime desc limit ?,10', [managerId,starttime,endtime,limitstart], (err, paylogs)=> {
                                 // console.log(paylogs);
                                 if(paylogs){
                                     resultjson.roomcardLogs=paylogs;
@@ -778,7 +781,7 @@ module.exports = {
                                     conn.release();
                                 }
                             });
-                            conn.query('select count(n.id) as totalNum,IFNULL(sum(n.roomCard),0) as totalMoney  from(select r.* from roomcardlog r  where r.managerId=1 and r.createtime>? and r.createtime<?) n',[starttime,endtime],(err, totalBonus)=> {
+                            conn.query('select count(n.id) as totalNum,IFNULL(sum(n.roomCard),0) as totalMoney  from(select r.* from roomcardlog r  where r.managerId=? and r.createtime>? and r.createtime<?) n',[managerId,starttime,endtime],(err, totalBonus)=> {
                                 // console.log(11111);
                                 // console.log(totalBonus);
                                 if(totalBonus){
@@ -796,7 +799,8 @@ module.exports = {
 
                     });
                 }
-
+            }else{
+                res.json(resultjson);
             }
         }
     }

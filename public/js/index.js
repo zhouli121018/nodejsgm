@@ -374,7 +374,9 @@ $(function(){
                             <td>${o.lastLoginTime?new Date(o.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             <td>
                             <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
-                            <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button></td>
+                            <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button>
+                            <button class="btn btn-danger btn-sm del" type="button" data-id="${o.id}">删除</button>
+                            </td>
                         </tr>
                     `
                     }
@@ -406,9 +408,7 @@ $(function(){
     }
     function getPaylogs(indexPage){
         getRoom();
-        if(sessionStorage['powerId']==1){
-            getRoomcardLog(1);
-        }
+        getRoomcardLog(1);
         var starttime=$("#searchDetailForm [name=starttime]").val();
         var endtime=$("#searchDetailForm [name=endtime]").val();
         var uuid=$("#searchDetailForm [name=uuid]").val();
@@ -634,9 +634,10 @@ $(function(){
         var starttime=$("#searchRoomcardForm [name=starttime]").val();
         var endtime=$("#searchRoomcardForm [name=endtime]").val();
         var uuid=$("#searchRoomcardForm [name=uuid]").val();
+        var managerId=$("#searchRoomcardForm [name=managerId]").val();
         $.ajax({
             url:'/getRoomcardLog',
-            data:{starttime:starttime,endtime:endtime,page:page,uuid:uuid},
+            data:{starttime:starttime,endtime:endtime,page:page,uuid:uuid,managerId:managerId},
             success:function(datas){
                 if(datas.timeout==1){
                     location.href="index.html";
@@ -652,8 +653,6 @@ $(function(){
                         var o=data[i];
                         html+=`
                         <tr>
-                            <td>${o.mid}</td>
-                            <td>${o.name}</td>
                             <td>${o.accountId}</td>
                             <td>${o.nickName}</td>
                             <td>${o.roomCard}</td>
@@ -796,6 +795,7 @@ $(function(){
                             html+=`<td>
                                     <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
                                     <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button>
+                                    <button class="btn btn-danger btn-sm del" type="button" data-id="${o.id}">删除</button>
                                    </td>`;
                         }else{
                             html+=`<td></td>`;
@@ -805,7 +805,12 @@ $(function(){
                     }
 
                     ele.after(html);
-
+                    $('#agentTbl tr').each(function(i,dom){
+                        $(this).find('td:eq(0).level2').parents('tr').css('background','#ccc');
+                        $(this).find('td:eq(0).level3').parents('tr').css('background','#aaa');
+                        $(this).find('td:eq(0).level4').parents('tr').css('background','#888');
+                        console.log(1212);
+                    })
                 }
 
 
@@ -873,6 +878,86 @@ $(function(){
         $("#agentTbl tr.close"+mid).hide();
     })
 
+    $('#agent .reupcode').click(function(){
+        $('#reParentId').fadeIn();
+    })
+    $('#upCodeForm .sure').click(function(){
+        var managerId=$('#upCodeForm [name=managerId]').val();
+        var pmid=$('#upCodeForm [name=pmid]').val();
+        if(managerId==''||pmid==''){
+            alert('代理编号或上级代理编号不能为空！');
+            return;
+        }
+        var validManagerId=false;
+        var validPmid=false;
+        var powerId=0;
+        var ppowerId=0;
+        var levelStr='';
+        $.ajax({
+            url:'/validManagerId',
+            async: false,
+            data:{managerId:managerId},
+            success:function(data){
+                console.log('validmid');
+                console.log(data);
+                if(data[0].validmid>0){
+                    validManagerId=true;
+                    powerId=data[0].power_id;
+                }else{
+                    alert('代理编号不正确，请重新输入！');
+                }
+            }
+        })
+        $.ajax({
+            url:'/validManagerId',
+            async: false,
+            data:{managerId:pmid},
+            success:function(data){
+                console.log('validpmid');
+                console.log(data);
+                if(data[0].validmid>0){
+                    validPmid=true;
+                    ppowerId=data[0].power_id;
+                    if(ppowerId==1){
+                        levelStr='';
+                    }else{
+                        var n=100000000;
+                        var levelStr0=n+parseInt(data[0].id);
+                        var levelStr1=levelStr0+'$';
+                        levelStr=levelStr1.slice(1);
+                        var plevelStr='';
+                        plevelStr=data[0].levelStr;
+                        if(plevelStr){
+                            levelStr=plevelStr+levelStr;
+                        }
+                    }
+                }else{
+                    alert('上级代理编号不正确，请重新输入！');
+                }
+            }
+        })
+        console.log(levelStr);
+        if(parseInt(ppowerId)!=1&&(parseInt(ppowerId)<=parseInt(powerId))){
+            alert('上级代理级别需高于下级代理级别，请重新输入！');
+            return;
+        }
+        if(validManagerId&&validPmid){
+            $.ajax({
+                url:'/reupCode',
+                data:{managerId:managerId,pmid:pmid,levelStr:levelStr},
+                success:function(data){
+                    console.log(data);
+                    if(data.status>0){
+                        alert('重新绑定上级代理成功！');
+                        $('#reParentId').hide();
+                        getMyAgents(1);
+                    }else{
+                        alert('重新绑定上级代理失败！');
+                    }
+                }
+            })
+        }
+    })
     $('#agent #agentTbl').on('click','.editAgent',function(){
         var mid=$(this).attr('data-id');
         var nowTr=$(this).parents('tr');
@@ -994,7 +1079,31 @@ $(function(){
             })
         }
     });
-
+    $('#agent #agentTbl').on('click','.del',function(){
+        var mid=$(this).attr('data-id');
+        if(sessionStorage['powerId']>1){
+            alert('删除代理请联系系统管理员！');
+            return;
+        }
+        if($(this).parents('tr').find('td:eq(11)').html()>0){
+            alert('此代理下级有代理，暂不能删除，请先将此代理的下级代理绑定到另外的代理下!');
+            return;
+        }
+        if(confirm('确定删除此代理？')){
+            $.ajax({
+                url:'/deleteManager',
+                data:{managerId:mid},
+                success:function(data){
+                    console.log(data);
+                    if(data>0){
+                        alert('删除成功！');
+                    }else{
+                        alert('删除失败！');
+                    }
+                }
+            })
+        }
+    });
     $('#agent #agentTbl').on('click','.chargeForAgent',function(){
         var mid=$(this).attr('data-id');
         var nowTr=$(this).parents('tr');
@@ -1277,9 +1386,10 @@ $(function(){
         $('#totalBonus').hide();
         $('#info .info-hide').hide();
         $('#vip .mount-hide').hide();
-        $('#roomCardBox').hide();
+        //$('#roomCardBox').hide();
         $('#vip .charge').hide();
         $('.gameidhide').hide();
+        $('#roomCardBox .uuid-hide').hide();
     }else{
         $('#detail .agentSearch').hide();
         $("#searchNoteForm .agentId").hide();
@@ -1290,7 +1400,9 @@ $(function(){
         $('.detail-hide').hide();
         $('#tablist .powerId-hide').hide();
         $('#vip button.edit').hide();
-        $('#roomCardBox').hide();
+        $('#roomCardBox .mid-hide').hide();
+        $('#agent .reupcode').hide();
+
     }
     $('#searchDetail').click(function(){
         getPaylogs(1);

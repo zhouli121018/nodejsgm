@@ -8,9 +8,9 @@ const qs=require('querystring');
 var crypto = require('crypto');
 
 var config = {
-    wxappid:"wx07022b5bc486f279",//wx07022b5bc486f279 //wx0b0da56105e931d5
-    mch_id:"1370897",//  1370897202 //1481903462
-    wxpaykey:"LQ0929xxfy982fjielx39093ooxx3987"// LQ0929xxfy982fjielx39093ooxx3987 //cce50ed3d4d110d68ebdc2872885c2a5
+    wxappid:"wxb4bccad23ef9a324",//wx07022b5bc486f279 //wx0b0da56105e931d5
+    mch_id:"1493104312",//  1370897202 //1481903462
+    wxpaykey:"LQsy29dfwerxoiekxi302k3i192lso2k"// LQ0929xxfy982fjielx39093ooxx3987 //cce50ed3d4d110d68ebdc2872885c2a5
 };
 //生成随机字符串
 function randomString(len) {

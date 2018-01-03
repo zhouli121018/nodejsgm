@@ -15,7 +15,7 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    conn.query('SELECT * FROM manager WHERE inviteCode=? and password = ? and status = 0 and uuid>0',[uname,pwd],(err,result)=>{
+                    conn.query('SELECT * FROM manager WHERE uuid=? and password = ? and status = 0 and uuid>0',[uname,pwd],(err,result)=>{
 
                         // console.log('loginlogin');
                         // console.log(result);
@@ -185,7 +185,7 @@ module.exports = {
             if(levelStr){
                 slevelStr=levelStr+slevelStr;
             }
-            if(user.power_id==1){
+            if(req.session.user.power_id==1){
                 pool.getConnection((err,conn)=>{
                     if(err){
                         console.log(err);
@@ -207,7 +207,7 @@ module.exports = {
                     conn.release();
                 })
             }else{
-                res.json({"status":0});
+                res.json([{"status":0}]);
             }
 
         }

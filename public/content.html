@@ -120,6 +120,13 @@
                     <div class="form-group">
                         <input type="text" name="invitecode"  class="form-control" placeholder="请输入代理邀请码">
                     </div>
+                    <div class="form-group">
+                        <select name="gameId" class="form-control">
+                            <option value="0">全部充值</option>
+                            <option value="11">牛牛充值</option>
+                            <option value="13">数刀充值</option>
+                        </select>
+                    </div>
                     <div class="form-group agentId">
                         <input type="number" name="managerId"  class="form-control" placeholder="请输入代理ID查询下级代理">
                     </div>
@@ -137,7 +144,7 @@
                     </div>
                 </form>
             </div>
-            <h4>充值总金额：<b class="total-money">0</b> 元</h4>
+            <h4>充值金额：<b class="total-money">0</b> 元</h4>
             <div class="table-responsive">
                 <table id="agentTbl" class="table table-bordered table-striped tree">
                     <thead>
@@ -150,8 +157,8 @@
                             <th>分成比例</th>
                             <th>手机号码</th>
                             <th>邀请码</th>
-                            <th>剩余房卡</th>
-                            <th style="display:none;">剩余红钻</th>
+                            <th>剩余蓝钻</th>
+                            <th  style="display:none;">剩余红钻</th>
                             <th>会员数量</th>
                             <th>代理数量</th>
                             <th>充值业绩(元)</th>
@@ -204,7 +211,7 @@
                         </div>
                         <div class="form-group">
                             <label>分成比例：</label>
-                            <input type="text" name="rebate" placeholder="不填则默认；正确格式（0.5:0.15）"  class="form-control">
+                            <input type="text" name="rebate" placeholder="不填则默认；正确格式（0.45:0.1）"  class="form-control">
                         </div>
                         <div class="form-group">
                             <label>代理级别：</label>
@@ -227,7 +234,7 @@
                     <div>
                         <div class="form-group">
                             <label>代理姓名：</label>
-                            <input type="text" name="uname"  class="uname form-control">
+                            <input type="text" name="uname" class="uname form-control">
                             <input type="hidden"  name="mid" class="form-control">
                         </div>
                         <div class="form-group">
@@ -286,11 +293,15 @@
                             <input type="hidden"  name="uuid" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label>剩余房卡：</label>
+                            <label>剩余蓝钻：</label>
                             <input type="number"  disabled class="roomCard form-control">
                         </div>
+                        <div class="form-group" style="display:none;">
+                            <label>剩余红钻：</label>
+                            <input type="number"  disabled class="redCard form-control">
+                        </div>
                         <div class="form-group">
-                            <label>充房卡：</label>
+                            <label>充蓝钻：</label>
                             <input type="number" name="roomCardNum"  class="form-control">
                             <p>请输入正确的充钻数量</p>
                         </div>
@@ -347,11 +358,11 @@
                     <tr>
                         <th>游戏ID</th>
                         <th>昵称</th>
-                        <th>所属代理ID</th>
-                        <th>所属代理姓名</th>
+                        <th>直属代理ID</th>
+                        <th>直属代理姓名</th>
                         <th>充值金额</th>
                         <th>剩余蓝钻</th>
-                        <th>剩余红钻</th>
+                        <th style="display:none;">剩余红钻</th>
                         <th>账号状态</th>
                         <th>注册时间</th>
                         <th>操作</th>
@@ -375,7 +386,7 @@
                             <input type="text" name="uuid"  class="form-control">
                         </div>
                         <div class="form-group">
-                            <label>充房卡：</label>
+                            <label>充蓝钻：</label>
                             <input type="number" name="roomCardNum"  class="form-control">
                             <p>请输入正确的蓝钻数量</p>
                         </div>
@@ -456,6 +467,13 @@
                     <div class="form-group">
                         <input type="number" name="uuid"  class="form-control" placeholder="请输入玩家ID">
                     </div>
+                    <div class="form-group">
+                        <select name="gameId" class="form-control">
+                            <option value="0">全部充值</option>
+                            <option value="11">牛牛充值</option>
+                            <option value="13">数刀充值</option>
+                        </select>
+                    </div>
                     <div class="form-group agentSearch">
                         <input type="number" name="managerId"  class="form-control" placeholder="请输入代理ID">
                     </div>
@@ -465,7 +483,7 @@
                 </form>
             </div>
             <h4>充值总额：<b class="total-money">0</b> 元</h4>
-            <h4 id="totalBonus" style="display:none;">分成收益：<b>0</b> 元</h4>
+            <h4 id="totalBonus">分成收益：<b>0</b> 元</h4>
             <div class="table-responsive">
                 <table id="detailTbl" class="table table-bordered table-striped">
                     <thead>
@@ -555,7 +573,7 @@
                         <th>代理邀请码</th>
                         <th>提现金额(￥)</th>
                         <th>提现时间</th>
-                        <!--<th>是否处理</th>-->
+                        <th>是否处理</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -569,28 +587,98 @@
         <div id="notice">
             <h2>公告管理</h2>
             <button type="button" class="btn  btn-success add-notice">新增公告</button>
+            <div class="searchInfo">
+                <form class="form-inline form-btn" name="searchNoticeForm" id="searchNoticeForm">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">公告开始时间</span>
+                            <input type="date" name="starttime"  class="form-control" placeholder="开始时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon">公告结束时间</span>
+                            <input type="date" name="endtime"  class="form-control" placeholder="截止时间">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <select name="type" class="form-control">
+                            <option value="10">请选择公告类型</option>
+                            <option value="0">代理公告</option>
+                            <option value="1">消息公告</option>
+                            <option value="2">全服图片公告</option>
+                            <option value="3">给全体代理的公告</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-success" id="searchNotice"  value="查询">
+                    </div>
+                </form>
+            </div>
             <div class="table-responsive">
                 <table id="noticeTbl" class="table table-bordered table-striped">
                     <thead>
                     <tr>
                         <th>公告编号</th>
                         <th>公告内容</th>
+                        <th>公告开始时间</th>
+                        <th>公告结束时间</th>
+                        <th>公告创建时间</th>
                         <th>代理ID</th>
                         <th>公告类型</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
                     </tbody>
                 </table>
             </div>
+            <ul id="notice-pages"></ul>
+            <p>共有 <b class="total-number">0</b> 条记录</p>
             <div id="add-notice">
-                <form name="addNoticeForm" id="addNoticeForm">
+            <form name="addNoticeForm" id="addNoticeForm">
+                <button type="button" class="close"><span>&times;</span></button>
+                <h4>新增公告信息</h4>
+                <div>
+                    <div class="form-group">
+                        <label>公告类型：</label>
+                        <select name="ntype" class="form-control">
+                            <option value="0">代理公告</option>
+                            <option value="1">消息公告</option>
+                            <option value="2">全服图片公告</option>
+                            <option value="3">给所有代理公告</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>公告内容：</label>
+                        <textarea name="content" class="form-control" rows="3">
+                            </textarea>
+                    </div>
+                    <div class="from-group">
+                        <label>公告开始时间</label>
+                        <input type="date" class="form-control" name="startTime">
+                    </div>
+                    <div class="from-group">
+                        <label>公告结束时间</label>
+                        <input type="date" class="form-control" name="endTime">
+                    </div>
+                    <div class="form-group">
+                        <label>代理ID：</label>
+                        <input type="text" name="managerId" placeholder="请输入代理ID，没有则不填"  class="form-control">
+                    </div>
+                </div>
+                <input type="button" class="btn  btn-success sure" value="确 定"/>
+                <input type="button" class="btn  btn-danger cancel" value="取 消"/>
+            </form>
+        </div>
+            <div id="edit-notice">
+                <form name="editNoticeForm" id="editNoticeForm">
                     <button type="button" class="close"><span>&times;</span></button>
-                    <h4>新增公告信息</h4>
+                    <h4>修改公告信息</h4>
                     <div>
                         <div class="form-group">
                             <label>公告类型：</label>
-                            <select name="ntype" class="form-control">
+                            <select name="type" class="form-control">
                                 <option value="0">代理公告</option>
                                 <option value="1">消息公告</option>
                                 <option value="2">全服图片公告</option>
@@ -599,12 +687,21 @@
                         </div>
                         <div class="form-group">
                             <label>公告内容：</label>
-                            <textarea name="content" class="form-control" rows="5">
+                            <textarea name="content" class="form-control" rows="3">
                             </textarea>
+                        </div>
+                        <div class="from-group">
+                            <label>公告开始时间</label>
+                            <input type="date" class="form-control" name="startTime">
+                        </div>
+                        <div class="from-group">
+                            <label>公告结束时间</label>
+                            <input type="date" class="form-control" name="endTime">
                         </div>
                         <div class="form-group">
                             <label>代理ID：</label>
-                            <input type="text" name="managerId" placeholder="请输入代理ID，没有则不填"  class="form-control">
+                            <input type="number" name="managerId" placeholder="请输入代理ID，没有则不填"  class="form-control">
+                            <input type="hidden" name="nid"  class="form-control">
                         </div>
                     </div>
                     <input type="button" class="btn  btn-success sure" value="确 定"/>
@@ -613,7 +710,6 @@
             </div>
         </div>
     </div>
-
 </div>
 <br/><br/>
 <script src="js/jquery-2.1.4.js"></script>
@@ -625,9 +721,73 @@
 <script src="js/bootlint.js"></script>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <script src="js/jquery.treegrid.min.js"></script>
+<script src="js/drag.js"></script>
 <script type="text/javascript">
    // document.write(returnCitySN["cip"]+','+returnCitySN["cname"]);
     console.log(returnCitySN["cip"]);
+   $('#vipChargeForm').myDrag({
+       parent:'body', //定义拖动不能超出的外框,拖动范围
+       randomPosition:false, //初始化随机位置
+       direction:'all', //方向
+       handler:false, //把手
+       dragStart:function(x,y){}, //拖动开始 x,y为当前坐标
+       dragEnd:function(x,y){}, //拖动停止 x,y为当前坐标
+       dragMove:function(x,y){} //拖动进行中 x,y为当前坐标
+   });
+   $('#addAgentForm').myDrag({
+       parent:'body', //定义拖动不能超出的外框,拖动范围
+       randomPosition:false, //初始化随机位置
+       direction:'all', //方向
+       handler:false, //把手
+       dragStart:function(x,y){}, //拖动开始 x,y为当前坐标
+       dragEnd:function(x,y){}, //拖动停止 x,y为当前坐标
+       dragMove:function(x,y){} //拖动进行中 x,y为当前坐标
+   });
+   $('#agentDetailForm').myDrag({
+       parent:'body', //定义拖动不能超出的外框,拖动范围
+       randomPosition:false, //初始化随机位置
+       direction:'all', //方向
+       handler:false, //把手
+       dragStart:function(x,y){}, //拖动开始 x,y为当前坐标
+       dragEnd:function(x,y){}, //拖动停止 x,y为当前坐标
+       dragMove:function(x,y){} //拖动进行中 x,y为当前坐标
+   });
+   $('#agentChargeForm').myDrag({
+       parent:'body', //定义拖动不能超出的外框,拖动范围
+       randomPosition:false, //初始化随机位置
+       direction:'all', //方向
+       handler:false, //把手
+       dragStart:function(x,y){}, //拖动开始 x,y为当前坐标
+       dragEnd:function(x,y){}, //拖动停止 x,y为当前坐标
+       dragMove:function(x,y){} //拖动进行中 x,y为当前坐标
+   });
+   $('#vipDetailForm').myDrag({
+       parent:'body', //定义拖动不能超出的外框,拖动范围
+       randomPosition:false, //初始化随机位置
+       direction:'all', //方向
+       handler:false, //把手
+       dragStart:function(x,y){}, //拖动开始 x,y为当前坐标
+       dragEnd:function(x,y){}, //拖动停止 x,y为当前坐标
+       dragMove:function(x,y){} //拖动进行中 x,y为当前坐标
+   });
+   $('#addNoticeForm').myDrag({
+       parent:'body', //定义拖动不能超出的外框,拖动范围
+       randomPosition:false, //初始化随机位置
+       direction:'all', //方向
+       handler:false, //把手
+       dragStart:function(x,y){}, //拖动开始 x,y为当前坐标
+       dragEnd:function(x,y){}, //拖动停止 x,y为当前坐标
+       dragMove:function(x,y){} //拖动进行中 x,y为当前坐标
+   });
+   $('#editNoticeForm').myDrag({
+       parent:'body', //定义拖动不能超出的外框,拖动范围
+       randomPosition:false, //初始化随机位置
+       direction:'all', //方向
+       handler:false, //把手
+       dragStart:function(x,y){}, //拖动开始 x,y为当前坐标
+       dragEnd:function(x,y){}, //拖动停止 x,y为当前坐标
+       dragMove:function(x,y){} //拖动进行中 x,y为当前坐标
+   });
 </script>
 <script>
     //bootlint.showLintReportForCurrentDocument([]);

@@ -6,6 +6,8 @@ var crypto = require('crypto');
 var request = require('request');
 var xml2jsparseString = require('xml2js').parseString;
 const http=require('http');
+var xml2js=require('xml2js');
+var parser = new xml2js.Parser();
 const express=require('express');
 const mysql=require('mysql');
 const qs=require('querystring');
@@ -31,7 +33,7 @@ var pool=mysql.createPool({
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'mahjong',
-    password:'a257joker',//a257joker!@#Q
+    password:'a257joker!@#Q',//a257joker!@#Q
     database:'mahjong_hbe',//mahjong_cy mahjong_hbe
     connectionLimit:10
 });
@@ -170,6 +172,14 @@ function doTransfer(openId,money,desc,ip,cb){
         },
         function(err, response, body){
             console.log(body);
+            var str=body;
+            var n=str.indexOf('<result_code><![CDATA[');
+            var m=str.indexOf(']]></result_code>');
+            var str0=str.slice(n+parseInt(('<result_code><![CDATA['.length)),m)
+            console.log(str0);
+            if(str0=='SUCCESS'){
+                cb();
+            }
 
         });
 
@@ -1243,7 +1253,7 @@ app.post('/insertManager',(req,res)=>{
                 if (err) {
                     console.log(err);
                 } else {
-                    conn.query('INSERT INTO manager VALUES(null,?,?,?,?,0,0,?,0,?,?,?,1,?,?)', [powerId,uname,tel,pwd,pmid,inviteCode,weixin,qq,rebate,levelStr], (err, result)=> {
+                    conn.query('INSERT INTO manager VALUES(null,?,?,?,?,0,0,?,0,?,?,?,1,?)', [powerId,uname,tel,pwd,pmid,inviteCode,weixin,qq,rebate], (err, result)=> {
                         console.log(result);
                         if(result.affectedRows>0){
                             conn.query('UPDATE account SET manager_up_id=?,managerId=? WHERE Uuid=?',[result.insertId,result.insertId,uuid],(err,resultaccount)=>{
@@ -2988,7 +2998,7 @@ app.post('/tixian',(req,res)=>{
         var powerId = user.power_id;
         req.on("data", (buff)=> {
             var obj = qs.parse(buff.toString());
-            console.log(obj);
+            // console.log(obj);
             var ip=obj.ip;
             var money = parseFloat(obj.money);
             var totalBonus=parseFloat(req.session.mineone)+parseFloat(req.session.minetwo)+parseFloat(req.session.remain);
@@ -3002,43 +3012,49 @@ app.post('/tixian',(req,res)=>{
                 }else if(money>5000){
                     res.json({"status":0,"msg":"单次提现金额不超过5000元，如有疑问请联系管理员！"});
                 }
-                else if(money<100){
-                   res.json({"status":0,"msg":"提现金额不足100元！"});
-                }
+                // else if(money<100){
+                //     res.json({"status":0,"msg":"提现金额不足100元！"});
+                // }
                 else{
                     pool.getConnection((err, conn)=> {
-                        conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),1,1)',[managerId,uuid,money],(err,result)=>{
+                        conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),1,0)',[managerId,uuid,money],(err,result)=>{
                             if (err) {
                                 console.log(err);
                             } else {
-                                console.log('paylogpaylog');
-                                console.log(result);
+                                // console.log('paylogpaylog');
+                                // console.log(result);
                                 var insertId=0;
                                 if(result.affectedRows>0){
+                                    var m=totalBonus-money;
                                     insertId=result.insertId;
-                                    conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),9,1)',[managerId,uuid,totalBonus-money],(err,result)=>{
-                                        if (err) {
-                                            console.log(err);
-                                        } else {
-                                            if(result.affectedRows>0){
-                                                conn.query('select openid from account where Uuid = ? and status!=2',[uuid],(err,result)=>{
-                                                    if(result.length>0){
-                                                        doTransfer(result[0].openid,money,'代理提现',ip,cb);
-                                                        console.log('openid'+result[0].openid);
-                                                        if(req.session[managerId]&&req.session[managerId].day==new Date().toLocaleDateString()){
-                                                            req.session[managerId]={day:new Date().toLocaleDateString(),times:2};
-                                                        }else{
-                                                            req.session[managerId]={day:new Date().toLocaleDateString(),times:1};
-                                                        }
-                                                        console.log(req.session[managerId]);
-                                                        res.json({"status":1,"msg":"你的提现人民币"+money+"元的请求已经发出！请留意你的微信转账记录！"})
-
-                                                    }
-                                                })
-
+                                    function insertremain(managerId,uuid,m){
+                                        conn.query('update paylog set status=1 where id=?',[insertId]);
+                                        conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),9,1)',[managerId,uuid,m],(err,result)=>{
+                                            if (err) {
+                                                console.log(err);
                                             }
+                                        })
+                                    }
+                                    conn.query('select openid from account where Uuid = ? and status!=2',[uuid],(err,result)=>{
+                                        if(result.length>0){
+                                            function ab(){
+                                                insertremain(managerId,uuid,m);
+                                            };
+                                            doTransfer(result[0].openid,money,'代理提现',ip,ab);
+                                            console.log('openid'+result[0].openid);
+                                            if(req.session[managerId]&&req.session[managerId].day==new Date().toLocaleDateString()){
+                                                req.session[managerId]={day:new Date().toLocaleDateString(),times:2};
+                                            }else{
+                                                req.session[managerId]={day:new Date().toLocaleDateString(),times:1};
+                                            }
+
+                                            // console.log(req.session[managerId]);
+                                            res.json({"status":1,"msg":"你的提现人民币"+money+"元的请求已经发出！请留意你的微信转账记录！"})
+
                                         }
                                     })
+
+
                                 }
                             }
                         })

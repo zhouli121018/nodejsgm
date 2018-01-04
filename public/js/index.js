@@ -121,6 +121,13 @@ $(function(){
         // else
         //     window.event.returnValue = false;
         var id=$(this).attr('href');
+        console.log(id);
+        $(this).parent().addClass('active').siblings().removeClass('active');
+        $(id).show().siblings().hide();
+        $('#navBtn').addClass("collapsed");
+        $('#navBtn').attr("aria-expanded",false);
+        $("#bs-example-navbar-collapse-1").removeClass("in");
+        $("#bs-example-navbar-collapse-1").attr("aria-expanded",false);
         if(id=="#agent"){
             getMyAgents(1);
         }else if(id=="#vip"){
@@ -135,10 +142,6 @@ $(function(){
             //getNotice();
             getAllNotice(1);
         }
-        console.log(id);
-        $(this).parent().addClass('active').siblings().removeClass('active');
-        $(id).show().siblings().hide();
-
     });
 
     function logout(){
@@ -520,7 +523,7 @@ $(function(){
                             <td>${o.inviteCode||''}</td>
                             <td>${o.money}</td>
                             <td>${o.payTime?new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss"):'----'}</td>
-                            <!--<td>${o.status==1?'已完成':'提现失败'}</td>-->
+                            <td>${o.status==1?'已完成':o.status==0?'提现失败':'----'}</td>
                         </tr>
                     `
                     }
@@ -1004,6 +1007,10 @@ $(function(){
             alert('邀请码不能为空！请输入邀请码！');
             return;
         }
+        if(parseFloat(rebate)>0.8){
+            alert('分成比例不能高于0.8！请重新输入');
+            return;
+        }
         var rebetreg=/^0\.\d{1,2}$/;
         if(rebate!=""&& (!rebetreg.test(rebate))){
             $("#agent #agentDetail [name='rebate']").focus();
@@ -1097,6 +1104,7 @@ $(function(){
                     console.log(data);
                     if(data>0){
                         alert('删除成功！');
+                        getMyAgents(1);
                     }else{
                         alert('删除失败！');
                     }
@@ -1191,6 +1199,10 @@ $(function(){
         if(weixin==''){
             alert('微信号不能为空！请输入微信号！');
             $("#agent #add-message [name='weixin']").focus();
+            return;
+        }
+        if(parseFloat(rebate)>0.8){
+            alert('分成比例不能高于0.8！请重新输入');
             return;
         }
         var rebetreg=/^0\.\d{1,2}$/;

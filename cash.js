@@ -2,6 +2,7 @@
  * Created by Administrator on 2017-12-29.
  */
 var request = require('request');
+const pool = require('./pool');
 const fs   = require("fs");
 var xml2jsparseString = require('xml2js').parseString;
 const qs=require('querystring');
@@ -86,81 +87,94 @@ function cb(){
         },
         function(err, response, body){
             console.log(body);
+            var str=body;
+            var n=str.indexOf('<result_code><![CDATA[');
+            var m=str.indexOf(']]></result_code>');
+            var str0=str.slice(n+parseInt(('<result_code><![CDATA['.length)),m);
+            console.log(str0);
+            if(str0=='SUCCESS'){
+                cb();
+            }
         });
 
 }
 module.exports = {
     tixian:(req,res)=>{
-            var user = req.session.user;
-            var managerId = user.id;
-            var uuid = user.uuid;
-            var powerId = user.power_id;
-            req.on("data", (buff)=> {
-                var obj = qs.parse(buff.toString());
-                // console.log(obj);
-                var ip=obj.ip;
-                var money = parseFloat(obj.money);
-                var totalBonus=parseFloat(req.session.mineone)+parseFloat(req.session.minetwo)+parseFloat(req.session.remain);
-                if(req.session[managerId]&&req.session[managerId].day==new Date().toLocaleDateString()&&req.session[managerId].times>=2){
-                    res.json({"status":0,"msg":"一天只能提现2次，如有疑问请联系管理员！"});
-                    return;
+        var user = req.session.user;
+        var managerId = user.id;
+        var uuid = user.uuid;
+        var powerId = user.power_id;
+        req.on("data", (buff)=> {
+            var obj = qs.parse(buff.toString());
+            // console.log(obj);
+            var ip=obj.ip;
+            var money = parseFloat(obj.money);
+            var totalBonus=parseFloat(req.session.mineone)+parseFloat(req.session.minetwo)+parseFloat(req.session.remain);
+            if(req.session[managerId]&&req.session[managerId].day==new Date().toLocaleDateString()&&req.session[managerId].times>=2){
+                res.json({"status":0,"msg":"一天只能提现2次，如有疑问请联系管理员！"});
+                return;
+            }
+            if(money>0){
+                if(money>totalBonus){
+                    res.json({"status":0,"msg":"提现金额超出收益，如有疑问请联系管理员！"});
+                }else if(money>5000){
+                    res.json({"status":0,"msg":"单次提现金额不超过5000元，如有疑问请联系管理员！"});
                 }
-                if(money>0){
-                    if(money>totalBonus){
-                        res.json({"status":0,"msg":"提现金额超出收益，如有疑问请联系管理员！"});
-                    }else if(money>5000){
-                        res.json({"status":0,"msg":"单次提现金额不超过5000元，如有疑问请联系管理员！"});
-                    }
-                    else if(money<100){
-                        res.json({"status":0,"msg":"提现金额不足100元！"});
-                    }
-                    else{
-                        pool.getConnection((err, conn)=> {
-                            conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),1,1,0,3)',[managerId,uuid,money],(err,result)=>{
-                                if (err) {
-                                    console.log(err);
-                                } else {
-                                    // console.log('paylogpaylog');
-                                    // console.log(result);
-                                    var insertId=0;
-                                    if(result.affectedRows>0){
-                                        insertId=result.insertId;
-                                        conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),9,1,0,0)',[managerId,uuid,totalBonus-money],(err,result)=>{
+                // else if(money<100){
+                //     res.json({"status":0,"msg":"提现金额不足100元！"});
+                // }
+                else{
+                    pool.getConnection((err, conn)=> {
+                        conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),1,0,0,0)',[managerId,uuid,money],(err,result)=>{
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                // console.log('paylogpaylog');
+                                // console.log(result);
+                                var insertId=0;
+                                if(result.affectedRows>0){
+                                    var m=totalBonus-money;
+                                    insertId=result.insertId;
+                                    function insertremain(managerId,uuid,m){
+                                        conn.query('update paylog set status=1 where id=?',[insertId]);
+                                        conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),9,1,0,0)',[managerId,uuid,m],(err,result)=>{
                                             if (err) {
                                                 console.log(err);
-                                            } else {
-                                                if(result.affectedRows>0){
-                                                    conn.query('select openid from account where Uuid = ? and status!=2',[uuid],(err,result)=>{
-                                                        if(result.length>0){
-                                                            doTransfer(result[0].openid,money,'代理提现',ip,cb);
-                                                            console.log('openid'+result[0].openid);
-                                                            if(req.session[managerId]&&req.session[managerId].day==new Date().toLocaleDateString()){
-                                                                req.session[managerId]={day:new Date().toLocaleDateString(),times:2};
-                                                            }else{
-                                                                req.session[managerId]={day:new Date().toLocaleDateString(),times:1};
-                                                            }
-
-                                                            // console.log(req.session[managerId]);
-                                                            res.json({"status":1,"msg":"你的提现人民币"+money+"元的请求已经发出！请留意你的微信转账记录！"})
-
-                                                        }
-                                                    })
-
-                                                }
                                             }
                                         })
                                     }
+                                    conn.query('select openid from account where Uuid = ? and status!=2',[uuid],(err,result)=>{
+                                        if(result.length>0){
+                                            function ab(){
+                                                insertremain(managerId,uuid,m);
+                                            };
+                                            doTransfer(result[0].openid,money,'代理提现',ip,ab);
+                                            console.log('openid'+result[0].openid);
+                                            if(req.session[managerId]&&req.session[managerId].day==new Date().toLocaleDateString()){
+                                                req.session[managerId]={day:new Date().toLocaleDateString(),times:2};
+                                            }else{
+                                                req.session[managerId]={day:new Date().toLocaleDateString(),times:1};
+                                            }
+
+                                            // console.log(req.session[managerId]);
+                                            res.json({"status":1,"msg":"你的提现人民币"+money+"元的请求已经发出！请留意你的微信转账记录！"})
+
+                                        }
+                                    })
+
+
                                 }
-                            })
-                            conn.release();
+                            }
                         })
-                    }
-                }else{
-                    res.json({"status":0,"msg":"请输入正确的提现金额！"})
+                        conn.release();
+                    })
                 }
+            }else{
+                res.json({"status":0,"msg":"请输入正确的提现金额！"})
+            }
 
 
-            });
+        });
 
 
 

@@ -38,40 +38,54 @@ module.exports = {
                 }else{
                     if(powerId>1||req.query.managerId){
                         var progress=0;
-                        conn.query('select a.id,a.managerId,b.name,b.inviteCode,a.money,a.payTime,a.status from paylog a,manager b where a.managerId = b.id  and a.managerId =? and a.payTime > ? and a.payTime < ? and a.payType = 1 and a.status=1 order by a.payTime DESC limit ?,10 ',[managerId,starttime,endtime,limitstart],(err,result)=>{
+                        conn.query('select a.id,a.managerId,b.name,b.inviteCode,a.money,a.payTime,a.status from paylog a,manager b where a.managerId = b.id  and a.managerId =? and a.payTime > ? and a.payTime < ? and a.payType = 1  order by a.payTime DESC limit ?,10 ',[managerId,starttime,endtime,limitstart],(err,result)=>{
                             // console.log(333);
                             progress++;
                             resultJson.notes=result;
-                            if(progress==2){
+                            if(progress==3){
                                 res.json(resultJson);
                             }
                         })
-                        conn.query('select count(a.id) as totalNum,IFNULL(sum(a.money),0) as totalMoney from paylog a,manager b where a.managerId = b.id  and a.managerId =? and a.payTime > ? and a.payTime < ? and a.payType = 1 and a.status=1 ',[managerId,starttime,endtime],(err,result)=>{
+                        conn.query('select count(a.id) as totalNum from paylog a,manager b where a.managerId = b.id  and a.managerId =? and a.payTime > ? and a.payTime < ? and a.payType = 1 ',[managerId,starttime,endtime],(err,result)=>{
+                            // console.log(444);
+                            progress++;
+                            resultJson.totalNum=result[0].totalNum;
+                            if(progress==3){
+                                res.json(resultJson);
+                            }
+                        })
+                        conn.query('select IFNULL(sum(a.money),0) as totalMoney from paylog a,manager b where a.managerId = b.id  and a.managerId =? and a.payTime > ? and a.payTime < ? and a.payType = 1 and a.status=1 ',[managerId,starttime,endtime],(err,result)=>{
                             // console.log(444);
                             progress++;
                             resultJson.totalMoney=result[0].totalMoney;
-                            resultJson.totalNum=result[0].totalNum;
-                            if(progress==2){
+                            if(progress==3){
                                 res.json(resultJson);
                             }
                         })
                     }else{
                         var progress=0;
-                        conn.query('select m.*,IFNULL(SUM(p.money),0) as money from (select * from manager where id>1)m left JOIN paylog p on p.managerId=m.id and p.payTime>? and p.payTime<? and p.payType=1 and p.status =1 GROUP BY m.id ORDER BY money desc LIMIT ?,10 ',[starttime,endtime,limitstart],(err,result)=>{
+                        conn.query('select m.id,m.name,m.inviteCode,IFNULL(SUM(p.money),0) as money from (select * from manager where id>1)m left JOIN paylog p on p.managerId=m.id and p.payTime>? and p.payTime<? and p.payType=1 and p.status =1 GROUP BY m.id ORDER BY money desc LIMIT ?,10 ',[starttime,endtime,limitstart],(err,result)=>{
                             // console.log(333);
                             // console.log(result);
                             progress++;
                             resultJson.notes=result;
-                            if(progress==2){
+                            if(progress==3){
                                 res.json(resultJson);
                             }
                         })
-                        conn.query('select count(a.id) as totalNum,IFNULL(sum(a.totalMoney),0) as sumMoney from (select m.*,IFNULL(SUM(p.money),0) as totalMoney from (select * from manager where id>1)m left JOIN paylog p on p.managerId=m.id and p.payTime>? and p.payTime<? and p.payType=1 and p.status =1 GROUP BY m.id) a',[starttime,endtime],(err,result)=>{
+                        conn.query('select count(a.id) as totalNum from (select m.*,IFNULL(SUM(p.money),0) as totalMoney from (select * from manager where id>1)m left JOIN paylog p on p.managerId=m.id and p.payTime>? and p.payTime<? and p.payType=1 GROUP BY m.id) a',[starttime,endtime],(err,result)=>{
+                            // console.log(444);
+                            progress++;
+                            resultJson.totalNum=result[0].totalNum;
+                            if(progress==3){
+                                res.json(resultJson);
+                            }
+                        })
+                        conn.query('select IFNULL(sum(a.totalMoney),0) as sumMoney from (select m.*,IFNULL(SUM(p.money),0) as totalMoney from (select * from manager where id>1)m left JOIN paylog p on p.managerId=m.id and p.payTime>? and p.payTime<? and p.payType=1 and p.status =1 GROUP BY m.id) a',[starttime,endtime],(err,result)=>{
                             // console.log(444);
                             progress++;
                             resultJson.totalMoney=result[0].sumMoney;
-                            resultJson.totalNum=result[0].totalNum;
-                            if(progress==2){
+                            if(progress==3){
                                 res.json(resultJson);
                             }
                         })

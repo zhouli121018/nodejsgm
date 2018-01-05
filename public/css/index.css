@@ -290,3 +290,12 @@ button.add-notice{
 #roomCardBox{
     border-top:4px dashed #faa;
 }
+#vip .isAgent{
+    background:#9acfea;
+}
+.stips{
+    color:#4DA9EB;
+}
+#agent .firstAgent{
+    background:#F9f9f9;
+}

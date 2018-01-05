@@ -4,7 +4,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
     <meta http-equiv="x-ua-compatible" content="IE=edge">
     <meta charset="UTF-8">
-    <title>代理管理</title>
+    <title>神龙管理后台</title>
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" media="screen" />
     <link rel="stylesheet" href="css/bootstrap.css"/>
     <link rel="stylesheet" href="css/index.css"/>
     <link rel="stylesheet" href="css/jquery.treegrid.css"/>
@@ -153,7 +154,7 @@
             </div>
             <h4>充值总金额：<b class="total-money">0</b> 元</h4>
             <div class="table-responsive">
-                <table id="agentTbl" class="table table-bordered table-striped tree">
+                <table id="agentTbl" class="table table-bordered tree">
                     <thead>
                         <tr>
                             <th>真实姓名</th>
@@ -165,7 +166,7 @@
                             <th>手机号码</th>
                             <th>邀请码</th>
                             <th>剩余蓝钻</th>
-                            <th>剩余红钻</th>
+                            <th style="display:none;">剩余红钻</th>
                             <th>会员数量</th>
                             <th>代理数量</th>
                             <th>充值业绩(元)</th>
@@ -303,7 +304,7 @@
                             <label>剩余蓝钻：</label>
                             <input type="number"  disabled class="roomCard form-control">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="display:none;">
                             <label>剩余红钻：</label>
                             <input type="number"  disabled class="redCard form-control">
                         </div>
@@ -347,6 +348,7 @@
                 <!--<span class="glyphicon glyphicon-plus"></span>-->
                 重新绑定玩家上级代理
             </button>
+            <p class="stips pull-right">*背景色为浅蓝色的玩家为代理</p>
             <div class="searchInfo">
                 <form class="form-inline form-btn" name="searchVipForm" id="searchVipForm">
                     <div class="form-group">
@@ -382,11 +384,12 @@
                     <tr>
                         <th>游戏ID</th>
                         <th>昵称</th>
-                        <th>所属代理编号</th>
-                        <th>所属代理姓名</th>
+                        <th>直属代理编号</th>
+                        <th>直属代理姓名</th>
+                        <th>直属代理级别</th>
                         <th>充值金额</th>
                         <th>剩余蓝钻</th>
-                        <th>剩余红钻</th>
+                        <th style="display:none;">剩余红钻</th>
                         <th>账号状态</th>
                         <th>注册时间</th>
                         <th>操作</th>

@@ -20,7 +20,7 @@ module.exports = {
                         // console.log('loginlogin');
                         // console.log(result);
                         if(result.length>0){
-                            conn.query('UPDATE manager SET lastLoginTime=now() WHERE inviteCode=?',[uname],(err,result)=>{
+                            conn.query('UPDATE manager SET lastLoginTime=now() WHERE uuid=?',[uname],(err,result)=>{
                                 if(err){
                                     console.log(err);
                                 }else{

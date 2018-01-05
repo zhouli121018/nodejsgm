@@ -352,10 +352,10 @@ $(function(){
                     for(var i=0,html='';i<data.length;i++){
                         var o=data[i];
                         if(o.agentNum>0){
-                            html+=`<tr>
+                            html+=`<tr class="firstAgent">
                                    <td data-level="1"><span class="tree-collapse"></span><b>${o.name}</b></td>`
                         }else{
-                            html+=`<tr>
+                            html+=`<tr class="firstAgent">
                                    <td><span></span><b>${o.name}</b></td>`
                         }
                         html+=`
@@ -367,7 +367,7 @@ $(function(){
                             <td>${o.telephone}</td>
                             <td>${o.inviteCode}</td>
                             <td>${o.roomCard||0}</td>
-                            <td>${o.bmount||0}</td>
+                            <td style="display:none;">${o.bmount||0}</td>
                             <td>${o.userCounts}</td>
                             <td>${o.agentNum}</td>
                             <td>${o.totalMoney}</td>
@@ -586,15 +586,16 @@ $(function(){
                         }
 
                         html+=`
-                        <tr>
+                        <tr class="${o.managerId>0?'isAgent':''}">
                             <td>${o.Uuid||o.uuid}</td>
                             <td>${o.nickName}</td>
                             <td>${o.manager_up_id||''}</td>
                             <td>${o.name||''}</td>
+                            <td>${o.power_id?(o.power_id==5?'总管理':o.power_id==4?'大区管理':o.power_id==3?'区域主管':o.power_id==2?'钻石代理':'管理员'):''}</td>
                             <td>${o.totalMoney}</td>
                             <td>${o.roomCard}</td>
-                            <td>${redCardStr}</td>
-                            <td><b>${o.status==0?'正常':'禁用'}</b></td>
+                            <td style="display:none;">${redCardStr}</td>
+                            <td><b>${o.status==0?'正常':o.status==1?'红名':'禁用'}</b></td>
                             <td>${new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>
                                 <span class="input-group editStatus">
@@ -785,7 +786,7 @@ $(function(){
                             <td>${sessionStorage['powerId']==1?o.telephone:'----'}</td>
                             <td>${o.inviteCode}</td>
                             <td>${o.roomCard||0}</td>
-                            <td>${o.bmount||0}</td>
+                            <td style="display:none;">${o.bmount||0}</td>
                             <td>${o.userCounts}</td>
                             <td>${o.agentNum}</td>
                             <td>${o.totalMoney}</td>
@@ -809,9 +810,9 @@ $(function(){
 
                     ele.after(html);
                     $('#agentTbl tr').each(function(i,dom){
-                        $(this).find('td:eq(0).level2').parents('tr').css('background','#ccc');
-                        $(this).find('td:eq(0).level3').parents('tr').css('background','#aaa');
-                        $(this).find('td:eq(0).level4').parents('tr').css('background','#888');
+                        $(this).find('td:eq(0).level2').parents('tr').css('background','#fff');
+                        $(this).find('td:eq(0).level3').parents('tr').css('background','#f9f9f9');
+                        $(this).find('td:eq(0).level4').parents('tr').css('background','#fff');
                         console.log(1212);
                     })
                 }
@@ -878,7 +879,7 @@ $(function(){
         var mid=$(this).parent().next().html();
         $(this).removeClass('tree-expend').addClass('tree-collapse');
         //$("#agentTbl [data-parent='"+mid+"']").hide();
-        $("#agentTbl tr.close"+mid).hide();
+        $("#agentTbl tr.close"+mid).remove();
     })
 
     $('#agent .reupcode').click(function(){

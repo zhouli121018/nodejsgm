@@ -1358,6 +1358,8 @@ $(function(){
     $('#vip #vipCharge .sure').click(function(){
         var uuid=$("#vipChargeForm [name='uuid']").val();
         var validUuid=false;
+        var roomCardNum=$("#vip #vipCharge [name='roomCardNum']").val();
+        var redCardNum=$("#vip #vipCharge [name='redCardNum']").val();
         $.ajax({
             url:'/vipChargeValidUuid',
             data:{uuid:uuid},
@@ -1372,12 +1374,15 @@ $(function(){
                     validUuid=false;
                     alert('此用户ID不存在或已禁用，请重新输入！');
                 }else if(data.validuuid==1){
-                    validUuid=true;
+                    if(parseInt(roomCardNum)+parseInt(data.roomCard)>0){
+                        validUuid=true;
+                    }else{
+                        alert('此用户钻石不足，请重新填写钻石数量！');
+                    }
+
                 }
             }
         });
-        var roomCardNum=$("#vip #vipCharge [name='roomCardNum']").val();
-        var redCardNum=$("#vip #vipCharge [name='redCardNum']").val();
 
         if(roomCardNum!=''&&roomCardNum%1==0){
             // if(sessionStorage['powerId']!=1&&roomCardNum<=0){

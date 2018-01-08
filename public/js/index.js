@@ -162,7 +162,12 @@ $(function(){
             url:'/getAgentNotice',
             success:function(data){
                 console.log(data);
-                $('#info .well').html(data.content);
+                var contentArr=data.content.split(/\s+/);
+                console.dir(contentArr);
+                for(var i=0,html='';i<contentArr.length;i++){
+                    html+=`<p>${contentArr[i]}</p>`
+                }
+                $('#info .well').html(html);
             }
         })
         $.ajax({

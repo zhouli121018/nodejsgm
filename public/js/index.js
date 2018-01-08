@@ -1188,6 +1188,8 @@ $(function(){
         var weixin=$("#agent #add-message [name='weixin']").val();
         var rebate=$("#agent #add-message [name='rebate']").val();
         var powerId=$("#agent #add-message [name='powerId']").val();
+        var pwd= $("#agent #add-message [name='pwd']").val();
+        var pwdmd5= hex_md5(pwd);
         var nreg=/^([\u4e00-\u9fa5]){2,4}$/;
         var prebate=0;
         var ppowerId=0;
@@ -1196,6 +1198,11 @@ $(function(){
             alert('姓名格式不正确！请重新输入！');
             return;
         }
+        // if(pwd==''){
+        //     alert('登录密码不能为空！请输入登录密码！');
+        //     $("#agent #add-message [name='pwd']").focus();
+        //     return;
+        // }
         var reg=/^1[34578]\d{9}$/;
         if(!reg.test(telephone)){
             $("#agent #add-message [name='telephone']").focus();
@@ -1302,7 +1309,7 @@ $(function(){
         if(validInviteCode&&validUuid&&validParentInviteCode){
             $.ajax({
                 url:'/insertManager',
-                data:str+"&pmid="+pmid+"&redCard="+addRedCard+"&plevelStr="+plevelStr,
+                data:str+"&pmid="+pmid+"&redCard="+addRedCard+"&plevelStr="+plevelStr+"&pwdmd5="+pwdmd5,
                 type:'POST',
                 success:function(data){
                     console.log(data);

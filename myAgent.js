@@ -411,6 +411,9 @@ module.exports = {
                 var powerId = obj.powerId;
                 pmid = obj.pmid;
                 var pwd='e10adc3949ba59abbe56e057f20f883e';
+                if(req.query.pwdmd5){
+                    pwd = req.query.pwdmd5;
+                }
                 var redCard=obj.redCard;
                 var plevelStr=obj.plevelStr;
                 var levelStr='';

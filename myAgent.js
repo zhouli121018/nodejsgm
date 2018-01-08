@@ -41,12 +41,13 @@ module.exports = {
         }
         if(req.session.code==code){
             if(req.session.user){
-                var user=req.session.user;
-                if(uname==user.inviteCode&&pwd==user.password){
-                    res.json(user);
-                }else{
-                    login();
-                }
+                //var user=req.session.user;
+                //if(uname==user.inviteCode&&pwd==user.password){
+                //    res.json(user);
+                //}else{
+                //    login();
+                //}
+                login();
             }else{
                 login();
             }
@@ -278,12 +279,13 @@ module.exports = {
                 var rebate=obj.rebate;
                 var uuid=obj.uuid;
                 var weixin=obj.weixin;
+                var rootManager=obj.rootManager;
                 var uname=obj.uname;
                 pool.getConnection((err, conn)=> {
                     if (err) {
                         console.log(err);
                     } else {
-                        conn.query('UPDATE  manager SET name=?,inviteCode=?,power_id=?,status=?,telephone=?,rebate=?,uuid=?,weixin=?  WHERE id=?', [uname,inviteCode,powerId,status,telephone,rebate,uuid,weixin,managerId], (err, result)=> {
+                        conn.query('UPDATE  manager SET name=?,inviteCode=?,power_id=?,status=?,telephone=?,rebate=?,uuid=?,weixin=?,rootManager=?  WHERE id=?', [uname,inviteCode,powerId,status,telephone,rebate,uuid,weixin,rootManager,managerId], (err, result)=> {
                             // console.log(result);
                             if(result.changedRows>0){
                                 conn.query('UPDATE account SET managerId=?,manager_up_id=? WHERE Uuid=?',[managerId,managerId,uuid],(err,result1)=>{
@@ -408,11 +410,14 @@ module.exports = {
                 var tel=obj.telephone;
                 var weixin = obj.weixin;
                 var qq = obj.qq;
+                var rootManager = obj.rootManager;
                 var powerId = obj.powerId;
                 pmid = obj.pmid;
-                var pwd='e10adc3949ba59abbe56e057f20f883e';
-                if(req.query.pwdmd5){
-                    pwd = req.query.pwdmd5;
+                var pwd='';
+                if(obj.pwdmd5){
+                    pwd =obj.pwdmd5;
+                }else{
+                    pwd='e10adc3949ba59abbe56e057f20f883e';
                 }
                 var redCard=obj.redCard;
                 var plevelStr=obj.plevelStr;
@@ -444,7 +449,7 @@ module.exports = {
                     if (err) {
                         console.log(err);
                     } else {
-                        conn.query('INSERT INTO manager VALUES(null,?,?,?,?,0,0,?,0,?,?,?,1,?,1,?,?,now(),?,null)', [powerId,uname,tel,pwd,pmid,inviteCode,weixin,qq,rebate,levelStr,uuid,redCard], (err, result)=> {
+                        conn.query('INSERT INTO manager VALUES(null,?,?,?,?,0,0,?,0,?,?,?,?,?,1,?,?,now(),?,null)', [powerId,uname,tel,pwd,pmid,inviteCode,weixin,qq,rootManager,rebate,levelStr,uuid,redCard], (err, result)=> {
                             // console.log(result);
                             if(result.affectedRows>0){
                                 conn.query('UPDATE account SET manager_up_id=?,managerId=? WHERE Uuid=?',[result.insertId,result.insertId,uuid],(err,resultaccount)=>{

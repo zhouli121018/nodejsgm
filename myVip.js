@@ -49,7 +49,7 @@ module.exports = {
                         if(inputManagerId){
                             if(uuid){
                                 var progress=0;
-                                conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id=? and a.Uuid=?)n LEFT JOIN paylog p on p.payType=0 and p.payTime>? and p.payTime<? and p.uuid=n.Uuid group by n.id ',[inputManagerId,uuid,starttime,endtime],(err,result)=>{
+                                conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id=? and a.Uuid=?)n LEFT JOIN paylog p on p.payType=0 and p.payTime>? and p.payTime<? and p.uuid=n.Uuid group by n.id ',[inputManagerId,uuid,starttime,endtime],(err,result)=>{
                                     resultJson.accounts=result;
                                     progress++;
                                     if(progress==2){
@@ -67,7 +67,7 @@ module.exports = {
                                 })
                             }else{
                                 var progress=0;
-                                conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name FROM account a left join manager m on  a.manager_up_id=m.id WHERE a.manager_up_id=?)n LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime<? and p.uuid=n.Uuid group by n.id order by totalMoney desc limit ?,10',[inputManagerId,starttime,endtime,limitstart],(err,result)=>{
+                                conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on  a.manager_up_id=m.id WHERE a.manager_up_id=?)n LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime<? and p.uuid=n.Uuid group by n.id order by totalMoney desc,createTime desc limit ?,10',[inputManagerId,starttime,endtime,limitstart],(err,result)=>{
                                     resultJson.accounts=result;
                                     progress++;
                                     if(progress==2){
@@ -88,7 +88,7 @@ module.exports = {
                         }else{
                             if(uuid){
                                 var progress=0;
-                                conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name FROM account a left join manager m on m.id=a.manager_up_id WHERE  a.Uuid=?)n LEFT JOIN paylog p on p.payTime>? and p.payType=0  and p.payTime<? and p.uuid=n.Uuid group by n.id ',[uuid,starttime,endtime],(err,result)=>{
+                                conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE  a.Uuid=?)n LEFT JOIN paylog p on p.payTime>? and p.payType=0  and p.payTime<? and p.uuid=n.Uuid group by n.id ',[uuid,starttime,endtime],(err,result)=>{
                                     resultJson.accounts=result;
                                     progress++;
                                     if(progress==2){
@@ -106,7 +106,7 @@ module.exports = {
                                 })
                             }else{
                                 var progress=0;
-                                conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from (SELECT a.*,m.name FROM account a LEFT JOIN manager m on m.id=a.manager_up_id) n LEFT JOIN paylog p on p.uuid=n.Uuid and p.payType=0 and p.payTime>? and p.payTime<? group by n.id order by totalMoney desc limit ?,10',[starttime,endtime,limitstart],(err,result)=>{
+                                conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from (SELECT a.*,m.name,m.power_id FROM account a LEFT JOIN manager m on m.id=a.manager_up_id) n LEFT JOIN paylog p on p.uuid=n.Uuid and p.payType=0 and p.payTime>? and p.payTime<? group by n.id order by totalMoney desc,createTime desc limit ?,10',[starttime,endtime,limitstart],(err,result)=>{
                                     resultJson.accounts=result;
                                     console.log('allalalala')
                                     progress++;
@@ -131,7 +131,7 @@ module.exports = {
                     }else{
                         if(uuid){
                             var progress=0;
-                            conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and (a.manager_up_id=? or m.levelStr like ?) and a.uuid=?)n LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime<? and p.uuid=n.Uuid group by n.id ',[managerId,levelStr,uuid,starttime,endtime],(err,result)=>{
+                            conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and (a.manager_up_id=? or m.levelStr like ?) and a.uuid=?)n LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime<? and p.uuid=n.Uuid group by n.id ',[managerId,levelStr,uuid,starttime,endtime],(err,result)=>{
                                 resultJson.accounts=result;
                                 progress++;
                                 if(progress==2){
@@ -149,7 +149,7 @@ module.exports = {
                             })
                         }else{
                             var progress=0;
-                            conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and ( a.manager_up_id=? or m.levelStr like ?))n LEFT JOIN paylog p on p.payType=0 and  p.payTime>? and p.payTime<? and p.uuid=n.Uuid group by n.id order by totalMoney desc limit ?,10',[managerId,levelStr,starttime,endtime,limitstart],(err,result)=>{
+                            conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and ( a.manager_up_id=? or m.levelStr like ?))n LEFT JOIN paylog p on p.payType=0 and  p.payTime>? and p.payTime<? and p.uuid=n.Uuid group by n.id order by totalMoney desc,createTime desc limit ?,10',[managerId,levelStr,starttime,endtime,limitstart],(err,result)=>{
                                 resultJson.accounts=result;
                                 progress++;
                                 if(progress==2){

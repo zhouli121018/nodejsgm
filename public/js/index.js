@@ -575,11 +575,12 @@ $(function(){
                         }
 
                         html+=`
-                        <tr>
+                        <tr class="${o.managerId>0?'isAgent':''}">
                             <td>${o.Uuid||o.uuid}</td>
                             <td>${o.nickName}</td>
                             <td>${o.manager_up_id||''}</td>
                             <td>${o.name||''}</td>
+                            <td>${o.power_id?(o.power_id==5?'皇冠代理':o.power_id==4?'钻石代理':o.power_id==3?'铂金代理':o.power_id==2?'黄金代理':'管理员'):''}</td>
                             <td>${o.totalMoney}</td>
                             <td>${o.roomCard}</td>
                             <td style="display:none;">${redCardStr}</td>

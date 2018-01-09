@@ -793,10 +793,10 @@ $(function(){
                         html+=`
                             <td>${o.id}</td>
                             <td>${o.uuid||''}</td>
-                            <td>${sessionStorage['powerId']==1?o.nickName:'----'}</td>
+                            <td>${sessionStorage['powerId']==1||sessionStorage['powerId']==5?o.nickName:'----'}</td>
                             <td data-powerId="${o.power_id}">${o.power_id==5?'总管理':(o.power_id==4?'大区管理':(o.power_id==3?'区域主管':(o.power_id==2?'钻石代理':'系统管理员')))}</td>
                             <td>${o.rebate}</td>
-                            <td>${sessionStorage['powerId']==1?o.telephone:'----'}</td>
+                            <td>${sessionStorage['powerId']==1||sessionStorage['powerId']==5?o.telephone:'----'}</td>
                             <td>${o.inviteCode}</td>
                             <td>${o.roomCard||0}</td>
                             <td style="display:none;">${o.bmount||0}</td>
@@ -804,7 +804,7 @@ $(function(){
                             <td>${o.agentNum}</td>
                             <td>${o.totalMoney}</td>
                             <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
-                            <td>${sessionStorage['powerId']==1?o.weixin:'----'}</td>
+                            <td>${sessionStorage['powerId']==1||sessionStorage['powerId']==5?o.weixin:'----'}</td>
                             <td data-rootManager="${o.rootManager}">${o.rootManager==1?'是':'否'}</td>
                             <td>${o.createTime?new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             <td>${o.lastLoginTime?new Date(o.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>

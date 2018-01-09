@@ -807,7 +807,7 @@ $(function(){
                             <td>${o.createTime?new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             <td>${o.lastLoginTime?new Date(o.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             `;
-                        if(sessionStorage['powerId']==1){
+                        if(sessionStorage['powerId']==1||sessionStorage['powerId']==5){
                             html+=`<td>
                                     <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
                                     <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button>
@@ -1140,6 +1140,7 @@ $(function(){
     $('#agent #agentCharge .sure').click(function(){
         var str=$('#agentChargeForm').serialize();
         console.log(str);
+        var lastRoomCard=$("#agent #agentCharge .roomCard").val();
         var inputUuid=$("#agent #agentCharge [name='uuid']").val();
         var roomCardNum=$("#agent #agentCharge [name='roomCardNum']").val();
         if(sessionStorage['powerId']==1){
@@ -1153,6 +1154,10 @@ $(function(){
             // }
         }else{
             alert('请输入正确的充钻数量！');
+            return;
+        }
+        if(parseInt(roomCardNum)+parseInt(lastRoomCard)<0){
+            alert('此代理剩余钻石不足，请重新输入钻石数量！');
             return;
         }
         $.ajax({

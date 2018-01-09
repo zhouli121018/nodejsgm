@@ -45,7 +45,7 @@ module.exports = {
             if (err) {
                 console.log(err);
             } else {
-                if(powerId==1){
+                if(powerId==1||powerId==5){
                     if(inputManagerId){
                         if(uuid){
                             var progress=0;

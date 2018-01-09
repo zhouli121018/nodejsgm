@@ -892,6 +892,7 @@ $(function(){
     $('#agent #agentCharge .sure').click(function(){
         var str=$('#agentChargeForm').serialize();
         console.log(str);
+        var lastRoomCard=$("#agent #agentCharge .roomCard").val();
         var inputUuid=$("#agent #agentCharge [name='uuid']").val();
         var roomCardNum=$("#agent #agentCharge [name='roomCardNum']").val();
         if(roomCardNum!=''&&roomCardNum%1==0){
@@ -901,6 +902,10 @@ $(function(){
             }
         }else{
             alert('请输入正确的充钻数量！');
+            return;
+        }
+        if(parseInt(roomCardNum)+parseInt(lastRoomCard)<0){
+            alert('此代理剩余钻石不足，请重新输入钻石数量！');
             return;
         }
         $.ajax({
@@ -1094,6 +1099,8 @@ $(function(){
     $('#vip #vipCharge .sure').click(function(){
         var uuid=$("#vipChargeForm [name='uuid']").val();
         var validUuid=false;
+        var roomCardNum=$("#vip #vipCharge [name='roomCardNum']").val();
+        var redCardNum=$("#vip #vipCharge [name='redCardNum']").val();
         $.ajax({
             url:'/vipChargeValidUuid',
             data:{uuid:uuid},
@@ -1108,12 +1115,14 @@ $(function(){
                     validUuid=false;
                     alert('此用户ID不存在或已禁用，请重新输入！');
                 }else if(data.validuuid==1){
-                    validUuid=true;
+                    if(parseInt(roomCardNum)+parseInt(data.roomCard)>0){
+                        validUuid=true;
+                    }else{
+                        alert('此用户钻石不足，请重新填写钻石数量！');
+                    }
                 }
             }
         });
-        var roomCardNum=$("#vip #vipCharge [name='roomCardNum']").val();
-        var redCardNum=$("#vip #vipCharge [name='redCardNum']").val();
         if(roomCardNum==''&&redCardNum==''){
             alert('请输入正确的充钻数量！');
             return;

@@ -239,6 +239,16 @@ module.exports = {
             var managerId=user.id;
             var powerId=user.power_id;
             var uuid = req.query.uuid;
+            var levelStr='';
+            var n=100000000;
+            var levelStr0=n+parseInt(managerId);
+            var levelStr1=levelStr0+'$%';
+            levelStr=levelStr1.slice(1);
+            var plevelStr='';
+            plevelStr=user.levelStr;
+            if(plevelStr){
+                levelStr=plevelStr+levelStr;
+            }
             pool.getConnection((err,conn)=>{
                 if(err){
                     console.log(err);
@@ -246,15 +256,15 @@ module.exports = {
                     if(powerId==1){
                         conn.query('SELECT * FROM account  WHERE Uuid=? ',[uuid,managerId],(err,result)=>{
                             if(result.length>0){
-                                res.json({"validuuid":1});
+                                res.json({"validuuid":1,"roomCard":result[0].roomCard});
                             }else{
                                 res.json({"validuuid":0});
                             }
                         })
                     }else{
-                        conn.query('SELECT * FROM account  WHERE Uuid=? AND manager_up_id=? AND status!=2',[uuid,managerId],(err,result)=>{
+                        conn.query('SELECT * FROM account a,manager b  WHERE a.Uuid=? AND a.manager_up_id=b.id and (a.manager_up_id=? or  b.levelStr like ?) AND a.status!=2',[uuid,managerId,levelStr],(err,result)=>{
                             if(result.length>0){
-                                res.json({"validuuid":1});
+                                res.json({"validuuid":1,"roomCard":result[0].roomCard});
                             }else{
                                 res.json({"validuuid":0});
                             }

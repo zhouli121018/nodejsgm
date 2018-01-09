@@ -736,7 +736,7 @@ module.exports = {
                             console.log(err);
                         } else {
                             var progress=0;
-                            conn.query('select q.*,m.name from (select r.*,a.nickName,a.managerId as mid from roomcardlog r left join account a on r.accountId=a.Uuid where r.managerId=? and r.accountId=? and r.createtime>? and r.createtime<?)q left join manager m on q.mid=m.id order by createtime desc limit ?,10', [managerId,uuid,starttime,endtime,limitstart], (err, paylogs)=> {
+                            conn.query('select q.*,m.name from (select r.*,a.nickName,a.managerId as mid from roomcardlog r left join account a on r.accountId=a.Uuid where r.managerId=? and r.accountId=? and r.createtime>? and r.createtime<?)q left join manager m on q.managerId=m.id order by createtime desc limit ?,10', [managerId,uuid,starttime,endtime,limitstart], (err, paylogs)=> {
                                 // console.log(paylogs);
                                 if(paylogs){
                                     resultjson.roomcardLogs=paylogs;
@@ -770,7 +770,7 @@ module.exports = {
                             console.log(err);
                         } else {
                             var progress=0;
-                            conn.query('select q.*,m.name from (select r.*,a.nickName,a.managerId as mid from roomcardlog r left join account a on r.accountId=a.Uuid where r.managerId=? and r.createtime>? and r.createtime<?)q left join manager m on q.mid=m.id order by createtime desc limit ?,10', [managerId,starttime,endtime,limitstart], (err, paylogs)=> {
+                            conn.query('select q.*,m.name from (select r.*,a.nickName,a.managerId as mid from roomcardlog r left join account a on r.accountId=a.Uuid where r.managerId=? and r.createtime>? and r.createtime<?)q left join manager m on q.managerId=m.id order by createtime desc limit ?,10', [managerId,starttime,endtime,limitstart], (err, paylogs)=> {
                                 // console.log(paylogs);
                                 if(paylogs){
                                     resultjson.roomcardLogs=paylogs;
@@ -800,7 +800,76 @@ module.exports = {
                     });
                 }
             }else{
-                res.json(resultjson);
+                //res.json(resultjson);
+                if(uuid){
+                    pool.getConnection((err, conn)=> {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            var progress=0;
+                            conn.query('select q.*,m.name from (select r.*,a.nickName,a.managerId as mid from roomcardlog r left join account a on r.accountId=a.Uuid where r.accountId=? and r.createtime>? and r.createtime<?)q left join manager m on q.managerId=m.id order by createtime desc limit ?,10', [uuid,starttime,endtime,limitstart], (err, paylogs)=> {
+                                // console.log(paylogs);
+                                if(paylogs){
+                                    resultjson.roomcardLogs=paylogs;
+                                }
+                                progress++;
+                                if(progress==2){
+                                    res.json(resultjson);
+                                    conn.release();
+                                }
+                            });
+                            conn.query('select count(n.id) as totalNum,IFNULL(sum(n.roomCard),0) as totalMoney  from(select r.* from roomcardlog r  where r.accountId=? and r.createtime>? and r.createtime<?) n  ', [uuid,starttime,endtime], (err, totalBonus)=> {
+                                // console.log(11111);
+                                // console.log(totalBonus);
+                                if(totalBonus){
+                                    resultjson.totalNum=totalBonus[0].totalNum;
+                                    resultjson.totalCard=totalBonus[0].totalMoney;
+                                }
+                                progress++;
+                                if(progress==2){
+                                    res.json(resultjson);
+                                    conn.release();
+                                }
+
+                            });
+                        }
+
+                    });
+                }else{
+                    pool.getConnection((err, conn)=> {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            var progress=0;
+                            conn.query('select q.*,m.name from (select r.*,a.nickName,a.managerId as mid from roomcardlog r left join account a on r.accountId=a.Uuid where r.createtime>? and r.createtime<?)q left join manager m on q.managerId=m.id order by createtime desc limit ?,10', [starttime,endtime,limitstart], (err, paylogs)=> {
+                                // console.log(paylogs);
+                                if(paylogs){
+                                    resultjson.roomcardLogs=paylogs;
+                                }
+                                progress++;
+                                if(progress==2){
+                                    res.json(resultjson);
+                                    conn.release();
+                                }
+                            });
+                            conn.query('select count(n.id) as totalNum,IFNULL(sum(n.roomCard),0) as totalMoney  from(select r.* from roomcardlog r  where r.createtime>? and r.createtime<?) n',[starttime,endtime],(err, totalBonus)=> {
+                                // console.log(11111);
+                                // console.log(totalBonus);
+                                if(totalBonus){
+                                    resultjson.totalNum=totalBonus[0].totalNum;
+                                    resultjson.totalCard=totalBonus[0].totalMoney;
+                                }
+                                progress++;
+                                if(progress==2){
+                                    res.json(resultjson);
+                                    conn.release();
+                                }
+
+                            });
+                        }
+
+                    });
+                }
             }
         }
     }

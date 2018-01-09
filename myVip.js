@@ -45,7 +45,7 @@ module.exports = {
             if (err) {
                 console.log(err);
             } else {
-                if(powerId==1||powerId==5){
+                if(powerId==1||powerId==5||powerId==4){
                     if(inputManagerId){
                         if(uuid){
                             var progress=0;
@@ -253,23 +253,31 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    if(powerId==1||powerId==5){
-                        conn.query('SELECT * FROM account  WHERE Uuid=? ',[uuid],(err,result)=>{
-                            if(result.length>0){
-                                res.json({"validuuid":1,"roomCard":result[0].roomCard});
-                            }else{
-                                res.json({"validuuid":0});
-                            }
-                        })
-                    }else{
-                        conn.query('SELECT * FROM account a,manager b  WHERE a.Uuid=? AND a.manager_up_id=b.id and (a.manager_up_id=? or  b.levelStr like ?) AND a.status!=2',[uuid,managerId,levelStr],(err,result)=>{
-                            if(result.length>0){
-                                res.json({"validuuid":1,"roomCard":result[0].roomCard});
-                            }else{
-                                res.json({"validuuid":0});
-                            }
-                        })
-                    }
+                    //所有代理都可以给任何玩家充值
+                    conn.query('SELECT * FROM account  WHERE Uuid=? ',[uuid],(err,result)=>{
+                        if(result.length>0){
+                            res.json({"validuuid":1,"roomCard":result[0].roomCard});
+                        }else{
+                            res.json({"validuuid":0});
+                        }
+                    })
+                    // if(powerId==1||powerId==5){
+                    //     conn.query('SELECT * FROM account  WHERE Uuid=? ',[uuid],(err,result)=>{
+                    //         if(result.length>0){
+                    //             res.json({"validuuid":1,"roomCard":result[0].roomCard});
+                    //         }else{
+                    //             res.json({"validuuid":0});
+                    //         }
+                    //     })
+                    // }else{
+                    //     conn.query('SELECT * FROM account a,manager b  WHERE a.Uuid=? AND a.manager_up_id=b.id and (a.manager_up_id=? or  b.levelStr like ?) AND a.status!=2',[uuid,managerId,levelStr],(err,result)=>{
+                    //         if(result.length>0){
+                    //             res.json({"validuuid":1,"roomCard":result[0].roomCard});
+                    //         }else{
+                    //             res.json({"validuuid":0});
+                    //         }
+                    //     })
+                    // }
 
                 }
                 conn.release();

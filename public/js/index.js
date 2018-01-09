@@ -668,6 +668,8 @@ $(function(){
                         var o=data[i];
                         html+=`
                         <tr>
+                            <td>${o.managerId}</td>
+                            <td>${o.name||''}</td>
                             <td>${o.accountId}</td>
                             <td>${o.nickName}</td>
                             <td>${o.roomCard}</td>
@@ -1390,10 +1392,11 @@ $(function(){
         });
 
         if(roomCardNum!=''&&roomCardNum%1==0){
-            // if(sessionStorage['powerId']!=1&&roomCardNum<=0){
-            //     alert('请输入正确的充钻数量！');
-            //     return;
-            // }
+            //只有总管理可以减玩家的钻石
+            if(sessionStorage['powerId']!=5&&roomCardNum<=0){
+                alert('请输入正确的充钻数量！');
+                return;
+            }
         }else{
             alert('请输入正确的充钻数量！');
             return;
@@ -1434,7 +1437,7 @@ $(function(){
         //$('#roomCardBox').hide();
         $('#vip .charge').hide();
         $('.gameidhide').hide();
-        $('#roomCardBox .uuid-hide').hide();
+        //$('#roomCardBox .uuid-hide').hide();
     }else{
         $('#detail .agentSearch').hide();
         $("#searchNoteForm .agentId").hide();

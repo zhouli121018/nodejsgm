@@ -145,3 +145,9 @@ app.get('/addNotice',notice.addNotice);
 app.get('/editNotice',notice.editNotice);
 //获取我的代理数据
 app.get('/getManagers',myAgent.getManagers);
+//删除代理
+app.get('/deleteManager',myAgent.deleteManager);
+//重新绑定上级代理验证代理id
+app.get('/validManagerId',myAgent.validManagerId);
+//重新绑定上级代理
+app.get('/reupCode',myAgent.reupCode);

@@ -369,7 +369,9 @@ $(function(){
                             <td>${o.lastLoginTime?new Date(o.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             <td>
                             <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
-                            <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button></td>
+                            <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button>
+                            <button class="btn btn-danger btn-sm del" type="button" data-id="${o.id}">删除</button>
+                            </td>
                         </tr>
                     `
                     }
@@ -728,6 +730,7 @@ $(function(){
                             html+=`<td>
                                     <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
                                     <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button>
+                                    <button class="btn btn-danger btn-sm del" type="button" data-id="${o.id}">删除</button>
                                    </td>`;
                         }else{
                             html+=`<td></td>`;
@@ -1081,6 +1084,112 @@ $(function(){
 
     })
 
+    $('#agent .reupcode').click(function(){
+        $('#reParentId').fadeIn();
+    })
+    $('#upCodeForm .sure').click(function(){
+        var managerId=$('#upCodeForm [name=managerId]').val();
+        var pmid=$('#upCodeForm [name=pmid]').val();
+        if(managerId==''||pmid==''){
+            alert('代理编号或上级代理编号不能为空！');
+            return;
+        }
+        var validManagerId=false;
+        var validPmid=false;
+        var powerId=0;
+        var ppowerId=0;
+        var levelStr='';
+        $.ajax({
+            url:'/validManagerId',
+            async: false,
+            data:{managerId:managerId},
+            success:function(data){
+                console.log('validmid');
+                console.log(data);
+                if(data[0].validmid>0){
+                    validManagerId=true;
+                    powerId=data[0].power_id;
+                }else{
+                    alert('代理编号不正确，请重新输入！');
+                }
+            }
+        })
+        $.ajax({
+            url:'/validManagerId',
+            async: false,
+            data:{managerId:pmid},
+            success:function(data){
+                console.log('validpmid');
+                console.log(data);
+                if(data[0].validmid>0){
+                    validPmid=true;
+                    ppowerId=data[0].power_id;
+                    if(ppowerId==1){
+                        levelStr='';
+                    }else{
+                        var n=100000000;
+                        var levelStr0=n+parseInt(data[0].id);
+                        var levelStr1=levelStr0+'$';
+                        levelStr=levelStr1.slice(1);
+                        var plevelStr='';
+                        plevelStr=data[0].levelStr;
+                        if(plevelStr){
+                            levelStr=plevelStr+levelStr;
+                        }
+                    }
+                }else{
+                    alert('上级代理编号不正确，请重新输入！');
+                }
+            }
+        })
+        console.log(levelStr);
+        if(parseInt(ppowerId)!=1&&(parseInt(ppowerId)<=parseInt(powerId))){
+            alert('上级代理级别需高于下级代理级别，请重新输入！');
+            return;
+        }
+        if(validManagerId&&validPmid){
+            $.ajax({
+                url:'/reupCode',
+                data:{managerId:managerId,pmid:pmid,levelStr:levelStr},
+                success:function(data){
+                    console.log(data);
+                    if(data.status>0){
+                        alert('重新绑定上级代理成功！');
+                        $('#reParentId').hide();
+                        getMyAgents(1);
+                    }else{
+                        alert('重新绑定上级代理失败！');
+                    }
+                }
+            })
+        }
+    })
+    $('#agent #agentTbl').on('click','.del',function(){
+        var mid=$(this).attr('data-id');
+        if(sessionStorage['powerId']>1){
+            alert('删除代理请联系系统管理员！');
+            return;
+        }
+        if($(this).parents('tr').find('td:eq(11)').html()>0){
+            alert('此代理下级有代理，暂不能删除，请先将此代理的下级代理绑定到另外的代理下!');
+            return;
+        }
+        if(confirm('确定删除此代理？')){
+            $.ajax({
+                url:'/deleteManager',
+                data:{managerId:mid},
+                success:function(data){
+                    console.log(data);
+                    if(data>0){
+                        alert('删除成功！');
+                        getMyAgents(1);
+                    }else{
+                        alert('删除失败！');
+                    }
+                }
+            })
+        }
+    });
     $('.close').click(function(){
         $(this).parent().parent().hide();
     });
@@ -1182,6 +1291,7 @@ $(function(){
         $('.detail-hide').hide();
         $('#tablist .powerId-hide').hide();
         $('#vip button.edit').hide();
+        $('#agent .reupcode').hide();
     }
     $('#searchDetail').click(function(){
         getPaylogs(1);

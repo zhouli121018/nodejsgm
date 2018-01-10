@@ -278,6 +278,11 @@ module.exports = {
                             conn.query('UPDATE  account SET roomCard=roomCard+?  WHERE Uuid=?', [roomCardNum,uuid], (err, result)=> {
                                 // console.log(result);
                                 if(result.changedRows>0){
+                                    conn.query('insert into roomcardlog values(null,?,?,?,now())',[managerId,uuid,roomCardNum],(err,result)=>{
+                                        if(err){
+                                            console.log(err);
+                                        }
+                                    })
                                     res.json({"status": 1});
                                 }else{
                                     res.json({"status": 0});
@@ -296,6 +301,11 @@ module.exports = {
                                             conn.query('UPDATE account SET roomCard =roomCard+? WHERE Uuid=?',[roomCardNum,uuid],(err,resul)=>{
                                                 // console.log(resul);
                                                 if(resul.changedRows>0){
+                                                    conn.query('insert into roomcardlog values(null,?,?,?,now())',[managerId,uuid,roomCardNum],(err,result)=>{
+                                                        if(err){
+                                                            console.log(err);
+                                                        }
+                                                    })
                                                     res.json({"status": 1});
                                                 }else{
                                                     res.json({"status": 0});
@@ -2059,6 +2069,94 @@ module.exports = {
                 conn.release();
             })
         }
-    }
+    },
+    deleteManager:(req,res)=>{
+        if(req.session.user){
+            var user=req.session.user;
+            var managerId=req.query.managerId;
+            var powerId=user.power_id;
+            pool.getConnection((err,conn)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    if(powerId==1){
+                        conn.query('delete from manager where id=?',[managerId],(err,result)=>{
+                            console.log(result);
+                            if(result.affectedRows>0){
+                                conn.query('update account set manager_up_id=?,managerId=? where managerId=? or manager_up_id=?',[null,null,managerId,managerId],(err,result0)=>{
+                                    console.log(result0);
+                                })
+                            }
+                            res.json(result.affectedRows);
+                        })
+                    }else{
+                        res.json(0);
+                    }
+                }
+                conn.release();
+            })
+        }
+    },
+    validManagerId:(req,res)=>{
+        if(req.session.user){
+            var managerId = req.query.managerId;
+            pool.getConnection((err,conn)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    conn.query('SELECT * FROM manager  WHERE id=?',[managerId],(err,result)=>{
+                        // console.log(result);
+                        if(result.length>0){
+                            result[0]['validmid']=1;
+                            res.json(result);
+                        }else{
+                            res.json([{"validmid":0}]);
+                        }
+                    })
+                }
+                conn.release();
+            })
+        }
+    },
+    reupCode:(req,res)=>{
+        if(req.session.user){
+            var managerId = req.query.managerId;
+            var pmid = req.query.pmid;
+            var levelStr = req.query.levelStr;
+            var slevelStr='';
+            var n=100000000;
+            var levelStr0=n+parseInt(managerId);
+            var levelStr1=levelStr0+'$';
+            slevelStr=levelStr1.slice(1);
+            if(levelStr){
+                slevelStr=levelStr+slevelStr;
+            }
+            if(req.session.user.power_id==1){
+                pool.getConnection((err,conn)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        conn.query('update manager set manager_up_id=?,levelStr=? where id=?',[pmid,levelStr,managerId],(err,result)=>{
+                            // console.log(result);
+                            if(result.changedRows>0){
+                                conn.query('update manager set levelStr=? where manager_up_id=?',[slevelStr,managerId],(err,result0)=>{
+                                    if(err){
+                                        console.log(err);
+                                    }
+                                });
+                                res.json({"status":1});
+                            }else{
+                                res.json({"status":0});
+                            }
+                        })
+                    }
+                    conn.release();
+                })
+            }else{
+                res.json([{"status":0}]);
+            }
+
+        }
+    },
 }
 

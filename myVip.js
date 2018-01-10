@@ -295,6 +295,11 @@ module.exports = {
                             conn.query('UPDATE  account SET roomCard=roomCard+?,redCard=redCard+?  WHERE Uuid=?', [roomCardNum,redCardNum,uuid], (err, result)=> {
                                 // console.log(result);
                                 if(result.changedRows>0){
+                                    conn.query('insert into roomcardlog values(null,?,?,?,now())',[managerId,uuid,roomCardNum],(err,result)=>{
+                                        if(err){
+                                            console.log(err);
+                                        }
+                                    })
                                     res.json({"status": 1});
                                 }else{
                                     res.json({"status": 0});
@@ -310,6 +315,11 @@ module.exports = {
                                     conn.query('UPDATE account SET roomCard =roomCard-?,redCard=redCard-? WHERE managerId=?',[roomCardNum,redCardNum,managerId],(err,resu)=>{
                                         // console.log(resu);
                                         if(resu.changedRows>0){
+                                            conn.query('insert into roomcardlog values(null,?,?,?,now())',[managerId,uuid,roomCardNum],(err,result)=>{
+                                                if(err){
+                                                    console.log(err);
+                                                }
+                                            })
                                             conn.query('UPDATE account SET roomCard =roomCard+?,redCard=redCard+? WHERE Uuid=?',[roomCardNum,redCardNum,uuid],(err,resul)=>{
                                                 // console.log(resul);
                                                 if(resul.changedRows>0){

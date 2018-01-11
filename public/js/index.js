@@ -47,7 +47,11 @@ $(function(){
     $('[name=endtime]').val(overTime);
     $('[name=starttime]').val(beginTime);
 
-
+    if(sessionStorage['rootManager']==1){
+        $('#agent .add-agent').show();
+    }else{
+        $('#agent .add-agent').hide();
+    }
     function refresh(){
         console.log('refresh');
         $.ajax({
@@ -365,6 +369,7 @@ $(function(){
                             <td>${o.totalMoney}</td>
                             <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
                             <td>${o.weixin}</td>
+                            <td data-rootManager="${o.rootManager}">${o.rootManager==1?'是':'否'}</td>
                             <td>${o.createTime?new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             <td>${o.lastLoginTime?new Date(o.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             <td>
@@ -723,6 +728,7 @@ $(function(){
                             <td>${o.totalMoney}</td>
                             <td data-status="${o.status}">${o.status==0?'正常':'禁用'}</td>
                             <td>${sessionStorage['powerId']==1?o.weixin:'----'}</td>
+                            <td data-rootManager="${o.rootManager}">${o.rootManager==1?'是':'否'}</td>
                             <td>${o.createTime?new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             <td>${o.lastLoginTime?new Date(o.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             `;
@@ -776,6 +782,7 @@ $(function(){
         $("#agent #agentDetail [name='powerId']").val(nowTr.find('td:eq(4)').attr('data-powerId'));
         $("#agent #agentDetail [name='status']").val(nowTr.find('td:eq(13)').attr('data-status'));
         $("#agent #agentDetail [name='weixin']").val(nowTr.find('td:eq(14)').html());
+        $("#agent #agentDetail [name='rootManager']").val(nowTr.find('td:eq(15)').attr('data-rootManager'));
         $('#agent #agentDetail').fadeIn();
     });
     $('#agent #agentDetail .sure').click(function(){
@@ -953,6 +960,7 @@ $(function(){
         var weixin=$("#agent #add-message [name='weixin']").val();
         var rebate=$("#agent #add-message [name='rebate']").val();
         var powerId=$("#agent #add-message [name='powerId']").val();
+        var rootManager=$("#agent #add-message [name='rootManager']").val();
         var nreg=/^([\u4e00-\u9fa5]){2,4}$/;
         var prebate=0;
         var ppowerId=0;

@@ -84,399 +84,120 @@ module.exports = {
             var uuid=req.query.uuid;
             var gameId=req.query.gameId;
             if(powerId==1){
-                if(managerId){
-                    if(uuid){
-                        pool.getConnection((err, conn)=> {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var progress=0;
-                                if(gameId){
-                                    conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and  a.payType =0 and a.gameId=? and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) and a.uuid=?  ) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ?,? ', [gameId,starttime,endtime,levelStr,managerId,uuid,managerId,limitstart,limitend], (err, paylogs)=> {
-                                        //console.log(paylogs);
-                                        if(paylogs){
-                                            resultjson.paylogs=paylogs;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-                                    });
-                                    conn.query('select IFNULL(sum(m.money),0) as totalBonus,count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.gameId=? and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) and a.uuid=?   ) n left join bonus m on n.id=m.paylogId and m.managerId=?', [gameId,starttime,endtime,levelStr,managerId,uuid,managerId], (err, totalBonus)=> {
-                                        // console.log('totalBonus:');
-                                        // console.log(totalBonus);
-                                        if(totalBonus){
-                                            resultjson.totalBonus=totalBonus[0].totalBonus;
-                                            resultjson.totalNum=totalBonus[0].totalNum;
-                                            resultjson.totalMoney=totalBonus[0].totalMoney;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-                                    });
-                                }else{
-                                    conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and  a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) and a.uuid=?  ) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ?,? ', [starttime,endtime,levelStr,managerId,uuid,managerId,limitstart,limitend], (err, paylogs)=> {
-                                        //console.log(paylogs);
-                                        if(paylogs){
-                                            resultjson.paylogs=paylogs;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-                                    });
-                                    conn.query('select IFNULL(sum(m.money),0) as totalBonus,count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) and a.uuid=?   ) n left join bonus m on n.id=m.paylogId and m.managerId=?', [starttime,endtime,levelStr,managerId,uuid,managerId], (err, totalBonus)=> {
-                                        // console.log('totalBonus:');
-                                        // console.log(totalBonus);
-                                        if(totalBonus){
-                                            resultjson.totalBonus=totalBonus[0].totalBonus;
-                                            resultjson.totalNum=totalBonus[0].totalNum;
-                                            resultjson.totalMoney=totalBonus[0].totalMoney;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-                                    });
-                                }
-                            }
-
-                        });
-                    }else{
-                        pool.getConnection((err, conn)=> {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var progress=0;
-                                // console.log(77777777777777);
-                                // console.log(starttime,endtime,levelStr,managerId,limitstart,limitend,managerId);
-                                if(gameId){
-                                    conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and a.payType = 0 and a.gameId=? and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) ) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ?,?', [gameId,starttime,endtime,levelStr,managerId,managerId,limitstart,limitend], (err, paylogs)=> {
-                                        // console.log('paylogspaylogs:');
-                                        // console.log(paylogs);
-                                        if(paylogs){
-                                            resultjson.paylogs=paylogs;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-                                    });
-                                    conn.query('select IFNULL(sum(m.money),0) as totalBonus,count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney  from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.gameId=? and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? )    ) n left join bonus m on n.id=m.paylogId and m.managerId=?', [gameId,starttime,endtime,levelStr,managerId,managerId], (err, totalBonus)=> {
-                                        // console.log(11111);
-                                        // console.log(totalBonus);
-                                        if(totalBonus){
-                                            resultjson.totalBonus=totalBonus[0].totalBonus;
-                                            resultjson.totalNum=totalBonus[0].totalNum;
-                                            resultjson.totalMoney=totalBonus[0].totalMoney;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-
-                                    });
-                                }else{
-                                    conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) ) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ?,?', [starttime,endtime,levelStr,managerId,managerId,limitstart,limitend], (err, paylogs)=> {
-                                        // console.log('paylogspaylogs:');
-                                        // console.log(paylogs);
-                                        if(paylogs){
-                                            resultjson.paylogs=paylogs;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-                                    });
-                                    conn.query('select IFNULL(sum(m.money),0) as totalBonus,count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney  from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? )    ) n left join bonus m on n.id=m.paylogId and m.managerId=?', [starttime,endtime,levelStr,managerId,managerId], (err, totalBonus)=> {
-                                        // console.log(11111);
-                                        // console.log(totalBonus);
-                                        if(totalBonus){
-                                            resultjson.totalBonus=totalBonus[0].totalBonus;
-                                            resultjson.totalNum=totalBonus[0].totalNum;
-                                            resultjson.totalMoney=totalBonus[0].totalMoney;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-
-                                    });
-                                }
-                            }
-
-                        });
-                    }
-                }else{
-                    if(uuid){
-                        pool.getConnection((err, conn)=> {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var progress=0;
-                                if(gameId){
-                                    conn.query('select q.*,c.nickName from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and a.payType =0 and a.gameId=? and a.status != 2 and a.payTime > ?  and a.payTime < ?  and a.uuid=?)q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ?,? ', [gameId,starttime,endtime,uuid,limitstart,limitend], (err, paylogs)=> {
-                                        // console.log(paylogs);
-                                        if(paylogs){
-                                            resultjson.paylogs=paylogs;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-                                    });
-                                    conn.query('select count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.gameId=? and a.status != 2 and a.payTime > ?  and a.payTime < ?  and a.uuid=?   ) n ', [gameId,starttime,endtime,uuid], (err, totalBonus)=> {
-                                        // console.log(11111);
-                                        // console.log(totalBonus);
-                                        if(totalBonus){
-                                            resultjson.totalBonus=totalBonus[0].totalBonus;
-                                            resultjson.totalNum=totalBonus[0].totalNum;
-                                            resultjson.totalMoney=totalBonus[0].totalMoney;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-                                    });
-                                }else{
-                                    conn.query('select q.*,c.nickName from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ?  and a.uuid=?)q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ?,? ', [starttime,endtime,uuid,limitstart,limitend], (err, paylogs)=> {
-                                        // console.log(paylogs);
-                                        if(paylogs){
-                                            resultjson.paylogs=paylogs;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-                                    });
-                                    conn.query('select count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ?  and a.uuid=?   ) n ', [starttime,endtime,uuid], (err, totalBonus)=> {
-                                        // console.log(11111);
-                                        // console.log(totalBonus);
-                                        if(totalBonus){
-                                            resultjson.totalBonus=totalBonus[0].totalBonus;
-                                            resultjson.totalNum=totalBonus[0].totalNum;
-                                            resultjson.totalMoney=totalBonus[0].totalMoney;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-                                    });
-                                }
-                            }
-
-                        });
-                    }else{
-                        pool.getConnection((err, conn)=> {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var progress=0;
-                                if(gameId){
-                                    conn.query('select q.*,c.nickName from(select a.*,b.inviteCode,b.name from paylog a,manager b where a.managerId = b.id  and a.payType =0 and a.gameId=? and a.status != 2 and a.payTime > ?  and a.payTime < ? )q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ?,10 ', [gameId,starttime,endtime,limitstart], (err, paylogs)=> {
-                                        // console.log(paylogs);
-                                        if(paylogs){
-                                            resultjson.paylogs=paylogs;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-                                    });
-                                    conn.query('select count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney  from(select a.*,b.inviteCode from paylog a,manager b  where a.managerId = b.id and  a.payType = 0 and a.gameId=? and a.status != 2 and a.payTime > ?  and a.payTime < ? ) n  ', [gameId,starttime,endtime], (err, totalBonus)=> {
-                                        // console.log(11111);
-                                        // console.log(totalBonus);
-                                        if(totalBonus){
-                                            resultjson.totalBonus=totalBonus[0].totalBonus;
-                                            resultjson.totalNum=totalBonus[0].totalNum;
-                                            resultjson.totalMoney=totalBonus[0].totalMoney;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-
-                                    });
-                                }else{
-                                    conn.query('select q.*,c.nickName from(select a.*,b.inviteCode,b.name from paylog a,manager b where a.managerId = b.id  and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? )q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ?,10 ', [starttime,endtime,limitstart], (err, paylogs)=> {
-                                        // console.log(paylogs);
-                                        if(paylogs){
-                                            resultjson.paylogs=paylogs;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-                                    });
-                                    conn.query('select count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney  from(select a.*,b.inviteCode from paylog a,manager b  where a.managerId = b.id and  a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? ) n  ', [starttime,endtime], (err, totalBonus)=> {
-                                        // console.log(11111);
-                                        // console.log(totalBonus);
-                                        if(totalBonus){
-                                            resultjson.totalBonus=totalBonus[0].totalBonus;
-                                            resultjson.totalNum=totalBonus[0].totalNum;
-                                            resultjson.totalMoney=totalBonus[0].totalMoney;
-                                        }
-                                        progress++;
-                                        if(progress==2){
-                                            res.json(resultjson);
-                                            conn.release();
-                                        }
-
-                                    });
-                                }
-                            }
-
-                        });
-                    }
+                if(req.query.managerId){
+                var sql=`select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and  a.payType =0 and a.status != 2 and a.payTime > '${starttime}'  and a.payTime < '${endtime}' `;
+                if(gameId){
+                    sql+=` and a.gameId=${gameId}`;
                 }
-
-            }else{
                 if(uuid){
-                    pool.getConnection((err, conn)=> {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            var progress=0;
-                            if(gameId){
-                                conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and  a.payType = 0 and a.gameId=? and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) and a.uuid=?  ) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ?,? ', [gameId,starttime,endtime,levelStr,managerId,uuid,managerId,limitstart,limitend], (err, paylogs)=> {
-                                    // console.log(paylogs);
-                                    if(paylogs){
-                                        resultjson.paylogs=paylogs;
-                                    }
-                                    progress++;
-                                    if(progress==2){
-                                        res.json(resultjson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select IFNULL(sum(m.money),0) as totalBonus,count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.gameId=? and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) and a.uuid=?   ) n left join bonus m on n.id=m.paylogId and m.managerId=?', [gameId,starttime,endtime,levelStr,managerId,uuid,managerId], (err, totalBonus)=> {
-                                    // console.log(11111);
-                                    // console.log(totalBonus);
-                                    if(totalBonus){
-                                        resultjson.totalBonus=totalBonus[0].totalBonus;
-                                        resultjson.totalNum=totalBonus[0].totalNum;
-                                        resultjson.totalMoney=totalBonus[0].totalMoney;
-                                    }
-                                    progress++;
-                                    if(progress==2){
-                                        res.json(resultjson);
-                                        conn.release();
-                                    }
-                                });
-                            }else{
-                                conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and  a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) and a.uuid=?  ) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ?,? ', [starttime,endtime,levelStr,managerId,uuid,managerId,limitstart,limitend], (err, paylogs)=> {
-                                    // console.log(paylogs);
-                                    if(paylogs){
-                                        resultjson.paylogs=paylogs;
-                                    }
-                                    progress++;
-                                    if(progress==2){
-                                        res.json(resultjson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select IFNULL(sum(m.money),0) as totalBonus,count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? ) and a.uuid=?   ) n left join bonus m on n.id=m.paylogId and m.managerId=?', [starttime,endtime,levelStr,managerId,uuid,managerId], (err, totalBonus)=> {
-                                    // console.log(11111);
-                                    // console.log(totalBonus);
-                                    if(totalBonus){
-                                        resultjson.totalBonus=totalBonus[0].totalBonus;
-                                        resultjson.totalNum=totalBonus[0].totalNum;
-                                        resultjson.totalMoney=totalBonus[0].totalMoney;
-                                    }
-                                    progress++;
-                                    if(progress==2){
-                                        res.json(resultjson);
-                                        conn.release();
-                                    }
-                                });
-                            }
-                        }
-
-                    });
-                }else{
-                    pool.getConnection((err, conn)=> {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            var progress=0;
-                            if(gameId){
-                                conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b where a.managerId = b.id and a.payType = 0 and a.gameId=? and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? )) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ?,?', [gameId,starttime,endtime,levelStr,managerId,managerId,limitstart,limitend], (err, paylogs)=> {
-                                    // console.log(paylogs);
-                                    if(paylogs){
-                                        resultjson.paylogs=paylogs;
-                                    }
-                                    progress++;
-                                    if(progress==2){
-                                        res.json(resultjson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select IFNULL(sum(m.money),0) as totalBonus,count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney  from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.gameId=? and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? )    ) n left join bonus m on n.id=m.paylogId and m.managerId=?', [gameId,starttime,endtime,levelStr,managerId,managerId], (err, totalBonus)=> {
-                                    // console.log(11111);
-                                    // console.log(totalBonus);
-                                    if(totalBonus){
-                                        resultjson.totalBonus=totalBonus[0].totalBonus;
-                                        resultjson.totalNum=totalBonus[0].totalNum;
-                                        resultjson.totalMoney=totalBonus[0].totalMoney;
-                                    }
-                                    progress++;
-                                    if(progress==2){
-                                        res.json(resultjson);
-                                        conn.release();
-                                    }
-
-                                });
-                            }else{
-                                conn.query('select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b where a.managerId = b.id and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? )) n left join bonus m on n.id=m.paylogId and m.managerId=?)q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ?,?', [starttime,endtime,levelStr,managerId,managerId,limitstart,limitend], (err, paylogs)=> {
-                                    // console.log(paylogs);
-                                    if(paylogs){
-                                        resultjson.paylogs=paylogs;
-                                    }
-                                    progress++;
-                                    if(progress==2){
-                                        res.json(resultjson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select IFNULL(sum(m.money),0) as totalBonus,count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney  from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.status != 2 and a.payTime > ?  and a.payTime < ? and (b.levelStr like ? or b.id = ? )    ) n left join bonus m on n.id=m.paylogId and m.managerId=?', [starttime,endtime,levelStr,managerId,managerId], (err, totalBonus)=> {
-                                    // console.log(11111);
-                                    // console.log(totalBonus);
-                                    if(totalBonus){
-                                        resultjson.totalBonus=totalBonus[0].totalBonus;
-                                        resultjson.totalNum=totalBonus[0].totalNum;
-                                        resultjson.totalMoney=totalBonus[0].totalMoney;
-                                    }
-                                    progress++;
-                                    if(progress==2){
-                                        res.json(resultjson);
-                                        conn.release();
-                                    }
-
-                                });
-                            }
-                        }
-
-                    });
+                    sql+=` and a.uuid=${uuid} `;
                 }
+                    sql+=` and (b.levelStr like '${levelStr}' or b.id = ${managerId} )) n left join bonus m on n.id=m.paylogId and m.managerId=${managerId} )q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ${limitstart} ,${limitend} `;
+
+                var sql0=`select IFNULL(sum(m.money),0) as totalBonus,count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.status != 2 and a.payTime > '${starttime}'  and a.payTime < '${endtime}'`;
+                    if(gameId){
+                    sql0+=`and a.gameId=${gameId} `;
+                    }
+                    if(uuid){
+                        sql0+=`and a.uuid=${uuid}`;
+                    }
+                    sql0+=` and (b.levelStr like '${levelStr}' or b.id = ${managerId} ) ) n left join bonus m on n.id=m.paylogId and m.managerId=${managerId}`;
+                }else{
+                  var   sql=`select q.*,c.nickName from(select a.*,b.inviteCode,b.name from paylog a,manager b where a.managerId = b.id  and a.payType =0 and a.status != 2 and a.payTime > '${starttime}'  and a.payTime < '${endtime}'`;
+                    if(gameId){
+                        sql+=` and a.gameId=${gameId}`;
+                    }
+                    if(uuid){
+                        sql+=` and a.uuid=${uuid} `;
+                    }
+                    sql+=` )q left join account c on q.uuid=c.Uuid  ORDER BY payTime desc limit ${limitstart},10 `;
+                    var sql0=`select count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.status != 2 and a.payTime > '${starttime}'  and a.payTime < '${endtime}' `;
+                    if(gameId){
+                        sql0+=` and a.gameId=${gameId}`;
+                    }
+                    if(uuid){
+                        sql0+=` and a.uuid=${uuid}`;
+                    }
+
+                        sql0+=`) n`;
+                }
+                pool.getConnection((err,conn)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        var progress=0;
+                        conn.query(sql,(err,paylogs)=>{
+                            if(paylogs){
+                                resultjson.paylogs=paylogs;
+                            }
+                            progress++;
+                            if(progress==2){
+                                res.json(resultjson);
+                                conn.release();
+                            }
+                        })
+                        conn.query(sql0,(err,totalBonus)=>{
+                            if(totalBonus){
+                                resultjson.totalBonus=totalBonus[0].totalBonus;
+                                resultjson.totalNum=totalBonus[0].totalNum;
+                                resultjson.totalMoney=totalBonus[0].totalMoney;
+                            }
+                            progress++;
+                            if(progress==2){
+                                res.json(resultjson);
+                                conn.release();
+                            }
+                        })
+                    }
+                })
+            }else{
+                var sql=`select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and  a.payType = 0 and a.status != 2 and a.payTime > '${starttime}'  and a.payTime < '${endtime}'`;
+                    if(gameId){
+                        sql+=` and a.gameId=${gameId} `;
+                    }
+                    if(uuid){
+                        sql+=` and a.uuid=${uuid}`;
+                    }
+                    sql+=` and (b.levelStr like '${levelStr}' or b.id = ${managerId} )   ) n left join bonus m on n.id=m.paylogId and m.managerId=${managerId})q left join account c on q.uuid=c.Uuid ORDER BY payTime desc limit ${limitstart},${limitend}`;
+
+                var sql0=`select IFNULL(sum(m.money),0) as totalBonus,count(n.id) as totalNum,IFNULL(sum(n.money),0) as totalMoney from(select a.*,b.inviteCode,c.nickName from paylog a,manager b,account c  where a.managerId = b.id and a.uuid = c.Uuid and a.payType = 0 and a.status != 2 and a.payTime > '${starttime}' and a.payTime < '${endtime}'`;
+                if(gameId){
+                    sql0+=` and a.gameId=${gameId} `;
+                }
+                if(uuid){
+                    sql0+=` and a.uuid=${uuid} `;
+                }
+                    sql0+=` and (b.levelStr like '${levelStr}' or b.id = ${managerId} )   ) n left join bonus m on n.id=m.paylogId and m.managerId=${managerId}`;
+                pool.getConnection((err,conn)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        var progress=0;
+                        conn.query(sql,(err,paylogs)=>{
+                            if(paylogs){
+                                resultjson.paylogs=paylogs;
+                            }
+                            progress++;
+                            if(progress==2){
+                                res.json(resultjson);
+                                conn.release();
+                            }
+                        })
+                        conn.query(sql0,(err,totalBonus)=>{
+                            if(totalBonus){
+                                resultjson.totalBonus=totalBonus[0].totalBonus;
+                                resultjson.totalNum=totalBonus[0].totalNum;
+                                resultjson.totalMoney=totalBonus[0].totalMoney;
+                            }
+                            progress++;
+                            if(progress==2){
+                                res.json(resultjson);
+                                conn.release();
+                            }
+                        })
+                    }
+                })
             }
-
-
         }
     },
     getTotalMoneyDay:(req,res)=>{
@@ -500,32 +221,13 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    if(powerId>1||req.query.managerId){
                         var progress=0;
                         function getcount(day){
-                            conn.query('select IFNULL(sum(money),0) as c from paylog where managerId=? and payType=0 and status!=2 and payTime>(CurDate()-?) and payTime <=(CurDate()-?)',[managerId,day,day-1],(err,result)=>{
-                                // console.log(result);
-                                progress++;
-                                var now=new Date();
-                                now.setDate(now.getDate()-day);
-                                resultJson[6-day].label=now.toLocaleDateString();
-                                resultJson[6-day].value=result[0].c;
-                                if(progress==7){
-                                    // console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                        for(let i=6;i>=0;i--){
-                            getcount(i);
-                            // console.log(123456789);
-                        }
-                    }else{
-                        var progress=0;
-                        function getcount(day){
-                            conn.query('select IFNULL(sum(money),0) as c from paylog where payType=0 and status!=2 and payTime>(CurDate()-?) and payTime <=(CurDate()-?)',[day,day-1],(err,result)=>{
-                                //console.log(9999999999);
+                            var sql = `select IFNULL(sum(money),0) as c from paylog where payType=0 and status!=2 and payTime>(CurDate()-${day}) and payTime <=(CurDate()-${day-1})`;
+                            if(powerId>1||req.query.managerId){
+                                sql+=`and managerId=${managerId}`;
+                            }
+                            conn.query(sql,(err,result)=>{
                                 // console.log(result);
                                 progress++;
                                 var now=new Date();
@@ -544,9 +246,6 @@ module.exports = {
                             // console.log(123456789);
                         }
                     }
-
-                }
-
             })
         }
     },
@@ -570,12 +269,13 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    if(powerId>1||req.query.managerId){
                         var progress=0;
                         function getcount(month){
-                            conn.query("select IFNULL(sum(money),0) as c from paylog where managerId=? and payType=0 and status!=2 and payTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY)) and payTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY))",[managerId,1+7*month,7*month-5],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
+                            var sql=`select IFNULL(sum(money),0) as c from paylog where payType=0 and status!=2 and payTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ${1+7*month} DAY)) and payTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ${7*month-5} DAY))`;
+                            if(powerId>1||req.query.managerId){
+                                sql+=`and managerId=${managerId}`;
+                            }
+                            conn.query(sql,(err,result)=>{
                                 progress++;
                                 if(month==0){
                                     resultJson[5-month].label='本周';
@@ -593,31 +293,6 @@ module.exports = {
                         for(let i=0;i<6;i++){
                             getcount(i);
                         }
-                    }else{
-                        var progress=0;
-                        function getcount(month){
-                            conn.query("select IFNULL(sum(money),0) as c from paylog where payType=0 and status!=2 and payTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY)) and payTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY))",[1+7*month,7*month-5],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
-                                progress++;
-                                if(month==0){
-                                    resultJson[5-month].label='本周';
-                                }else{
-                                    resultJson[5-month].label='上'+month+'周';
-                                }
-                                resultJson[5-month].value=result[0].c;
-                                if(progress==6){
-                                    // console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                        for(let i=0;i<6;i++){
-                            getcount(i);
-                        }
-                    }
-
                 }
 
             })
@@ -643,12 +318,13 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    if(powerId>1||req.query.managerId){
                         var progress=0;
                         function getcount(month){
-                            conn.query("select IFNULL(sum(money),0) as c from paylog where managerId=? and payType=0 and status!=2 and payTime>(SELECT concat(date_format(LAST_DAY(now() - interval ? month),'%Y-%m-'),'01')) and payTime<=(SELECT LAST_DAY(now() - interval ? month))",[managerId,month,month],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
+                            var sql=`select IFNULL(sum(money),0) as c from paylog where  payType=0 and status!=2 and payTime>(SELECT concat(date_format(LAST_DAY(now() - interval ${month} month),'%Y-%m-'),'01')) and payTime<=(SELECT LAST_DAY(now() - interval ${month} month))`;
+                            if(powerId>1||req.query.managerId){
+                                sql+=`and managerId=${managerId}`;
+                            }
+                            conn.query(sql,(err,result)=>{
                                 progress++;
                                 var now=new Date();
                                 now.setMonth(now.getMonth()-month);
@@ -666,32 +342,6 @@ module.exports = {
                             getcount(i);
                             // console.log(123456789);
                         }
-                    }else{
-                        var progress=0;
-                        function getcount(month){
-                            conn.query("select IFNULL(sum(money),0) as c from paylog where payType=0 and status!=2 and payTime>(SELECT concat(date_format(LAST_DAY(now() - interval ? month),'%Y-%m-'),'01')) and payTime<=(SELECT LAST_DAY(now() - interval ? month))",[month,month],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
-                                progress++;
-                                var now=new Date();
-                                now.setMonth(now.getMonth()-month);
-                                // console.log('+++++++++++++++++');
-                                // console.log(month,now.getMonth());
-                                var m=parseInt(now.getMonth())+1;
-                                resultJson[5-month].label=m+'月';
-                                resultJson[5-month].value=result[0].c;
-                                if(progress==6){
-                                    // console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                        for(let i=0;i<6;i++){
-                            getcount(i);
-                            // console.log(123456789);
-                        }
-                    }
 
                 }
 

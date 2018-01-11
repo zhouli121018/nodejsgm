@@ -41,134 +41,63 @@ module.exports = {
                 endtime=overTime;
             }
             var resultJson={accounts:[],totalNum:0};
+            if(powerId==1){
+                var sql = `select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.id>0 `
+                if(inputManagerId){
+                    sql+=` and a.manager_up_id=${inputManagerId}`;
+                }
+                if(uuid){
+                    sql+=` and a.Uuid=${uuid}`;
+                }
+                sql+=`)n LEFT JOIN paylog p on p.payType=0 and p.payTime>'${starttime}' and p.payTime<'${endtime}' and p.uuid=n.Uuid group by n.id order by totalMoney desc,createTime desc limit ${limitstart},10`;
+                var sqln = `SELECT count(a.uuid) as totalNum FROM account a WHERE a.id>0 `;
+                    if(inputManagerId){
+                      sqln+=` and a.manager_up_id=${inputManagerId}`;
+                    }
+                    if(uuid){
+                        sqln +=` and a.uuid=${uuid}`;
+                    }
+            }else{
+                var sql= `select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and (a.manager_up_id=${managerId} or m.levelStr like '${levelStr}') `;
+                    if(uuid){
+                    sql+=` and a.uuid=${uuid}`;
+                    }
+                    sql+=` )n LEFT JOIN paylog p on p.payType=0  and p.payTime>'${starttime}' and p.payTime<'${endtime}' and p.uuid=n.Uuid group by n.id order by totalMoney desc,createTime desc limit ${limitstart},10`;
+                    var sqln = `SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id=b.id and (a.manager_up_id=${managerId} or b.levelStr like '${levelStr}') `;
+                if(uuid){
+                        sqln+=` and a.uuid=${uuid}`;
+                }
+            }
+
             pool.getConnection((err, conn)=> {
                 if (err) {
                     console.log(err);
                 } else {
-                    if(powerId==1){
-                        if(inputManagerId){
-                            if(uuid){
-                                var progress=0;
-                                conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id=? and a.Uuid=?)n LEFT JOIN paylog p on p.payType=0 and p.payTime>? and p.payTime<? and p.uuid=n.Uuid group by n.id ',[inputManagerId,uuid,starttime,endtime],(err,result)=>{
-                                    resultJson.accounts=result;
-                                    progress++;
-                                    if(progress==2){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                })
-                                conn.query('SELECT count(a.uuid) as totalNum FROM account a WHERE a.manager_up_id=? and a.uuid=?',[inputManagerId,uuid],(err,result)=>{
-                                    progress++;
-                                    resultJson.totalNum=result[0].totalNum;
-                                    if(progress==2){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                })
-                            }else{
-                                var progress=0;
-                                conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on  a.manager_up_id=m.id WHERE a.manager_up_id=?)n LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime<? and p.uuid=n.Uuid group by n.id order by totalMoney desc,createTime desc limit ?,10',[inputManagerId,starttime,endtime,limitstart],(err,result)=>{
-                                    resultJson.accounts=result;
-                                    progress++;
-                                    if(progress==2){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('SELECT count(a.uuid) as totalNum FROM account a WHERE a.manager_up_id=?',[inputManagerId],(err,result)=>{
-                                    progress++;
-                                    resultJson.totalNum=result[0].totalNum;
-                                    if(progress==2){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                })
-                            }
-
+                    var progress=0;
+                    conn.query(sql,(err,result)=>{
+                        if(err){
+                            console.log(err);
                         }else{
-                            if(uuid){
-                                var progress=0;
-                                conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE  a.Uuid=?)n LEFT JOIN paylog p on p.payTime>? and p.payType=0  and p.payTime<? and p.uuid=n.Uuid group by n.id ',[uuid,starttime,endtime],(err,result)=>{
-                                    resultJson.accounts=result;
-                                    progress++;
-                                    if(progress==2){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                })
-                                conn.query('SELECT count(a.uuid) as totalNum FROM account a WHERE  a.uuid=?',[uuid],(err,result)=>{
-                                    progress++;
-                                    resultJson.totalNum=result[0].totalNum;
-                                    if(progress==2){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                })
-                            }else{
-                                var progress=0;
-                                conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from (SELECT a.*,m.name,m.power_id FROM account a LEFT JOIN manager m on m.id=a.manager_up_id) n LEFT JOIN paylog p on p.uuid=n.Uuid and p.payType=0 and p.payTime>? and p.payTime<? group by n.id order by totalMoney desc,createTime desc limit ?,10',[starttime,endtime,limitstart],(err,result)=>{
-                                    resultJson.accounts=result;
-                                    console.log('allalalala')
-                                    progress++;
-                                    if(progress==2){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                })
-                                conn.query('SELECT count(a.uuid) as totalNum FROM (select n.* from account n )a ',[starttime,endtime],(err,result)=>{
-                                    progress++;
-                                    // console.log('totalNumtotalNumtotalNum:');
-                                    // console.log(result);
-                                    resultJson.totalNum=result[0].totalNum;
-                                    if(progress==2){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                })
+                            resultJson.accounts=result;
+                            progress++;
+                            if(progress==2){
+                                res.json(resultJson);
+                                conn.release();
                             }
                         }
-
-                    }else{
-                        if(uuid){
-                            var progress=0;
-                            conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and (a.manager_up_id=? or m.levelStr like ?) and a.uuid=?)n LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime<? and p.uuid=n.Uuid group by n.id ',[managerId,levelStr,uuid,starttime,endtime],(err,result)=>{
-                                resultJson.accounts=result;
-                                progress++;
-                                if(progress==2){
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                            conn.query('SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id=b.id and (a.manager_up_id=? or b.levelStr like ?) and a.uuid=?',[managerId,levelStr,uuid],(err,result)=>{
-                                progress++;
-                                resultJson.totalNum=result[0].totalNum;
-                                if(progress==2){
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
+                    })
+                    conn.query(sqln,(err,result)=>{
+                        if(err){
+                            console.log(err);
                         }else{
-                            var progress=0;
-                            conn.query('select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and ( a.manager_up_id=? or m.levelStr like ?))n LEFT JOIN paylog p on p.payType=0 and  p.payTime>? and p.payTime<? and p.uuid=n.Uuid group by n.id order by totalMoney desc,createTime desc limit ?,10',[managerId,levelStr,starttime,endtime,limitstart],(err,result)=>{
-                                resultJson.accounts=result;
-                                progress++;
-                                if(progress==2){
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                            conn.query('SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id = b.id and (a.manager_up_id=? or b.levelStr like ?)',[managerId,levelStr],(err,result)=>{
-                                progress++;
-                                resultJson.totalNum=result[0].totalNum;
-                                if(progress==2){
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
+                            progress++;
+                            resultJson.totalNum=result[0].totalNum;
+                            if(progress==2){
+                                res.json(resultJson);
+                                conn.release();
+                            }
                         }
-
-                    }
-
+                    })
                 }
 
             })
@@ -386,11 +315,13 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    if(powerId>1||req.query.managerId){
                         var progress=0;
                         function getcount(day){
-                            conn.query('select count(id) as c from account where manager_up_id=? and createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[managerId,day,day-1],(err,result)=>{
-                                //console.log(9999999999);
+                            var sql = `select count(id) as c from account where createTime>(CurDate()-${day}) and createTime<=(CurDate()-${day-1})`;
+                            if(powerId>1||req.query.managerId){
+                                sql+=`and manager_up_id=${managerId}`
+                            }
+                            conn.query(sql,(err,result)=>{
                                 console.log(result);
                                 progress++;
                                 var now=new Date();
@@ -408,30 +339,6 @@ module.exports = {
                             getcount(i);
                             // console.log(123456789);
                         }
-                    }else{
-                        var progress=0;
-                        function getcount(day){
-                            conn.query('select count(id) as c from account where createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[day,day-1],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
-                                progress++;
-                                var now=new Date();
-                                now.setDate(now.getDate()-day);
-                                resultJson[6-day].label=now.toLocaleDateString();
-                                resultJson[6-day].value=result[0].c;
-                                if(progress==7){
-                                    // console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                        for(let i=6;i>=0;i--){
-                            getcount(i);
-                            // console.log(123456789);
-                        }
-                    }
-
                 }
 
             })
@@ -457,12 +364,13 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    if(powerId>1||req.query.managerId){
                         var progress=0;
                         function getcount(month){
-                            conn.query("select count(id) as c from account where manager_up_id=? and createTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY)) and createTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY))",[managerId,1+7*month,7*month-5],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
+                            var sql = `select count(id) as c from account where createTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ${1+7*month} DAY)) and createTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ${7*month-5} DAY))`;
+                            if(powerId>1||req.query.managerId){
+                                sql+=`and manager_up_id=${managerId} `;
+                            }
+                            conn.query(sql,(err,result)=>{
                                 progress++;
                                 if(month==0){
                                     resultJson[5-month].label='本周';
@@ -480,31 +388,6 @@ module.exports = {
                         for(let i=0;i<6;i++){
                             getcount(i);
                         }
-                    }else{
-                        var progress=0;
-                        function getcount(month){
-                            conn.query("select count(id) as c from account where  createTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY)) and createTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY))",[1+7*month,7*month-5],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
-                                progress++;
-                                if(month==0){
-                                    resultJson[5-month].label='本周';
-                                }else{
-                                    resultJson[5-month].label='上'+month+'周';
-                                }
-                                resultJson[5-month].value=result[0].c;
-                                if(progress==6){
-                                    // console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                        for(let i=0;i<6;i++){
-                            getcount(i);
-                        }
-                    }
-
                 }
 
             })
@@ -530,10 +413,13 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    if(powerId>1||req.query.managerId){
                         var progress=0;
                         function getcount(month){
-                            conn.query("select count(id) as c from account where manager_up_id=? and createTime>(SELECT concat(date_format(LAST_DAY(now() - interval ? month),'%Y-%m-'),'01')) and createTime<=(SELECT LAST_DAY(now() - interval ? month))",[managerId,month,month],(err,result)=>{
+                            var sql = `select count(id) as c from account where createTime>(SELECT concat(date_format(LAST_DAY(now() - interval ${month} month),'%Y-%m-'),'01')) and createTime<=(SELECT LAST_DAY(now() - interval ${month} month))`;
+                            if(powerId>1 || req.query.managerId){
+                                sql +=`and manager_up_id=${managerId}`;
+                            }
+                            conn.query(sql,(err,result)=>{
                                 //console.log(9999999999);
                                 // console.log(result);
                                 progress++;
@@ -553,33 +439,6 @@ module.exports = {
                             getcount(i);
                             // console.log(123456789);
                         }
-                    }else{
-                        var progress=0;
-                        function getcount(month){
-                            conn.query("select count(id) as c from account where createTime>(SELECT concat(date_format(LAST_DAY(now() - interval ? month),'%Y-%m-'),'01')) and createTime<=(SELECT LAST_DAY(now() - interval ? month))",[month,month],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
-                                progress++;
-                                var now=new Date();
-                                now.setMonth(now.getMonth()-month);
-                                // console.log('+++++++++++++++++');
-                                // console.log(month,now.getMonth());
-                                var m=parseInt(now.getMonth())+1;
-                                resultJson[5-month].label=m+'月';
-                                resultJson[5-month].value=result[0].c;
-                                if(progress==6){
-                                    // console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                        for(let i=0;i<6;i++){
-                            getcount(i);
-                            // console.log(123456789);
-                        }
-                    }
-
                 }
 
             })

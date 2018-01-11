@@ -167,6 +167,7 @@
                             <th>充值业绩(元)</th>
                             <th>账户状态</th>
                             <th>微信号</th>
+                            <th>是否可开代理</th>
                             <th>创建时间</th>
                             <th>上次登录</th>
                             <th>操作</th>
@@ -215,6 +216,13 @@
                         <div class="form-group">
                             <label>分成比例：</label>
                             <input type="text" name="rebate" placeholder="不填则默认；正确格式（0.45:0.1）"  class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>是否可开代理：</label>
+                            <select name="rootManager" class="form-control">
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>代理级别：</label>
@@ -268,6 +276,13 @@
                         <div class="form-group">
                             <label>分成比例：</label>
                             <input type="text" name="rebate"  class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>是否可开代理：</label>
+                            <select name="rootManager" class="form-control">
+                                <option value="1">是</option>
+                                <option value="0">否</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>代理状态：</label>

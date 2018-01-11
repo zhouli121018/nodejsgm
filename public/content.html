@@ -103,6 +103,9 @@
             <button type="button" class="btn btn-success add-agent">新增代理</button>
             <button type="button" class="btn btn-primary reupcode"> 重新绑定上级代理
             </button>
+            <button type="button" class="btn btn-warning setAgentPwd">
+                重置代理密码
+            </button>
             <div class="searchInfo">
                 <form class="form-inline form-btn" name="searchAgentForm" id="searchAgentForm">
                     <div class="form-group">
@@ -340,6 +343,28 @@
                         <div class="form-group redcard-hide">
                             <label>上级代理编号ID：</label>
                             <input type="number" name="pmid"  class="form-control">
+                        </div>
+                    </div>
+                    <input type="button" class="btn  btn-success sure" value="确 定"/>
+                    <input type="button" class="btn  btn-danger cancel" value="取 消"/>
+                </form>
+            </div>
+            <div id="agent-pwd">
+                <form name="agentPwdForm" id="agentPwdForm">
+                    <button type="button" class="close"><span>&times;</span></button>
+                    <h4>重置代理密码</h4>
+                    <div>
+                        <div class="form-group">
+                            <label>代理游戏ID：</label>
+                            <input type="number" name="uuid"  class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>新密码：</label>
+                            <input type="text" name="pwd"  class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>确认密码：</label>
+                            <input type="text" name="surePwd"  class="form-control">
                         </div>
                     </div>
                     <input type="button" class="btn  btn-success sure" value="确 定"/>
@@ -817,6 +842,15 @@
        dragMove:function(x,y){} //拖动进行中 x,y为当前坐标
    });
    $('#editNoticeForm').myDrag({
+       parent:'body', //定义拖动不能超出的外框,拖动范围
+       randomPosition:false, //初始化随机位置
+       direction:'all', //方向
+       handler:false, //把手
+       dragStart:function(x,y){}, //拖动开始 x,y为当前坐标
+       dragEnd:function(x,y){}, //拖动停止 x,y为当前坐标
+       dragMove:function(x,y){} //拖动进行中 x,y为当前坐标
+   });
+   $('#agentPwdForm').myDrag({
        parent:'body', //定义拖动不能超出的外框,拖动范围
        randomPosition:false, //初始化随机位置
        direction:'all', //方向

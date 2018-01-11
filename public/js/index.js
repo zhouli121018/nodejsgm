@@ -1300,6 +1300,7 @@ $(function(){
         $('#tablist .powerId-hide').hide();
         $('#vip button.edit').hide();
         $('#agent .reupcode').hide();
+        $('#agent .setAgentPwd').hide();
     }
     $('#searchDetail').click(function(){
         getPaylogs(1);
@@ -1748,6 +1749,53 @@ $(function(){
                 }
             }
         })
+    })
+    $('#agent .setAgentPwd').click(function(){
+        $('#agent-pwd').fadeIn();
+    });
+    $('#agentPwdForm .sure').click(function(){
+        var uuid = $('#agentPwdForm [name=uuid]').val();
+        var pwd = $('#agentPwdForm [name=pwd]').val();
+        var surePwd = $('#agentPwdForm [name=surePwd]').val();
+        var validUuid=false;
+        console.log(uuid,pwd,surePwd);
+        if(uuid==''||pwd==''||surePwd==''){
+            alert('代理游戏ID或新密码不能为空！');
+            return;
+        }
+        if(pwd!=surePwd){
+            alert('两次输入密码不一致！请重新输入！');
+            return;
+        }
+        $.ajax({
+            url:'/validUuidResetPwd',
+            async: false,
+            data:{uuid:uuid},
+            success:function(data){
+                console.log(data);
+                if(data.status>0){
+                    validUuid=true;
+                }else{
+                    alert('此游戏ID不存在，请重新输入！');
+                    $('#agentPwdForm [name=uuid]').focus();
+                }
+            }
+        });
+        if(validUuid){
+            $.ajax({
+                url:'/resetPassword',
+                type:'POST',
+                data:{newPwd:hex_md5(pwd),uuid:uuid},
+                success:function (data){
+                    console.log(data);
+                    if(data.status>0){
+                        alert('重置此代理密码成功！');
+                        $('#agent-pwd').hide();
+                    }
+                }
+            })
+        }
+
     })
 
 

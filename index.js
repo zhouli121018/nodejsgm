@@ -151,3 +151,5 @@ app.get('/deleteManager',myAgent.deleteManager);
 app.get('/validManagerId',myAgent.validManagerId);
 //重新绑定上级代理
 app.get('/reupCode',myAgent.reupCode);
+//重置代理密码验证uuid
+app.get('/validUuidResetPwd',myAgent.validUuidResetPwd);

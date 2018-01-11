@@ -73,7 +73,7 @@ h2{
 #add-config,
 #configDetail,
 #noticeDetail,
-#add-notice,#charge,#agentCharge,#vipCharge,#edit-notice,#reParentId{
+#add-notice,#charge,#agentCharge,#vipCharge,#edit-notice,#reParentId,#agent-pwd{
     z-index: 100;
     display: none;
     position: absolute;
@@ -89,7 +89,7 @@ h2{
 #configDetail input,
 #noticeDetail input,
 #add-notice input,#edit-notice input,
-#charge input,#pw-message input,#agentCharge input,#vipCharge input,#reParentId input {
+#charge input,#pw-message input,#agentCharge input,#vipCharge input,#reParentId input,#agent-pwd input {
     height: 32px;
 }
 #add-message form,
@@ -99,7 +99,7 @@ h2{
 #configDetail form,
 #noticeDetail form,
 #add-notice form,#edit-notice form,
-#charge form,#pw-message form,#agentCharge form,#vipCharge form,#reParentId form{
+#charge form,#pw-message form,#agentCharge form,#vipCharge form,#reParentId form,#agent-pwd form {
     max-height: 100%;
     overflow: auto;
     position: absolute;
@@ -121,7 +121,7 @@ h2{
 #configDetail form>div,
 #noticeDetail form>div,
 #add-notice form>div,#edit-notice form>div,
-#charge form>div,#pw-message form>div,#agentCharge form>div,#vipCharge form>div,#reParentId form>div{
+#charge form>div,#pw-message form>div,#agentCharge form>div,#vipCharge form>div,#reParentId form>div,#agent-pwd form>div{
     margin-bottom:1em;
 }
 #agentManager #agentDetail{
@@ -135,7 +135,8 @@ h2{
 #vipDetail form .form-group,
 #add-config form .form-group,
 #configDetail form .form-group,
-#agentCharge form .form-group
+#agentCharge form .form-group,
+#agent-pwd form .form-group
 /*,#vipCharge form .form-group*/
 {
     display:flex;
@@ -146,7 +147,8 @@ h2{
 #vipDetail form .form-group label,
 #add-config form .form-group label,
 #configDetail form .form-group label
-,#agentCharge form .form-group label
+,#agentCharge form .form-group label,
+#agent-pwd form .form-group label
 /*,#vipCharge form .form-group label*/
 
 {
@@ -163,7 +165,8 @@ h2{
 #add-notice form h4,
 #charge form h4,#edit-notice form h4,
 #pw-message form h4,#agentCharge form h4,
-#vipCharge form h4,#reParentId form h4{
+#vipCharge form h4,#reParentId form h4,
+#agent-pwd form h4{
     text-align: center;
     padding: 2% 0;
     border-bottom: 2px dashed #aaa;
@@ -177,7 +180,8 @@ h2{
 #add-notice form > input,
 #charge form > input ,#edit-notice form>input,
 #pw-message form > input,#agentCharge form>input,
-#vipCharge form >input,#reParentId form > input{
+#vipCharge form >input,#reParentId form > input,
+#agent-pwd form >input{
     margin-left: 1%;
     width: 48%;
     outline: none;
@@ -243,7 +247,7 @@ h2{
     #add-notice form,
     #charge form ,#edit-notice form,
     #pw-message form,#agentCharge form,
-    #vipCharge form,#reParentId form{
+    #vipCharge form,#reParentId form,#agent-pwd form{
         width: 95%;
         margin-left: -47.5%;
     }

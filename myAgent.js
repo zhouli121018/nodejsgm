@@ -119,7 +119,13 @@ module.exports = {
                     if (err) {
                         console.log(err);
                     } else {
-                        conn.query('UPDATE manager SET password=? WHERE id=?', [newPwd, managerId], (err, result)=> {
+                        var sql='';
+                        if(obj.uuid){
+                            sql=`UPDATE manager SET password='${newPwd}' WHERE uuid=${obj.uuid}`;
+                        }else{
+                            sql=`UPDATE manager SET password='${newPwd}' WHERE id=${managerId}`
+                        }
+                        conn.query(sql, (err, result)=> {
                             // console.log(result);
                             //var oid = result.insertId;
                             if(result.changedRows>0){
@@ -1255,5 +1261,29 @@ module.exports = {
 
         }
     },
+    validUuidResetPwd:(req,res)=>{
+        if(req.session.user){
+            if(req.session.user.power_id==1){
+                var uuid = req.query.uuid;
+                pool.getConnection((err,conn)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        conn.query('SELECT * FROM manager  WHERE uuid=? ',[uuid],(err,result)=>{
+                            if(result.length>0){
+                                res.json({"status":1});
+                            }else{
+                                res.json({"status":0});
+                            }
+                        })
+                    }
+                    conn.release();
+                })
+            }else{
+                res.json({"status":0});
+            }
+
+        }
+    }
 }
 

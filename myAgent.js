@@ -120,7 +120,13 @@ module.exports = {
                     if (err) {
                         console.log(err);
                     } else {
-                        conn.query('UPDATE manager SET password=? WHERE id=?', [newPwd, managerId], (err, result)=> {
+                        var sql='';
+                        if(obj.uuid){
+                            sql=`UPDATE manager SET password='${newPwd}' WHERE uuid=${obj.uuid}`;
+                        }else{
+                            sql=`UPDATE manager SET password='${newPwd}' WHERE id=${managerId}`
+                        }
+                        conn.query(sql, (err, result)=> {
                             // console.log(result);
                             //var oid = result.insertId;
                             if(result.changedRows>0){
@@ -690,1076 +696,171 @@ module.exports = {
             // console.log(starttime,endtime,uname,inviteCode);
             var resultJson={managers:[],totalNum:0,totalMoney:0};
             if(powerId==1){
-                if(req.query.managerId){
-                    if(!uname&&!inviteCode){
-                        pool.getConnection((err, conn)=> {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var progress=0;
-                                if(inputPowerId){
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=?  and p.payTime>? and p.payTime< ?  and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,inputPowerId,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from (SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=?  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o  ', [managerId,inputPowerId,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ?  and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,inputPowerId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from (SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o  ', [managerId,inputPowerId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where manager_up_id=? and power_id=?',[managerId,inputPowerId],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }else{
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=?  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from (SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=?  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o  ', [managerId,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from (SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o  ', [managerId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where manager_up_id=?',[managerId],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }
-                            }
-                        })
-                    }else if(uname&&inviteCode){
-                        pool.getConnection((err, conn)=> {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var progress=0;
-                                if(inputPowerId){
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=?  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId  and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,uname,inviteCode,inputPowerId,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,uname,inviteCode,inputPowerId,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,uname,inviteCode,inputPowerId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,uname,inviteCode,inputPowerId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where manager_up_id=?  and name=? and inviteCode=? and power_id=?',[managerId,uname,inviteCode,inputPowerId],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }else{
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,uname,inviteCode,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,uname,inviteCode,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,uname,inviteCode,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,uname,inviteCode,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where manager_up_id=?  and name=? and inviteCode=?',[managerId,uname,inviteCode],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }
-
-                            }
-                        })
-                    }else if(uname&&!inviteCode){
-                        pool.getConnection((err, conn)=> {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var progress=0;
-                                if(inputPowerId){
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,uname,inputPowerId,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from (SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o ', [managerId,uname,inputPowerId,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,uname,inputPowerId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from (SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o ', [managerId,uname,inputPowerId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where manager_up_id=?  and name=? and power_id=?',[managerId,uname,inputPowerId],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }else{
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,uname,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from (SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o ', [managerId,uname,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,uname,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from (SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o ', [managerId,uname,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where manager_up_id=?  and name=?',[managerId,uname],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }
-                            }
-                        })
-                    }else if(inviteCode&&!uname){
-                        pool.getConnection((err, conn)=> {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var progress=0;
-                                if(inputPowerId){
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId  and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,inviteCode,inputPowerId,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,inviteCode,inputPowerId,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,inviteCode,inputPowerId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,inviteCode,inputPowerId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where manager_up_id=?  and inviteCode=? and power_id=?',[managerId,inviteCode,inputPowerId],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }else{
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,inviteCode,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,inviteCode,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and  p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,inviteCode,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,inviteCode,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where manager_up_id=?  and inviteCode=?',[managerId,inviteCode],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }
-                            }
-                        })
-                    }
+                if(!req.query.managerId&&!uname&&!inviteCode&&!inputPowerId){
+                    var sql = `select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where id>1 and manager_up_id=1`;
                 }else{
-                    if(!uname&&!inviteCode){
-                        pool.getConnection((err, conn)=> {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var progress=0;
-                                if(inputPowerId){
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where id>3 and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [inputPowerId,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where id>3 and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and  p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [inputPowerId,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where id>3 and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [inputPowerId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where id>3 and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and  p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [inputPowerId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where id>3 and power_id=?',[inputPowerId],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }else{
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=1 and uuid>0) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id<4 and id>3 and uuid>0) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where m.manager_up_id<4 and id>3 and uuid>0',(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }
+                    var sql = `select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where id>1 `;
+                    if(req.query.managerId){
+                        sql+=` and manager_up_id=${managerId}`;
+                    }
+                    if(uname){
+                        sql+=` and name='${uname}'`;
+                    }
+                    if(inviteCode){
+                        sql+=` and inviteCode=${inviteCode}`;
+                    }
+                    if(inputPowerId){
+                        sql+=` and power_id=${inputPowerId}`;
+                    }
+                }
+                sql+=`) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.payTime>'${starttime}' and p.payTime<'${endtime}' and p.managerId=q.id `;
+                if(gameId){
+                    sql+=` and p.gameId=${gameId}`;
+                }
+                sql+= ` GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId  and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ${limitstart},10`;
+                var sqlm=`select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where id>0 `
+                if(req.query.managerId)  {
+                    sqlm+=` and manager_up_id=${managerId}`
+                }
+                if(uname){
+                    sqlm+=` and name='${uname}' `;
+                }
+                if(inviteCode){
+                    sqlm+=` and inviteCode=${inviteCode}`;
+                }
+                if(inputPowerId){
+                    sqlm+=` and power_id=${inputPowerId}`;
+                }
+                sqlm+=`  ) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0`;
+                if(gameId){
+                    sqlm+=` and p.gameId=${gameId} `;
+                }
+                sqlm+=` and p.payTime>'${starttime}' and p.payTime< '${endtime}' and p.managerId=q.id GROUP BY q.id)o`;
+                if(!req.query.managerId&&!uname&&!inviteCode&&!inputPowerId){
+                    var sqln=`select count(m.id) as totalNum from manager m where m.id>0 and m.manager_up_id=1`
+                } else{
+                    var sqln=`select count(m.id) as totalNum from manager m where m.id>0 `
+                    if(req.query.managerId){
+                        sqln+=` and m.manager_up_id=${managerId}`;
+                    }
+                    if(uname){
+                        sqln +=` and m.name='${uname}'`
+                    }
+                    if(inviteCode){
+                        sqln += ` and m.inviteCode=${inviteCode}`;
+                    }
+                    if(inputPowerId){
+                        sqln +=` and m.power_id=${inputPowerId}`
+                    }
+                }
+                console.log("sql:"+sql);
+                console.log('sqlm:'+sqlm);
+                console.log('sqln:'+sqln);
+                pool.getConnection((err,conn)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        var progress=0;
+                        conn.query(sql,(err,result)=>{
+                            resultJson.managers=result;
+                            progress++;
+                            if(progress==3){
+                                res.json(resultJson);
+                                conn.release();
                             }
-                        })
-                    }else if(uname&&inviteCode){
-                        pool.getConnection((err, conn)=> {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var progress=0;
-                                if(inputPowerId){
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id group by r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [uname,inviteCode,inputPowerId,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id group by q.id)o', [uname,inviteCode,inputPowerId,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id group by r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [uname,inviteCode,inputPowerId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id group by q.id)o', [uname,inviteCode,inputPowerId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where name=? and inviteCode=? and power_id=?',[uname,inviteCode,inputPowerId],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }else{
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id group by r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [uname,inviteCode,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and  p.payTime>? and p.payTime< ? and p.managerId=q.id group by q.id)o', [uname,inviteCode,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id group by r.id)s LEFT JOIN account a ON s.id=a.managerId  and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [uname,inviteCode,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and  p.payTime>? and p.payTime< ? and p.managerId=q.id group by q.id)o', [uname,inviteCode,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where name=? and inviteCode=?',[uname,inviteCode],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }
+                        });
+                        conn.query(sqlm,(err,result)=>{
+                            resultJson.totalMoney=result[0].sumMoney;
+                            progress++;
+                            if(progress==3){
+                                res.json(resultJson);
+                                conn.release();
                             }
-                        })
-                    }else if(uname&&!inviteCode){
-                        pool.getConnection((err, conn)=> {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var progress=0;
-                                if(inputPowerId){
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id group by r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [uname,inputPowerId,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and  p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [uname,inputPowerId,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id group by r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [uname,inputPowerId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and  p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [uname,inputPowerId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where name=? and power_id=?',[uname,inputPowerId],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }else{
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id group by r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [uname,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and  p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [uname,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id group by r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [uname,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and  p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [uname,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where name=? ',[uname],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }
-                            }
-                        })
-                    }else if(inviteCode&&!uname){
-                        pool.getConnection((err, conn)=> {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                var progress=0;
-                                if(inputPowerId){
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10',[inviteCode,inputPowerId,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o',[inviteCode,inputPowerId,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10',[inviteCode,inputPowerId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where inviteCode=? and power_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o',[inviteCode,inputPowerId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-
-                                    conn.query('select count(m.id) as totalNum from manager m where inviteCode=? and power_id=?',[inviteCode,inputPowerId],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }else{
-                                    if(gameId){
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10',[inviteCode,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=?  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o',[inviteCode,gameId,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }else{
-                                        conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10',[inviteCode,starttime,endtime,limitstart], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.managers=result;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                        conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0   and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o',[inviteCode,starttime,endtime], (err, result)=> {
-                                            //console.log(result);
-                                            resultJson.totalMoney=result[0].sumMoney;
-                                            progress++;
-                                            if(progress==3){
-                                                res.json(resultJson);
-                                                conn.release();
-                                            }
-                                        });
-                                    }
-                                    conn.query('select count(m.id) as totalNum from manager m where inviteCode=?',[inviteCode],(err,result)=>{
-                                        resultJson.totalNum=result[0].totalNum;
-                                        progress++;
-                                        if(progress==3){
-                                            res.json(resultJson);
-                                            conn.release();
-                                        }
-                                    })
-                                }
+                        });
+                        conn.query(sqln,(err,result)=>{
+                            resultJson.totalNum=result[0].totalNum;
+                            progress++;
+                            if(progress==3){
+                                res.json(resultJson);
+                                conn.release();
                             }
                         })
                     }
+                })
+            }else{
+                var sql = `select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=${managerId}`;
+                if(uname){
+                    sql+=` and name='${uname}'`;
+                }
+                if(inviteCode){
+                    sql+=` and inviteCode=${inviteCode}`;
+                }
+                if(inputPowerId){
+                    sql+=` and power_id=${inputPowerId}`;
                 }
 
-            }else{
-                if(!uname&&!inviteCode){
-                    pool.getConnection((err, conn)=> {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            var progress=0;
-                            if(gameId){
-                                conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.managers=result;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,gameId,starttime,endtime], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.totalMoney=result[0].sumMoney;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                            }else{
-                                conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,starttime,endtime,limitstart], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.managers=result;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,starttime,endtime], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.totalMoney=result[0].sumMoney;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                            }
-                            conn.query('select count(m.id) as totalNum from manager m where manager_up_id=?',[managerId],(err,result)=>{
-                                resultJson.totalNum=result[0].totalNum;
-                                progress++;
-                                if(progress==3){
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                    })
-                }else if(uname&&inviteCode){
-                    pool.getConnection((err, conn)=> {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            var progress=0;
-                            if(gameId){
-                                conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and inviteCode=?) m left JOIN account a ON a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,uname,inviteCode,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.managers=result;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('SELECT IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and inviteCode=?) m left JOIN account a ON a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,uname,inviteCode,gameId,starttime,endtime], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.totalMoney=result[0].sumMoney;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                            }else{
-                                conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and inviteCode=?) m left JOIN account a ON a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId  and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,uname,inviteCode,starttime,endtime,limitstart], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.managers=result;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('SELECT IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and name=? and inviteCode=?) m left JOIN account a ON a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,uname,inviteCode,starttime,endtime], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.totalMoney=result[0].sumMoney;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                            }
-                            conn.query('select count(m.id) as totalNum from manager m where manager_up_id=? and name=? and inviteCode=?',[managerId,uname,inviteCode],(err,result)=>{
-                                resultJson.totalNum=result[0].totalNum;
-                                progress++;
-                                if(progress==3){
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                    })
-                }else if(uname&&!inviteCode){
-                    pool.getConnection((err, conn)=> {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            var progress=0;
-                            if(gameId){
-                                conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [uname,managerId,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.managers=result;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('SELECT IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=?  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [uname,managerId,gameId,starttime,endtime], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.totalMoney=result[0].sumMoney;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                            }else{
-                                conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [uname,managerId,starttime,endtime,limitstart], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.managers=result;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('SELECT IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where name=? and manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [uname,managerId,starttime,endtime], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.totalMoney=result[0].sumMoney;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                            }
-                            conn.query('select count(m.id) as totalNum from manager m where name=? and manager_up_id=?',[uname,managerId],(err,result)=>{
-                                resultJson.totalNum=result[0].totalNum;
-                                progress++;
-                                if(progress==3){
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                    })
-                }else if(inviteCode&&!uname){
-                    pool.getConnection((err, conn)=> {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            var progress=0;
-                            if(gameId){
-                                conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,inviteCode,gameId,starttime,endtime,limitstart], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.managers=result;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('SELECT IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0   and p.gameId=? and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,inviteCode,gameId,starttime,endtime], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.totalMoney=result[0].sumMoney;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                            }else{
-                                conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId  and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ?,10', [managerId,inviteCode,starttime,endtime,limitstart], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.managers=result;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                                conn.query('SELECT IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and inviteCode=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0  and p.payTime>? and p.payTime< ? and p.managerId=q.id GROUP BY q.id)o', [managerId,inviteCode,starttime,endtime], (err, result)=> {
-                                    //console.log(result);
-                                    resultJson.totalMoney=result[0].sumMoney;
-                                    progress++;
-                                    if(progress==3){
-                                        res.json(resultJson);
-                                        conn.release();
-                                    }
-                                });
-                            }
-                            conn.query('select count(m.id) as totalNum from manager m where manager_up_id=? and inviteCode=?',[managerId,inviteCode],(err,result)=>{
-                                resultJson.totalNum=result[0].totalNum;
-                                progress++;
-                                if(progress==3){
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                    })
+                sql+=`) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.payTime>'${starttime}' and p.payTime<'${endtime}' and p.managerId=q.id `;
+                if(gameId){
+                    sql+=` and p.gameId=${gameId}`;
                 }
+                sql+= ` GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId  and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ${limitstart},10`;
+                var sqlm=`select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=${managerId}`;
+                if(uname){
+                    sqlm+=` and name='${uname}' `;
+                }
+                if(inviteCode){
+                    sqlm+=` and inviteCode=${inviteCode}`;
+                }
+                if(inputPowerId){
+                    sqlm+=` and power_id=${inputPowerId}`;
+                }
+                sqlm+=`  ) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0`;
+                if(gameId){
+                    sqlm+=` and p.gameId=${gameId} `;
+                }
+                sqlm+=` and p.payTime>'${starttime}' and p.payTime< '${endtime}' and p.managerId=q.id GROUP BY q.id)o`;
+                var sqln=`select count(m.id) as totalNum from manager m where manager_up_id=${managerId} `;
+                if(uname){
+                    sqln +=` and name='${uname}'`
+                }
+                if(inviteCode){
+                    sqln += ` and inviteCode=${inviteCode}`;
+                }
+                if(inputPowerId){
+                    sqln +=` and power_id=${inputPowerId}`
+                }
+                pool.getConnection((err,conn)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        var progress=0;
+                        conn.query(sql,(err,result)=>{
+                            resultJson.managers=result;
+                            progress++;
+                            if(progress==3){
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        });
+                        conn.query(sqlm,(err,result)=>{
+                            resultJson.totalMoney=result[0].sumMoney;
+                            progress++;
+                            if(progress==3){
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        });
+                        conn.query(sqln,(err,result)=>{
+                            resultJson.totalNum=result[0].totalNum;
+                            progress++;
+                            if(progress==3){
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
+                    }
+                })
+
             }
 
 
@@ -2121,6 +1222,30 @@ module.exports = {
                 }
                 conn.release();
             })
+        }
+    },
+    validUuidResetPwd:(req,res)=>{
+        if(req.session.user){
+            if(req.session.user.power_id==1){
+                var uuid = req.query.uuid;
+                pool.getConnection((err,conn)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        conn.query('SELECT * FROM manager  WHERE uuid=? ',[uuid],(err,result)=>{
+                            if(result.length>0){
+                                res.json({"status":1});
+                            }else{
+                                res.json({"status":0});
+                            }
+                        })
+                    }
+                    conn.release();
+                })
+            }else{
+                res.json({"status":0});
+            }
+
         }
     }
 }

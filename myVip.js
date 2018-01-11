@@ -394,52 +394,30 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    if(powerId>1||req.query.managerId){
-                        var progress=0;
-                        function getcount(day){
-                            conn.query('select count(id) as c from account where manager_up_id=? and createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[managerId,day,day-1],(err,result)=>{
-                                //console.log(9999999999);
-                                console.log(result);
-                                progress++;
-                                var now=new Date();
-                                now.setDate(now.getDate()-day);
-                                resultJson[6-day].label=now.toLocaleDateString();
-                                resultJson[6-day].value=result[0].c;
-                                if(progress==7){
-                                    // console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
+                    var progress=0;
+                    function getcount(day){
+                        var sql = `select count(id) as c from account where createTime>(CurDate()-${day}) and createTime<=(CurDate()-${day-1})`;
+                        if(powerId>1||req.query.managerId){
+                            sql+=`and manager_up_id=${managerId}`
                         }
-                        for(let i=6;i>=0;i--){
-                            getcount(i);
-                            // console.log(123456789);
-                        }
-                    }else{
-                        var progress=0;
-                        function getcount(day){
-                            conn.query('select count(id) as c from account where createTime>(CurDate()-?) and createTime<=(CurDate()-?)',[day,day-1],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
-                                progress++;
-                                var now=new Date();
-                                now.setDate(now.getDate()-day);
-                                resultJson[6-day].label=now.toLocaleDateString();
-                                resultJson[6-day].value=result[0].c;
-                                if(progress==7){
-                                    // console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                        for(let i=6;i>=0;i--){
-                            getcount(i);
-                            // console.log(123456789);
-                        }
+                        conn.query(sql,(err,result)=>{
+                            console.log(result);
+                            progress++;
+                            var now=new Date();
+                            now.setDate(now.getDate()-day);
+                            resultJson[6-day].label=now.toLocaleDateString();
+                            resultJson[6-day].value=result[0].c;
+                            if(progress==7){
+                                // console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
                     }
-
+                    for(let i=6;i>=0;i--){
+                        getcount(i);
+                        // console.log(123456789);
+                    }
                 }
 
             })
@@ -465,54 +443,30 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    if(powerId>1||req.query.managerId){
-                        var progress=0;
-                        function getcount(month){
-                            conn.query("select count(id) as c from account where manager_up_id=? and createTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY)) and createTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY))",[managerId,1+7*month,7*month-5],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
-                                progress++;
-                                if(month==0){
-                                    resultJson[5-month].label='本周';
-                                }else{
-                                    resultJson[5-month].label='上'+month+'周';
-                                }
-                                resultJson[5-month].value=result[0].c;
-                                if(progress==6){
-                                    // console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
+                    var progress=0;
+                    function getcount(month){
+                        var sql = `select count(id) as c from account where createTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ${1+7*month} DAY)) and createTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ${7*month-5} DAY))`;
+                        if(powerId>1||req.query.managerId){
+                            sql+=`and manager_up_id=${managerId} `;
                         }
-                        for(let i=0;i<6;i++){
-                            getcount(i);
-                        }
-                    }else{
-                        var progress=0;
-                        function getcount(month){
-                            conn.query("select count(id) as c from account where  createTime>(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY)) and createTime<=(select date_sub(curdate(),INTERVAL WEEKDAY(curdate()) + ? DAY))",[1+7*month,7*month-5],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
-                                progress++;
-                                if(month==0){
-                                    resultJson[5-month].label='本周';
-                                }else{
-                                    resultJson[5-month].label='上'+month+'周';
-                                }
-                                resultJson[5-month].value=result[0].c;
-                                if(progress==6){
-                                    // console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                        for(let i=0;i<6;i++){
-                            getcount(i);
-                        }
+                        conn.query(sql,(err,result)=>{
+                            progress++;
+                            if(month==0){
+                                resultJson[5-month].label='本周';
+                            }else{
+                                resultJson[5-month].label='上'+month+'周';
+                            }
+                            resultJson[5-month].value=result[0].c;
+                            if(progress==6){
+                                // console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
                     }
-
+                    for(let i=0;i<6;i++){
+                        getcount(i);
+                    }
                 }
 
             })
@@ -538,56 +492,32 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    if(powerId>1||req.query.managerId){
-                        var progress=0;
-                        function getcount(month){
-                            conn.query("select count(id) as c from account where manager_up_id=? and createTime>(SELECT concat(date_format(LAST_DAY(now() - interval ? month),'%Y-%m-'),'01')) and createTime<=(SELECT LAST_DAY(now() - interval ? month))",[managerId,month,month],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
-                                progress++;
-                                var now=new Date();
-                                now.setMonth(now.getMonth()-month);
-                                var m=parseInt(now.getMonth())+1;
-                                resultJson[5-month].label=m+'月';
-                                resultJson[5-month].value=result[0].c;
-                                if(progress==6){
-                                    console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
+                    var progress=0;
+                    function getcount(month){
+                        var sql = `select count(id) as c from account where createTime>(SELECT concat(date_format(LAST_DAY(now() - interval ${month} month),'%Y-%m-'),'01')) and createTime<=(SELECT LAST_DAY(now() - interval ${month} month))`;
+                        if(powerId>1 || req.query.managerId){
+                            sql +=`and manager_up_id=${managerId}`;
                         }
-                        for(let i=0;i<6;i++){
-                            getcount(i);
-                            // console.log(123456789);
-                        }
-                    }else{
-                        var progress=0;
-                        function getcount(month){
-                            conn.query("select count(id) as c from account where createTime>(SELECT concat(date_format(LAST_DAY(now() - interval ? month),'%Y-%m-'),'01')) and createTime<=(SELECT LAST_DAY(now() - interval ? month))",[month,month],(err,result)=>{
-                                //console.log(9999999999);
-                                // console.log(result);
-                                progress++;
-                                var now=new Date();
-                                now.setMonth(now.getMonth()-month);
-                                // console.log('+++++++++++++++++');
-                                // console.log(month,now.getMonth());
-                                var m=parseInt(now.getMonth())+1;
-                                resultJson[5-month].label=m+'月';
-                                resultJson[5-month].value=result[0].c;
-                                if(progress==6){
-                                    // console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
-                                }
-                            })
-                        }
-                        for(let i=0;i<6;i++){
-                            getcount(i);
-                            // console.log(123456789);
-                        }
+                        conn.query(sql,(err,result)=>{
+                            //console.log(9999999999);
+                            // console.log(result);
+                            progress++;
+                            var now=new Date();
+                            now.setMonth(now.getMonth()-month);
+                            var m=parseInt(now.getMonth())+1;
+                            resultJson[5-month].label=m+'月';
+                            resultJson[5-month].value=result[0].c;
+                            if(progress==6){
+                                console.log(resultJson);
+                                res.json(resultJson);
+                                conn.release();
+                            }
+                        })
                     }
-
+                    for(let i=0;i<6;i++){
+                        getcount(i);
+                        // console.log(123456789);
+                    }
                 }
 
             })

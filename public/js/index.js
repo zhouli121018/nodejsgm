@@ -359,7 +359,7 @@ $(function(){
                             <td>${o.uuid||''}</td>
                             <td>${o.nickName||''}</td>
                             <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
-                            <td>${o.rebate?o.rebate:(o.power_id==5?"0.45:0.10":o.power_id==4?"0.40:0.05":o.power_id==3?"0.35:0.05":"0.30:0.05")}</td>
+                            <td>${o.rebate}</td>
                             <td>${o.telephone}</td>
                             <td>${o.inviteCode}</td>
                             <td>${o.roomCard||0}</td>
@@ -718,7 +718,7 @@ $(function(){
                             <td>${o.uuid||''}</td>
                             <td>${sessionStorage['powerId']==1?o.nickName:'----'}</td>
                             <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
-                            <td>${o.rebate?o.rebate:(o.power_id==5?"0.45:0.10":o.power_id==4?"0.40:0.05":o.power_id==3?"0.35:0.05":"0.30:0.05")}</td>
+                            <td>${o.rebate}</td>
                             <td>${sessionStorage['powerId']==1?o.telephone:'----'}</td>
                             <td>${o.inviteCode}</td>
                             <td>${o.roomCard||0}</td>
@@ -817,10 +817,18 @@ $(function(){
             alert('邀请码不能为空！请输入邀请码！');
             return;
         }
-        var rebetreg=/^0\.\d{1,2}[\:|\;]0\.\d{1,2}$/;
+        var rebetreg=/^0\.\d{1,2}$/;
         if(!rebetreg.test(rebate)){
             $("#agent #agentDetail [name='rebate']").focus();
-            alert('分成比例格式不正确！请重新输入！如：0.5:0.12 ');
+            alert('分成比例格式不正确！请重新输入！如：0.5');
+            return;
+        }
+        if(parseFloat(rebate)>0.8){
+            alert('分成比例不能高于0.8！请重新输入');
+            return;
+        }
+        if(rebate==''||rebate>=sessionStorage['rebate']){
+            alert('请输入正确的分成比例！');
             return;
         }
         if(sessionStorage['powerId']!=1&&parseFloat(powerId)>=parseFloat(sessionStorage['powerId'])){
@@ -980,10 +988,14 @@ $(function(){
             $("#agent #add-message [name='weixin']").focus();
             return;
         }
-        var rebetreg=/^0\.\d{1,2}[\:|\;]0\.\d{1,2}$/;
+        var rebetreg=/^0\.\d{1,2}$/;
         if(rebate!=""&& (!rebetreg.test(rebate))){
             $("#agent #add-message [name='rebate']").focus();
-            alert('分成比例格式不正确！请重新输入！如：0.5:0.15 ');
+            alert('分成比例格式不正确！请重新输入！如：0.5');
+            return;
+        }
+        if(parseFloat(rebate)>0.8){
+            alert('分成比例不能高于0.8！请重新输入');
             return;
         }
         if(inputInviteCode==''){
@@ -1063,11 +1075,11 @@ $(function(){
             $("#agent #add-message [name='powerId']").focus();
             return;
         }
-        // if(parseFloat(rebate)>=parseFloat(prebate)){
-        //     alert('分成比例不能高于等于上级代理分成比例！请重新输入！');
-        //     $("#agent #add-message [name='rebate']").focus();
-        //     return;
-        // }
+        if(parseFloat(rebate)>=parseFloat(prebate)){
+            alert('分成比例不能高于等于上级代理分成比例！请重新输入！');
+            $("#agent #add-message [name='rebate']").focus();
+            return;
+        }
         if(validInviteCode&&validUuid&&validParentInviteCode){
             $.ajax({
                 url:'/insertManager',

@@ -225,13 +225,13 @@ module.exports = {
                     rebate=obj.rebate;
                 }else{
                     if(powerId==5){
-                        rebate="0.45:0.10";
+                        rebate="0.7";
                     }else if(powerId==4){
-                        rebate="0.40:0.05";
+                        rebate="0.6";
                     }else if(powerId==3){
-                        rebate="0.35:0.05";
+                        rebate="0.5";
                     }else if(powerId==2){
-                        rebate="0.30:0.05";
+                        rebate="0.4";
                     }
                 }
                 var uuid=obj.uuid;
@@ -388,13 +388,13 @@ module.exports = {
                     rebate=obj.rebate;
                 }else{
                     if(powerId==5){
-                        rebate="0.45:0.10";
+                        rebate="0.7";
                     }else if(powerId==4){
-                        rebate="0.40:0.05";
+                        rebate="0.6";
                     }else if(powerId==3){
-                        rebate="0.35:0.05";
+                        rebate="0.5";
                     }else if(powerId==2){
-                        rebate="0.30:0.05";
+                        rebate="0.4";
                     }
                 }
 
@@ -508,13 +508,13 @@ module.exports = {
                 rebate=parseFloat(rebateArr[0]);
             }else{
                 if(powerId==5){
-                    rebate=0.45;
+                    rebate=0.7;
                 }else if(powerId==4){
-                    rebate=0.40;
+                    rebate=0.6;
                 }else if(powerId==3){
-                    rebate=0.35;
+                    rebate=0.5;
                 }else if(powerId==2){
-                    rebate=0.30;
+                    rebate=0.4;
                 }
             }
             var now=new Date();
@@ -552,20 +552,6 @@ module.exports = {
         if(req.session.user){
             var user=req.session.user;
             var managerId=user.id;
-            var powerId=user.power_id;
-            var rebate=0;
-            if(user.rebate){
-                var rebateArr=user.rebate.split(":");
-                rebate=parseFloat(rebateArr[1]);
-                console.dir(rebateArr);
-                console.log("rebate2:"+rebateArr[1]);
-            }else{
-                if(powerId==5){
-                    rebate=0.10;
-                }else if(powerId==4||powerId==3||powerId==2){
-                    rebate=0.05;
-                }
-            }
             var starttime=req.query.starttime;
             var endtime=req.query.endtime;
             var now=new Date();
@@ -577,7 +563,7 @@ module.exports = {
                 }
             }
             var overTime=overArr.join('-');
-            console.log(overTime);
+            // console.log(overTime);
             if(!starttime){
                 starttime='1970-01-01';
             }
@@ -595,36 +581,17 @@ module.exports = {
                 levelStr=plevelStr+levelStr;
             }
             var length=levelStr.length;
+            var rebate=parseFloat(user.rebate);
             pool.getConnection((err,conn)=>{
                 if(err){
                     console.log(err);
                 }else{
-                    var minetwo=0;
-                    conn.query('select IFNULL(sum(a.money),0) as minetwo from paylog a,manager b where a.managerId = b.id and b.manager_up_id = ? and a.payTime > ? and a.payTime <?  and a.payType = 0  and a.status%100 <10 and payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1)',[managerId,starttime,endtime,managerId],(err,result)=>{
-                        minetwo+=parseFloat(result[0].minetwo);
-                        if(powerId>3){
-                            conn.query(' select IFNULL(sum(a.money),0) as minetwo  from paylog a,manager b,manager c where a.managerId = b.id and b.manager_up_id = c.id and c.manager_up_id = ? and (c.power_id = 3||c.power_id = 4)and a.payTime >? and a.payTime <?  and a.payType = 0   and a.status%1000 <100    and payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1)',[managerId,starttime,endtime,managerId],(err,result)=>{
-                                minetwo+=parseFloat(result[0].minetwo);
-                                console.log(result);
-                                if(powerId>4){
-                                    conn.query('select IFNULL(sum(a.money),0) as minetwo  from paylog a,manager b,manager c,manager d   where a.managerId = b.id and b.manager_up_id = c.id and c.manager_up_id = d.id  and d.manager_up_id =?   and d.power_id = 4  and a.payTime >? and a.payTime <? and a.payType = 0 and a.status<1000 and payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1)',[managerId,starttime,endtime,managerId],(err,result)=>{
-                                        minetwo+=parseFloat(result[0].minetwo);
-                                        req.session.minetwo=minetwo*rebate;
-                                        res.json({"minetwo":minetwo*rebate});
-
-                                    })
-                                }else{
-                                    req.session.minetwo=minetwo*rebate;
-                                    res.json({"minetwo":minetwo*rebate});
-                                }
-                            })
-                        }else{
-                            req.session.minetwo=minetwo*rebate;
-                            res.json({"minetwo":minetwo*rebate});
-                        }
-                        console.log('minetwominetow----:');
-                        console.log(req.session.minetwo,rebate);
-                    });
+                    conn.query('select IFNULL(sum(n.money*(?-(o.rebate+0.0))),0.0) as minetwo from (select sum(m.money) as money,m.top1mid from (select sum(a.money) as money,b.id,(case when (substring(b.levelStr,?,8)+0)=0 then b.id else (substring(b.levelStr,?,8)+0) end) as top1mid from paylog a,manager b where a.managerId = b.id  and a.payType = 0 and a.gameId=3 and a.payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1) and b.levelStr like ? group by id,top1mid) m group by m.top1mid) n,manager o where n.top1mid = o.id',[rebate,length,length,managerId,levelStr],(err,result)=>{
+                        // console.log('minetwo=====');
+                        // console.log(result);
+                        req.session.minetwo=result[0].minetwo;
+                        res.json(result[0]);
+                    })
                 }
                 conn.release();
             })

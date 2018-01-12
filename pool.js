@@ -4,7 +4,7 @@
 const mysql = require('mysql');
 
 module.exports=mysql.createPool({
-    host:'120.78.130.91',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 // qingyuan1213 103.73.206.31 //测试 120.79.23.45 //桔子 120.78.130.91
+    host:'127.0.0.1',//qingyuankx 183.131.200.109 // 朝阳 47.95.239.253 //juyou 116.62.56.47 //ningdu 120.77.43.40//qingyuan120.76.100.224 //suzhou 121.196.221.247// songyuan 39.106.132.18 // qingyuan1213 103.73.206.31 //测试 120.79.23.45 //桔子 120.78.130.91
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'mahjong',

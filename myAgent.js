@@ -1247,6 +1247,22 @@ module.exports = {
             }
 
         }
+    },
+    getParentRebate:(req,res)=>{
+        if(req.session.user){
+            var managerId = req.query.managerId;
+            pool.getConnection((err,conn)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    conn.query('SELECT * FROM manager  WHERE id=(SELECT manager_up_id from manager WHERE id=?)',[managerId],(err,result)=>{
+                        // console.log(result);
+                        res.json(result);
+                    })
+                }
+                conn.release();
+            })
+        }
     }
 }
 

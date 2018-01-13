@@ -157,4 +157,5 @@ app.get('/validManagerId',myAgent.validManagerId);
 app.get('/reupCode',myAgent.reupCode);
 //重置代理密码验证uuid
 app.get('/validUuidResetPwd',myAgent.validUuidResetPwd);
-
+//修改代理信息是查询上级代理分成比例
+app.get('/getParentRebate',myAgent.getParentRebate);

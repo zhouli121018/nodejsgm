@@ -1098,7 +1098,7 @@ $(function(){
             $("#agent #agentDetail [name='rebate']").focus();
             return;
         }
-        if(sessionStorage['powerId']!=1 && parseFloat(powerId)>=parseFloat(ppowerId)){
+        if(ppowerId!=1 && parseFloat(powerId)>=parseFloat(ppowerId)){
             alert('代理级别不能高于等于上级代理级别！请重新选择！');
             $("#agent #agentDetail [name='powerId']").focus();
             return;

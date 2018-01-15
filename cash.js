@@ -122,9 +122,9 @@ module.exports = {
                 }else if(money>5000){
                     res.json({"status":0,"msg":"单次提现金额不超过5000元，如有疑问请联系管理员！"});
                 }
-                // else if(money<100){
-                //     res.json({"status":0,"msg":"提现金额不足100元！"});
-                // }
+                else if(money<100){
+                    res.json({"status":0,"msg":"提现金额不足100元！"});
+                }
                 else{
                     pool.getConnection((err, conn)=> {
                         conn.query('INSERT INTO paylog VALUES (null,?,?,?,0,now(),1,0,0,0)',[managerId,uuid,money],(err,result)=>{

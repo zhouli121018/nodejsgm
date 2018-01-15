@@ -524,6 +524,108 @@ module.exports = {
                 }
             }
         }
+    },
+    addBonusLog:(req,res)=>{
+            req.on("data", (buff)=> {
+                var obj = qs.parse(buff.toString());
+                // console.log(obj);
+                var paylogId = obj.paylogId;
+                var paylog;
+                var managerId=0;
+                var money=0;
+                pool.getConnection((err, conn)=> {
+                    if(err){
+                        console.log(err);
+                    }else{
+                        conn.query('select * from paylog where id =?',[paylogId],(err,result)=>{
+                            if(result.length>0){
+                                paylog=result[0];
+                                managerId=paylog.managerId;
+                                money=paylog.money;
+                                conn.query('select * from manager where id=?',[managerId],(err,result0)=>{
+                                    var  levelStr=result0[0].levelStr;
+                                    var  levels = levelStr.split("$");
+                                    var rebate0=result0[0].rebate;
+                                    console.log(levelStr,levels);
+                                    console.log(parseInt(levels[0]));
+                                    var progress=0;
+                                    conn.query('insert into bonus values(null,?,?,?)',[paylogId,managerId,money*rebate0],(err,result3)=>{
+                                        if(err){console.log(err)}else console.log(result3);
+                                    });
+                                    for(let i=0;i<levels.length-1;i++){
+                                        conn.query('select id,rebate from manager where id=?',[parseInt(levels[i])],(err,result2)=>{
+                                            levels[i]=result2[0];
+                                            progress++;
+                                            if(progress==levels.length-1){
+                                                for(let j=0;j<levels.length-1;j++){
+                                                    if(j==levels.length-2){
+                                                        var sql = `insert into bonus values (null,${paylogId},${levels[j].id},${money*(levels[j].rebate-rebate0)})`;
+                                                        console.log(sql);
+                                                        conn.query(sql);
+                                                        continue;
+                                                    }
+                                                    conn.query('insert into bonus values(null,?,?,?)',[paylogId,levels[j].id,money*[levels[j].rebate-levels[j+1].rebate]])
+                                                }
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        });
+                        res.json();
+                    }
+                    conn.release();
+                })
+            });
+    },
+    addBonusLogDoGet:(req,res)=>{
+            var paylogId = req.query.paylogId;
+            var paylog;
+            var managerId=0;
+            var money=0;
+            pool.getConnection((err, conn)=> {
+                if(err){
+                    console.log(err);
+                }else{
+                    conn.query('select * from paylog where id =?',[paylogId],(err,result)=>{
+                        if(result.length>0){
+                            paylog=result[0];
+                            managerId=paylog.managerId;
+                            money=paylog.money;
+                            conn.query('select * from manager where id=?',[managerId],(err,result0)=>{
+                                var  levelStr=result0[0].levelStr;
+                                var  levels = levelStr.split("$");
+                                var rebate0=result0[0].rebate;
+                                console.log(levelStr,levels);
+                                console.log(parseInt(levels[0]));
+                                var progress=0;
+                                conn.query('insert into bonus values(null,?,?,?)',[paylogId,managerId,money*rebate0],(err,result3)=>{
+                                    if(err){console.log(err)}else console.log(result3);
+                                });
+                                for(let i=0;i<levels.length-1;i++){
+                                    conn.query('select id,rebate from manager where id=?',[parseInt(levels[i])],(err,result2)=>{
+                                        levels[i]=result2[0];
+                                        progress++;
+                                        if(progress==levels.length-1){
+                                            for(let j=0;j<levels.length-1;j++){
+                                                if(j==levels.length-2){
+                                                    var sql = `insert into bonus values (null,${paylogId},${levels[j].id},${money*(levels[j].rebate-rebate0)})`;
+                                                    console.log(sql);
+                                                    conn.query(sql);
+                                                    continue;
+                                                }
+                                                conn.query('insert into bonus values(null,?,?,?)',[paylogId,levels[j].id,money*[levels[j].rebate-levels[j+1].rebate]])
+                                            }
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    });
+                    res.json();
+                }
+                conn.release();
+            })
     }
 }
 

@@ -43,7 +43,7 @@ app.use(function(req, res, next){
         req.session._garbage = Date();
         req.session.touch();
         next();
-    }else if(url=='/login'||url=='/getCode'||url=='/logout'){
+    }else if(url=='/login'||url=='/getCode'||url=='/logout'||url=='/addBonusLog'){
         next();
     }else{
         res.json({"timeout":1});
@@ -159,3 +159,5 @@ app.get('/reupCode',myAgent.reupCode);
 app.get('/validUuidResetPwd',myAgent.validUuidResetPwd);
 //修改代理信息是查询上级代理分成比例
 app.get('/getParentRebate',myAgent.getParentRebate);
+app.post('/addBonusLog',detail.addBonusLog);
+app.get('/addBonusLog',detail.addBonusLogDoGet);

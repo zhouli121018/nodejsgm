@@ -459,8 +459,12 @@ $(function(){
                 var totalBonus=data.totalBonus;
                 var totalNum=data.totalNum;
                 var totalMoney=data.totalMoney;
-
                 $('#totalBonus b').html(totalBonus);
+                if(data.totalBonus){
+                    $('#totalBonus').show();
+                }else{
+                    $('#totalBonus').hide();
+                }
                 $('#detail .total-number').html(totalNum);
                 $('#detail .total-money').html(totalMoney);
                 if(paylogs.length>0){
@@ -1491,7 +1495,7 @@ $(function(){
         getAccount(1);
     })
     if(sessionStorage['powerId']==1){
-        $('#totalBonus').hide();
+        // $('#totalBonus').hide();
         $('#info .info-hide').hide();
         $('#vip .mount-hide').hide();
         //$('#roomCardBox').hide();

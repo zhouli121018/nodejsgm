@@ -796,6 +796,8 @@ $(function(){
         var weixin=$("#agent #agentDetail [name='weixin']").val();
         var validInviteCode=false;
         var validUuid=false;
+        var prebate=0;
+        var ppowerId=0;
         var uname=$("#agent #agentDetail [name='uname']").val();
         var nreg=/^([\u4e00-\u9fa5]){2,4}$/;
         if(!nreg.test(uname)){
@@ -810,7 +812,7 @@ $(function(){
             return;
         }
         if(weixin==''){
-            alert('微信号不能为空！请输入邀请码！');
+            alert('微信号不能为空！请输入微信号！');
             return;
         }
         if(inputInviteCode==''){
@@ -827,11 +829,23 @@ $(function(){
             alert('分成比例不能高于0.8！请重新输入');
             return;
         }
-        if(rebate==''||rebate>=sessionStorage['rebate']){
-            alert('请输入正确的分成比例！');
+        $.ajax({
+            url:'/getParentRebate',
+            async: false,
+            data:{managerId:mid},
+            success:function(data){
+                console.log(data);
+                prebate=data[0].rebate;
+                ppowerId=data[0].power_id;
+
+            }
+        })
+        if(parseFloat(rebate)>=parseFloat(prebate)){
+            alert('分成比例不能高于等于上级代理分成比例！请重新输入！');
+            $("#agent #agentDetail [name='rebate']").focus();
             return;
         }
-        if(sessionStorage['powerId']!=1&&parseFloat(powerId)>=parseFloat(sessionStorage['powerId'])){
+        if(ppowerId!=1 && parseFloat(powerId)>=parseFloat(ppowerId)){
             alert('代理级别不能高于等于上级代理级别！请重新选择！');
             $("#agent #agentDetail [name='powerId']").focus();
             return;

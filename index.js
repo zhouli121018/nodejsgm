@@ -155,3 +155,6 @@ app.get('/reupCode',myAgent.reupCode);
 app.get('/validUuidResetPwd',myAgent.validUuidResetPwd);
 //修改代理信息时查询上级代理分成比例
 app.get('/getParentRebate',myAgent.getParentRebate);
+//充值后的回调函数
+app.post('/addBonusLog',detail.addBonusLog);
+app.get('/addBonusLog',detail.addBonusLogDoGet);

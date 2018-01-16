@@ -574,11 +574,11 @@ $(function(){
                         }
                         var editStr='';
                         if(o.status==0){
-                            editStr=`<option value="1">标记红名</option><option value="2">禁用</option>`;
+                            editStr=`<option value="2">标记红名</option><option value="1">禁用</option>`;
                         }else if(o.status==1) {
-                            editStr=`<option value="0">取消红名</option><option value="2">禁用</option>`;
-                        }else if(o.status==2) {
                             editStr=`<option value="0">启用</option>`;
+                        }else if(o.status==2) {
+                            editStr=`<option value="0">取消红名</option><option value="1">禁用</option>`;
                         }
 
                         html+=`
@@ -591,7 +591,7 @@ $(function(){
                             <td>${o.totalMoney}</td>
                             <td>${o.roomCard}</td>
                             <td style="display:none;">${redCardStr}</td>
-                            <td><b>${o.status==0?'正常':o.status==1?'红名':'禁用'}</b></td>
+                            <td><b>${o.status==0?'正常':o.status==1?'禁用':'红名'}</b></td>
                             <td>${new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>
                                 <span class="input-group editStatus">

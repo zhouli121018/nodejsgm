@@ -153,5 +153,8 @@ app.get('/validManagerId',myAgent.validManagerId);
 app.get('/reupCode',myAgent.reupCode);
 //重置代理密码验证uuid
 app.get('/validUuidResetPwd',myAgent.validUuidResetPwd);
-//修改代理信息是查询上级代理分成比例
+//修改代理信息时查询上级代理分成比例
 app.get('/getParentRebate',myAgent.getParentRebate);
+//充值后的回调函数
+app.post('/addBonusLog',detail.addBonusLog);
+app.get('/addBonusLog',detail.addBonusLogDoGet);

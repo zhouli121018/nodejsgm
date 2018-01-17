@@ -820,8 +820,10 @@ $(function(){
             alert('微信号不能为空！请输入微信号！');
             return;
         }
-        if(inputInviteCode==''){
-            alert('邀请码不能为空！请输入邀请码！');
+        var inviteCodeReg=/^\d{5}$/;
+        if(!inviteCodeReg.test(inputInviteCode)){
+            alert('邀请码为5位数的数字！请重新输入！');
+            $("#agent #add-message [name='inviteCode']").focus();
             return;
         }
         var rebetreg=/^0\.\d{1,2}$/;
@@ -866,7 +868,7 @@ $(function(){
                     return;
                 }
                 if(data.length>0){
-                    alert('该邀请码不可用！请重新输入！');
+                    alert('该邀请码已被占用！请重新输入！');
                     validInviteCode=false;
                     $("#agent #agentDetail [name='inviteCode']").focus();
                 }else{
@@ -1017,8 +1019,9 @@ $(function(){
             alert('分成比例不能高于0.8！请重新输入');
             return;
         }
-        if(inputInviteCode==''){
-            alert('邀请码不能为空！请输入邀请码！');
+        var inviteCodeReg=/^\d{5}$/;
+        if(!inviteCodeReg.test(inputInviteCode)){
+            alert('邀请码为5位数的数字！请重新输入！');
             $("#agent #add-message [name='inviteCode']").focus();
             return;
         }
@@ -1033,7 +1036,7 @@ $(function(){
                     return;
                 }
                 if(data.length>0){
-                    alert('该邀请码不可用！请重新输入！');
+                    alert('该邀请码已被占用！请重新输入！');
                     validInviteCode=false;
                     $("#agent #add-message [name='inviteCode']").focus();
                 }else{

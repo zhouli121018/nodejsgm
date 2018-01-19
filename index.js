@@ -43,7 +43,7 @@ app.use(function(req, res, next){
         req.session._garbage = Date();
         req.session.touch();
         next();
-    }else if(url=='/login'||url=='/getCode'||url=='/logout'){
+    }else if(url=='/login'||url=='/getCode'||url=='/logout'||url=='/addBonusLog'){
         next();
     }else{
         res.json({"timeout":1});

@@ -919,6 +919,10 @@ $(function(){
     });
 
     $('#agent #agentTbl').on('click','.chargeForAgent',function(){
+        if(sessionStorage['powerId']==1){
+            alert('系统管理员暂不能充值！');
+            return;
+        }
         var mid=$(this).attr('data-id');
         var nowTr=$(this).parents('tr');
         $("#agent #agentCharge [name='roomCardNum']").val('');
@@ -1323,6 +1327,7 @@ $(function(){
        // $('#totalBonus').hide();
         $('#info .info-hide').hide();
         $('#vip .mount-hide').hide();
+        $('#vip>button.charge').hide();
     }else{
         $('#detail .agentSearch').hide();
         $("#searchNoteForm .agentId").hide();

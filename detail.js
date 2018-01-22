@@ -4,6 +4,7 @@
 const pool = require('./pool');
 var request = require('request');
 const qs=require('querystring');
+const config=require('./configparam.js');
 
 module.exports = {
     getRoomNumber:(req,res)=>{
@@ -11,7 +12,7 @@ module.exports = {
             var user=req.session.user;
             if(user.power_id==1){
                 request({
-                        url: 'http://juzi.qhlongqing.com:8078/NN/getNum?type=all',
+                        url: config.searchRoomUrl,
 //http://47.95.239.253:8079/qymj/getNum?type=all,http://kx.waleqp.com:8079/qymj/getNum?type=all
                         method: 'GET'
                     },

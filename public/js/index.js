@@ -188,7 +188,7 @@ $(function(){
                     <td>剩余蓝钻：</td>
                     <td>${data.roomCard}</td>
                 </tr>
-                <tr>
+                <tr style="display:none;">
                     <td>剩余红钻：</td>
                     <td>${data.redCard}</td>
                 </tr>

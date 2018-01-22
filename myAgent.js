@@ -3,7 +3,7 @@
  */
 const pool = require('./pool');
 const qs=require('querystring');
-
+const config=require('./configparam.js');
 module.exports = {
     login:(req,res)=>{
         var uname = req.query.uname;
@@ -224,15 +224,7 @@ module.exports = {
                 if(obj.rebate){
                     rebate=obj.rebate;
                 }else{
-                    if(powerId==5){
-                        rebate="0.7";
-                    }else if(powerId==4){
-                        rebate="0.6";
-                    }else if(powerId==3){
-                        rebate="0.5";
-                    }else if(powerId==2){
-                        rebate="0.4";
-                    }
+                   rebate=config.getRebate(powerId);
                 }
                 var uuid=obj.uuid;
                 var weixin=obj.weixin;
@@ -387,15 +379,7 @@ module.exports = {
                 if(obj.rebate){
                     rebate=obj.rebate;
                 }else{
-                    if(powerId==5){
-                        rebate="0.7";
-                    }else if(powerId==4){
-                        rebate="0.6";
-                    }else if(powerId==3){
-                        rebate="0.5";
-                    }else if(powerId==2){
-                        rebate="0.4";
-                    }
+                    rebate=config.getRebate(powerId);
                 }
 
                 pool.getConnection((err, conn)=> {
@@ -502,21 +486,7 @@ module.exports = {
             var starttime=req.query.starttime;
             var endtime=req.query.endtime;
             var powerId=user.power_id;
-            var rebate=0;
-            if(user.rebate){
-                var rebateArr=user.rebate.split(":|;");
-                rebate=parseFloat(rebateArr[0]);
-            }else{
-                if(powerId==5){
-                    rebate=0.7;
-                }else if(powerId==4){
-                    rebate=0.6;
-                }else if(powerId==3){
-                    rebate=0.5;
-                }else if(powerId==2){
-                    rebate=0.4;
-                }
-            }
+            var rebate = parseFloat(user.rebate);
             var now=new Date();
             now.setDate(now.getDate()+1);
             var overArr=now.toLocaleDateString().split('/');
@@ -586,7 +556,7 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    conn.query('select IFNULL(sum(n.money*(?-(o.rebate+0.0))),0.0) as minetwo from (select sum(m.money) as money,m.top1mid from (select sum(a.money) as money,b.id,(case when (substring(b.levelStr,?,8)+0)=0 then b.id else (substring(b.levelStr,?,8)+0) end) as top1mid from paylog a,manager b where a.managerId = b.id  and a.payType = 0 and a.gameId=3 and a.payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1) and b.levelStr like ? group by id,top1mid) m group by m.top1mid) n,manager o where n.top1mid = o.id',[rebate,length,length,managerId,levelStr],(err,result)=>{
+                    conn.query('select IFNULL(sum(n.money*(?-(o.rebate+0.0))),0.0) as minetwo from (select sum(m.money) as money,m.top1mid from (select sum(a.money) as money,b.id,(case when (substring(b.levelStr,?,8)+0)=0 then b.id else (substring(b.levelStr,?,8)+0) end) as top1mid from paylog a,manager b where a.managerId = b.id  and a.payType = 0  and a.payTime > (select IFNULL(MAX(payTime),from_unixtime(0)) from paylog where managerId = ? and payType = 1 and status = 1) and b.levelStr like ? group by id,top1mid) m group by m.top1mid) n,manager o where n.top1mid = o.id',[rebate,length,length,managerId,levelStr],(err,result)=>{
                         // console.log('minetwo=====');
                         // console.log(result);
                         req.session.minetwo=result[0].minetwo;
@@ -688,9 +658,9 @@ module.exports = {
                         sqln +=` and m.power_id=${inputPowerId}`
                     }
                 }
-                                console.log("sql:"+sql);
-                                console.log('sqlm:'+sqlm);
-                                console.log('sqln:'+sqln);
+                                // console.log("sql:"+sql);
+                                // console.log('sqlm:'+sqlm);
+                                // console.log('sqln:'+sqln);
                 pool.getConnection((err,conn)=>{
                                     if(err){
                                         console.log(err);

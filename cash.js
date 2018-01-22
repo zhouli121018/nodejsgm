@@ -9,6 +9,7 @@ var xml2js=require('xml2js');
 var parser = new xml2js.Parser();
 const qs=require('querystring');
 var crypto = require('crypto');
+const configparam=require('./configparam.js');
 
 var str=`<xml>
     <return_code><![CDATA[SUCCESS]]></return_code>
@@ -30,9 +31,9 @@ console.log(str0);
 
 
 var config = {
-    wxappid:"wx3b8f3128e3557e48",//wx07022b5bc486f279 //wx0b0da56105e931d5
-    mch_id:"1495156032",//  1370897202 //1481903462
-    wxpaykey:"LQ5io7xwboFxx76523uIArDFiqlyaWwi"// LQ0929xxfy982fjielx39093ooxx3987 //cce50ed3d4d110d68ebdc2872885c2a5
+    wxappid:configparam.wxappid,//wx07022b5bc486f279 //wx0b0da56105e931d5
+    mch_id:configparam.mch_id,//  1370897202 //1481903462
+    wxpaykey:configparam.wxpaykey// LQ0929xxfy982fjielx39093ooxx3987 //cce50ed3d4d110d68ebdc2872885c2a5
 };
 //生成随机字符串
 function randomString(len) {

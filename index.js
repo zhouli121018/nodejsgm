@@ -11,6 +11,7 @@ const myAgent = require('./myAgent');
 const detail = require('./detail');
 const note = require('./note');
 const notice = require('./notice');
+const config=require('./configparam.js');
 
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
@@ -24,7 +25,7 @@ process.on('uncaughtException', function (err) {
 
 var app=express();
 var server=http.createServer(app);
-server.listen(9081);
+server.listen(config.port);
 app.use(express.static('./public'));
 app.use(cookieParser('sessiontest'));
 

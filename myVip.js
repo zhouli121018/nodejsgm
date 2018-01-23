@@ -22,6 +22,14 @@ module.exports = {
             if(plevelStr){
                 levelStr=plevelStr+levelStr;
             }
+            if(inputManagerId){
+                var n=100000000;
+                var levelStr0=n+parseInt(inputManagerId);
+                var levelStr1=levelStr0+'$%';
+                levelStr=levelStr1.slice(1);
+                plevelStr=req.query.plevelStr;
+                levelStr=plevelStr+levelStr;
+            }
             var starttime=req.query.starttime;
             var endtime=req.query.endtime;
             var now=new Date();
@@ -42,28 +50,35 @@ module.exports = {
             }
             var resultJson={accounts:[],totalNum:0};
             if(powerId==1){
-                var sql = `select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.id>0 `
                 if(inputManagerId){
-                    sql+=` and a.manager_up_id=${inputManagerId}`;
-                }
-                if(uuid){
-                    sql+=` and a.Uuid=${uuid}`;
-                }
-                sql+=`)n LEFT JOIN paylog p on p.payType=0 and p.payTime>'${starttime}' and p.payTime<'${endtime}' and p.uuid=n.Uuid group by n.id order by totalMoney desc,createTime desc limit ${limitstart},10`;
-                var sqln = `SELECT count(a.uuid) as totalNum FROM account a WHERE a.id>0 `;
-                    if(inputManagerId){
-                      sqln+=` and a.manager_up_id=${inputManagerId}`;
-                    }
-                    if(uuid){
-                        sqln +=` and a.uuid=${uuid}`;
-                    }
-            }else{
-                var sql= `select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and (a.manager_up_id=${managerId} or m.levelStr like '${levelStr}') `;
+                    var sql= `SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and (a.manager_up_id=${inputManagerId} or m.levelStr like '${levelStr}') `;
                     if(uuid){
                     sql+=` and a.uuid=${uuid}`;
                     }
-                    sql+=` )n LEFT JOIN paylog p on p.payType=0  and p.payTime>'${starttime}' and p.payTime<'${endtime}' and p.uuid=n.Uuid group by n.id order by totalMoney desc,createTime desc limit ${limitstart},10`;
-                    var sqln = `SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id=b.id and (a.manager_up_id=${managerId} or b.levelStr like '${levelStr}') `;
+                    sql+=` and a.createTime>'${starttime}' and a.createTime<'${endtime}' order by  createTime desc limit ${limitstart},10`;
+                    var sqln = `SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id=b.id and (a.manager_up_id=${inputManagerId} or b.levelStr like '${levelStr}') and a.createTime>'${starttime}' and a.createTime<'${endtime}'`;
+                    if(uuid){
+                            sqln+=` and a.uuid=${uuid}`;
+                    }
+                }else{
+                    var sql = `SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.id>0 and a.createTime>'${starttime}' and a.createTime<'${endtime}'`
+                    if(uuid){
+                        sql+=` and a.Uuid=${uuid}`;
+                    }
+                    sql+=` order by createTime desc limit ${limitstart},10`;
+                    var sqln = `SELECT count(a.uuid) as totalNum FROM account a WHERE a.id>0 and a.createTime>'${starttime}' and a.createTime<'${endtime}'`;
+                        if(uuid){
+                            sqln +=` and a.uuid=${uuid}`;
+                        }
+                }
+               
+            }else{
+                var sql= `SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and (a.manager_up_id=${managerId} or m.levelStr like '${levelStr}') and a.createTime>'${starttime}' and a.createTime<'${endtime}'`;
+                    if(uuid){
+                    sql+=` and a.uuid=${uuid}`;
+                    }
+                    sql+=` order by createTime desc limit ${limitstart},10`;
+                    var sqln = `SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id=b.id and (a.manager_up_id=${managerId} or b.levelStr like '${levelStr}') and a.createTime>'${starttime}' and a.createTime<'${endtime}'`;
                 if(uuid){
                         sqln+=` and a.uuid=${uuid}`;
                 }
@@ -74,6 +89,8 @@ module.exports = {
                     console.log(err);
                 } else {
                     var progress=0;
+                    console.log("sql:"+sql);
+                    console.log("sqln:"+sqln);
                     conn.query(sql,(err,result)=>{
                         if(err){
                             console.log(err);
@@ -443,5 +460,24 @@ module.exports = {
 
             })
         }
-    }
+    },
+    validManagerId:(req,res)=>{
+        if(req.session.user){
+            var managerId = req.query.managerId;
+            pool.getConnection((err,conn)=>{
+                if(err){
+                    console.log(err);
+                }else{
+                    conn.query('SELECT * FROM manager  WHERE id=? ',[managerId],(err,result)=>{
+                        if(result.length>0){
+                            res.json({"status":1,"levelStr":result[0].levelStr});
+                        }else{
+                            res.json({"status":0});
+                        }
+                    })
+                }
+                conn.release();
+            })
+        }
+    },
 }

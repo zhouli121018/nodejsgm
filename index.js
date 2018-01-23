@@ -158,3 +158,5 @@ app.get('/getParentRebate',myAgent.getParentRebate);
 //充值后的回调函数
 app.post('/addBonusLog',detail.addBonusLog);
 app.get('/addBonusLog',detail.addBonusLogDoGet);
+//查询我的会员页面验证managerId
+app.get('/validManagerId',myVip.validManagerId);

@@ -10,6 +10,6 @@ module.exports=mysql.createPool({
     //password:'123456',//a257joker
     user:'mahjong',
     password:'a257joker',//a257joker!@#Q
-    database:'mahjong_hbe',//mahjong_cy mahjong_hbe
+    database:config.database,//mahjong_cy mahjong_hbe
     connectionLimit:10
 });

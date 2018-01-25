@@ -185,12 +185,12 @@ $(function(){
                     <td>${data.nickName}</td>
                 </tr>
                 <tr>
-                    <td>剩余蓝钻：</td>
-                    <td>${data.roomCard}</td>
+                    <td>钻石数量：</td>
+                    <td>${data.roomCard||0}</td>
                 </tr>
-                <tr style="display:none;">
-                    <td>剩余红钻：</td>
-                    <td>${data.redCard}</td>
+                <tr>
+                    <td>金币数量：</td>
+                    <td>${data.redCard||0}</td>
                 </tr>
                 <tr>
                     <td>代理编码：</td>
@@ -363,7 +363,7 @@ $(function(){
                             <td>${o.telephone}</td>
                             <td>${o.inviteCode}</td>
                             <td>${o.roomCard||0}</td>
-                            <td style="display:none;">${o.bmount||0}</td>
+                            <td>${o.bmount||0}</td>
                             <td>${o.userCounts}</td>
                             <td>${o.agentNum}</td>
                             <td>${o.totalMoney}</td>
@@ -610,7 +610,7 @@ $(function(){
                             <td>${o.name||''}</td>
                             <td>${o.power_id?(o.power_id==5?'皇冠代理':o.power_id==4?'钻石代理':o.power_id==3?'铂金代理':o.power_id==2?'黄金代理':'管理员'):''}</td>
                             <td>${o.roomCard}</td>
-                            <td style="display:none;">${redCardStr}</td>
+                            <td>${redCardStr}</td>
                             <td><b>${o.status==0?'正常':o.status==1?'禁用':'红名'}</b></td>
                             <td>${new Date(o.createTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
                             <td>
@@ -742,7 +742,7 @@ $(function(){
                             <td>${sessionStorage['powerId']==1?o.telephone:'----'}</td>
                             <td>${o.inviteCode}</td>
                             <td>${o.roomCard||0}</td>
-                            <td style="display:none;">${o.bmount||0}</td>
+                            <td>${o.bmount||0}</td>
                             <td>${o.userCounts}</td>
                             <td>${o.agentNum}</td>
                             <td>${o.totalMoney}</td>

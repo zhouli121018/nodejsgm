@@ -6,103 +6,121 @@ const qs=require('querystring');
 
 module.exports = {
     getAccount:(req,res)=>{
-            var user = req.session.user;
-            var managerId = user.id;
-            var powerId=user.power_id;
-            var inputManagerId = req.query.managerId;
-            var uuid=req.query.uuid;
-            var limitstart=(req.query.page-1)*10;
-            var levelStr='';
+        var user = req.session.user;
+        var managerId = user.id;
+        var powerId=user.power_id;
+        var inputManagerId = req.query.managerId;
+        var uuid=req.query.uuid;
+        var limitstart=(req.query.page-1)*10;
+        var levelStr='';
+        var n=100000000;
+        var levelStr0=n+parseInt(managerId);
+        var levelStr1=levelStr0+'$%';
+        levelStr=levelStr1.slice(1);
+        var plevelStr='';
+        plevelStr=user.levelStr;
+        if(plevelStr){
+            levelStr=plevelStr+levelStr;
+        }
+        if(inputManagerId){
             var n=100000000;
-            var levelStr0=n+parseInt(managerId);
+            var levelStr0=n+parseInt(inputManagerId);
             var levelStr1=levelStr0+'$%';
             levelStr=levelStr1.slice(1);
-            var plevelStr='';
-            plevelStr=user.levelStr;
-            if(plevelStr){
-                levelStr=plevelStr+levelStr;
+            plevelStr=req.query.plevelStr;
+            levelStr=plevelStr+levelStr;
+        }
+        var starttime=req.query.starttime;
+        var endtime=req.query.endtime;
+        var now=new Date();
+        now.setDate(now.getDate()+1);
+        var overArr=now.toLocaleDateString().split('/');
+        for(var i=0;i<overArr.length;i++){
+            if(overArr[i]<10){
+                overArr[i]=0+overArr[i];
             }
-            var starttime=req.query.starttime;
-            var endtime=req.query.endtime;
-            var now=new Date();
-            now.setDate(now.getDate()+1);
-            var overArr=now.toLocaleDateString().split('/');
-            for(var i=0;i<overArr.length;i++){
-                if(overArr[i]<10){
-                    overArr[i]=0+overArr[i];
-                }
-            }
-            var overTime=overArr.join('-');
-            // console.log(overTime);
-            if(!starttime){
-                starttime='1970-01-01';
-            }
-            if(!endtime){
-                endtime=overTime;
-            }
-            var resultJson={accounts:[],totalNum:0};
-            if(powerId==1){
-                var sql = `select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.id>0 `
-                if(inputManagerId){
-                    sql+=` and a.manager_up_id=${inputManagerId}`;
-                }
+        }
+        var overTime=overArr.join('-');
+        // console.log(overTime);
+        if(!starttime){
+            starttime='1970-01-01';
+        }
+        if(!endtime){
+            endtime=overTime;
+        }
+        var resultJson={accounts:[],totalNum:0};
+        if(powerId==1){
+            if(inputManagerId){
+                var sql= `SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and (a.manager_up_id=${inputManagerId} or m.levelStr like '${levelStr}') `;
                 if(uuid){
-                    sql+=` and a.Uuid=${uuid}`;
+                sql+=` and a.uuid=${uuid}`;
                 }
-                sql+=`)n LEFT JOIN paylog p on p.payType=0 and p.payTime>'${starttime}' and p.payTime<'${endtime}' and p.uuid=n.Uuid group by n.id order by totalMoney desc,roomCard desc,createTime desc limit ${limitstart},10`;
-                var sqln = `SELECT count(a.uuid) as totalNum FROM account a WHERE a.id>0 `;
-                    if(inputManagerId){
-                      sqln+=` and a.manager_up_id=${inputManagerId}`;
-                    }
-                    if(uuid){
-                        sqln +=` and a.uuid=${uuid}`;
-                    }
-            }else{
-                var sql= `select n.*,IFNULL(sum(p.money),0) as totalMoney from(SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and (a.manager_up_id=${managerId} or m.levelStr like '${levelStr}') `;
-                    if(uuid){
-                    sql+=` and a.uuid=${uuid}`;
-                    }
-                    sql+=` )n LEFT JOIN paylog p on p.payType=0  and p.payTime>'${starttime}' and p.payTime<'${endtime}' and p.uuid=n.Uuid group by n.id order by totalMoney desc,roomCard desc,createTime desc limit ${limitstart},10`;
-                    var sqln = `SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id=b.id and (a.manager_up_id=${managerId} or b.levelStr like '${levelStr}') `;
+                sql+=` and a.createTime>'${starttime}' and a.createTime<'${endtime}' order by  roomCard desc,createTime desc limit ${limitstart},10`;
+                var sqln = `SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id=b.id and (a.manager_up_id=${inputManagerId} or b.levelStr like '${levelStr}') and a.createTime>'${starttime}' and a.createTime<'${endtime}'`;
                 if(uuid){
                         sqln+=` and a.uuid=${uuid}`;
                 }
+            }else{
+                var sql = `SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.id>0 and a.createTime>'${starttime}' and a.createTime<'${endtime}'`
+                if(uuid){
+                    sql+=` and a.Uuid=${uuid}`;
+                }
+                sql+=` order by roomCard desc,createTime desc limit ${limitstart},10`;
+                var sqln = `SELECT count(a.uuid) as totalNum FROM account a WHERE a.id>0 and a.createTime>'${starttime}' and a.createTime<'${endtime}'`;
+                    if(uuid){
+                        sqln +=` and a.uuid=${uuid}`;
+                    }
+            }
+           
+        }else{
+            var sql= `SELECT a.*,m.name,m.power_id FROM account a left join manager m on m.id=a.manager_up_id WHERE a.manager_up_id = m.id and (a.manager_up_id=${managerId} or m.levelStr like '${levelStr}') and a.createTime>'${starttime}' and a.createTime<'${endtime}'`;
+                if(uuid){
+                sql+=` and a.uuid=${uuid}`;
+                }
+                sql+=` order by roomCard desc,createTime desc limit ${limitstart},10`;
+                var sqln = `SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id=b.id and (a.manager_up_id=${managerId} or b.levelStr like '${levelStr}') and a.createTime>'${starttime}' and a.createTime<'${endtime}'`;
+            if(uuid){
+                    sqln+=` and a.uuid=${uuid}`;
+            }
+        }
+        console.log("getaccountsql:"+sql);
+        console.log("getaccountsqln:"+sqln);
+        pool.getConnection((err, conn)=> {
+            if (err) {
+                console.log(err);
+            } else {
+                var progress=0;
+                // console.log("sql:"+sql);
+                // console.log("sqln:"+sqln);
+                conn.query(sql,(err,result)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        resultJson.accounts=result;
+                        progress++;
+                        if(progress==2){
+                            res.json(resultJson);
+                            conn.release();
+                        }
+                    }
+                })
+                conn.query(sqln,(err,result)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        progress++;
+                        resultJson.totalNum=result[0].totalNum;
+                        if(progress==2){
+                            res.json(resultJson);
+                            conn.release();
+                        }
+                    }
+                })
             }
 
-            pool.getConnection((err, conn)=> {
-                if (err) {
-                    console.log(err);
-                } else {
-                    var progress=0;
-                    conn.query(sql,(err,result)=>{
-                        if(err){
-                            console.log(err);
-                        }else{
-                            resultJson.accounts=result;
-                            progress++;
-                            if(progress==2){
-                                res.json(resultJson);
-                                conn.release();
-                            }
-                        }
-                    })
-                    conn.query(sqln,(err,result)=>{
-                        if(err){
-                            console.log(err);
-                        }else{
-                            progress++;
-                            resultJson.totalNum=result[0].totalNum;
-                            if(progress==2){
-                                res.json(resultJson);
-                                conn.release();
-                            }
-                        }
-                    })
-                }
+        })
 
-            })
-
-    },
+},
     validUuidReManagerUpId:(req,res)=>{
         if(req.session.user){
             var uuid = req.query.uuid;

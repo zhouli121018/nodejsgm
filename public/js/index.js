@@ -46,7 +46,7 @@ $(function(){
     var beginTime=beginArr.join('-');
     $('[name=endtime]').val(overTime);
     $('[name=starttime]').val(beginTime);
-
+    $('#vip [name=starttime]').val('');
     if(sessionStorage['rootManager']==1){
         $('#agent .add-agent').show();
     }else{
@@ -558,9 +558,25 @@ $(function(){
         var endtime=$("#searchVipForm [name=endtime]").val();
         var managerId=$("#searchVipForm [name=managerId]").val();
         var uuid=$("#searchVipForm [name=uuid]").val();
+        var plevelStr='';
+        if(managerId){
+            $.ajax({
+                url:'/validManagerId',
+                async: false,
+                data:{managerId:managerId},
+                success:function(data){
+                    console.log(data);
+                    if(data.length>0){
+                        if(data[0].levelStr){
+                            plevelStr=data[0].levelStr;
+                        }
+                    }
+                }
+            })
+        }
         $.ajax({
             url:'/getAccount',
-            data:{starttime:starttime,managerId:managerId,endtime:endtime,uuid:uuid,page:page},
+            data:{starttime:starttime,managerId:managerId,endtime:endtime,uuid:uuid,page:page,plevelStr:plevelStr},
             success:function(datas){
                 console.dir(datas);
                 if(datas.timeout==1){
@@ -592,7 +608,6 @@ $(function(){
                             <td>${o.manager_up_id||''}</td>
                             <td>${o.name||''}</td>
                             <td>${o.power_id?(o.power_id==5?'皇冠代理':o.power_id==4?'钻石代理':o.power_id==3?'铂金代理':o.power_id==2?'黄金代理':'管理员'):''}</td>
-                            <td>${o.totalMoney}</td>
                             <td>${o.roomCard}</td>
                             <td style="display:none;">${redCardStr}</td>
                             <td><b>${o.status==0?'正常':o.status==1?'禁用':'红名'}</b></td>

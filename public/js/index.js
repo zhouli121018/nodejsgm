@@ -46,7 +46,7 @@ $(function(){
     var beginTime=beginArr.join('-');
     $('[name=endtime]').val(overTime);
     $('[name=starttime]').val(beginTime);
-
+    $('#vip [name=starttime]').val('');
     if(sessionStorage['rootManager']==1){
         $('#agent .add-agent').show();
     }else{
@@ -524,7 +524,7 @@ $(function(){
                             <td>${o.inviteCode||''}</td>
                             <td>${o.money}</td>
                             <td>${o.payTime?new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss"):'----'}</td>
-                            <td>${o.status==1?'已完成':o.status==0?'提现失败':'----'}</td>
+                            <td>${o.status?(o.status==1?'已完成':'提现失败'):'----'}</td>
                         </tr>
                     `
                     }

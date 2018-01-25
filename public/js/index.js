@@ -374,7 +374,6 @@ $(function(){
                             <td>${o.lastLoginTime?new Date(o.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                             <td>
                             <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
-                            <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button>
                             <button class="btn btn-danger btn-sm del" type="button" data-id="${o.id}">删除</button>
                             </td>
                         </tr>
@@ -740,7 +739,6 @@ $(function(){
                         if(sessionStorage['powerId']==1){
                             html+=`<td>
                                     <button type="button" class="btn btn-warning btn-sm editAgent" data-id="${o.id}">编辑</button>
-                                    <button class="btn btn-success btn-sm chargeForAgent" type="button" data-id="${o.id}">充值</button>
                                     <button class="btn btn-danger btn-sm del" type="button" data-id="${o.id}">删除</button>
                                    </td>`;
                         }else{
@@ -1268,7 +1266,7 @@ $(function(){
                 }
                 if(data.validuuid==0){
                     validUuid=false;
-                    alert('此用户ID不存在或已禁用，请重新输入！');
+                    alert('此用户ID不能充值，请重新输入！');
                 }else if(data.validuuid==1){
                     if(parseInt(roomCardNum)+parseInt(data.roomCard)>0){
                         validUuid=true;

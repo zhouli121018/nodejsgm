@@ -49,7 +49,7 @@ module.exports = {
                 if(uuid){
                     sql+=` and a.Uuid=${uuid}`;
                 }
-                sql+=`)n LEFT JOIN paylog p on p.payType=0 and p.payTime>'${starttime}' and p.payTime<'${endtime}' and p.uuid=n.Uuid group by n.id order by totalMoney desc,createTime desc limit ${limitstart},10`;
+                sql+=`)n LEFT JOIN paylog p on p.payType=0 and p.payTime>'${starttime}' and p.payTime<'${endtime}' and p.uuid=n.Uuid group by n.id order by totalMoney desc,roomCard desc,createTime desc limit ${limitstart},10`;
                 var sqln = `SELECT count(a.uuid) as totalNum FROM account a WHERE a.id>0 `;
                     if(inputManagerId){
                       sqln+=` and a.manager_up_id=${inputManagerId}`;
@@ -62,7 +62,7 @@ module.exports = {
                     if(uuid){
                     sql+=` and a.uuid=${uuid}`;
                     }
-                    sql+=` )n LEFT JOIN paylog p on p.payType=0  and p.payTime>'${starttime}' and p.payTime<'${endtime}' and p.uuid=n.Uuid group by n.id order by totalMoney desc,createTime desc limit ${limitstart},10`;
+                    sql+=` )n LEFT JOIN paylog p on p.payType=0  and p.payTime>'${starttime}' and p.payTime<'${endtime}' and p.uuid=n.Uuid group by n.id order by totalMoney desc,roomCard desc,createTime desc limit ${limitstart},10`;
                     var sqln = `SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id=b.id and (a.manager_up_id=${managerId} or b.levelStr like '${levelStr}') `;
                 if(uuid){
                         sqln+=` and a.uuid=${uuid}`;
@@ -191,7 +191,7 @@ module.exports = {
                             }
                         })
                     }else{
-                        conn.query('SELECT * FROM account a,manager b  WHERE a.Uuid=? AND a.manager_up_id=b.id and (a.manager_up_id=? or  b.levelStr like ?) AND a.status!=2',[uuid,managerId,levelStr],(err,result)=>{
+                        conn.query('SELECT * FROM account a,manager b  WHERE a.Uuid=? AND a.manager_up_id=b.id and (a.manager_up_id=? or  b.levelStr like ?) and (a.managerId=0 or a.managerId is null) AND a.status!=2',[uuid,managerId,levelStr],(err,result)=>{
                             if(result.length>0){
                                 res.json({"validuuid":1,"roomCard":result[0].roomCard});
                             }else{

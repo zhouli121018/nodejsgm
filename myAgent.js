@@ -15,11 +15,18 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    conn.query('SELECT * FROM manager WHERE inviteCode=? and password = ? and status = 0',[uname,pwd],(err,result)=>{
+                    conn.query('SELECT * FROM manager WHERE inviteCode=? and password = ? and status = 0 and uuid>0',[uname,pwd],(err,result)=>{
 
                         // console.log('loginlogin');
                         // console.log(result);
                         if(result.length>0){
+                            conn.query('UPDATE manager SET lastLoginTime=now() WHERE inviteCode=?',[uname],(err,result)=>{
+                                if(err){
+                                    console.log(err);
+                                }else{
+                                    // console.log(result);
+                                }
+                            });
                             result[0]['msg']='登录成功！';
                             result[0]['logStatus']=1;
                             req.session.user=result[0];
@@ -92,8 +99,7 @@ module.exports = {
                 }else{
                     conn.query('SELECT m.*,a.uuid,a.nickName,a.roomCard,a.redCard FROM manager m,account a WHERE m.id=? and m.id = a.managerId',[managerId],(err,result)=>{
                         //console.log(result);
-                        //result[0].lastLoginTime=user.lastLoginTime;
-                        req.session.user.uuid=result[0].uuid;
+                        result[0].lastLoginTime=user.lastLoginTime;
                         res.json(result[0]);
                     })
                 }
@@ -228,7 +234,7 @@ module.exports = {
                     if (err) {
                         console.log(err);
                     } else {
-                        conn.query('UPDATE  manager SET name=?,inviteCode=?,power_id=?,status=?,telephone=?,rebate=?,weixin=?,rootManager=?  WHERE id=?', [uname,inviteCode,powerId,status,telephone,rebate,weixin,rootManager,managerId], (err, result)=> {
+                        conn.query('UPDATE  manager SET name=?,inviteCode=?,power_id=?,status=?,telephone=?,rebate=?,uuid=?,weixin=?,rootManager=?  WHERE id=?', [uname,inviteCode,powerId,status,telephone,rebate,uuid,weixin,rootManager,managerId], (err, result)=> {
                             // console.log(result);
                             if(result.changedRows>0){
                                 conn.query('UPDATE account SET managerId=?,manager_up_id=? WHERE Uuid=?',[managerId,managerId,uuid],(err,result1)=>{
@@ -380,9 +386,7 @@ module.exports = {
                     if (err) {
                         console.log(err);
                     } else {
-                        var sql = `insert into manager values(null,${powerId},'${uname}','${tel}','${pwd}',0,0,${pmid},0,${inviteCode},'${weixin}','${qq}',${rootManager},${rebate},1,'${levelStr}')`;
-                        console.log("sql0:"+sql);
-                        conn.query(sql, (err, result)=> {
+                        conn.query('INSERT INTO manager VALUES(null,?,?,?,?,0,0,?,0,?,?,?,1,?,?,?,?,now(),?,null)', [powerId,uname,tel,pwd,pmid,inviteCode,weixin,qq,rebate,rootManager,levelStr,uuid,redCard], (err, result)=> {
                             // console.log(result);
                             if(result.affectedRows>0){
                                 conn.query('UPDATE account SET manager_up_id=?,managerId=? WHERE Uuid=?',[result.insertId,result.insertId,uuid],(err,resultaccount)=>{
@@ -598,9 +602,9 @@ module.exports = {
             var resultJson={managers:[],totalNum:0,totalMoney:0};
             if(powerId==1){
                 if(!req.query.managerId&&!uname&&!inviteCode&&!inputPowerId){
-                    var sql = `select s.*,a.nickName,a.roomCard,a.redCard as bmount,a.Uuid from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where id>1 and manager_up_id=1`;
+                    var sql = `select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where id>1 and manager_up_id=1`;
                 }else{
-                    var sql = `select s.*,a.nickName,a.roomCard,a.redCard as bmount,a.Uuid from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where id>1 `;
+                    var sql = `select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where id>1 `;
                     if(req.query.managerId){
                         sql+=` and manager_up_id=${managerId}`;
                     }
@@ -618,7 +622,7 @@ module.exports = {
                     if(gameId){
                     sql+=` and p.gameId=${gameId}`;
                     }
-                      sql+= ` GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId  and a.status!=2 ORDER BY totalMoney desc,userCounts desc limit ${limitstart},10`;
+                      sql+= ` GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId  and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ${limitstart},10`;
                     var sqlm=`select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where id>0 `
                       if(req.query.managerId)  {
                         sqlm+=` and manager_up_id=${managerId}`
@@ -654,9 +658,9 @@ module.exports = {
                         sqln +=` and m.power_id=${inputPowerId}`
                     }
                 }
-                                console.log("sql:"+sql);
-                                console.log('sqlm:'+sqlm);
-                                console.log('sqln:'+sqln);
+                                // console.log("sql:"+sql);
+                                // console.log('sqlm:'+sqlm);
+                                // console.log('sqln:'+sqln);
                 pool.getConnection((err,conn)=>{
                                     if(err){
                                         console.log(err);
@@ -689,7 +693,7 @@ module.exports = {
                                     }
                 })
             }else{
-                var sql = `select s.*,a.nickName,a.roomCard,a.redCard as bmount,a.Uuid from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=${managerId}`;
+                var sql = `select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=${managerId}`;
                 if(uname){
                     sql+=` and name='${uname}'`;
                 }
@@ -704,7 +708,7 @@ module.exports = {
                 if(gameId){
                     sql+=` and p.gameId=${gameId}`;
                 }
-                sql+= ` GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId  and a.status!=2  ORDER BY totalMoney desc,userCounts desc limit ${limitstart},10`;
+                sql+= ` GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId  and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc limit ${limitstart},10`;
                 var sqlm=`select IFNULL(sum(o.totalMoney),0) as sumMoney from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=${managerId}`;
                 if(uname){
                     sqlm+=` and name='${uname}' `;
@@ -793,7 +797,7 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                    conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount,a.uuid from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=?) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.payTime>? and p.payTime< ?  and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2  ORDER BY totalMoney desc,userCounts desc', [managerId,starttime,endtime],(err,result)=>{
+                    conn.query('select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=? and uuid>0) m left JOIN account a ON  a.manager_up_id=m.id GROUP BY m.id )q LEFT JOIN paylog p on p.payType=0 and p.payTime>? and p.payTime< ?  and p.managerId=q.id GROUP BY q.id)r LEFT JOIN manager g on g.manager_up_id=r.id GROUP BY r.id)s LEFT JOIN account a ON s.id=a.managerId and a.status!=2 and a.Uuid=s.uuid ORDER BY totalMoney desc,userCounts desc', [managerId,starttime,endtime],(err,result)=>{
                         res.json(result);
                     })
                 }

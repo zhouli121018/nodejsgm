@@ -176,8 +176,6 @@ module.exports = {
                                             })
                                         }
                                         conn.query('select openid from account where Uuid = ? and status!=2',[uuid],(err,result)=>{
-                                            console.log("uuid:");
-                                            console.log(result);
                                             if(result.length>0){
                                                 function ab(){
                                                     insertremain(managerId,uuid,m);

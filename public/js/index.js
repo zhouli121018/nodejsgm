@@ -29,7 +29,7 @@ $(function(){
     var begin=new Date();
     // begin.setDate(begin.getDate());
     now.setDate(now.getDate()+1);
-    begin.setDate(begin.getDate()-30);
+
     var overArr=now.toLocaleDateString().split('/');
     for(var i=0;i<overArr.length;i++){
         if(overArr[i]<10){
@@ -228,7 +228,7 @@ $(function(){
                     <td>下级会员数量：</td>
                     <td id="vipCount"></td>
                 </tr>
-                <tr style="display:none;">
+                <tr>
                     <td>上次登录时间：</td>
                     <td>${data.lastLoginTime?new Date(data.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                 </tr>
@@ -356,7 +356,7 @@ $(function(){
                         }
                         html+=`
                             <td>${o.id}</td>
-                            <td>${o.uuid||o.Uuid||''}</td>
+                            <td>${o.uuid||''}</td>
                             <td>${o.nickName||''}</td>
                             <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
                             <td>${o.rebate}</td>
@@ -407,7 +407,7 @@ $(function(){
         })
     }
     function getPaylogs(indexPage){
-        //getRoom();
+        getRoom();
         var starttime=$("#searchDetailForm [name=starttime]").val();
         var endtime=$("#searchDetailForm [name=endtime]").val();
         var uuid=$("#searchDetailForm [name=uuid]").val();
@@ -465,7 +465,7 @@ $(function(){
                     <td>${o.money}</td>
                     <td>${new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss")}</td>
                     <td>${o.bonus||'---'}</td>
-                    <td>${o.gameId}</td>
+                    <td>${o.gameId==11?'牛牛充值':o.gameId==13?'数刀充值':o.gameId}</td>
                 </tr>
                 `
                     }
@@ -524,7 +524,7 @@ $(function(){
                             <td>${o.inviteCode||''}</td>
                             <td>${o.money}</td>
                             <td>${o.payTime?new Date(o.payTime).Format("yyyy-MM-dd HH:mm:ss"):'----'}</td>
-                            <td>${o.status==1?'已完成':o.status==0?'提现失败':'----'}</td>
+                            <td>${o.status==1?'已完成':'提现失败'}</td>
                         </tr>
                     `
                     }
@@ -835,16 +835,12 @@ $(function(){
             alert('微信号不能为空！请输入微信号！');
             return;
         }
-        if(inputInviteCode==''){
-            alert('邀请码不能为空！请输入邀请码！');
+        var inviteCodeReg=/^\d{5}$/;
+        if(!inviteCodeReg.test(inputInviteCode)){
+            alert('邀请码为5位数的数字！请重新输入！');
+            $("#agent #add-message [name='inviteCode']").focus();
             return;
         }
-        // var inviteCodeReg=/^\d{5}$/;
-        // if(!inviteCodeReg.test(inputInviteCode)){
-        //     alert('邀请码为5位数的数字！请重新输入！');
-        //     $("#agent #add-message [name='inviteCode']").focus();
-        //     return;
-        // }
         var rebetreg=/^0\.\d{1,2}$/;
         if(!rebetreg.test(rebate)){
             $("#agent #agentDetail [name='rebate']").focus();
@@ -1042,16 +1038,12 @@ $(function(){
             alert('分成比例不能高于0.8！请重新输入');
             return;
         }
-        if(inputInviteCode==''){
-            alert('邀请码不能为空！请输入邀请码！');
+        var inviteCodeReg=/^\d{5}$/;
+        if(!inviteCodeReg.test(inputInviteCode)){
+            alert('邀请码为5位数的数字！请重新输入！');
+            $("#agent #add-message [name='inviteCode']").focus();
             return;
         }
-        // var inviteCodeReg=/^\d{5}$/;
-        // if(!inviteCodeReg.test(inputInviteCode)){
-        //     alert('邀请码为5位数的数字！请重新输入！');
-        //     $("#agent #add-message [name='inviteCode']").focus();
-        //     return;
-        // }
         $.ajax({
             url:'/addValidInviteCode',
             data:{inviteCode:inputInviteCode},
@@ -1351,7 +1343,6 @@ $(function(){
         $('#info .info-hide').hide();
         $('#vip .mount-hide').hide();
         $('#vip>button.charge').hide();
-        $('.detail-hide').hide();
     }else{
         $('#detail .agentSearch').hide();
         $("#searchNoteForm .agentId").hide();

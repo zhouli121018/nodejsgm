@@ -9,7 +9,7 @@ module.exports=mysql.createPool({
     //user:'root',//mahjong
     //password:'123456',//a257joker
     user:'root',
-    password:'zhaosha257joker!@#',//a257joker!@#Q
+    password:'Longqing392!@#',//a257joker!@#Q
     database:config.database,//mahjong_cy mahjong_hbe
     connectionLimit:10
 });

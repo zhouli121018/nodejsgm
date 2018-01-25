@@ -122,8 +122,6 @@ module.exports = {
 
                         sql0+=`) n`;
                 }
-                console.log('sql:'+sql);
-                console.log('sql0:'+sql0);
                 pool.getConnection((err,conn)=>{
                     if(err){
                         console.log(err);
@@ -171,8 +169,6 @@ module.exports = {
                     sql0+=` and a.uuid=${uuid} `;
                 }
                     sql0+=` and (b.levelStr like '${levelStr}' or b.id = ${managerId} )   ) n left join bonus m on n.id=m.paylogId and m.managerId=${managerId}`;
-                    console.log('sql:'+sql);
-                    console.log('sql0:'+sql0);
                 pool.getConnection((err,conn)=>{
                     if(err){
                         console.log(err);

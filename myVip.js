@@ -65,7 +65,7 @@ module.exports = {
                     if(uuid){
                         sql+=` and a.Uuid=${uuid}`;
                     }
-                    sql+=` order by roomCard desc,createTime desc limit ${limitstart},10`;
+                    sql+=` order by  roomCard desc,createTime desc limit ${limitstart},10`;
                     var sqln = `SELECT count(a.uuid) as totalNum FROM account a WHERE a.id>0 and a.createTime>'${starttime}' and a.createTime<'${endtime}'`;
                         if(uuid){
                             sqln +=` and a.uuid=${uuid}`;
@@ -77,7 +77,7 @@ module.exports = {
                     if(uuid){
                     sql+=` and a.uuid=${uuid}`;
                     }
-                    sql+=` order by roomCard desc,createTime desc limit ${limitstart},10`;
+                    sql+=` order by  roomCard desc,createTime desc limit ${limitstart},10`;
                     var sqln = `SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id=b.id and (a.manager_up_id=${managerId} or b.levelStr like '${levelStr}') and a.createTime>'${starttime}' and a.createTime<'${endtime}'`;
                 if(uuid){
                         sqln+=` and a.uuid=${uuid}`;

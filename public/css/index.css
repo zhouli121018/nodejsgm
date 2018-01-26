@@ -24,7 +24,7 @@ h2{
 #login {
     position: relative;
     background: #fff;
-    padding: 2% 5%;
+    padding: 2% 5% 5%;
     width: 500px;
     margin: 50px auto;
     border: 1px solid #000;
@@ -299,4 +299,18 @@ button.add-notice{
 #loginBtn{
     font-size:2.5rem;
 }
-
+@media (max-width:768px){
+    #login{
+        margin:15px auto;
+    }
+}
+#logout{
+    position: absolute;
+    right:1%;
+    top:10px;
+}
+@media screen and (max-width: 767px){
+    #logout {
+        right: 65px;
+    }
+}

@@ -16,6 +16,9 @@
         h2{
             background:none;
         }
+        body{
+            padding:0;
+        }
     </style>
 </head>
 <body>
@@ -45,6 +48,12 @@
                     <img id="nodeCode" src="/getCode" title="点击切换" class="img-responsive" alt="验证码"/>
                 </div>
             </div>
+            <div class="form-group">
+                <input type="checkbox" value="1" id="remember" /> 
+                <label for="remember">  
+                    记住用户名及密码  
+                </label> 
+            </div>
             <button type="button" id="loginBtn" class="btn btn-success btn-block">登 录</button>
         </form>
         <p class="text-center">Copyright &copy;2016-2017,LongQing Inc, All rights Reserved </p>
@@ -57,6 +66,14 @@
 <script src="js/md5.js"></script>
 <script>
     sessionStorage.clear();
+
+    //页面加载完成 先判断 localStorage中有无name 和pass 
+    if (localStorage.getItem('name')&&localStorage.getItem('pass')) {
+    //存在將本地localStorage 值 显示在输入框中
+        $('#uname').val(localStorage.getItem('name'));
+        $('#pwd').val(localStorage.getItem('pass'));
+    }
+    $('#remember').prop('checked',true);//默认记住用户名密码
     $('#loginBtn').click(function(){
         if($('#uname').val()==''||$('#pwd').val()==''){
             alert('用户名或密码不能为空！');
@@ -77,6 +94,13 @@
                     sessionStorage['managerId']=data.id;
                     sessionStorage['rebate']=data.rebate;
                     sessionStorage['rootManager']=data.rootManager;
+                    if($('#remember').prop('checked')){
+                        localStorage.setItem('name',$('#uname').val());
+                        localStorage.setItem('pass',$('#pwd').val());
+                    }else{
+                        localStorage.removeItem('name');
+                        localStorage.removeItem('pass');
+                    }
                     location.href="content.html";
                 }else{
                     alert(data.msg);

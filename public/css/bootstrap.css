@@ -4028,6 +4028,11 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   position: relative;
   display: block;
 }
+@media (max-width:768px) {
+  .nav>li{
+    border-bottom:1px dashed #ccc;
+  }
+}
 .nav > li > a {
   position: relative;
   display: block;

@@ -63,39 +63,14 @@
 <script src="js/md5.js"></script>
 <script>
     sessionStorage.clear();
-    //设置cookie
-    function setCookie(name,value,day){
-        var date = new Date();
-        date.setDate(date.getDate() + day);
-        document.cookie = name + '=' + value + ';expires='+ date;
-    };
-    //获取cookie
-    function getCookie(name){
-        var reg = RegExp(name+'=([^;]+)');
-        var arr = document.cookie.match(reg);
-        if(arr){
-        return arr[1];
-        }else{
-        return '';
-        }
-    };
-    //删除cookie
-    function delCookie(name){
-        setCookie(name,null,-1);
-    };
-    //页面初始化时，如果帐号密码cookie存在则填充
-    if(getCookie('user') && getCookie('pswd')){
-        $('#uname').val(getCookie('user'));
-        $('#pwd').val(getCookie('pswd'));
-        $('#remember').prop('checked',true);
+    
+    //页面加载完成 先判断 localStorage中有无name 和pass 
+    if (localStorage.getItem('name')&&localStorage.getItem('pass')) {
+    //存在將本地localStorage 值 显示在输入框中
+        $('#uname').val(localStorage.getItem('name'));
+        $('#pwd').val(localStorage.getItem('pass'));
     }
-    //复选框勾选状态发生改变时，如果未勾选则清除cookie
-    // $('#remember').change(function(){
-    //   if(!$(this).prop('checked')){
-    //     delCookie('user');
-    //     delCookie('pswd');
-    //   }
-    // });
+    $('#remember').prop('checked',true);//默认记住用户名密码
     $('#loginBtn').click(function(){
         if($('#uname').val()==''||$('#pwd').val()==''){
             alert('用户名或密码不能为空！');
@@ -118,11 +93,11 @@
                     sessionStorage['rebate']=data.rebate;
                     sessionStorage['rootManager']=data.rootManager;
                     if($('#remember').prop('checked')){
-                        setCookie('user',$('#uname').val(),7); //保存帐号到cookie，有效期7天
-                        setCookie('pswd',$('#pwd').val(),7); //保存密码到cookie，有效期7天
+                        localStorage.setItem('name',$('#uname').val());
+                        localStorage.setItem('pass',$('#pwd').val());
                     }else{
-                        delCookie('user');
-                        delCookie('pswd');
+                        localStorage.removeItem('name');
+                        localStorage.removeItem('pass');
                     }
                     location.href="content.html";
                 }else{

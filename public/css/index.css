@@ -30,7 +30,7 @@ h2{
     border: 1px solid #000;
     border-radius: 5px;
     box-shadow: 0 0 26px #041A36;
-    border-top: 8px solid #42EC00;
+    /*border-top: 8px solid #42EC00;*/
 }
 .searchInfo{
     margin:10px 0;
@@ -296,5 +296,7 @@ button.add-notice{
 #login>div>img{
     width:40%;
 }
-
+#loginBtn{
+    font-size:2.5rem;
+}
 

@@ -214,7 +214,7 @@ $(function(){
                 </tr>
                 <tr>
                     <td>代理级别：</td>
-                    <td>${data.power_id==5?'皇冠代理':(data.power_id==4?'钻石代理':(data.power_id==3?'铂金代理':(data.power_id==2?'黄金代理':'系统管理员')))}</td>
+                    <td>${data.power_id==5?'总代理':(data.power_id==4?'一级代理':(data.power_id==3?'二级代理':(data.power_id==2?'三级代理':'系统管理员')))}</td>
                 </tr>
                 <tr>
                     <td>分成比例：</td>
@@ -358,7 +358,7 @@ $(function(){
                             <td>${o.id}</td>
                             <td>${o.uuid||''}</td>
                             <td>${o.nickName||''}</td>
-                            <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
+                            <td data-powerId="${o.power_id}">${o.power_id==5?'总代理':(o.power_id==4?'一级代理':(o.power_id==3?'二级代理':(o.power_id==2?'三级代理':'系统管理员')))}</td>
                             <td>${o.rebate}</td>
                             <td>${o.telephone}</td>
                             <td>${o.inviteCode}</td>
@@ -608,7 +608,7 @@ $(function(){
                             <td>${o.nickName}</td>
                             <td>${o.manager_up_id||''}</td>
                             <td>${o.name||''}</td>
-                            <td>${o.power_id?(o.power_id==5?'皇冠代理':o.power_id==4?'钻石代理':o.power_id==3?'铂金代理':o.power_id==2?'黄金代理':'管理员'):''}</td>
+                            <td>${o.power_id?(o.power_id==5?'总代理':o.power_id==4?'一级代理':o.power_id==3?'二级代理':o.power_id==2?'三级代理':'管理员'):''}</td>
                             <td>${o.roomCard}</td>
                             <td>${redCardStr}</td>
                             <td><b>${o.status==0?'正常':o.status==1?'禁用':'红名'}</b></td>
@@ -737,7 +737,7 @@ $(function(){
                             <td>${o.id}</td>
                             <td>${o.uuid||''}</td>
                             <td>${sessionStorage['powerId']==1?o.nickName:'----'}</td>
-                            <td data-powerId="${o.power_id}">${o.power_id==5?'皇冠代理':(o.power_id==4?'钻石代理':(o.power_id==3?'铂金代理':(o.power_id==2?'黄金代理':'系统管理员')))}</td>
+                            <td data-powerId="${o.power_id}">${o.power_id==5?'总代理':(o.power_id==4?'一级代理':(o.power_id==3?'二级代理':(o.power_id==2?'三级代理':'系统管理员')))}</td>
                             <td>${o.rebate}</td>
                             <td>${sessionStorage['powerId']==1?o.telephone:'----'}</td>
                             <td>${o.inviteCode}</td>

@@ -232,6 +232,10 @@ $(function(){
                     <td>上次登录时间：</td>
                     <td>${data.lastLoginTime?new Date(data.lastLoginTime).Format("yyyy-MM-dd HH:mm:ss"):'---'}</td>
                 </tr>
+                <tr>
+                    <td>密码重置</td>
+                    <td><button type="button" class="btn btn-warning" id="resetPwd">重置密码</button></td>
+                </tr>
             `;
                 $('#info table#infoTbl tbody').html(html);
                 $('#info table#infoTbl td').each(function(i,dom){
@@ -705,7 +709,7 @@ $(function(){
 
         }
     }
-    $('#resetPwd').click(function(){
+    $('body').on('click','#resetPwd',function(){
         resetPassword();
     });
     function getChildAgents(id,ele,level,oldClass){

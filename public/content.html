@@ -32,7 +32,7 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav" id="navlist">
-                    <li  class="active"><a href="#info">代理信息</a></li>
+                    <li  class="active"><a href="#info">个人信息</a></li>
                     <li><a href="#agent">我的代理</a></li>
                     <li><a href="#vip">我的用户</a></li>
                     <li><a href="#detail">账单明细</a></li>
@@ -49,12 +49,12 @@
 
     <div id="content">
         <div id="info">
-            <h2>代理信息</h2>
+            <h2>个人信息</h2>
             <h4>公告：</h4>
             <div class="well">
                 代理须知：
             </div>
-            <h3>个人信息</h3>
+            <h3>个人基本信息</h3>
             <div>
                 <table id="infoTbl" class="table table-bordered table-striped">
                     <tbody>
@@ -391,7 +391,7 @@
                 <!--<span class="glyphicon glyphicon-plus"></span>-->
                 重新绑定玩家上级代理
             </button>
-            <p class="stips pull-right">*背景色为浅蓝色的玩家为代理</p>
+            
             <div class="searchInfo">
                 <form class="form-inline form-btn" name="searchVipForm" id="searchVipForm">
                     <div class="form-group">
@@ -416,10 +416,13 @@
                         <input type="number" name="uuid"  class="form-control" placeholder="请输入玩家ID">
                     </div>
                     <div class="form-group">
-                        <input type="button" class="btn btn-success" id="searchVip"  value="查询">
+                        <input type="button" class="btn btn-success" id="searchVip"  value="查询"> &nbsp;&nbsp;
+                        <span class="stips pull-right">*背景淡蓝色的为代理</span>
                     </div>
+                    
                 </form>
             </div>
+            
             <!--<h4>充值总金额：<b class="total-money">0</b> 元</h4>-->
             <div class="table-responsive">
                 <table id="vipTbl" class="table table-bordered table-striped">

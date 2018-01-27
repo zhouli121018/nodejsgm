@@ -1346,7 +1346,7 @@ $(function(){
        // $('#totalBonus').hide();
         $('#info .info-hide').hide();
         $('#vip .mount-hide').hide();
-        $('#vip>button.charge').hide();
+        // $('#vip>button.charge').hide();
     }else{
         $('#detail .agentSearch').hide();
         $("#searchNoteForm .agentId").hide();

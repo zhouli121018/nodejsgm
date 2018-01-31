@@ -11,10 +11,11 @@ const myAgent = require('./myAgent');
 const detail = require('./detail');
 const note = require('./note');
 const notice = require('./notice');
+var wxpay = require('./wxpay');
 
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
-
+// var router = express.router();
 process.on('uncaughtException', function (err) {
    //打印出错误
    console.log(err);
@@ -43,7 +44,7 @@ app.use(function(req, res, next){
         req.session._garbage = Date();
         req.session.touch();
         next();
-    }else if(url=='/login'||url=='/getCode'||url=='/logout'||url=='/addBonusLog'){
+    }else if(url=='/login'||url=='/getCode'||url=='/logout'||url=='/addBonusLog'||url=='/order'){
         next();
     }else{
         res.json({"timeout":1});
@@ -160,3 +161,23 @@ app.post('/addBonusLog',detail.addBonusLog);
 app.get('/addBonusLog',detail.addBonusLogDoGet);
 //查询我的会员页面验证managerId
 app.get('/validManagerId',myVip.validManagerId);
+
+//微信支付demo  
+app.get('/order', function(req, res, next){  
+    var attach = "1276687601";  
+    var body = "测试支付";  
+    var mch_id = "1484496952"; //商户ID  
+    var openid = "o2mjf0S_ym4HPFzcy0GaHEXR0Qtk";  
+    var bookingNo = "201501806125346"; //订单号  
+    var total_fee = 10;  
+    var notify_url = "http://localhost/wxpay/notify"; //通知地址  
+    wxpay.order(attach, body, mch_id, openid, bookingNo, total_fee, notify_url).then(function(data){  
+        console.log('data:');
+        console.log(data);
+        res.render('wxpay', {args: data});  
+    });  
+});  
+//微信回调通知 采用数据流形式读取微信返回的xml数据 此处不在累赘  
+app.post('/notify', function(req, res, next){  
+  
+});  

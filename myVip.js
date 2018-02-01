@@ -397,14 +397,16 @@ module.exports = {
                     var progress=0;
                     // function getcount(day){
                         // var sql = `select count(id) as c from account where createTime>(CurDate()-${day}) and createTime<=(CurDate()-${day-1})`;
-                        var sql = `select day(createTime) as label, count(id) as value from account where createTime >= date(now()) - interval 6 day group by day(createTime) ;`
+                        var sql = `select day(createTime) as label, count(id) as value from account where `
                         if(powerId>1||req.query.managerId){
-                            sql+=` and manager_up_id=${managerId}`
+                            sql+=` manager_up_id=${managerId} and `
                         }
+                        sql+= ` createTime >= date(now()) - interval 6 day group by day(createTime) `
+                        
+                        console.log('sql:===='+sql);
                         conn.query(sql,(err,result)=>{
                             console.log(123456789);
                             console.log(result);
-                            
                             // progress++;
                             for(let k = 0 ;k<7;k ++){
                                 var now=new Date();

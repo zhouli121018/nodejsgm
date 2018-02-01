@@ -226,10 +226,12 @@ module.exports = {
                     var progress=0;
                     // function getcount(day){
                         // var sql = `select IFNULL(sum(money),0) as c from paylog where payType=0 and status!=2 and payTime>(CurDate()-${day}) and payTime <=(CurDate()-${day-1})`;
-                        var sql = `select day(payTime) as label, IFNULL(sum(money),0) as value from paylog where payType=0 and status!=2 and payTime >= date(now()) - interval 6 day group by day(payTime) `
+                        var sql = `select day(payTime) as label, IFNULL(sum(money),0) as value from paylog where payType=0 and status!=2 `
                         if(powerId>1||req.query.managerId){
                             sql+=`and managerId=${managerId}`;
                         }
+                        sql += ` and payTime >= date(now()) - interval 6 day group by day(payTime) `
+                        
                         conn.query(sql,(err,result)=>{
                             // console.log(result);
                             // progress++;

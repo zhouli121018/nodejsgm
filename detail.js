@@ -224,29 +224,39 @@ module.exports = {
                     console.log(err);
                 }else{
                     var progress=0;
-                    function getcount(day){
-                        var sql = `select IFNULL(sum(money),0) as c from paylog where payType=0 and status!=2 and payTime>(CurDate()-${day}) and payTime <=(CurDate()-${day-1})`;
+                    // function getcount(day){
+                        // var sql = `select IFNULL(sum(money),0) as c from paylog where payType=0 and status!=2 and payTime>(CurDate()-${day}) and payTime <=(CurDate()-${day-1})`;
+                        var sql = `select day(payTime) as label, IFNULL(sum(money),0) as value from paylog where payType=0 and status!=2 and payTime >= date(now()) - interval 6 day group by day(payTime) `
                         if(powerId>1||req.query.managerId){
                             sql+=`and managerId=${managerId}`;
                         }
                         conn.query(sql,(err,result)=>{
                             // console.log(result);
-                            progress++;
-                            var now=new Date();
-                            now.setDate(now.getDate()-day);
-                            resultJson[6-day].label=now.toLocaleDateString();
-                            resultJson[6-day].value=result[0].c;
-                            if(progress==7){
-                                // console.log(resultJson);
-                                res.json(resultJson);
-                                conn.release();
+                            // progress++;
+                            for(let k = 0 ;k<7;k ++){
+                                var now=new Date();
+                                now.setDate(now.getDate()-k);
+                                console.log(now.toLocaleDateString())
+                                var day = now.getDate();
+                                var v = 0;
+                                for(let i=0;i<result.length;i++){
+                                    if(result[i].label == day){
+                                        v = result[i].value;
+                                        break;
+                                    }
+                                }
+                                resultJson[6-k].label = now.toLocaleDateString();
+                                resultJson[6-k].value = v;
                             }
+                            console.log(resultJson);
+                            res.json(resultJson);
+                            
                         })
-                    }
-                    for(let i=6;i>=0;i--){
-                        getcount(i);
-                        // console.log(123456789);
-                    }
+                    // }
+                    // for(let i=6;i>=0;i--){
+                    //     getcount(i);
+                    //     // console.log(123456789);
+                    // }
                 }
             })
         }

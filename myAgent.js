@@ -133,10 +133,11 @@ module.exports = {
                             }else{
                                 res.json({"status": 0});
                             }
-                            conn.release();
+                           
                         });
 
                     }
+                    conn.release();
                 })
             });
         }
@@ -251,10 +252,11 @@ module.exports = {
                             }else{
                                 res.json({"status": 0});
                             }
-                            conn.release();
+                            
                         });
 
                     }
+                    conn.release();
                 })
             });
         }
@@ -286,7 +288,6 @@ module.exports = {
                                 }else{
                                     res.json({"status": 0});
                                 }
-                                conn.release();
                             });
                         }else{
                             conn.query('SELECT * FROM account WHERE managerId=?', [managerId], (err, result)=> {
@@ -313,16 +314,12 @@ module.exports = {
                                         }else{
                                             res.json({"status": 0});
                                         }
-
                                     });
-
                                 }
-                                conn.release();
                             });
                         }
-
-
                     }
+                    conn.release();
                 })
             });
 
@@ -396,11 +393,9 @@ module.exports = {
                             }else{
                                 res.json({"status":0});
                             }
-                            conn.release();
-
                         });
-
                     }
+                    conn.release();
                 })
             });
         }
@@ -671,7 +666,6 @@ module.exports = {
                                             progress++;
                                             if(progress==3){
                                                 res.json(resultJson);
-                                                conn.release();
                                             }
                                         });
                                         conn.query(sqlm,(err,result)=>{
@@ -679,7 +673,6 @@ module.exports = {
                                             progress++;
                                             if(progress==3){
                                                 res.json(resultJson);
-                                                conn.release();
                                             }
                                         });
                                         conn.query(sqln,(err,result)=>{
@@ -687,10 +680,10 @@ module.exports = {
                                             progress++;
                                             if(progress==3){
                                                 res.json(resultJson);
-                                                conn.release();
                                             }
                                         })
                                     }
+                                    conn.release();
                 })
             }else{
                 var sql = `select s.*,a.nickName,a.roomCard,a.redCard as bmount from(SELECT r.*,COUNT(g.id) as agentNum from(SELECT q.*,IFNULL(sum(p.money),0) as totalMoney from(select m.*,count(a.id) as userCounts from (select * from manager where manager_up_id=${managerId}`;
@@ -744,7 +737,6 @@ module.exports = {
                             progress++;
                             if(progress==3){
                                 res.json(resultJson);
-                                conn.release();
                             }
                         });
                         conn.query(sqlm,(err,result)=>{
@@ -752,7 +744,6 @@ module.exports = {
                             progress++;
                             if(progress==3){
                                 res.json(resultJson);
-                                conn.release();
                             }
                         });
                         conn.query(sqln,(err,result)=>{
@@ -760,10 +751,10 @@ module.exports = {
                             progress++;
                             if(progress==3){
                                 res.json(resultJson);
-                                conn.release();
                             }
                         })
                     }
+                    conn.release();
                 })
 
             }

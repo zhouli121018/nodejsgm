@@ -11,5 +11,5 @@ module.exports=mysql.createPool({
     user:'mahjong',
     password:'a257joker',//a257joker!@#Q
     database:config.database,//mahjong_cy mahjong_hbe
-    connectionLimit:10
+    // connectionLimit:10
 });

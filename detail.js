@@ -133,7 +133,6 @@ module.exports = {
                             progress++;
                             if(progress==2){
                                 res.json(resultjson);
-                                conn.release();
                             }
                         })
                         conn.query(sql0,(err,totalBonus)=>{
@@ -145,10 +144,10 @@ module.exports = {
                             progress++;
                             if(progress==2){
                                 res.json(resultjson);
-                                conn.release();
                             }
                         })
                     }
+                    conn.release();
                 })
             }else{
                 var sql=`select q.*,c.nickName from(select n.*,m.money as bonus  from(select a.*,b.inviteCode,b.name from paylog a,manager b  where a.managerId = b.id and  a.payType = 0 and a.status != 2 and a.payTime > '${starttime}'  and a.payTime < '${endtime}'`;
@@ -182,7 +181,6 @@ module.exports = {
                             progress++;
                             if(progress==2){
                                 res.json(resultjson);
-                                conn.release();
                             }
                         })
                         conn.query(sql0,(err,totalBonus)=>{
@@ -194,10 +192,10 @@ module.exports = {
                             progress++;
                             if(progress==2){
                                 res.json(resultjson);
-                                conn.release();
                             }
                         })
                     }
+                    conn.release();
                 })
             }
         }
@@ -260,6 +258,7 @@ module.exports = {
                     //     // console.log(123456789);
                     // }
                 }
+                conn.release();
             })
         }
     },
@@ -300,7 +299,6 @@ module.exports = {
                             if(progress==6){
                                 // console.log(resultJson);
                                 res.json(resultJson);
-                                conn.release();
                             }
                         })
                     }
@@ -308,6 +306,7 @@ module.exports = {
                         getcount(i);
                     }
                 }
+                conn.release();
 
             })
         }
@@ -348,7 +347,6 @@ module.exports = {
                             if(progress==6){
                                 // console.log(resultJson);
                                 res.json(resultJson);
-                                conn.release();
                             }
                         })
                     }
@@ -358,6 +356,7 @@ module.exports = {
                     }
 
                 }
+                conn.release();
 
             })
         }
@@ -408,7 +407,6 @@ module.exports = {
                                 progress++;
                                 if(progress==2){
                                     res.json(resultjson);
-                                    conn.release();
                                 }
                             });
                             conn.query('select count(n.id) as totalNum,IFNULL(sum(n.roomCard),0) as totalMoney  from(select r.* from roomcardlog r  where r.managerId=? and r.accountId=? and r.createtime>? and r.createtime<?) n  ', [managerId,uuid,starttime,endtime], (err, totalBonus)=> {
@@ -421,12 +419,11 @@ module.exports = {
                                 progress++;
                                 if(progress==2){
                                     res.json(resultjson);
-                                    conn.release();
                                 }
 
                             });
                         }
-
+                        conn.release();
                     });
                 }else{
                     pool.getConnection((err, conn)=> {
@@ -442,7 +439,6 @@ module.exports = {
                                 progress++;
                                 if(progress==2){
                                     res.json(resultjson);
-                                    conn.release();
                                 }
                             });
                             conn.query('select count(n.id) as totalNum,IFNULL(sum(n.roomCard),0) as totalMoney  from(select r.* from roomcardlog r  where r.managerId=? and r.createtime>? and r.createtime<?) n',[managerId,starttime,endtime],(err, totalBonus)=> {
@@ -455,11 +451,11 @@ module.exports = {
                                 progress++;
                                 if(progress==2){
                                     res.json(resultjson);
-                                    conn.release();
                                 }
 
                             });
                         }
+                        conn.release();
 
                     });
                 }
@@ -479,7 +475,6 @@ module.exports = {
                                 progress++;
                                 if(progress==2){
                                     res.json(resultjson);
-                                    conn.release();
                                 }
                             });
                             conn.query('select count(n.id) as totalNum,IFNULL(sum(n.roomCard),0) as totalMoney  from(select r.* from roomcardlog r  where r.accountId=? and r.createtime>? and r.createtime<?) n  ', [uuid,starttime,endtime], (err, totalBonus)=> {
@@ -492,11 +487,11 @@ module.exports = {
                                 progress++;
                                 if(progress==2){
                                     res.json(resultjson);
-                                    conn.release();
                                 }
 
                             });
                         }
+                        conn.release();
 
                     });
                 }else{
@@ -513,7 +508,6 @@ module.exports = {
                                 progress++;
                                 if(progress==2){
                                     res.json(resultjson);
-                                    conn.release();
                                 }
                             });
                             conn.query('select count(n.id) as totalNum,IFNULL(sum(n.roomCard),0) as totalMoney  from(select r.* from roomcardlog r  where r.createtime>? and r.createtime<?) n',[starttime,endtime],(err, totalBonus)=> {
@@ -526,11 +520,11 @@ module.exports = {
                                 progress++;
                                 if(progress==2){
                                     res.json(resultjson);
-                                    conn.release();
                                 }
 
                             });
                         }
+                        conn.release();
 
                     });
                 }

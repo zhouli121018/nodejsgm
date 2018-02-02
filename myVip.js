@@ -54,7 +54,6 @@ module.exports = {
                                 progress++;
                                 if(progress==2){
                                     res.json(resultJson);
-                                    conn.release();
                                 }
                             })
                             conn.query('SELECT count(a.uuid) as totalNum FROM account a WHERE a.manager_up_id=? and a.uuid=?',[inputManagerId,uuid],(err,result)=>{
@@ -62,7 +61,6 @@ module.exports = {
                                 resultJson.totalNum=result[0].totalNum;
                                 if(progress==2){
                                     res.json(resultJson);
-                                    conn.release();
                                 }
                             })
                         }else{
@@ -72,7 +70,6 @@ module.exports = {
                                 progress++;
                                 if(progress==2){
                                     res.json(resultJson);
-                                    conn.release();
                                 }
                             });
                             conn.query('SELECT count(a.uuid) as totalNum FROM account a WHERE a.manager_up_id=?',[inputManagerId],(err,result)=>{
@@ -80,7 +77,6 @@ module.exports = {
                                 resultJson.totalNum=result[0].totalNum;
                                 if(progress==2){
                                     res.json(resultJson);
-                                    conn.release();
                                 }
                             })
                         }
@@ -93,7 +89,6 @@ module.exports = {
                                 progress++;
                                 if(progress==2){
                                     res.json(resultJson);
-                                    conn.release();
                                 }
                             })
                             conn.query('SELECT count(a.uuid) as totalNum FROM account a WHERE  a.uuid=?',[uuid],(err,result)=>{
@@ -101,7 +96,6 @@ module.exports = {
                                 resultJson.totalNum=result[0].totalNum;
                                 if(progress==2){
                                     res.json(resultJson);
-                                    conn.release();
                                 }
                             })
                         }else{
@@ -112,7 +106,6 @@ module.exports = {
                                 progress++;
                                 if(progress==2){
                                     res.json(resultJson);
-                                    conn.release();
                                 }
                             })
                             conn.query('SELECT count(a.uuid) as totalNum FROM (select n.* from account n )a ',[starttime,endtime],(err,result)=>{
@@ -122,12 +115,10 @@ module.exports = {
                                 resultJson.totalNum=result[0].totalNum;
                                 if(progress==2){
                                     res.json(resultJson);
-                                    conn.release();
                                 }
                             })
                         }
                     }
-
                 }else{
                     if(uuid){
                         var progress=0;
@@ -136,7 +127,6 @@ module.exports = {
                             progress++;
                             if(progress==2){
                                 res.json(resultJson);
-                                conn.release();
                             }
                         })
                         conn.query('SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id=b.id and (a.manager_up_id=? or b.levelStr like ?) and a.uuid=?',[managerId,levelStr,uuid],(err,result)=>{
@@ -144,7 +134,6 @@ module.exports = {
                             resultJson.totalNum=result[0].totalNum;
                             if(progress==2){
                                 res.json(resultJson);
-                                conn.release();
                             }
                         })
                     }else{
@@ -154,7 +143,6 @@ module.exports = {
                             progress++;
                             if(progress==2){
                                 res.json(resultJson);
-                                conn.release();
                             }
                         })
                         conn.query('SELECT count(a.uuid) as totalNum FROM account a,manager b WHERE a.manager_up_id = b.id and (a.manager_up_id=? or b.levelStr like ?)',[managerId,levelStr],(err,result)=>{
@@ -162,14 +150,12 @@ module.exports = {
                             resultJson.totalNum=result[0].totalNum;
                             if(progress==2){
                                 res.json(resultJson);
-                                conn.release();
                             }
                         })
                     }
-
                 }
-
             }
+            conn.release();
 
         })
 
@@ -312,7 +298,6 @@ module.exports = {
                                 }else{
                                     res.json({"status": 0});
                                 }
-                                conn.release();
                             });
                         }else{
                             conn.query('SELECT * FROM account WHERE managerId=?', [managerId], (err, result)=> {
@@ -343,12 +328,10 @@ module.exports = {
                                     });
 
                                 }
-                                conn.release();
                             });
                         }
-
-
                     }
+                    conn.release();
                 })
             });
 
@@ -429,7 +412,7 @@ module.exports = {
                         })
                     
                 }
-
+                conn.release();
             })
         }
     },
@@ -470,7 +453,6 @@ module.exports = {
                             if(progress==6){
                                 // console.log(resultJson);
                                 res.json(resultJson);
-                                conn.release();
                             }
                         })
                     }
@@ -478,7 +460,7 @@ module.exports = {
                         getcount(i);
                     }
                 }
-
+                conn.release();
             })
         }
     },
@@ -520,7 +502,6 @@ module.exports = {
                             if(progress==6){
                                 console.log(resultJson);
                                 res.json(resultJson);
-                                conn.release();
                             }
                         })
                     }
@@ -529,7 +510,7 @@ module.exports = {
                         // console.log(123456789);
                     }
                 }
-
+                conn.release();
             })
         }
     }

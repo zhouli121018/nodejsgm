@@ -1,0 +1,417 @@
+<?php
+if (!isset($company))          $company     = array();
+if (!isset($server_name))      $server_name = '';
+if (!isset($main_domain))      $main_domain = '';
+if (!isset($domain_name))      $domain_name = '';
+if (!isset($domain_select))    $domain_select = '';
+if (!isset($lic_organization)) $lic_organization = '';
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title><?=($DA['cf_title']? $DA['cf_title']: 'U-Mail邮件服务器 - Powered by U-Mail')?></title>
+    <meta content="<?=($DA['cf_title']? $DA['cf_title']: 'U-Mail邮件服务器 - Powered by U-Mail')?>" name="keywords" />
+    <meta content="<?=($DA['cf_title']? $DA['cf_title']: 'U-Mail邮件服务器 - Powered by U-Mail')?>" name="description" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="cache-control" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+    <link rel="stylesheet" type="text/css" href="/webmail/static/style/select.css?v=41" />
+    <link rel="stylesheet" type="text/css" href="/webmail/static/login/gao/login_main.css?v=60" />
+    <script type="text/javascript" src="/webmail/static/login/gao/jquery-1.9.1.min.js"></script>
+    <script src="/webmail/static/script/cryptojs/need/aes_md5.js" charset="utf-8"></script>
+    <?if($ukey && $ukey_type == 'js'):?>
+    <script src="/webmail/index.php?module=operate&action=ukeyjs" charset="utf-8"></script>
+    <?endif;?>
+    <link rel="stylesheet" href="/webmail/static/style/slide-unlock.css?v=3">
+</head>
+<body style="zoom: 1;">
+<div id="right_main_Box">
+    <div class="mainBox" style="width: 100%;height: 100%;">
+        <div class="pageHeader">
+            <div class="defaultWid">
+                <span class="logo">
+                    <img src="/webmail/static/login/gao/img/logo_<?=$language?>.gif" style="display: inline; width: 255px; height: 45px; margin-top: 0px; margin-left: 0px;" />
+                </span>
+                <span class="desc" style="color: rgb(3, 3, 3);"></span>
+                <div class="layout_border_logo"></div>
+                <div class="layout_border_conpanyTxt">
+                </div>
+            </div>
+        </div>
+        <div class="pageSection" style="background-color: lightgrey;">
+            <div class="defaultWid">
+                <div class="imgBox left">
+                    <img src="/webmail/static/images/main_bg.png" style="width: 376px; height: 240px; margin-top: 0px; margin-left: 0px;" />
+                </div>
+                <div class="layout_border_Img"></div>
+                <div class="loginBox right">
+                    <!--登录框区域-->
+                    <ul class="tabs">
+                        <li><a href="javascript:void(0)"  id="showTabUser" class="securityInput current" onclick="show_user();"><?=_e('lg_gao_login_user_title')?></a></li>
+                        <li><a href="javascript:void(0)"  id="showTabAdmin" onclick="show_admin();"><?=_e('lg_gao_login_admin_title')?></a></li>
+                    </ul>
+                    <div class="panes">
+                        <div id="tabUser">
+                            <form id="loginForm" name="login" action="/webmail/index.php?module=operate&action=login&web=1" method="post" onsubmit="return loginCheck(this);">
+                                <input type="hidden" name="language" value="<?=$language?>"/>
+                                <input name="token"  type="hidden" value="<?=$token?>" />
+                                <input name="stime"  type="hidden" value="<?=$stime?>" />
+                                <input name="nonce"  type="hidden" value="<?=$nonce?>" />
+                                <?if(empty($gao_domain_arr)):?>
+                                <input type="hidden" name="domain" id="domain_select" value="<?=$main_domain?>"/>
+                                <p class="input_width_domain">
+                                    <span class="user_icon"></span>
+                                    <input type="text" id="username1"  class="darkInputTxt securityInput accountInputUser" value="" style="width: 134px; display: none;" />
+                                    <input id="username" name="username" type="text" class="lightInputTxt accountInputUser"  style="width: 134px; display: block;" />
+                                    <span id="cl_span_admin_domain" class="domain" title="<?=$main_domain?>" style="overflow: hidden; text-overflow: ellipsis; width: 133px;">
+                                        <nobr id="cl_span_admin_domain_txt">
+                                            @<?=$main_domain?>
+                                        </nobr>
+                                    </span>
+                                </p>
+                                <?else:?>
+                                <div class="input_width_domain">
+                                    <ul class="select_ul">
+                                        <li style="width: 151px;">
+                                            <span class="user_icon"></span>
+                                            <input id="username1" type="text" class="darkInputTxt select_accountInputUser" value=""  style="display: none; width: 134px;" />
+                                            <input id="username" type="text" name="username" class="lightInputTxt select_accountInputUser"  style="width: 134px;" />
+                                        </li>
+                                        <li style="width: 157px;">
+                                            <select id="domain_select"  name="domain" class="fastbannerform__country" style="width: 157px;_width:150px;height: 35px;">
+                                                <?foreach($gao_domain_arr as $v):?>
+                                                <option value="<?=$v?>">@<?=$v?></option>
+                                                <?endforeach;?>
+                                            </select>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <?endif;?>
+                                <p class="input_width_domain"><span class="pwd_icon"></span>
+                                    <input id="password" class="pswInput lightInputTxt" type="password"  name="password"  value="" style=""/>
+                                    <input  class="pswInput darkInputTxt securityInput" type="password" autocomplete="off"/>
+                                </p>
+                                <p class="btn_domain">
+                                    <span class="checkSafety">
+                                        <span>
+                                        <input id="ssllgoin" type="checkbox"  name="safelogin" class="securityInput" style="display: inline-block;" />
+                                        </span>
+                                        <span id="sslSafeLoginSSL" class="safeTxt securityInput" style="display: inline;"></span>
+                                        <span id="sslSafeLogin" class="safeTxt securityInput" style="display: inline;"><?=_e('lg_gao_login_ssl')?></span>
+                                    </span>
+                                </p>
+                                <p><input id="wmSubBtn" type="submit"  class="btnLoginIn" value="<?=_e('lg_login')?>" /> </p>
+                                <?if($is_open_captcha) :?>
+                                <p>
+                                <div id="slider" style="margin-top:8px;width: 100%;">
+                                    <div id="slider_bg"></div>
+                                    <span id="label">>></span>  <span id="labelTip"><?=_e('lg_gao_login_anquan')?></span>
+                                    <input name="captcha" type="hidden" value='1' id="code_id"  />
+                                </div>
+                                </p>
+                                <?endif;?>
+                            </form>
+                        </div>
+                        <!--管理员登录-->
+                        <div id="tabAdmin" class="securityInput" style="display: none;">
+                            <form id="admin_loginForm" name="form_admin" action="/webmail/admin/index.php?module=admin&action=login_gao" method="post" onsubmit="return loginAdminCheck(this);">
+                                <p class="manager">
+                                    <span>
+                                        <input type="radio" checked="checked" value="domainadmin" name="type"/>
+                                        <label id="typeLabSupperAdmin"><?=_e('lg_gao_login_admin_tip')?></label>
+                                    </span>
+                                    <span>
+                                        <input type="radio" value="deptadmin" name="type"/>
+                                        <label id="typeLabDomainAdmin"><?=_e('lg_gao_login_dept_tip')?></label>
+                                    </span>
+                                </p>
+                                <?if(empty($gao_domain_arr)):?>
+                                <p class="input_width_domain">
+                                    <span class="user_icon"></span>
+                                    <input type="text" id="adminname1"  class="darkInputTxt securityInput accountInputUser" value="" style="width: 134px; display: none;" />
+                                    <input id="adminname" name="username" type="text" class="lightInputTxt accountInputUser"  style="width: 134px; display: block;" />
+                                    <input type="hidden" value="test.com" name="domain" id="domain_admin"/>
+                                    <span id="cl_span_admin_domain" class="domain" title="<?=$main_domain?>" style="overflow: hidden; text-overflow: ellipsis; width: 133px;">
+                                        <nobr id="cl_span_admin_domain_txt">
+                                            @<?=$main_domain?>
+                                        </nobr>
+                                    </span>
+                                </p>
+                                <?else:?>
+                                <div class="input_width_domain">
+                                    <ul class="select_ul">
+                                        <li style="width: 151px;">
+                                            <span class="user_icon"></span>
+                                            <input id="adminname1" type="text" class="darkInputTxt select_accountInputUser" value=""  style="display: none; width: 134px;" />
+                                            <input id="adminname" type="text" name="username" class="lightInputTxt select_accountInputUser"  style="width: 134px;" />
+                                        </li>
+                                        <li style="width: 157px;">
+                                            <select id="domain_admin"  name="domain" class="fastbannerform__country" style="width: 157px;_width:145px;height: 35px;">
+                                                <?foreach($gao_domain_arr as $v):?>
+                                                <option value="<?=$v?>">@<?=$v?></option>
+                                                <?endforeach;?>
+                                            </select>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <?endif;?>
+
+                                <p class="input_width_domain"><span class="pwd_icon"></span>
+                                    <input id="adminTypePwd" class="pswInput lightInputTxt"    type="password" name="password" value=""/>
+                                    <input id="adminType" class="pswInput darkInputTxt securityInput" type="text" autocomplete="off" />
+                                </p>
+                                <p class="btn_domain">
+                                    <span class="checkSafety">
+                                        <span>
+                                            <input id="safeloginMa" type="checkbox"  name="safelogin" class="securityInput" style="display: inline-block;" />
+                                        </span>
+                                        <span id="sslAdminSafeLoginSSL" class="safeTxt securityInput" style="display: inline;"></span>
+                                        <span id="sslAdminSafeLogin" class="safeTxt securityInput" style="display: inline;"><?=_e('lg_gao_login_ssl')?></span>
+                                    </span>
+                                </p>
+                                <p>
+                                    <input name="token"  type="hidden" value="<?=$token?>" />
+                                    <input name="ad_ck"  type="hidden" value="<?=$ad_ck?>" />
+                                    <input name="language"  type="hidden" value="<?=$language?>" />
+                                    <input id="maSubBtn" type="submit" class="btnLoginIn" value="<?=_e('lg_login')?>" hidefocus="true" />
+                                </p>
+                                <?if($is_open_captcha) :?>
+                                <p>
+                                <div id="admin_slider" style="margin-top:8px;width: 100%;">
+                                    <div id="admin_slider_bg"></div>
+                                    <span id="admin_label">>></span>  <span id="admin_labelTip"><?=_e('lg_gao_login_anquan')?></span>
+                                    <input name="captcha" type="hidden" value='1' id="admin_code_id"  />
+                                </div>
+                                </p>
+                                <?endif;?>
+                            </form>
+                        </div>
+                        <div class="languageBox securityInput">
+                            <ul>
+                                <li><a id="language_cn"  class="CN" href="/webmail/index.php?module=view&action=login&language=zh_CN"><?=_e('lg_gao_login_zh_CN')?></a></li>
+                                <li><a id="language_hk"  class="TCN" href="/webmail/index.php?module=view&action=login&language=zh_TW"><?=_e('lg_gao_login_zh_TW')?></a></li>
+                                <li><a id="language_en"  class="EN" href="/webmail/index.php?module=view&action=login&language=en_US"><?=_e('lg_gao_login_en_US')?></a></li>
+                                <li><a id="language_sp"  class="JP" href="/webmail/index.php?module=view&action=login&language=sp_AN"><?=_e('lg_gao_login_sp_AN')?></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="login_bott">
+                        <a id="canNotLogin" href="/webmail/index.php?module=view&action=forget-pass&language=<?=$language?>" target="_blank" class="txtArr left" style="display: block;"><?=_e('lg_gao_forget_pwd')?></a>
+                        <a id="languageBtn" class="txtArr dropdown_lang" hidefocus="true" href="javascript:;"><?=_e('lg_gao_lan')?></a>
+                    </p>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="pageBottom">
+            <div class="defaultWid">
+                <p class="footLinks" style="color: rgb(55, 55, 55);"> <a href="<?=($company['homepage']? $company['homepage']: '')?>" target="_blank" style="color: rgb(55, 55, 55);"><?=_e('lg_gao_site')?></a> <span>&nbsp;|&nbsp;</span><a href="/webmail/index.php?module=view&action=reg-agreement&domain=<?=$main_domain?>" target="_blank" style="color: rgb(55, 55, 55);"><?=_e("default-user_register")?></a> <span>&nbsp;|&nbsp;</span><a href="http://www.comingchina.com/linux/" target="_blank" style="color: rgb(55, 55, 55);"><?=_e('default-help')?></a></p>
+                <p class="copyright" style="color: rgb(3, 3, 3);">   CopyRight ©<?=($company['company']? $company['company']: $lic_organization)?>. Power by <a href="http://www.comingchina.com"><?=_e('default-copyright5')?></a> </p>
+                <div class="layout_border_copright"></div>
+                <div class="layout_border_links"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script src="/webmail/static/script/select.min.js"></script>
+<script src="/webmail/static/script/select.js?v=14"></script>
+<script src="/webmail/static/script/layer/layer.js" charset="utf-8"></script>
+<script src="/webmail/static/script/jquery.slideunlock.js" charset="utf-8"></script>
+<script type="text/javascript">
+    var language = "<?=$language?>";
+    function show_user() {
+        $('#showTabUser').attr('class','securityInput current');//showTabUser
+        $('#showTabAdmin').attr('class','');
+        $('#tabUser').show();
+        $('#tabAdmin').hide();
+        $('#canNotLogin').show();
+        $('#canNotAdminLogin').hide();
+    }
+    function show_admin() {
+        $('#showTabAdmin').attr('class','securityInput current');//showTabUser
+        $('#showTabUser').attr('class','');
+        $('#tabUser').hide();
+        $('#tabAdmin').show();
+        $('#canNotLogin').hide();
+        $('#canNotAdminLogin').show();
+    }
+    $("#languageBtn").click(function(event) {
+        var x = $(this).offset();
+        $("div.languageBox").slideToggle("slow");
+        $("div.languageBox").offset( {
+            top : x.top - 110,
+            left : x.left
+        });
+        $(this).toggleClass("dropdown_lang_up");
+        event.stopPropagation();
+    });
+    var loginAdminCheck = function(e) {
+        var t = $(e);
+        if(t.find('#adminname').val() == "") {
+            layer.tips("<?=_e('default-admin_cannot_empty')?>", '#adminname');
+            e.username.focus();
+            return false;
+        }
+        <?if($is_open_captcha):?>
+        if($('#admin_slider')){
+            if(e.captcha.value == "1"||e.captcha.value =='') {
+                layer.tips("<?=_e('default-captcha_cannot_empty')?>", '#slider');
+                return false;
+            }
+        }
+        <?endif;?>
+        if(e.password.value == "") {
+            layer.tips("<?=_e('default-pwd_cannot_empty')?>", '#adminTypePwd');
+            e.password.focus();
+            return false;
+        }
+        else{
+            var key_hash = CryptoJS.MD5('1234567812345678');
+        var key = CryptoJS.enc.Utf8.parse(key_hash);
+        var iv  = CryptoJS.enc.Utf8.parse('1234567812345678');
+        var pwd = CryptoJS.AES.encrypt(e.password.value, key, { iv: iv,mode:CryptoJS.mode.CBC,padding:CryptoJS.pad.ZeroPadding});
+        $('#adminTypePwd').val(pwd);
+        }
+        if($('#safeloginMa').prop('checked') == true){
+            $('#admin_loginForm').prop('action','https://<?=$_SERVER["HTTP_HOST"];?>/webmail/admin/index.php?module=admin&action=login_gao');
+        }
+        return true;
+    }
+
+    $(document).ready(function(){
+        $("#username").focus();
+        <?if($is_open_captcha) :?>
+        var slider = new SliderUnlock("#slider",{
+            successLabelTip : "<?=_e('lg_ok_slider')?>"
+        },function(){
+            create_code();
+        });
+        slider.init();
+        var admin_slider = new SliderUnlock("#admin_slider",{
+            successLabelTip : "<?=_e('lg_ok_slider')?>"
+        },function(){
+            create_admin_code();
+        });
+        admin_slider.init();
+        <?endif;?>
+
+        //记住用户名功能
+        var login_name = getCookie('login_name');
+        if(login_name != undefined && login_name != '') {
+            document.getElementById("usernameTip").value = login_name;
+        }
+
+
+        //获取浏览器信息
+        if (typeof window.screen != 'undefined') {
+            $.get('/webmail/index.php?module=view&action=login&mode=browser&width=' + window.screen.width + '&height=' + window.screen.height);
+        }
+
+        <?if(GDA('sw_user_reg', true) && !$is_alias_domain) :?>
+          var d_val = $('#domain_select').val();
+
+
+
+        <?endif;?>
+        getSslStatus();
+        <?if($ukey == 1&&$ukey_type == 'php'):?>
+        ukeyLogin();
+        <?endif;?>
+    });
+
+    var getCookie = function(VarName) {
+        var CookieString  = document.cookie;
+        var aCookieString = CookieString.split('; ');
+        for(var i=0; i <aCookieString.length; i++) {
+            var j = aCookieString[i].indexOf('=');
+            if(VarName == aCookieString[i].substring(0,j))
+                return aCookieString[i].substr(j+1);
+        }
+        return '';
+    };
+    var loginCheck = function(e) {
+        var t = $(e);
+        if(t.find('#username').val() == "") {
+            layer.tips("<?=_e('default-username_cannot_empty')?>", '#username');
+            e.username.focus();
+            return false;
+        }
+        <?if($is_open_captcha):?>
+        if($('#slider')){
+            if(e.captcha.value == "1"||e.captcha.value =='') {
+                layer.tips("<?=_e('default-captcha_cannot_empty')?>", '#slider');
+                return false;
+            }
+        }
+        <?endif;?>
+
+        if(e.password.value == "") {
+            layer.tips("<?=_e('default-pwd_cannot_empty')?>", '#password');
+            e.password.focus();
+            return false;
+        }
+        else{
+            var key_hash = CryptoJS.MD5('1234567812345678');
+        var key = CryptoJS.enc.Utf8.parse(key_hash);
+        var iv  = CryptoJS.enc.Utf8.parse('1234567812345678');
+        var pwd = CryptoJS.AES.encrypt($('#password').val(), key, { iv: iv,mode:CryptoJS.mode.CBC,padding:CryptoJS.pad.ZeroPadding});
+            $('#password').val(pwd);
+        }
+        if($('#ssllgoin').prop('checked') == true){
+            $('#loginForm').prop('action','https://<?=$_SERVER["HTTP_HOST"];?><?=$_SERVER["SCRIPT_NAME"];?>?module=operate&action=login&web=1');
+        }
+        return true;
+    };
+
+    var create_code=function() {
+        $.post("/webmail/index.php?module=operate&action=login-checkcode-new",{web:1},function (d) {
+            $('#code_id').val(d);
+        });
+    };
+    var create_admin_code=function() {
+        $.post("/webmail/index.php?module=operate&action=login-checkcode-new",{web:1},function (d) {
+            $('#admin_code_id').val(d);
+        });
+    };
+
+    var changeLang = function(obj) {
+        var url = '/webmail/index.php?module=view&action=login';
+        url += "&language=" + obj.value;
+        window.location.href = url;
+    };
+
+    var getSslStatus = function(){
+        $.get('/webmail/index.php?module=operate&action=checkssl&domain=' + $('#domain_select').val(), function(data) {
+            var json_data = eval('(' + data + ')');
+            if(json_data.sw_login_ssl == 1){
+                $('#ssllgoin').prop('checked',true);
+                $('#safeloginMa').prop('checked',true);
+
+            }
+
+            else{
+                $('#ssllgoin').prop('checked',false);
+                $('#safeloginMa').prop('checked',false);
+            }
+
+        });
+    }
+    <?if($ukey == 1 && $ukey_type == 'php'):?>
+    var ukeyLogin = function(){
+        $.post('/webmail/index.php?module=operate&action=ukeyphp', function(data) {
+            if(data){
+                $.post('/webmail/index.php?module=operate&action=ukeylogin&domain=' + $('#domain_select').val(), {username:data.username}, function(d) {
+                    if(d){
+                        window.location.href = '/webmail/index.php';
+                    }
+                });
+            }
+            else
+                setTimeout('ukeyLogin()', 1000);
+        },'json');
+    }
+    <?endif;?>
+</script>

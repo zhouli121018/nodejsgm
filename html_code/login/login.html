@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>企业邮箱管理登录</title>
+    <link rel="stylesheet" href="code.css">
+    <link rel="stylesheet" href="css/select.css">
+    <style type="text/css">
+    body,h1,h2,h3,p,ul,li{
+        padding:0;
+        margin:0;
+    }
+    ul,li{
+        list-style:none;
+    }
+    *{
+        box-sizing:border-box;
+    }
+    body,html{
+        height:100%;
+    }
+    .container{
+        /*min-height:1000px;*/
+        height:100%;
+        background: url(img/bg6.jpg)  no-repeat center;
+        background-size: 100% 100%;
+    }
+    .logo{
+        padding-left:100px;
+    }
+        #login{
+            width:100%;
+            height:100%;
+            padding-top:2%;
+            position:relative;
+        }
+        .login-wrap{
+            position:absolute;
+            width:496px;
+            background: rgba(255,255,255,.3);
+            /*background-image:url(img/bg5.jpg);*/
+            /*border:1px solid #fff;*/
+            border-radius:10px;
+            margin:0 auto;
+            /*margin-top:4%;*/
+            /*margin-bottom:5%;*/
+            padding: 20px 0;
+            /*position:relative;*/
+            left:0;
+            top:0;
+            background: url(img/bg-op.jpg)\0;
+            background-size:100% 100%;
+            /*left:20%;*/
+        }
+        .login-wrap .login-title{
+                font-size: 22px;
+                text-align: center;
+                color: #fff;
+                font-weight: 400;
+                letter-spacing: 4px;
+            margin-bottom:20px;
+        }
+        .login-wrap .login-title .small{
+                font-size: 9px;
+                letter-spacing: 0;
+
+        }
+        .login-wrap .login-box{
+                width: 350px;
+                margin: 18% auto 0;
+        }
+        .el-input{
+            position: relative;
+            font-size: 16px;
+        }
+        .el-input__inner{
+            background-color: #fff;
+            border-radius: 4px;
+            box-sizing: border-box;
+            color: #1f2d3d;
+            font-size: inherit;
+            line-height: 1;
+            outline: 0;
+            transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+            display: inline-block;
+        }
+        .login-box .el-input__inner{
+            /*height: 2.5em;;*/
+            background-color: transparent;
+            border:1px solid #fff;
+            color: #fff;
+            +color:#000;
+            border-radius: 5px;
+            margin-bottom: .5em;
+            width: 76%;
+            padding: .6em;
+        }
+        .login-box .el-input__inner:hover,.login-box .el-input__inner.on-focus{
+            border: 1px solid #58b7ff;
+        }
+        .login-box select.el-input__inner{
+            background:rgba(50,50,50,.3);
+        }
+        .el-input label{
+            font-weight:bold;
+            width:20%;
+            display:inline-block;
+        }
+        .el-button{
+            display: inline-block;
+            line-height: 1;
+            white-space: nowrap;
+            cursor: pointer;
+            background: #fff;
+            border: 1px solid #c4c4c4;
+            color: #1f2d3d;
+            margin-top: 20px;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+        .login-box .el-button{
+            width: 100%;
+            height: 3em;
+            font-size: 18px;
+            color: #fff;
+            border: none;
+            transition: all .3s;
+            text-align: center;
+        }
+        .login-box .login-btn{
+            background-color: #91c46c;
+        }
+        .login-box .reset-btn{
+            background:#EADA80;
+        }
+        .login-box .reset-btn:hover{
+            background:#EADA52;
+        }
+        .login-box .login-btn:hover{
+            background-color: #87b765;
+        }
+        .login-box .el-input.bottom{
+            margin:2em 0;
+        }
+        /*#login.bgpic {*/
+            /*!*background:url(img/bg1.jpg) no-repeat 0 0;background-size:cover;*!*/
+            /*!*-ms-behavior: url(backgroundsize.min.htc);*!*/
+            /*!*behavior: url(backgroundsize.min.htc);*!*/
+            /*!*+background:#1495E7;*!*/
+            /*+background: url(img/bg0.jpg) repeat;*/
+        /*}*/
+        #login input.el-input__inner{
+            +border:1px solid #000;
+            +font-size:22px;
+            +height:20px;
+            +width:94%;
+        }
+        #login select.el-input__inner{
+            +border:none;
+            +padding:20px;
+            +font-size:18px;
+        }
+        #login .login-wrap{
+            +border:1px solid #000;
+            +border-radius:5px;
+        }
+        .footer{
+            margin:20px 0 0;
+            text-align:center;
+            font-size:14px;
+            color:#fff;
+        }
+        .login-box .el-input{
+            position:relative;
+        }
+        *{
+            box-sizing:border-box;
+        }
+        .login-box-top{
+            margin-bottom:5px;
+            border-radius:4px;
+            overflow: hidden;
+            position:absolute;
+            width:100%;
+        }
+    /*.login-box-top>div{*/
+        /*!*width:50%;*!*/
+        /*float:left;*/
+        /*text-align:center;*/
+        /*!*padding:2% 0;*!*/
+        /*!*border-radius:4px;*!*/
+        /*cursor:pointer;*/
+        /*border:1px solid transparent;*/
+        /*border-bottom:1px solid #fff;*/
+        /*!*background: #7988AE;*!*/
+        /*height:100%;*/
+    /*}*/
+    .login-box-top>span{
+        display:inline-block;
+        /*border:1px solid #fff;*/
+        float:left;
+        height:2em;
+        padding:.2em;
+        border-bottom:1px solid #fff;
+        border-top:1px solid transparent;
+        /*border-right:1px solid #fff;*/
+    }
+    .login-box-top>.placeh-left,.login-box-top>.placeh-right{
+        width:72px;
+        border-bottom:1px solid #fff;
+    }
+    .login-box-top>.placeh-left{
+        /*border-right:1px solid #fff;*/
+    }
+    .login-box-top>.placeh-right{
+        border-right:none;
+    }
+    .login-box-top>.content{
+        width:175px;
+        text-align:center;
+        cursor:pointer;
+
+    }
+
+    .login-box-top>.active{
+        background: none;
+        /*58B7FF*/
+        color:#fff;
+        border:1px solid #fff;
+        border-bottom:none;
+
+    }
+    .login-box-top>div input{
+        display:inline-block;
+        height:100%;
+        width:100%;
+    }
+    .login-box-top>.content:hover{
+        /*background:#9196DF;*/
+        /*58B7FF*/
+        color:#fff;
+    }
+        .lang{
+            text-align:center;
+        }
+        .lang>label{
+            margin-right:10%;
+        }
+        .select_ul{
+            overflow: hidden;
+            width:100%;
+        }
+    .select_ul>li.left-label{
+        width:21.5%;
+        margin-top: 2%;
+    }
+        .select_ul>li.right-select{
+            width:78%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!--<div class="logo">-->
+            <!--<img src="img/logo.gif" alt="logo">-->
+        <!--</div>-->
+        <div id="login" class="bgpic">
+            <div  class="login-wrap">
+                <div class="login-title">
+                    <p>企业邮箱管理登录</p>
+                    <!--<span class="small">账号密码不能为空</span>-->
+                </div>
+                <div class="login-box-top">
+                    <span class="placeh-left"></span>
+                    <!-- <input  placeholder="请输入用户名" type="text"  class="el-input__inner"> -->
+                    <span class="active content">
+                        <!--<input type="radio" id="admin" name="usertype" value="0" checked><label for="admin">域/超域/系统管理员</label>-->
+                        域/超域/系统管理员
+                    </span>
+                    <span class="content">
+                        <!--<input type="radio" name="usertype" id="litle" value="1"><label for="litle">部门管理员</label>-->
+                        部门管理员
+                    </span>
+                    <span class="placeh-right"></span>
+                </div>
+                <div class="login-box">
+                    <div class="el-input">
+                        <label for="username">用户名：</label>
+                        <input  placeholder="请输入用户名" type="text" name="uname" id="username" class="el-input__inner uname-input">
+                    </div>
+                    <div class="el-input">
+                        <label for="pwd">密&nbsp;&nbsp;码：</label>
+                        <input  placeholder="请输入密码" type="password" name="pwd" id="pwd" class="el-input__inner pwd-input">
+                    </div>
+                    <div class="el-input">
+                        <ul class="select_ul">
+                            <li class="left-label">
+                                <b>域&nbsp;&nbsp;名：</b>
+                            </li>
+                            <li class="right-select">
+                                <select id="domain_select" name="domain" class="fastbannerform__country select2-hidden-accessible" style="width: 98%;_width:150px;height: 35px;margin-left:2px;font-weight: bolder;color: #000;" tabindex="-1" aria-hidden="true" >
+                                    <option value="test.com">@test.com</option>
+                                    <option value="linbihuan1.com">@linbihuan1.com</option>
+                                    <option value="linbihuan2.com">@linbihuan2.com</option>
+                                    <option value="magvision.com">@magvision.com</option>
+                                    <option value="domain.com">@domain.com</option>
+                                    <option value="wsdk.com">@wsdk.com</option>
+                                    <option value="linbihuan-test.com">@linbihuan-test.com</option>
+                                    <option value="hokai.com">@hokai.com</option>
+                                    <option value="heqq.com">@heqq.com</option>
+                                    <option value="hao123.com">@hao123.com</option>
+                                    <option value="hhhh">@hhhh</option>
+                                    <option value="shfjny123.cc">@shfjny123.cc</option>
+                                    <option value="bbb.com">@bbb.com</option>
+                                    <option value="shfjny123456.cn">@shfjny123456.cn</option>
+                                    <option value="shfjny123456.cc">@shfjny123456.cc</option>
+                                    <option value="testtest.com">@testtest.com</option>
+                                    <option value="chinazndd.com">@chinazndd.com</option>
+                                    <option value="lvchichuxing.com">@lvchichuxing.com</option>
+                                    <option value="llzzb.gov">@llzzb.gov</option>
+                                    <option value="wiprocc.com.cn">@wiprocc.com.cn</option>
+                                    <option value="ncc-edu.com">@ncc-edu.com</option>
+                                    <option value="bcec.com.cn">@bcec.com.cn</option>
+                                    <option value="dexingroup.com">@dexingroup.com</option>
+                                    <option value="kylin.com.cn">@kylin.com.cn</option>
+                                    <option value="modousport.com">@modousport.com</option>
+                                    <option value="shengquanwuye.com">@shengquanwuye.com</option>
+                                    <option value="cufs.cc">@cufs.cc</option>
+                                    <option value="cufs.com.cn">@cufs.com.cn</option>
+                                </select>
+                                <span class="select2 select2-container select2-container--default" dir="ltr" style="width: 157px;display:none;">
+                                    <span class="selection">
+                                        <span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-domain_select-container"><span class="select2-selection__rendered" id="select2-domain_select-container" title="@test.com">
+                                            <span class="fastbannerform__span">@test.com</span>
+                                        </span>
+                                            <span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span>
+                                        </span>
+                                    </span>
+                                    <span class="dropdown-wrapper" aria-hidden="true"></span>
+                                </span>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="el-input bottom">
+                        <label for="imgscode"></label>
+                        <div id="imgscode" class="el-input__inner"></div>
+                    </div>
+
+                    <div class="lang">
+
+                        <input type="radio" id="chinese" name="lan" value="0" checked><label for="chinese">简体中文</label>
+                        <input type="radio" name="lan" id="english" value="1"><label for="english">英语</label>
+
+                    </div>
+                    <hr>
+                    <button type="button" class="el-button login-btn">
+                        <span>登录</span>
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+        <!--<div class="footer">-->
+            <!--<p>企业官网  |  用户注册  |  帮助</p>-->
+            <!--<p>CopyRight ©fdfffff. Power by U-Mail邮件服务器</p>-->
+        <!--</div>-->
+    </div>
+    <!--[if !IE]> -->
+    <script src="js/jquery.2.1.1.min.js"></script>
+
+    <!-- <![endif]-->
+
+    <!--[if IE]>
+    <script src="js/jquery.1.11.1.min.js"></script>
+    <![endif]-->
+    <!--[if lt IE 10]>
+    <script type="text/javascript" src="js/PIE.js"></script>
+    <![endif]-->
+    <script src="js/layer.js"></script>
+    <script src="js/code.js"></script>
+    <script src="js/select.min.js"></script>
+    <script src="js/select.js"></script>
+    <script>
+        $(function() {
+            if (window.PIE) {
+                $('.login-wrap').each(function() {
+                    PIE.attach(this);
+                });
+                $('.code-btn').each(function() {
+                    PIE.attach(this);
+                });
+                $('.code-btn-img').each(function() {
+                    PIE.attach(this);
+                });
+            }
+        });
+        var bh = window.screen.height;
+        var bodyheight = parseFloat($('body').css('height'));
+        var bodywidth = parseFloat($('body').css('width'));
+        var wrapheight = parseFloat($('.login-wrap').css('height'));
+        var wrapwidth = parseFloat($('.login-wrap').css('width'));
+        var topheight = bodyheight/2-wrapheight/2;
+        var leftwidth = bodywidth/2-wrapwidth/2;
+        $('.login-wrap').css({"left":leftwidth+"px","top":topheight+"px"});
+//        $('#login').css('height',bh);
+        $("#imgscode").imgcode();
+        $('#login .login-btn').click(function(){
+            var userName = $("#login .el-input input[name='uname']");
+            var pwd = $("#login .el-input input[name='pwd']");
+            if(!userName.val()){
+//                $('#login .uname-tips').fadeIn();
+                layer.tips('用户名不能为空！' , '#username');
+                $("#login .el-input .uname-input").focus();
+                setTimeout(function(){$('#login .uname-tips').fadeOut();},2000)
+            }else  if(!pwd.val()){
+//                $('#login .pwd-tips').fadeIn();
+                layer.tips('登录密码不能为空！' , '#pwd');
+                $("#login .el-input [name=pwd]").focus();
+                setTimeout(function(){$('#login .pwd-tips').fadeOut();},2000)
+            }
+        })
+        $('.login-box-top>.content').click(function(){
+            $(this).addClass('active').siblings().removeClass('active');
+        })
+    </script>
+</body>
+</html>

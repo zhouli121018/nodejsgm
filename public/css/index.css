@@ -307,10 +307,11 @@ button.add-notice{
 #logout{
     position: absolute;
     right:1%;
-    top:10px;
+    top:8px;
+    background: #F8F8F8;
 }
 @media screen and (max-width: 767px){
     #logout {
-        right: 65px;
+        right: 80px;
     }
 }

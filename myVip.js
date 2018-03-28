@@ -99,7 +99,6 @@ module.exports = {
                             progress++;
                             if(progress==2){
                                 res.json(resultJson);
-                                conn.release();
                             }
                         }
                     })
@@ -111,11 +110,11 @@ module.exports = {
                             resultJson.totalNum=result[0].totalNum;
                             if(progress==2){
                                 res.json(resultJson);
-                                conn.release();
                             }
                         }
                     })
                 }
+                conn.release();
 
             })
 
@@ -250,7 +249,6 @@ module.exports = {
                                 }else{
                                     res.json({"status": 0});
                                 }
-                                conn.release();
                             });
                         }else{
                             conn.query('SELECT * FROM account WHERE managerId=?', [managerId], (err, result)=> {
@@ -279,14 +277,11 @@ module.exports = {
                                         }
 
                                     });
-
                                 }
-                                conn.release();
                             });
                         }
-
-
                     }
+                    conn.release();
                 })
             });
 
@@ -332,32 +327,42 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }else{
-                        var progress=0;
-                        function getcount(day){
-                            var sql = `select count(id) as c from account where createTime>(CurDate()-${day}) and createTime<=(CurDate()-${day-1})`;
-                            if(powerId>1||req.query.managerId){
-                                sql+=`and manager_up_id=${managerId}`
-                            }
-                            conn.query(sql,(err,result)=>{
-                                console.log(result);
-                                progress++;
+                    var progress=0;
+                    // function getcount(day){
+                        // var sql = `select count(id) as c from account where createTime>(CurDate()-${day}) and createTime<=(CurDate()-${day-1})`;
+                        var sql = `select day(createTime) as label, count(id) as value from account where `
+                        if(powerId>1||req.query.managerId){
+                            sql+=` manager_up_id=${managerId} and `
+                        }
+                        sql+= ` createTime >= date(now()) - interval 6 day group by day(createTime) `
+                        
+                        console.log('sql:===='+sql);
+                        conn.query(sql,(err,result)=>{
+                            console.log(123456789);
+                            console.log(result);
+                            // progress++;
+                            for(let k = 0 ;k<7;k ++){
                                 var now=new Date();
-                                now.setDate(now.getDate()-day);
-                                resultJson[6-day].label=now.toLocaleDateString();
-                                resultJson[6-day].value=result[0].c;
-                                if(progress==7){
-                                    // console.log(resultJson);
-                                    res.json(resultJson);
-                                    conn.release();
+                                now.setDate(now.getDate()-k);
+                                console.log(now.toLocaleDateString())
+                                var day = now.getDate();
+                                var v = 0;
+                                for(let i=0;i<result.length;i++){
+                                    if(result[i].label == day){
+                                        v = result[i].value;
+                                        break;
+                                    }
                                 }
-                            })
-                        }
-                        for(let i=6;i>=0;i--){
-                            getcount(i);
-                            // console.log(123456789);
-                        }
+                                resultJson[6-k].label = now.toLocaleDateString();
+                                resultJson[6-k].value = v;
+                            }
+                            console.log(resultJson);
+                            res.json(resultJson);
+                                                           
+                        })
+                    
                 }
-
+                conn.release();
             })
         }
     },
@@ -398,7 +403,6 @@ module.exports = {
                                 if(progress==6){
                                     // console.log(resultJson);
                                     res.json(resultJson);
-                                    conn.release();
                                 }
                             })
                         }
@@ -406,7 +410,7 @@ module.exports = {
                             getcount(i);
                         }
                 }
-
+                conn.release();
             })
         }
     },
@@ -448,7 +452,6 @@ module.exports = {
                                 if(progress==6){
                                     console.log(resultJson);
                                     res.json(resultJson);
-                                    conn.release();
                                 }
                             })
                         }
@@ -457,6 +460,7 @@ module.exports = {
                             // console.log(123456789);
                         }
                 }
+                conn.release();
 
             })
         }

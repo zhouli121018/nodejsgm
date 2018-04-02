@@ -41,14 +41,7 @@
     <![endif]-->
 
     <style>
-        #base-message-form .form-group{
-            border-bottom:1px solid #ccc;
-            padding:4px 0;
-            margin:0;
-        }
-        #base-message-form div.col-sm-9{
-            border-left:1px solid #ccc;
-        }
+
     </style>
 </head>
 
@@ -1159,118 +1152,179 @@
                             the lightweight, feature-rich and easy to use admin template.
                         </div>
 
-                        <form class="form-horizontal" role="form" id="base-message-form">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">
-                                    邮件域名称：
-                                </label>
-                                <div class="col-sm-9">
-                                    <input type="text" value="test.com" disabled style="background:#fff !important;border:none;color:#000;" class="col-xs-10 col-sm-5">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right">
-                                    邮件域状态：
-                                </label>
-                                <div class="col-sm-9">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="admin-status" id="status-open" checked value="open"> 启用
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="admin-status" id="status-close" value="close"> 禁用
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="email-count" class="col-sm-3 control-label no-padding-right">
-                                    *限定邮箱数量：
-                                </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="email-count"  value="8000" class="col-xs-1">
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle">个 （已分配 <b>2466</b> 个）</span>
-									</span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="byname-count" class="col-sm-3 control-label no-padding-right">
-                                    *限定别名数量：
-                                </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="byname-count"  value="0" class="col-xs-1">
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle">个 （已分配 <b>1</b> 个）</span>
-									</span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="space" class="col-sm-3 control-label no-padding-right">
-                                    *限定邮箱空间总容量：
-                                </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="space"  value="0" class="col-xs-1">
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle">MB （已分配 <b>276635</b> MB）</span>
-									</span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="max-space" class="col-sm-3 control-label no-padding-right">
-                                    *限定网络硬盘总容量：
-                                </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="max-space"  value="0" class="col-xs-1">
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle">MB （已分配 <b>250965</b> MB）</span>
-									</span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="cf_limit_email_size" class="col-sm-3 control-label no-padding-right">
-                                    发送邮件限制大小：
-                                </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="cf_limit_email_size"  value="500" class="col-xs-1">
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle">MB （填写0默认限制为100MB以内）</span>
-									</span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="cf_limit_attach_size" class="col-sm-3 control-label no-padding-right">
-                                    超大附件限制大小：
-                                </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="cf_limit_attach_size"  value="10" class="col-xs-1">
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle">MB （填写0默认限制为100MB以内）</span>
-									</span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="cf_def_mailbox_size" class="col-sm-3 control-label no-padding-right">
-                                    *用户邮箱默认容量：
-                                </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="cf_def_mailbox_size"  value="100" class="col-xs-1">
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle">MB </span>
-									</span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="cf_def_netdisk_size" class="col-sm-3 control-label no-padding-right">
-                                    *网络硬盘默认容量：
-                                </label>
-                                <div class="col-sm-9">
-                                    <input type="text" id="cf_def_netdisk_size"  value="100" class="col-xs-1">
-                                    <span class="help-inline col-xs-12 col-sm-7">
-												<span class="middle">MB</span>
-									</span>
-                                </div>
-                            </div>
-                        </form>
+                        <!--<form class="form-horizontal" role="form" id="base-message-form">-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-3 control-label no-padding-right">-->
+                                    <!--邮件域名称：-->
+                                <!--</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<input type="text" value="test.com" disabled style="background:#fff !important;border:none;color:#000;" class="col-xs-10 col-sm-5">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="col-sm-3 control-label no-padding-right">-->
+                                    <!--邮件域状态：-->
+                                <!--</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<label class="radio-inline">-->
+                                        <!--<input type="radio" name="admin-status" id="status-open" checked value="open"> 启用-->
+                                    <!--</label>-->
+                                    <!--<label class="radio-inline">-->
+                                        <!--<input type="radio" name="admin-status" id="status-close" value="close"> 禁用-->
+                                    <!--</label>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="email-count" class="col-sm-3 control-label no-padding-right">-->
+                                    <!--*限定邮箱数量：-->
+                                <!--</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<input type="text" id="email-count"  value="8000" class="col-xs-1">-->
+                                    <!--<span class="help-inline col-xs-12 col-sm-7">-->
+												<!--<span class="middle">个 （已分配 <b>2466</b> 个）</span>-->
+									<!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="byname-count" class="col-sm-3 control-label no-padding-right">-->
+                                    <!--*限定别名数量：-->
+                                <!--</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<input type="text" id="byname-count"  value="0" class="col-xs-1">-->
+                                    <!--<span class="help-inline col-xs-12 col-sm-7">-->
+												<!--<span class="middle">个 （已分配 <b>1</b> 个）</span>-->
+									<!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="space" class="col-sm-3 control-label no-padding-right">-->
+                                    <!--*限定邮箱空间总容量：-->
+                                <!--</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<input type="text" id="space"  value="0" class="col-xs-1">-->
+                                    <!--<span class="help-inline col-xs-12 col-sm-7">-->
+												<!--<span class="middle">MB （已分配 <b>276635</b> MB）</span>-->
+									<!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="max-space" class="col-sm-3 control-label no-padding-right">-->
+                                    <!--*限定网络硬盘总容量：-->
+                                <!--</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<input type="text" id="max-space"  value="0" class="col-xs-1">-->
+                                    <!--<span class="help-inline col-xs-12 col-sm-7">-->
+												<!--<span class="middle">MB （已分配 <b>250965</b> MB）</span>-->
+									<!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="cf_limit_email_size" class="col-sm-3 control-label no-padding-right">-->
+                                    <!--发送邮件限制大小：-->
+                                <!--</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<input type="text" id="cf_limit_email_size"  value="500" class="col-xs-1">-->
+                                    <!--<span class="help-inline col-xs-12 col-sm-7">-->
+												<!--<span class="middle">MB （填写0默认限制为100MB以内）</span>-->
+									<!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="cf_limit_attach_size" class="col-sm-3 control-label no-padding-right">-->
+                                    <!--超大附件限制大小：-->
+                                <!--</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<input type="text" id="cf_limit_attach_size"  value="10" class="col-xs-1">-->
+                                    <!--<span class="help-inline col-xs-12 col-sm-7">-->
+												<!--<span class="middle">MB （填写0默认限制为100MB以内）</span>-->
+									<!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="cf_def_mailbox_size" class="col-sm-3 control-label no-padding-right">-->
+                                    <!--*用户邮箱默认容量：-->
+                                <!--</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<input type="text" id="cf_def_mailbox_size"  value="100" class="col-xs-1">-->
+                                    <!--<span class="help-inline col-xs-12 col-sm-7">-->
+												<!--<span class="middle">MB </span>-->
+									<!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="cf_def_netdisk_size" class="col-sm-3 control-label no-padding-right">-->
+                                    <!--*网络硬盘默认容量：-->
+                                <!--</label>-->
+                                <!--<div class="col-sm-9">-->
+                                    <!--<input type="text" id="cf_def_netdisk_size"  value="100" class="col-xs-1">-->
+                                    <!--<span class="help-inline col-xs-12 col-sm-7">-->
+												<!--<span class="middle">MB</span>-->
+									<!--</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</form>-->
 
+                        <table id="simple-table" class="table  table-bordered table-hover">
+
+                            <tbody>
+                            <tr >
+
+
+                                <td class="text-right">
+                                    邮件域名称：
+                                </td>
+
+                                <td>
+                                    test.com
+                                </td>
+                                <td class="text-right">邮件域状态：</td>
+                                <td>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="admin-status" id="open" checked value="open"> 启用
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="admin-status" id="close" value="close"> 禁用
+                                    </label>
+                                </td>
+
+                            </tr>
+                            <tr>
+
+
+                                <td class="text-right">限定邮箱数量：</td>
+                                <td><input type="text" class="col-sm-2" value="8000"><span>个 （已分配 2466 个）</span></td>
+                                <td class="text-right">邮件域状态：</td>
+                                <td>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="admin-status" id="open" checked value="open"> 启用
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="admin-status" id="close" value="close"> 禁用
+                                    </label>
+                                </td>
+
+                            </tr>
+                            <tr >
+
+
+
+                                <td class="text-right">邮件域状态：</td>
+                                <td>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="admin-status" id="open" checked value="open"> 启用
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="admin-status" id="close" value="close"> 禁用
+                                    </label>
+                                </td>
+                                <td class="text-right">限定邮箱数量：</td>
+                                <td><input type="text" class="col-sm-2" value="8000"><span>个 （已分配 2466 个）</span></td>
+                            </tr>
+
+
+
+                            </tbody>
+                        </table>
                         <div class="hr hr32 hr-dotted"></div>
 
 

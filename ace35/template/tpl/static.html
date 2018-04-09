@@ -1,0 +1,225 @@
+<div id="static-div">
+    <h3 class="header smaller lighter blue">邮件域信息</h3>
+    <div class="alert alert-block alert-warning">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="ace-icon fa fa-times"></i>
+        </button>
+
+        <!--<i class="ace-icon fa fa-check warning"></i>-->
+
+
+        <strong class="warning">
+            注：
+        </strong>
+        容量和数量如果设置为 0 则表示不进行限制；
+    </div>
+    <div class="table-header">
+        邮件域基本信息
+    </div>
+    <table id="email-basic-table" class="table  table-bordered table-hover table-striped">
+
+        <tbody>
+        <tr >
+            <td class="text-right">
+                邮件域名称：
+            </td>
+
+            <td>
+                <b>test.com</b>
+            </td>
+            <td class="text-right">邮件域状态：</td>
+            <td>
+                <label class="radio-inline">
+                    <input type="radio" name="admin-status" id="open" checked value="open"> 启用
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="admin-status" id="close" value="close"> 禁用
+                </label>
+            </td>
+
+        </tr>
+        <tr>
+            <td class="text-right">*限定邮箱数量：</td>
+            <td>
+                <input type="text" class="col-sm-2" value="8000"><span> 个 （已分配 2466 个）</span>
+            </td>
+            <td class="text-right">*限定别名数量：</td>
+            <td>
+                <input type="text" class="col-sm-2" value="0"><span> 个 （已分配 1 个）</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">*限定邮箱空间总容量：</td>
+            <td>
+                <input type="text" class="col-sm-2" value="0"><span> MB （已分配 276635 MB）</span>
+            </td>
+            <td class="text-right">*限定网络硬盘总容量：</td>
+            <td>
+                <input type="text" class="col-sm-2" value="0"><span> MB （已分配 250965 MB）</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">发送邮件限制大小：</td>
+            <td>
+                <input type="text" class="col-sm-2" value="500"><span> MB （填写0默认限制为100MB以内）</span>
+            </td>
+            <td class="text-right">超大附件限制大小：</td>
+            <td>
+                <input type="text" class="col-sm-2" value="10"><span> MB （填写0默认限制为100MB以内）</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">*用户邮箱默认容量：</td>
+            <td>
+                <input type="text" class="col-sm-2" value="100"><span> MB </span>
+            </td>
+            <td class="text-right">*网络硬盘默认容量：</td>
+            <td>
+                <input type="text" class="col-sm-2" value="100"><span> MB</span>
+            </td>
+        </tr>
+        <tr >
+            <td class="text-right">
+                接口修改密码是否加密：
+            </td>
+
+            <td>
+                <label class="radio-inline">
+                    <input type="radio" name="encryption" checked  value="open">是
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="encryption"  value="close">否
+                </label>
+                <span>（注意：开启后php5.4版本及以上生效，加密密钥:6D9A39C1018F6783E545B0D1A9EB2E98）</span>
+            </td>
+            <td class="text-right">批量修改收发信功能开关：</td>
+            <td>
+                <label class="radio-inline">
+                    <input type="radio" name="limit"   value="open">是
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="limit" checked value="close">否
+                </label>
+                <span>（选择是将会修改该域名下的所有邮箱收发功能）</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">*发信功能限制：</td>
+            <td>
+                <select name="limit_send">
+                    <option value="-1" selected>不限制邮件发送</option>
+                    <option value="1">禁止发送所有邮件</option>
+                    <option value="2">只发送本地域邮件</option>
+                    <option value="3">可发送指定外域邮件</option>
+                    <option value="4">可发送本地所有域邮件</option>
+                </select>
+                <span>（批量修改收发信功能开关选择是后,将针对域名下全部邮箱设置修改；请谨慎修改）</span>
+            </td>
+            <td class="text-right">*收信功能限制：</td>
+            <td>
+                <select name="limit_recv">
+                    <option value="-1" selected>不限制邮件接收</option>
+                    <option value="1">禁此接收所有邮件</option>
+                    <option value="2">只接收本地域邮件</option>
+                    <option value="3">可接收指定外域邮件</option>
+                </select>
+                <span>（批量修改收发信功能开关选择是后,将针对域名下全部邮箱设置修改；请谨慎修改）</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">邮件域功能：</td>
+            <td>请在 <a href="#"> 此页面 </a> 设置邮件域功能</td>
+            <td class="text-right">Webmail 页面定制：</td>
+            <td>请在 <a href="#"> 此页面 </a> 设置邮件域功能</td>
+        </tr>
+        <tr>
+            <td class="text-right">邮件域开通时间：</td>
+            <td>2014-12-11 11:12:05</td>
+            <td colspan="2">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <div class="row">
+                    <div class="col-xs-2 col-xs-offset-4">
+                        <button class="btn btn-primary btn-block btn-sm">确定</button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button class="btn btn-warning btn-block btn-sm">返回</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="hr hr-18 dotted hr-double"></div>
+    <div class="table-header">
+        企业基本信息
+    </div>
+    <table id="company" class="table  table-bordered table-hover  table-striped">
+        <tr>
+            <td class="text-right">*企业名称：</td>
+            <td>
+                <input type="text" class="col-sm-4" value="dfffff">
+            </td>
+            <td class="text-right">国家：</td>
+            <td>
+                <input type="text" class="col-sm-4">
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">省份/地区：</td>
+            <td>
+                <input type="text" class="col-sm-4">
+            </td>
+            <td class="text-right">城市：</td>
+            <td>
+                <input type="text" class="col-sm-4">
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">通信地址：</td>
+            <td>
+                <input type="text" class="col-sm-4">
+            </td>
+            <td class="text-right">邮政编码：</td>
+            <td>
+                <input type="text" class="col-sm-4">
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">电话号码：</td>
+            <td>
+                <input type="text" class="col-sm-4">
+            </td>
+            <td class="text-right">传真号码：</td>
+            <td>
+                <input type="text" class="col-sm-4">
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">网站地址：</td>
+            <td>
+                <input type="text" class="col-sm-4" value="http://www.baidu.com">
+            </td>
+            <td colspan="2">
+
+            </td>
+
+        </tr>
+        <tr>
+            <td colspan="4">
+                <div class="row">
+                    <div class="col-xs-2 col-xs-offset-4">
+                        <button class="btn btn-primary btn-block btn-sm">确定</button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button class="btn btn-warning btn-block btn-sm">返回</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <!--<div class="hr hr-18 dotted hr-double"></div>-->
+
+</div>

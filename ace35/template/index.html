@@ -48,12 +48,12 @@
             padding:0;
             height:22px;
         }
-        #static-div,#dynamic-div{
-            display:none;
-        }
-        #static-div.active,#dynamic-div.active{
-            display:block;
-        }
+        /*#static-div,#dynamic-div{*/
+            /*display:none;*/
+        /*}*/
+        /*#static-div.active,#dynamic-div.active{*/
+            /*display:block;*/
+        /*}*/
         table td.text-right{
             padding-right:0 !important;
             padding-left:0 !important;
@@ -455,7 +455,7 @@
                 <b class="arrow"></b>
                 <ul class="submenu">
                     <li class="active" id="static-table">
-                        <a href="#" >
+                        <a href="static" >
                             <i class="menu-icon fa fa-caret-right"></i>
 
                             邮件域信息一览
@@ -463,7 +463,7 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="" id="dynamic-table0">
-                        <a href="#">
+                        <a href="dynamic">
                             <i class="menu-icon fa fa-caret-right"></i>
                             邮件域列表
                         </a>
@@ -1154,269 +1154,9 @@
                 </div><!-- /.page-header -->
 
                 <div class="row">
-                    <div class="col-xs-12">
-                        <div id="static-div" class="active">
-                            <h3 class="header smaller lighter blue">邮件域信息</h3>
-                            <div class="alert alert-block alert-warning">
-                                <button type="button" class="close" data-dismiss="alert">
-                                    <i class="ace-icon fa fa-times"></i>
-                                </button>
-
-                                <!--<i class="ace-icon fa fa-check warning"></i>-->
+                    <div class="col-xs-12" id="test-load">
 
 
-                                <strong class="warning">
-                                    注：
-                                </strong>
-                                容量和数量如果设置为 0 则表示不进行限制；
-                            </div>
-                            <div class="table-header">
-                                邮件域基本信息
-                            </div>
-                            <table id="email-basic-table" class="table  table-bordered table-hover table-striped">
-
-                                <tbody>
-                                <tr >
-                                    <td class="text-right">
-                                        邮件域名称：
-                                    </td>
-
-                                    <td>
-                                        <b>test.com</b>
-                                    </td>
-                                    <td class="text-right">邮件域状态：</td>
-                                    <td>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="admin-status" id="open" checked value="open"> 启用
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="admin-status" id="close" value="close"> 禁用
-                                        </label>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td class="text-right">*限定邮箱数量：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-2" value="8000"><span> 个 （已分配 2466 个）</span>
-                                    </td>
-                                    <td class="text-right">*限定别名数量：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-2" value="0"><span> 个 （已分配 1 个）</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">*限定邮箱空间总容量：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-2" value="0"><span> MB （已分配 276635 MB）</span>
-                                    </td>
-                                    <td class="text-right">*限定网络硬盘总容量：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-2" value="0"><span> MB （已分配 250965 MB）</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">发送邮件限制大小：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-2" value="500"><span> MB （填写0默认限制为100MB以内）</span>
-                                    </td>
-                                    <td class="text-right">超大附件限制大小：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-2" value="10"><span> MB （填写0默认限制为100MB以内）</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">*用户邮箱默认容量：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-2" value="100"><span> MB </span>
-                                    </td>
-                                    <td class="text-right">*网络硬盘默认容量：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-2" value="100"><span> MB</span>
-                                    </td>
-                                </tr>
-                                <tr >
-                                    <td class="text-right">
-                                        接口修改密码是否加密：
-                                    </td>
-
-                                    <td>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="encryption" checked  value="open">是
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="encryption"  value="close">否
-                                        </label>
-                                        <span>（注意：开启后php5.4版本及以上生效，加密密钥:6D9A39C1018F6783E545B0D1A9EB2E98）</span>
-                                    </td>
-                                    <td class="text-right">批量修改收发信功能开关：</td>
-                                    <td>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="limit"   value="open">是
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" name="limit" checked value="close">否
-                                        </label>
-                                        <span>（选择是将会修改该域名下的所有邮箱收发功能）</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">*发信功能限制：</td>
-                                    <td>
-                                        <select name="limit_send">
-                                            <option value="-1" selected>不限制邮件发送</option>
-                                            <option value="1">禁止发送所有邮件</option>
-                                            <option value="2">只发送本地域邮件</option>
-                                            <option value="3">可发送指定外域邮件</option>
-                                            <option value="4">可发送本地所有域邮件</option>
-                                        </select>
-                                        <span>（批量修改收发信功能开关选择是后,将针对域名下全部邮箱设置修改；请谨慎修改）</span>
-                                    </td>
-                                    <td class="text-right">*收信功能限制：</td>
-                                    <td>
-                                        <select name="limit_recv">
-                                            <option value="-1" selected>不限制邮件接收</option>
-                                            <option value="1">禁此接收所有邮件</option>
-                                            <option value="2">只接收本地域邮件</option>
-                                            <option value="3">可接收指定外域邮件</option>
-                                        </select>
-                                        <span>（批量修改收发信功能开关选择是后,将针对域名下全部邮箱设置修改；请谨慎修改）</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">邮件域功能：</td>
-                                    <td>请在 <a href="#"> 此页面 </a> 设置邮件域功能</td>
-                                    <td class="text-right">Webmail 页面定制：</td>
-                                    <td>请在 <a href="#"> 此页面 </a> 设置邮件域功能</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">邮件域开通时间：</td>
-                                    <td>2014-12-11 11:12:05</td>
-                                    <td colspan="2">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <div class="row">
-                                            <div class="col-xs-2 col-xs-offset-4">
-                                                <button class="btn btn-primary btn-block btn-sm">确定</button>
-                                            </div>
-                                            <div class="col-xs-2">
-                                                <button class="btn btn-warning btn-block btn-sm">返回</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div class="hr hr-18 dotted hr-double"></div>
-                            <div class="table-header">
-                                企业基本信息
-                            </div>
-                            <table id="company" class="table  table-bordered table-hover  table-striped">
-                                <tr>
-                                    <td class="text-right">*企业名称：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-4" value="dfffff">
-                                    </td>
-                                    <td class="text-right">国家：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-4">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">省份/地区：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-4">
-                                    </td>
-                                    <td class="text-right">城市：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-4">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">通信地址：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-4">
-                                    </td>
-                                    <td class="text-right">邮政编码：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-4">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">电话号码：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-4">
-                                    </td>
-                                    <td class="text-right">传真号码：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-4">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="text-right">网站地址：</td>
-                                    <td>
-                                        <input type="text" class="col-sm-4" value="http://www.baidu.com">
-                                    </td>
-                                    <td colspan="2">
-
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <div class="row">
-                                            <div class="col-xs-2 col-xs-offset-4">
-                                                <button class="btn btn-primary btn-block btn-sm">确定</button>
-                                            </div>
-                                            <div class="col-xs-2">
-                                                <button class="btn btn-warning btn-block btn-sm">返回</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--<div class="hr hr-18 dotted hr-double"></div>-->
-
-                        </div>
-                        <div id="dynamic-div">
-                            <h3 class="header smaller lighter blue">动态数据表格</h3>
-
-                            <div class="clearfix">
-                                <div class="pull-right tableTools-container"></div>
-                            </div>
-                            <div class="table-header">
-                                域名管理
-                            </div>
-
-                            <!-- div.table-responsive -->
-
-                            <!-- div.dataTables_borderWrap -->
-                            <div>
-                                <table id="dynamic-table" class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th class="center">序号</th>
-                                        <th>域名</th>
-                                        <th>
-                                            <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-                                            限定邮箱数量
-                                        </th>
-                                        <th>限定别名数量</th>
-                                        <th>限定总容量</th>
-                                        <th>状态</th>
-                                        <th>是否微信主域名</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    </thead>
-
-                                    <tbody id="data-body">
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
 
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -1531,13 +1271,23 @@
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     jQuery(function($) {
-        $('#static-table').click(function(e){
-            $(this).addClass('active').siblings().removeClass('active');
-            $('#static-div').addClass('active').siblings().removeClass('active');
-        })
-        $('#dynamic-table0').click(function(e){
-            $(this).addClass('active').siblings().removeClass('active');
-            $('#dynamic-div').addClass('active').siblings().removeClass('active');
+        $('#test-load').load('tpl/static.html');
+//        $('#static-table').click(function(e){
+//            $('#test-load').load('tpl/static.html');
+//            $(this).addClass('active').siblings().removeClass('active');
+////            $('#static-div').addClass('active').siblings().removeClass('active');
+//        })
+//        $('#dynamic-table0').click(function(e){
+//            $('#test-load').load('tpl/dynamic.html');
+//            $(this).addClass('active').siblings().removeClass('active');
+////            $('#dynamic-div').addClass('active').siblings().removeClass('active');
+//        })
+        $('.nav.nav-list .submenu li a').click(function(e){
+            e.preventDefault();
+            $('.nav.nav-list .submenu li').removeClass('active');
+            $(this).parent().addClass('active');
+            var href_url = $(this).attr('href');
+            $('#test-load').load('tpl/'+href_url+'.html');
         })
 
         /////////////////////////////////////
@@ -1565,164 +1315,7 @@
 
 
 
-        for(var i= 0,html='';i<38;i++){
-            html+=`<tr class="">
-                                        <td class="center middle">
-                                            ${i+1}
-                                        </td>
 
-                                        <td>
-                                            <a href="#">test.com</a> (主域)
-                                        </td>
-                                        <td>${2000+i}</td>
-                                        <td>不限制</td>
-
-                                        <td>
-                                            邮箱：不限制；网盘：不限制
-
-                                        </td>
-
-                                        <td>
-                                            启用
-                                        </td>
-                                        <td>是</td>
-                                        <td>是</td>
-                                    </tr>`
-        }
-        $('#data-body').html(html);
-
-        var myTable =
-                $('#dynamic-table')
-                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
-                        .DataTable( {
-                            bAutoWidth: false,
-                            "aoColumns": [
-                                { "bSortable": false },
-                                null, null,null, null, null,null,
-                                { "bSortable": false }
-                            ],
-                            "aaSorting": [],
-
-
-                            //"bProcessing": true,
-                            //"bServerSide": true,
-                            //"sAjaxSource": "http://127.0.0.1/table.php"	,
-
-                            //,
-                            //"sScrollY": "200px",
-                            //"bPaginate": false,
-
-                            //"sScrollX": "100%",
-                            //"sScrollXInner": "120%",
-                            //"bScrollCollapse": true,
-                            //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
-                            //you may want to wrap the table inside a "div.dataTables_borderWrap" element
-
-                            //"iDisplayLength": 50
-
-
-                            select: {
-                                style: 'multi'
-                            },
-                            "iDisplayLength": 15,
-                            "lengthMenu":  [10,15,20, 50, 100,200],
-                            "oLanguage": {
-//                                "sLengthMenu": ,
-                                "sZeroRecords": "对不起! 信息筛选结果为空!",
-                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
-                                "sInfoEmpty": "总计: 0 条记录",
-                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
-                                "sSearch": "搜索: ",
-                                "oPaginate": {
-                                    "sFirst":    "第一页",
-                                    "sPrevious": "上一页",
-                                    "sNext":     "下一页",
-                                    "sLast":     "最后一页"
-                                }
-                            }
-                        } );
-
-
-
-        $.fn.dataTable.Buttons.swfPath = "../assets/js/dataTables/extensions/Buttons/swf/flashExport.swf"; //in Ace demo ../assets will be replaced by correct assets path
-        $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
-
-        new $.fn.dataTable.Buttons( myTable, {
-            buttons: [
-                {
-                    "extend": "colvis",
-                    "text": "<i class='fa fa-search bigger-110 blue'></i> <span class='hidden'>显示 / 隐藏 列</span>",
-                    "className": "btn btn-white btn-primary btn-bold",
-                    columns: ':not(:first):not(:last)'
-                },
-                {
-                    "extend": "copy",
-                    "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>复制到剪贴板</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
-                    "extend": "csv",
-                    "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>导出到 CSV</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
-                    "extend": "excel",
-                    "text": "<i class='fa fa-file-excel-o bigger-110 green'></i> <span class='hidden'>输出到 Excel</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
-                    "extend": "pdf",
-                    "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>输出到 PDF</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
-                    "extend": "print",
-                    "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>打印</span>",
-                    "className": "btn btn-white btn-primary btn-bold",
-                    autoPrint: false,
-                    message: 'This print was produced using the Print button for DataTables'
-                }
-            ]
-        } );
-        myTable.buttons().container().appendTo( $('.tableTools-container') );
-
-        //style the message box
-        var defaultCopyAction = myTable.button(1).action();
-        myTable.button(1).action(function (e, dt, button, config) {
-            defaultCopyAction(e, dt, button, config);
-            $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
-        });
-
-
-        var defaultColvisAction = myTable.button(0).action();
-        myTable.button(0).action(function (e, dt, button, config) {
-
-            defaultColvisAction(e, dt, button, config);
-
-
-            if($('.dt-button-collection > .dropdown-menu').length == 0) {
-                $('.dt-button-collection')
-                        .wrapInner('<ul class="dropdown-menu dropdown-light dropdown-caret dropdown-caret" />')
-                        .find('a').attr('href', '#').wrap("<li />")
-            }
-            $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
-        });
-
-        ////
-
-        setTimeout(function() {
-            $($('.tableTools-container')).find('a.dt-button').each(function() {
-                var div = $(this).find(' > div').first();
-                if(div.length == 1) div.tooltip({container: 'body', title: div.parent().text()});
-                else $(this).tooltip({container: 'body', title: $(this).text()});
-            });
-        }, 500);
-
-        $(document).on('click', '#dynamic-table .dropdown-toggle', function(e) {
-            e.stopImmediatePropagation();
-            e.stopPropagation();
-            e.preventDefault();
-        });
 
 
         /********************************/

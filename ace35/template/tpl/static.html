@@ -1,5 +1,9 @@
 <div id="static-div">
-    <h3 class="header smaller lighter blue">邮件域信息</h3>
+    <h3 class="header smaller lighter blue">邮件域信息
+        <button type="button" class="btn btn-primary pull-right" style="margin-right:32px;margin-top:-18px;" data-toggle="modal" data-target="#myModal">
+            添加邮件域
+        </button>
+    </h3>
     <div class="alert alert-block alert-warning">
         <button type="button" class="close" data-dismiss="alert">
             <i class="ace-icon fa fa-times"></i>
@@ -222,4 +226,169 @@
     </table>
     <!--<div class="hr hr-18 dotted hr-double"></div>-->
 
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">邮件域基本信息</h4>
+            </div>
+            <div class="modal-body">
+                <!--<form>-->
+                <!--<div class="form-group">-->
+                <!--<label for="recipient-name" class="control-label">Recipient:</label>-->
+                <!--<input type="text" class="form-control" id="recipient-name">-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                <!--<label for="message-text" class="control-label">Message:</label>-->
+                <!--<textarea class="form-control" id="message-text"></textarea>-->
+                <!--</div>-->
+                <!--</form>-->
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">邮件域名称：</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control"  placeholder="邮件域名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">邮件域状态：</label>
+                        <div class="col-sm-5">
+                            <label class="radio-inline">
+                                <input type="radio" name="status" value="1" checked> 启用
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="status" value="0"> 禁用
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red">*</span>限定邮箱数量：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="限定邮箱数量" >
+                                <span class="input-group-addon" >个</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red">*</span>限定别名数量：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="0" placeholder="限定别名数量" >
+                                <span class="input-group-addon" >个</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red">*</span>限定邮箱空间总容量：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="0"  placeholder="限定邮箱空间总容量">
+                                <span class="input-group-addon" >MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red">*</span>限定网络硬盘总容量：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="0"  placeholder="限定网络硬盘总容量">
+                                <span class="input-group-addon" >MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">发送邮件限制大小：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="500"  placeholder="发送邮件限制大小">
+                                <span class="input-group-addon" >MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">超大附件限制大小：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="10"  placeholder="超大附件限制大小">
+                                <span class="input-group-addon" >MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red">*</span>用户邮箱默认容量：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="100"  placeholder="用户邮箱默认容量">
+                                <span class="input-group-addon" >MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red">*</span>网络硬盘默认容量：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="100"  placeholder="网络硬盘默认容量">
+                                <span class="input-group-addon" >MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">接口修改密码是否加密：</label>
+                        <div class="col-sm-7">
+                            <label class="radio-inline">
+                                <input type="radio" name="isPwd" value="1" > 是
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="isPwd" value="0" checked> 否
+                            </label>
+                            <p class="help-block">
+                                <span class="red">注意：</span>开启后php5.4版本及以上生效，加密密钥:6D9A39C1018F6783E545B0D1A9EB2E98
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red">*</span>发信功能限制：</label>
+                        <div class="col-sm-5">
+                            <select class="form-control">
+                                <option value="-1" selected="">不限制邮件发送</option>
+                                <option value="1">禁止发送所有邮件</option>
+                                <option value="2">只发送本地域邮件</option>
+                                <option value="3">可发送指定外域邮件</option>
+                                <option value="4">可发送本地所有域邮件</option>
+                            </select>
+                            <!--<p class="help-block">-->
+                            <!--批量修改收发信功能开关选择是后,将针对域名下全部邮箱设置修改；请谨慎修改-->
+                            <!--</p>-->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red">*</span>收信功能限制：</label>
+                        <div class="col-sm-5">
+                            <select class="form-control">
+                                <option value="-1" selected="">不限制邮件接收</option>
+                                <option value="1">禁此接收所有邮件</option>
+                                <option value="2">只接收本地域邮件</option>
+                                <option value="3">可接收指定外域邮件</option>
+                            </select>
+                            <!--<p class="help-block">-->
+                            <!--批量修改收发信功能开关选择是后,将针对域名下全部邮箱设置修改；请谨慎修改-->
+                            <!--</p>-->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-4 text-center">
+                            <button type="button" class="btn btn-primary btn-block">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+            <!--<button type="button" class="btn btn-primary">保存</button>-->
+            <!--</div>-->
+        </div>
+    </div>
 </div>

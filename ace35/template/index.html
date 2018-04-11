@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="../assets/css/ace-ie.css" />
     <![endif]-->
 
+    <link rel="stylesheet" href="../assets/css/bootstrap-datetimepicker.css">
     <!-- inline styles related to this page -->
 
     <!-- ace settings handler -->
@@ -61,10 +62,20 @@
         .select-info{
             display:none;
         }
+        .red{
+            color:red;
+        }
+        .control-label{
+            white-space: nowrap;
+        }
     </style>
 </head>
 
 <body class="no-skin">
+
+
+<!-- Modal -->
+
 <!-- #section:basics/navbar.layout -->
 <div id="navbar" class="navbar navbar-default          ace-save-state">
     <div class="navbar-container ace-save-state" id="navbar-container">
@@ -100,70 +111,34 @@
             <ul class="nav ace-nav">
                 <li class="grey">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <i class="ace-icon fa fa-tasks"></i>
-                        <span class="badge badge-grey">4</span>
+                        <i class="ace-icon fa fa-cog icon-animated-wrench"></i>
+                        修改密码
                     </a>
 
-                    <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+                    <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret">
                         <li class="dropdown-header">
                             <i class="ace-icon fa fa-check"></i>
-                            4 Tasks to complete
+                            修改管理员信息
                         </li>
 
                         <li class="dropdown-content">
-                            <ul class="dropdown-menu dropdown-navbar">
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <span class="pull-left">Software Update</span>
-                                            <span class="pull-right">65%</span>
-                                        </div>
-
-                                        <div class="progress progress-mini">
-                                            <div style="width:65%" class="progress-bar"></div>
-                                        </div>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <span class="pull-left">Hardware Upgrade</span>
-                                            <span class="pull-right">35%</span>
-                                        </div>
-
-                                        <div class="progress progress-mini">
-                                            <div style="width:35%" class="progress-bar progress-bar-danger"></div>
-                                        </div>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <span class="pull-left">Unit Testing</span>
-                                            <span class="pull-right">15%</span>
-                                        </div>
-
-                                        <div class="progress progress-mini">
-                                            <div style="width:15%" class="progress-bar progress-bar-warning"></div>
-                                        </div>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        <div class="clearfix">
-                                            <span class="pull-left">Bug Fixes</span>
-                                            <span class="pull-right">90%</span>
-                                        </div>
-
-                                        <div class="progress progress-mini progress-striped active">
-                                            <div style="width:90%" class="progress-bar progress-bar-success"></div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
+                            <form>
+                                <div class="form-group">
+                                    <label class="control-label">旧密码:</label>
+                                    <input type="password" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">新密码:</label>
+                                    <input type="password" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">确认新密码:</label>
+                                    <input type="password" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-primary btn-block">提交</button>
+                                </div>
+                            </form>
                         </li>
 
                         <li class="dropdown-footer">
@@ -1028,6 +1003,7 @@
     <!-- /section:basics/sidebar -->
     <div class="main-content">
         <div class="main-content-inner">
+
             <!-- #section:basics/content.breadcrumbs -->
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
                 <ul class="breadcrumb">
@@ -1222,9 +1198,6 @@
 <script src="../assets/js/jquery.ui.touch-punch.js"></script>
 <script src="../assets/js/jquery.easypiechart.js"></script>
 <script src="../assets/js/jquery.sparkline.js"></script>
-<script src="../assets/js/flot/jquery.flot.js"></script>
-<script src="../assets/js/flot/jquery.flot.pie.js"></script>
-<script src="../assets/js/flot/jquery.flot.resize.js"></script>
 
 <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
 <script src="../assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>
@@ -1234,6 +1207,8 @@
 <script src="../assets/js/dataTables/extensions/Buttons/js/buttons.print.js"></script>
 <script src="../assets/js/dataTables/extensions/Buttons/js/buttons.colVis.js"></script>
 <script src="../assets/js/dataTables/extensions/Select/js/dataTables.select.js"></script>
+
+
 
 <!-- ace scripts -->
 <script src="../assets/js/ace/elements.scroller.js"></script>
@@ -1272,16 +1247,6 @@
 <script type="text/javascript">
     jQuery(function($) {
         $('#test-load').load('tpl/static.html');
-//        $('#static-table').click(function(e){
-//            $('#test-load').load('tpl/static.html');
-//            $(this).addClass('active').siblings().removeClass('active');
-////            $('#static-div').addClass('active').siblings().removeClass('active');
-//        })
-//        $('#dynamic-table0').click(function(e){
-//            $('#test-load').load('tpl/dynamic.html');
-//            $(this).addClass('active').siblings().removeClass('active');
-////            $('#dynamic-div').addClass('active').siblings().removeClass('active');
-//        })
         $('.nav.nav-list .submenu li a').click(function(e){
             e.preventDefault();
             $('.nav.nav-list .submenu li').removeClass('active');

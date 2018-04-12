@@ -1,5 +1,5 @@
 <div id="dynamic-div">
-    <h3 class="header smaller lighter blue">域名管理</h3>
+    <h3 class="header smaller lighter blue">域管理员列表</h3>
 
     <div class="clearfix">
         <div class="pull-right tableTools-container"></div>
@@ -32,15 +32,14 @@
             <thead>
             <tr>
                 <th class="center">序号</th>
-                <th>域名</th>
+                <th>登录名</th>
                 <th>
                     <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-                    限定邮箱数量
+                    最后登录时间
                 </th>
-                <th>限定别名数量</th>
-                <th>限定总容量</th>
+                <th>最后登录IP</th>
+                <th>自动登录IP</th>
                 <th>状态</th>
-                <th>是否微信主域名</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -70,12 +69,11 @@
         for(var i= 0,html='';i<p;i++){
             html+=`<tr class="">
                         <td class="center middle">${i+1}</td>
-                        <td><a href="#">test.com</a> (主域)</td>
+                        <td>${'admin'+i}</td>
                         <td>${2000+i}</td>
-                        <td>不限制</td>
-                        <td>邮箱：不限制；网盘：不限制</td>
+                        <td>192.168.1.35</td>
+                        <td>192.168.1.24</td>
                         <td>启用</td>
-                        <td>${p+i}</td>
                         <td>
                             <div class="action-buttons">
                                 <a class="green" href="#">
@@ -99,7 +97,7 @@
                             bAutoWidth: false,
                             "aoColumns": [
                                 { "bSortable": false },
-                                null, null,null, null, null,null,
+                                null, null,null, null, null,
                                 { "bSortable": false }
                             ],
                             "aaSorting": [],

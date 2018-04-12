@@ -1,12 +1,16 @@
 <div id="dynamic-div">
-    <h3 class="header smaller lighter blue">域名管理</h3>
+    <h3 class="header smaller lighter blue">反垃圾级别组
+        <button type="button" class="btn btn-primary pull-right" style="margin-right:32px;margin-top:-18px;">
+            添加组
+        </button>
+    </h3>
 
     <div class="clearfix">
         <div class="pull-right tableTools-container"></div>
         <div class="row">
             <div class="col-sm-3">
                 <div class="input-group">
-                    <span class="input-group-addon">选择域名：</span>
+                    <span class="input-group-addon">切换当前域名：</span>
                     <select name="yname" class="yname form-control">
                         <option value="test.com">test.com</option>
                         <option value="domain.com">domain.com</option>
@@ -14,14 +18,12 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <input type="datetime" name="start-time" class="mydatetime" />
-                <input type="datetime" name="end-time" class="mydatetime" />
                 <button id="search-btn" type="button" class="btn btn-info" style="border:none;">查询</button>
             </div>
         </div>
     </div>
     <div class="table-header">
-        域名管理
+        反垃圾级别组
     </div>
 
     <!-- div.table-responsive -->
@@ -32,60 +34,42 @@
             <thead>
             <tr>
                 <th class="center">序号</th>
-                <th>域名</th>
+                <th>组名称</th>
                 <th>
-                    <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-                    限定邮箱数量
+
+                    说明信息
                 </th>
-                <th>限定别名数量</th>
-                <th>限定总容量</th>
-                <th>状态</th>
-                <th>是否微信主域名</th>
+                <th>反垃圾级别</th>
+                <th>成员数</th>
                 <th>操作</th>
             </tr>
             </thead>
-
             <tbody id="data-body">
 
             </tbody>
         </table>
     </div>
 </div>
-<script src="../assets/js/date-time/moment.js"></script>
-<script src="../assets/js/date-time/bootstrap-datetimepicker.js"></script>
 <script>
-//    var mydate = $('#mydate')[0];
-//    if(mydate.type !== 'date') {//if browser doesn't support "date" input
-//        $(mydate).datepicker({
-//            //options
-//        })
-//    }
-    $(".mydatetime").datetimepicker({
-        format: 'YYYY-MM-DD HH:mm:ss',
-//        autoclose:true
-    });
-
     var myTable;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
             html+=`<tr class="">
                         <td class="center middle">${i+1}</td>
-                        <td><a href="#">test.com</a> (主域)</td>
-                        <td>${2000+i}</td>
-                        <td>不限制</td>
-                        <td>邮箱：不限制；网盘：不限制</td>
-                        <td>启用</td>
-                        <td>${p+i}</td>
+                        <td>sljdsoifjs</td>
+                        <td>说明信息说明信息</td>
+                        <td>级别${i+1}</td>
+                        <td>成员数${100+1}</td>
                         <td>
                             <div class="action-buttons">
                                 <a class="green" href="#">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
-                                    修改
+                                    修改组
                                 </a>
 
                                 <a class="red" href="#">
                                     <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                                    删除
+                                    删除组
                                 </a>
                             </div>
                         </td>
@@ -99,29 +83,12 @@
                             bAutoWidth: false,
                             "aoColumns": [
                                 { "bSortable": false },
-                                null, null,null, null, null,null,
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }, null,
                                 { "bSortable": false }
                             ],
                             "aaSorting": [],
-
-
-                            //"bProcessing": true,
-                            //"bServerSide": true,
-                            //"sAjaxSource": "http://127.0.0.1/table.php"	,
-
-                            //,
-                            //"sScrollY": "200px",
-                            //"bPaginate": false,
-
-                            //"sScrollX": "100%",
-                            //"sScrollXInner": "120%",
-                            //"bScrollCollapse": true,
-                            //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
-                            //you may want to wrap the table inside a "div.dataTables_borderWrap" element
-
-                            //"iDisplayLength": 50
-
-
                             select: {
                                 style: 'multi'
                             },

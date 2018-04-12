@@ -42,6 +42,9 @@
     <![endif]-->
 
     <style>
+        ul,li{
+            list-style:none;
+        }
         table#email-basic-table td input,#company td input{
             padding:0 4px;
         }
@@ -58,6 +61,7 @@
         table td.text-right{
             padding-right:0 !important;
             padding-left:0 !important;
+
         }
         .select-info{
             display:none;
@@ -68,6 +72,15 @@
         .control-label{
             white-space: nowrap;
         }
+        table td{
+            vertical-align: middle;
+        }
+        #email-basic-table td{
+            vertical-align: middle;
+        }
+        .yellow{
+            color:yellow;
+        }
     </style>
 </head>
 
@@ -75,6 +88,52 @@
 
 
 <!-- Modal -->
+<div class="modal fade" id="resetPwd" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">邮件域基本信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class=" col-sm-4 control-label">旧密码:</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control"  >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 ">新密码:</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" >
+                            <p class="help-block"><span class="red">注：</span>密码长度最少为8位，其中必须包括字母和数字！</p>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">确认新密码:</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-sm-8 col-sm-offset-2">
+                            <button type="button" class="btn btn-primary btn-block">保存</button>
+                        </div>
+
+
+                    </div>
+                </form>
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+            <!--<button type="button" class="btn btn-primary">保存</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
 
 <!-- #section:basics/navbar.layout -->
 <div id="navbar" class="navbar navbar-default          ace-save-state">
@@ -110,44 +169,12 @@
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
                 <li class="grey">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <a   href="#" data-toggle="modal" data-target="#resetPwd">
                         <i class="ace-icon fa fa-cog icon-animated-wrench"></i>
                         修改密码
                     </a>
 
-                    <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret">
-                        <li class="dropdown-header">
-                            <i class="ace-icon fa fa-check"></i>
-                            修改管理员信息
-                        </li>
 
-                        <li class="dropdown-content">
-                            <form>
-                                <div class="form-group">
-                                    <label class="control-label">旧密码:</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">新密码:</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">确认新密码:</label>
-                                    <input type="password" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-primary btn-block">提交</button>
-                                </div>
-                            </form>
-                        </li>
-
-                        <li class="dropdown-footer">
-                            <a href="#">
-                                See tasks with details
-                                <i class="ace-icon fa fa-arrow-right"></i>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
 
                 <li class="purple">
@@ -452,7 +479,7 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <a href="managerList">
                             <i class="menu-icon fa fa-caret-right"></i>
                             域管理员列表
                         </a>
@@ -474,7 +501,7 @@
 
                 <ul class="submenu">
                     <li class="">
-                        <a href="#">
+                        <a href="emailAccounts">
                             <i class="menu-icon fa fa-caret-right"></i>
 
                             邮箱账号管理
@@ -494,7 +521,7 @@
                     </li>
 
                     <li class="">
-                        <a href="#">
+                        <a href="recheck">
                             <i class="menu-icon fa fa-caret-right"></i>
                             审批申请账号
                         </a>
@@ -503,7 +530,7 @@
                     </li>
 
                     <li class="">
-                        <a href="#">
+                        <a href="accountcancel">
                             <i class="menu-icon fa fa-caret-right"></i>
                             审批注销申请
                         </a>
@@ -512,7 +539,7 @@
                     </li>
 
                     <li class="">
-                        <a href="#">
+                        <a href="profilereview">
                             <i class="menu-icon fa fa-caret-right"></i>
                             审批个人资料修改
                         </a>
@@ -521,7 +548,7 @@
                     </li>
 
                     <li class="">
-                        <a href="#">
+                        <a href="import">
                             <i class="menu-icon fa fa-caret-right"></i>
                             批量添加账号
                         </a>
@@ -530,7 +557,7 @@
                     </li>
 
                     <li class="">
-                        <a href="#">
+                        <a href="batchEdit">
                             <i class="menu-icon fa fa-caret-right"></i>
                             批量修改账号
                         </a>
@@ -539,7 +566,7 @@
                     </li>
 
                     <li class="">
-                        <a href="#">
+                        <a href="delete">
                             <i class="menu-icon fa fa-caret-right"></i>
                             批量删除账号
                         </a>
@@ -548,7 +575,7 @@
                     </li>
 
                     <li class="">
-                        <a href="#">
+                        <a href="backup">
                             <i class="menu-icon fa fa-caret-right"></i>
 
                             导入导出账号
@@ -572,7 +599,7 @@
 
                 <ul class="submenu">
                     <li class="">
-                        <a href="#">
+                        <a href="group">
                             <i class="menu-icon fa fa-caret-right"></i>
                             反垃圾级别组
                         </a>
@@ -594,7 +621,7 @@
 
                 <ul class="submenu">
                     <li class="">
-                        <a href="#">
+                        <a href="department/departmentList">
                             <i class="menu-icon fa fa-caret-right"></i>
                             部门列表
                         </a>
@@ -602,7 +629,7 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <a href="department/deptadminList">
                             <i class="menu-icon fa fa-caret-right"></i>
                             部门管理员列表
                         </a>
@@ -610,7 +637,7 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <a href="department/shareDomain">
                             <i class="menu-icon fa fa-caret-right"></i>
                             其他域通讯录共享
                         </a>
@@ -618,7 +645,7 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <a href="department/domainGroup">
                             <i class="menu-icon fa fa-caret-right"></i>
                             企业通讯录域组合
                         </a>
@@ -639,7 +666,7 @@
 
                 <ul class="submenu">
                     <li class="">
-                        <a href="#">
+                        <a href="maillist/maillist">
                             <i class="menu-icon fa fa-caret-right"></i>
                             列出邮件列表
                         </a>
@@ -672,7 +699,7 @@
 
                 <ul class="submenu">
                     <li class="">
-                        <a href="#">
+                        <a href="misc/function">
                             <i class="menu-icon fa fa-caret-right"></i>
                             综合功能开关
                         </a>
@@ -1145,8 +1172,8 @@
             <!-- #section:basics/footer -->
             <div class="footer-content">
 						<span class="bigger-120">
-							<span class="blue bolder">Ace</span>
-							Application &copy; 2013-2014
+
+							CopyRight ©fdfffff. Power by <span class="blue bolder">U-Mail</span> 邮件服务器
 						</span>
 
                 &nbsp; &nbsp;
@@ -1251,7 +1278,12 @@
             e.preventDefault();
             $('.nav.nav-list .submenu li').removeClass('active');
             $(this).parent().addClass('active');
+            $(this).parent().parents('li').addClass('active').siblings().removeClass('active');
             var href_url = $(this).attr('href');
+            var str0 = $(this).parent().parents('li').find('.menu-text').text();
+            var str1 = $(this).text();
+            $('#breadcrumbs .breadcrumb a').html(str0);
+            $('#breadcrumbs .breadcrumb li.active').html(str1);
             $('#test-load').load('tpl/'+href_url+'.html');
         })
 

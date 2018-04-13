@@ -913,7 +913,7 @@
         data: [{
           name: 'cmdBold',
           hotkey: 'Ctrl+B',
-          title: 'Bold',
+          title: '粗体',
           icon: { glyph: 'glyphicon glyphicon-bold', fa: 'fa fa-bold', 'fa-3': 'icon-bold' },
           callback: function(e){
             // Give/remove ** surround the selection
@@ -940,9 +940,10 @@
             // Set the cursor
             e.setSelection(cursor,cursor+chunk.length);
           }
-        },{
+        },
+            {
           name: 'cmdItalic',
-          title: 'Italic',
+          title: '斜体',
           hotkey: 'Ctrl+I',
           icon: { glyph: 'glyphicon glyphicon-italic', fa: 'fa fa-italic', 'fa-3': 'icon-italic' },
           callback: function(e){
@@ -972,7 +973,7 @@
           }
         },{
           name: 'cmdHeading',
-          title: 'Heading',
+          title: '标题',
           hotkey: 'Ctrl+H',
           icon: { glyph: 'glyphicon glyphicon-header', fa: 'fa fa-header', 'fa-3': 'icon-font' },
           callback: function(e){
@@ -1009,7 +1010,7 @@
         name: 'groupLink',
         data: [{
           name: 'cmdUrl',
-          title: 'URL/Link',
+          title: '链接地址',
           hotkey: 'Ctrl+L',
           icon: { glyph: 'glyphicon glyphicon-link', fa: 'fa fa-link', 'fa-3': 'icon-link' },
           callback: function(e){
@@ -1025,7 +1026,7 @@
 
             //ACE
 			if('bootbox' in window) {
-				bootbox.prompt(e.__localize('Insert Hyperlink'), function(link) {
+				bootbox.prompt(e.__localize('输入链接地址'), function(link) {
 					if (link != null && link != '' && link != 'http://' && link.substr(0,4) == 'http') {
 					  var sanitizedLink = $('<div>'+link+'</div>').text()
 
@@ -1055,7 +1056,7 @@
           }
         },{
           name: 'cmdImage',
-          title: 'Image',
+          title: '图片',
           hotkey: 'Ctrl+G',
           icon: { glyph: 'glyphicon glyphicon-picture', fa: 'fa fa-picture-o', 'fa-3': 'icon-picture' },
           callback: function(e){
@@ -1071,7 +1072,7 @@
 
             //ACE
 			if('bootbox' in window) {
-				 bootbox.prompt(e.__localize('Insert Image Hyperlink'), function(link) {
+				 bootbox.prompt(e.__localize('输入图片链接'), function(link) {
 					if (link != null && link != '' && link != 'http://' && link.substr(0,4) == 'http') {
 					  var sanitizedLink = $('<div>'+link+'</div>').text()
 					  
@@ -1111,7 +1112,7 @@
         data: [{
           name: 'cmdList',
           hotkey: 'Ctrl+U',
-          title: 'Unordered List',
+          title: '无序列表',
           icon: { glyph: 'glyphicon glyphicon-list', fa: 'fa fa-list', 'fa-3': 'icon-list-ul' },
           callback: function(e){
             // Prepend/Give - surround the selection
@@ -1157,7 +1158,7 @@
         {
           name: 'cmdListO',
           hotkey: 'Ctrl+O',
-          title: 'Ordered List',
+          title: '有序列表',
           icon: { glyph: 'glyphicon glyphicon-th-list', fa: 'fa fa-list-ol', 'fa-3': 'icon-list-ol' },
           callback: function(e) {
 
@@ -1203,7 +1204,7 @@
         {
           name: 'cmdCode',
           hotkey: 'Ctrl+K',
-          title: 'Code',
+          title: '代码',
           icon: { glyph: 'glyphicon glyphicon-asterisk', fa: 'fa fa-code', 'fa-3': 'icon-code' },
           callback: function(e) {
             // Give/remove ** surround the selection
@@ -1242,7 +1243,7 @@
         {
           name: 'cmdQuote',
           hotkey: 'Ctrl+Q',
-          title: 'Quote',
+          title: '引用',
           icon: { glyph: 'glyphicon glyphicon-comment', fa: 'fa fa-quote-left', 'fa-3': 'icon-quote-left' },
           callback: function(e) {
             // Prepend/Give - surround the selection
@@ -1292,8 +1293,8 @@
           name: 'cmdPreview',
           toggle: true,
           hotkey: 'Ctrl+P',
-          title: 'Preview',
-          btnText: 'Preview',
+          title: '预览',
+          btnText: '预览',
           btnClass: 'btn btn-primary btn-sm',
           icon: { glyph: 'glyphicon glyphicon-search', fa: 'fa fa-search', 'fa-3': 'icon-search' },
           callback: function(e){

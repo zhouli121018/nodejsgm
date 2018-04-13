@@ -16,6 +16,7 @@
 
     <!-- text fonts -->
     <link rel="stylesheet" href="../assets/css/ace-fonts.css" />
+    <link rel="stylesheet" href="../assets/css/bootstrap-duallistbox.css" />
 
     <!-- ace styles -->
     <link rel="stylesheet" href="../assets/css/ace.css" class="ace-main-stylesheet" id="main-ace-style" />
@@ -80,6 +81,9 @@
         }
         .yellow{
             color:yellow;
+        }
+        .wysiwyg-editor-box{
+            display:none;
         }
     </style>
 </head>
@@ -707,7 +711,7 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <a href="misc/translate">
                             <i class="menu-icon fa fa-caret-right"></i>
                             翻译邮件头设置
                         </a>
@@ -715,55 +719,55 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <a href="misc/review">
                             <i class="menu-icon fa fa-caret-right"></i>
                             邮件审核设置
                         </a>
 
                         <b class="arrow"></b>
                     </li>
-                    <li class="">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            反垃圾设置
-                        </a>
+                    <!--<li class="">-->
+                        <!--<a href="#">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
+                            <!--反垃圾设置-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
-                    </li>
-                    <li class="">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            发信频率设置
-                        </a>
+                        <!--<b class="arrow"></b>-->
+                    <!--</li>-->
+                    <!--<li class="">-->
+                        <!--<a href="#">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
+                            <!--发信频率设置-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
-                    </li>
+                        <!--<b class="arrow"></b>-->
+                    <!--</li>-->
                     <li class="">
-                        <a href="#">
+                        <a href="misc/changepwd">
                             <i class="menu-icon fa fa-caret-right"></i>
                             修改密码通知信
                         </a>
 
                         <b class="arrow"></b>
                     </li>
-                    <li class="">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            新用户欢迎信
-                        </a>
+                    <!--<li class="">-->
+                        <!--<a href="#">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
+                            <!--新用户欢迎信-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
-                    </li>
-                    <li class="">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            域签名设置
-                        </a>
+                        <!--<b class="arrow"></b>-->
+                    <!--</li>-->
+                    <!--<li class="">-->
+                        <!--<a href="#">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
+                            <!--域签名设置-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
-                    </li>
+                        <!--<b class="arrow"></b>-->
+                    <!--</li>-->
                     <li class="">
-                        <a href="#">
+                        <a href="misc/monitor">
                             <i class="menu-icon fa fa-caret-right"></i>
                             邮箱监控设置
                         </a>
@@ -771,21 +775,21 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="">
-                        <a href="#">
+                        <a href="misc/mailboxalias">
                             <i class="menu-icon fa fa-caret-right"></i>
                             邮箱别名设置
                         </a>
 
                         <b class="arrow"></b>
                     </li>
-                    <li class="">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            LDAP同步设置
-                        </a>
+                    <!--<li class="">-->
+                        <!--<a href="#">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
+                            <!--LDAP同步设置-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
-                    </li>
+                        <!--<b class="arrow"></b>-->
+                    <!--</li>-->
                     <li class="">
                         <a href="#">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -794,14 +798,14 @@
 
                         <b class="arrow"></b>
                     </li>
-                    <li class="">
-                        <a href="#">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            IM软件集成设置
-                        </a>
+                    <!--<li class="">-->
+                        <!--<a href="#">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
+                            <!--IM软件集成设置-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
-                    </li>
+                        <!--<b class="arrow"></b>-->
+                    <!--</li>-->
                     <li class="">
                         <a href="#">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -1223,6 +1227,11 @@
 <![endif]-->
 <script src="../assets/js/jquery-ui.custom.js"></script>
 <script src="../assets/js/jquery.ui.touch-punch.js"></script>
+<script src="../assets/js/markdown/markdown.js"></script>
+<script src="../assets/js/markdown/bootstrap-markdown.js"></script>
+<script src="../assets/js/jquery.hotkeys.js"></script>
+<script src="../assets/js/bootstrap-wysiwyg.js"></script>
+<script src="../assets/js/bootbox.js"></script>
 <script src="../assets/js/jquery.easypiechart.js"></script>
 <script src="../assets/js/jquery.sparkline.js"></script>
 
@@ -1234,6 +1243,8 @@
 <script src="../assets/js/dataTables/extensions/Buttons/js/buttons.print.js"></script>
 <script src="../assets/js/dataTables/extensions/Buttons/js/buttons.colVis.js"></script>
 <script src="../assets/js/dataTables/extensions/Select/js/dataTables.select.js"></script>
+
+<script src="../assets/js/jquery.bootstrap-duallistbox.js"></script>
 
 
 
@@ -1267,7 +1278,6 @@
 <script src="../assets/js/dataTables/extensions/Buttons/js/buttons.print.js"></script>
 <script src="../assets/js/dataTables/extensions/Buttons/js/buttons.colVis.js"></script>
 <script src="../assets/js/dataTables/extensions/Select/js/dataTables.select.js"></script>
-
 <!-- ace scripts -->
 
 <!-- inline scripts related to this page -->
@@ -1359,5 +1369,78 @@
 <script src="../docs/assets/js/language/html.js"></script>
 <script src="../docs/assets/js/language/css.js"></script>
 <script src="../docs/assets/js/language/javascript.js"></script>
+<script>
+    function showErrorAlert (reason, detail) {
+        var msg='';
+        if (reason==='unsupported-file-type') { msg = "Unsupported format " +detail; }
+        else {
+            //console.log("error uploading file", reason, detail);
+        }
+        $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'+
+                '<strong>File upload error</strong> '+msg+' </div>').prependTo('#alerts');
+    }
+
+    $('textarea[data-provide="markdown"]').each(function(){
+        var $this = $(this);
+
+        if ($this.data('markdown')) {
+            $this.data('markdown').showEditor();
+        }
+        else $this.markdown()
+
+        $this.parent().find('.btn').addClass('btn-white');
+    })
+    function initEditor(el){
+        $(el).ace_wysiwyg({
+            toolbar:
+                    [
+                        {name:'font', title: '字体'},
+                        null,
+                        {name:'fontSize', title: '字体大小'},
+                        null,
+                        {name:'bold', className:'btn-info',title: '粗体/ctrl+B'},
+                        {name:'italic', className:'btn-info',title:"斜体/Ctrl+I"},
+                        {name:'strikethrough', className:'btn-info',title:"删除线"},
+                        {name:'underline', className:'btn-info',title:"下划线"},
+                        null,
+                        {name:'insertunorderedlist', className:'btn-success',title:"图形列表"},
+                        {name:'insertorderedlist', className:'btn-success',title:"数字列表"},
+                        {name:'outdent', className:'btn-purple',title:"减少缩进"},
+                        {name:'indent', className:'btn-purple',title:"缩进"},
+                        null,
+                        {name:'justifyleft', className:'btn-primary',title:"左对齐"},
+                        {name:'justifycenter', className:'btn-primary',title:"居中对齐"},
+                        {name:'justifyright', className:'btn-primary',title:"右对齐"},
+                        {name:'justifyfull', className:'btn-inverse',title:"两端对齐"},
+                        null,
+                        {name:'createLink', className:'btn-pink',title:"链接"},
+                        {name:'unlink', className:'btn-pink',title:"断开链接"},
+                        null,
+                        {name:'insertImage', className:'btn-success',title:"图片"},
+                        null,
+                        {name:'foreColor', title:"颜色"},
+                        null,
+                        {name:'undo', className:'btn-grey',title:"撤销"}
+                    ],
+            'wysiwyg': {
+                fileUploadError: showErrorAlert
+            }
+        }).prev().addClass('wysiwyg-style2');
+
+        $('[data-toggle="buttons"] .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            var toolbar = $(el).prev().get(0);
+            if(which >= 1 && which <= 4) {
+                toolbar.className = toolbar.className.replace(/wysiwyg\-style(1|2)/g , '');
+                if(which == 1) $(toolbar).addClass('wysiwyg-style1');
+                else if(which == 2) $(toolbar).addClass('wysiwyg-style2');
+                if(which == 4) {
+                    $(toolbar).find('.btn-group > .btn').addClass('btn-white btn-round');
+                } else $(toolbar).find('.btn-group > .btn-white').removeClass('btn-white btn-round');
+            }
+        });
+    }
+</script>
 </body>
 </html>

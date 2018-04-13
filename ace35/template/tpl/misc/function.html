@@ -38,76 +38,63 @@
                 </label>
             </td>
             <td class="text-right">新用户欢迎信功能：</td>
-            <td class="row" style="padding:8px;">
-                <div class="col-sm-4 no-padding">
+            <td>
                     <label class="radio-inline">
                         <input type="radio" name="fun-check-login"  checked value="1"> 开启
                     </label>
                     <label class="radio-inline">
                         <input type="radio" name="fun-check-login"  value="0"> 关闭
                     </label>
-                </div>
-                <div class="col-sm-8 no-padding">
-                    请在 <a href="#">此页面</a> 设置欢迎信内容；
-                </div>
+                <p class="help-block">
+                    <button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#wlcmletter">设置欢迎信内容</button>
+                </p>
             </td>
         </tr>
         <tr>
-
-        </tr>
-        <tr>
             <td class="text-right">用户强密码功能：</td>
-            <td class="row" style="padding:8px;">
-                <div class="col-sm-4 no-padding">
+            <td>
                     <label class="radio-inline">
                         <input type="radio" name="fun-pwd"  checked value="1"> 开启
                     </label>
                     <label class="radio-inline">
                         <input type="radio" name="fun-pwd"  value="0"> 关闭
                     </label>
-                </div>
-                <div class="col-sm-8 no-padding">
+                <p class="help-block">
                     <span>注：开通强密码后用户密码长度最少为8位，其中必须包括大小写字母和数字；</span>
-                </div>
+                </p>
             </td>
             <td class="text-right">启用验证码功能：</td>
-            <td class="row" style="padding:8px;">
-                <div class="col-sm-4 no-padding-left">
+            <td>
                     <input type="text" class="form-control">
-                </div>
-                <div class="col-sm-8 no-padding">
+                <p class="help-block">
                     <span>注：-1表示永远显示验证码，表示多少次验证错误后显示验证码；</span>
-                </div>
+                </p>
             </td>
         </tr>
         <tr>
             <td class="text-right">登录防止xss启用token验证：</td>
-            <td class="row" style="padding:8px;">
-                <div class="col-sm-4 no-padding">
+            <td>
                     <label class="radio-inline">
                         <input type="radio" name="fun-xss"  checked value="1"> 开启
                     </label>
                     <label class="radio-inline">
                         <input type="radio" name="fun-xss"  value="0"> 关闭
                     </label>
-                </div>
-                <div class="col-sm-8 no-padding">
+                <p class="help-block">
                     <span>注：开启后，单点登录接口对接请加入token参数（token：8a5da52ed126447d359e70c05721a8aa）方可正常登录</span>
-                </div>
+                </p>
             </td>
             <td class="text-right">第三方登录验证：</td>
-            <td class="row" style="padding:8px;">
-                <div class="col-sm-4 no-padding">
+            <td>
                     <label class="radio-inline">
                         <input type="radio" name="fun-third"  checked value="1"> 开启
                     </label>
                     <label class="radio-inline">
                         <input type="radio" name="fun-third"  value="0"> 关闭
                     </label>
-                </div>
-                <div class="col-sm-8 no-padding">
-                    <span>注：用户使用第三方验证接口来登录 Webmail；请在 此页面 设置接口地址</span>
-                </div>
+                <p class="help-block">
+                    <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#authapi">设置第三方登录验证接口</button>
+                </p>
             </td>
         </tr>
         <tr>
@@ -122,18 +109,16 @@
                     </label>
             </td>
             <td class="text-right">登录系统地点限制：</td>
-            <td class="row" style="padding:8px;">
-                <div class="col-sm-4 no-padding">
+            <td>
                     <label class="radio-inline">
                         <input type="radio" name="fun-addr"  checked value="1"> 开启
                     </label>
                     <label class="radio-inline">
                         <input type="radio" name="fun-addr"  value="0"> 关闭
                     </label>
-                </div>
-                <div class="col-sm-8 no-padding">
+                <p class="help-block">
                     <span>注：打开本功能开关以后，一个邮件账户在一个地方登录后，之前的有效登录将会被强制登出；</span>
-                </div>
+                </p>
             </td>
         </tr>
         </tbody>
@@ -200,7 +185,7 @@
                     </label>
                 </div>
                 <div class="col-sm-8 no-padding">
-                    <span>注：请在 <a href="#">此页面</a> 设置反垃圾详情；</span>
+                    <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#antispam"  >反垃圾功能设置</button>
                 </div>
             </td>
             <td class="text-right">发信频率限制：</td>
@@ -214,7 +199,7 @@
                     </label>
                 </div>
                 <div class="col-sm-8 no-padding">
-                    <span>注：请在 <a href="#">此页面</a> 设置发信频率限制详情；</span>
+                    <button class="btn btn-xs btn-info" data-toggle="modal" data-target="#sendlimit" >发信频率设置</button>
                 </div>
             </td>
         </tr>
@@ -239,7 +224,7 @@
                     </label>
                 </div>
                 <div class="col-sm-8 no-padding">
-                    <span>注：请在 <a href="#">此页面</a> 设置“用户邮件保留时间”、“空间不足警告阀值”；</span>
+                    <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#spaceclean">邮箱空间清理设置</button>
                 </div>
             </td>
         </tr>
@@ -255,7 +240,9 @@
                     </label>
                 </div>
                 <div class="col-sm-8 no-padding">
-                    <span>注：开启此功能后，将会在本域发出的每封邮件后面尾部追加域签名；签名内容请在 <a href="">此页面</a> 设置；</span>
+                    <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#signature" >
+                        域签名设置
+                    </button>
                 </div>
             </td>
             <td class="text-right">POP邮箱接收功能：</td>
@@ -280,7 +267,7 @@
                     </label>
                 </div>
                 <div class="col-sm-8 no-padding">
-                    <span>注：请在 <a href="#">此页面</a> 设置接口地址；</span>
+                    <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#impush">即时通讯软件集成接口设置</button>
                 </div>
             </td>
             <td class="text-right">LDAP帐号自动同步：</td>
@@ -294,7 +281,7 @@
                     </label>
                 </div>
                 <div class="col-sm-8 no-padding">
-                    <span>注：请在 <a href="#">此页面</a> 设置 LDAP 连接参数；</span>
+                    <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#ldap_setting">设置 LDAP 连接参数</button>
                 </div>
             </td>
         </tr>
@@ -586,7 +573,7 @@
                     </label>
                 </div>
                 <div class="col-sm-8">
-                    注：开启此功能后用户查看邮件、发送邮件时会增加用户积分；请在 <a href="#">此页面</a> 设置积分数值；
+                    <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#userscore" >设置用户积分</button>
                 </div>
             </td>
             <td class="text-right">清空文件夹功能：</td>
@@ -878,8 +865,651 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="wlcmletter" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">新用户欢迎信设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">邮件主题：</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control"  placeholder="邮件主题">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">邮件内容：</label>
+                        <div class="col-sm-10">
+                            <div class="wysiwyg-editor" id="editor1"></div>
+                        </div>
+                    </div>
+                </form>
+                <div class="alert-warning" style="padding:4px;">
+                    <span class="red">注：</span>需要先启用“综合功能开关->用户注册登录设置->新用户欢迎信”功能。
+                </div>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">提交</button>
+                <button type="button"  class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="authapi" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">第三方登录验证接口设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">接口地址：</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control"  placeholder="接口地址">
+                        </div>
+                    </div>
+                </form>
+                    <ul class="alert-warning" style="padding:4px;">
+                        <li><p class="red">备注：</p>
+                            1、要使用此功能需要先启用“综合功能开关->用户注册登录设置->第三方登录验证”功能；
+
+                        </li>
+                        <li>
+                            2、从“9.8.14”之前的邮件系统升级上来的客户，必须先让用户重设一次邮箱密码后才可使用此功能；
+                        </li>
+                        <li>
+                            3、接口的具体使用方法请参考“接口文档”；
+                        </li>
+                    </ul>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">确定</button>
+                <button type="button" data-dismiss="modal" class="btn btn-warning">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="antispam" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">反垃圾功能设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">反垃圾过滤级别：</label>
+                        <div class="col-sm-8">
+                            <select name="check_level" class="form-control">
+                                <option value="basic" selected="">基础反垃圾</option>
+                                <option value="intermediate">中级反垃圾</option>
+                                <option value="senior">高级反垃圾</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">隔离邮件保存天数：</label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="number" name="save_days" class="form-control" value="15">
+                                <span class="input-group-addon">天</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">是否发送隔离报告：</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline">
+                                <input type="radio" name="is_report" value="1" > 发送
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="is_report" value="0" checked> 不发送
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">是否开启spf：</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline">
+                                <input type="radio" name="open_spf" value="1"> 是
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="open_spf" value="0" checked> 否
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">垃圾邮件投递位置：</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline">
+                                <input type="radio" name="spam_folder" value="Sequester"> 隔离队列
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="spam_folder" value="Spam"> 垃圾箱
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="spam_folder" value="INBOX" checked> 收件箱
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">垃圾邮件主题标识：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                </form>
+                <ul class="alert-warning" style="padding:4px;">
+                    <li><p class="red">备注：</p>
+                        1、需要先启用“综合功能开关->系统功能设置->DKIM身份验证”
+                    </li>
+                    <li>
+                        2、反垃圾级别分基础，中级，高级三种，级别越高反垃圾检测流程越多，反垃圾强度也越高
+                    </li>
+                    <li>
+                        3、被发垃圾隔离的邮件将在被隔离N天后自动删除，N通过"隔离邮件保存天数"设置
+                    </li>
+                    <li>
+                        4、可设置“发送隔离报告”，系统将每天发送一封隔离报告给隔离邮件的收件人，该报告包含两个邮件列表，一个病毒列表，一个垃圾列表，是所有前一天发送给收件人，但被系统隔离了的邮件,收件人可对邮件进行“放行”，“白名单”，“删除”操作
+                    </li>
+                    <li>
+                        5、另外一些没有被系统确认隔离，但疑似垃圾的邮件，将根据您设置的“垃圾邮件投递位置”，投递到您的垃圾箱，或打上“spam”标签投到收件箱
+                    </li>
+                    <li>
+                        6、针对不同的用户组，可以设置不同的反垃圾级别，如果邮件账号没有分组，则用上面的全局反垃圾级别。
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">提交</button>
+                <button type="button"  class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="sendlimit" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">发信频率设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发信频率：</label>
+                        <div class="col-sm-10">
+                            <input type="text" value="5" style="width:100px;"> 分钟限制发送
+                            <input type="text" value="100" style="width:100px;"> 封邮件
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">超限操作：</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="operate" value="block" checked> 只可发送本地邮件
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="operate" value="disable" > 禁用帐户
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                <ul class="alert-warning" style="padding:4px;">
+                    <li><p class="red">备注：</p>
+                        1、需要先启用“综合功能开关 ->系统功能设置 -> 发信频率限制”功能；
+
+                    </li>
+                    <li>
+                        2、此功能开启并做适当设置可以防范账户密码泄露造成的系统性风险；
+                    </li>
+                    <li>
+                        3、此功能开启并做适当设置可以防止用户对外大量群发邮件
+                    </li>
+                    <li>
+                        4、本功能只对发往外域（非本服务器）的邮件进行计数
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">提交</button>
+                <button type="button" class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="spaceclean" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">邮件域 <b>test.com</b> 邮箱空间清理设置</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">
+                    邮箱空间清理设置
+                </div>
+                <table class="table  table-bordered ">
+
+                    <tbody>
+                    <tr >
+                        <td  rowspan="5" style="width:5%;vertical-align: middle;font-weight: bold;">
+                            邮<br>件<br>保<br>留<br>时<br>间：
+                        </td>
+
+                        <td style="width:75%;">
+                            <div class="input-group">
+                                <span class="input-group-addon">普通邮件保留</span>
+                                <input type="text" name="general_keep_time" class="form-control" value="1">
+                                <span class="input-group-addon">天</span>
+                            </div>
+                            <p class="help-block">
+                                <span class="red">注：</span>除“发件箱”、“垃圾箱”和“废件箱”外的其它邮箱中的邮件
+                            </p>
+                        </td>
+                        <td rowspan="5" style="width:20%;vertical-align: middle">
+                            <span class="red">注：</span>
+                            设置用户各类邮件的保留时间，超过设置时间的邮件会被自动删除；设置为“0”时会永久保留用户邮件；系统会在每天凌晨 03:50 分自动进行清理；
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">发件箱邮件保留</span>
+                                <input type="text" name="sent_keep_time" class="form-control" value="0">
+                                <span class="input-group-addon">天</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">垃圾箱邮件保留</span>
+                                <input type="text" name="spam_keep_time" class="form-control" value="0">
+                                <span class="input-group-addon">天</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">废件箱邮件保留</span>
+                                <input type="text" name="trash_keep_time" class="form-control" value="0">
+                                <span class="input-group-addon">天</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div class="hr hr-18 dotted hr-double"></div>
+                <div class="table-header">
+                    警告邮件格式
+                </div>
+                <table class="table  table-bordered">
+                    <tr>
+                        <td class="text-right">邮件主题：</td>
+                        <td>
+                            <input type="text" class="form-control" value="邮箱剩余空间不足提醒">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">当空间不足百分比警告阀值：</td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" value="78" class="form-control">
+                                <span class="input-group-addon">%</span>
+                            </div>
+                            <p class="help-block">
+                                <span class="red">说明：</span>
+                                邮箱空间清理设置 设置发送“空间不足”警告邮件的阀值；设置范围在“0-100”之间，当用户邮箱的空间使用率达到设定值时会发送警告邮件；设置为“0”时表示不发送警告邮件；
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">邮件内容：</td>
+                        <td>
+                            <textarea name="content"  rows="8" class="form-control">您的邮箱剩余空间已不足 22%，请及时清理邮件，以免空间满后无法接收邮件。
+
+分配空间：{TOTAL_SIZE}MB
+已用空间：{USE_SIZE}MB</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">变量说明：</td>
+                        <td>
+                            <p>{MAIL_ADDRESS}：收件人邮件地址</p>
+                            <p>{USE_SIZE}：收件人邮件地址</p>
+                            <p>{TOTAL_SIZE}：管理员分配的邮箱大小</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">提交</button>
+                <button type="button" class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="signature" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">域签名设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">超文本签名：</label>
+                        <div class="col-sm-10">
+                            <div class="wysiwyg-editor" id="editor2">测试测试测试测试测试测试</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">纯文本签名：</label>
+                        <div class="col-sm-10">
+                            <textarea name="content_text" class="form-control" rows="10">测试测试测试测试测试测试</textarea>
+                        </div>
+                    </div>
+                </form>
+                <div class="alert-warning" style="padding:4px;">
+                    <span class="red">注：</span>需要先启用“综合功能开关 -> 系统功能设置 ->域签名”功能
+                </div>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">提交</button>
+                <button type="button"  class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="impush" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">即时通讯软件集成设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">接口地址：</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control"  placeholder="接口地址">
+                        </div>
+                    </div>
+                </form>
+                <ul class="alert-warning" style="padding:4px;">
+                    <li><p class="red">备注：</p>
+                        1、需要先启用“综合功能开关->系统功能设置->即时通讯软件集成”功能；
+
+                    </li>
+                    <li>
+                        2、接口的具体使用方法请参考“接口文档”；
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">确定</button>
+                <button type="button" data-dismiss="modal" class="btn btn-warning">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ldap_setting" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">帐号同步设置</h4>
+                <button class="btn btn-warning btn-xs pull-right">手动同步帐号</button>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">
+                    Micrisoft Active Directory 帐号同步
+                </div>
+                <table class="table  table-bordered ">
+                    <tbody>
+                    <tr >
+
+                        <td class="text-right">服务器地址：</td>
+                        <td style="width:75%;">
+                            <input type="text" style="width:220px;">:<input type="text" style="width:80px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">AD 域：</td>
+                        <td>
+
+                            <input type="text"  class="form-control" value="gxm.com">
+                            <p class="help-block">
+                                <span class="red">注：</span>需要进行帐号同步的AD域域名，eg:“domain.com”
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">登录帐号：</td>
+                        <td>
+
+                            <input type="text"  class="form-control" value="test">
+                            <p class="help-block">
+                                <span class="red">注：</span>登录AD服务器时要使用的帐号，eg:“username@domain.com”
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">登录密码：</td>
+                        <td>
+
+                            <input type="password"  class="form-control" value="test">
+                            <p class="help-block">
+                                <span class="red">注：</span>如不修改请留空
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">部门规则：</td>
+                        <td>
+
+                            <textarea type="text"  class="form-control" rows="3">ewfesfjlskdf</textarea>
+                            <p class="help-block">
+                                <span class="red">注：</span>如不修改请留空,格式:研发部->技术部;市场部
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">是否启用ldap验证密码：</td>
+                        <td>
+                            <div class="input-group">
+                                <label class="radio-inline">
+                                    <input type="radio" name="sw_login_ldap_switch"   value="1"> 启用
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="sw_login_ldap_switch" value="0" checked> 关闭
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">选择创建账号的AD域属性：</td>
+                        <td>
+                            <select name="acct_type" class="form-control">
+                                <option value="0">用户登录名</option>
+                                <option value="1" selected="">电子邮箱</option>
+                            </select>
+                            <p class="help-block">
+                               <span class="red">注：</span> 默认会使用 '用户登录名' 创建帐号， 若设置选择其他属性（如'电子邮箱'）创建帐号但AD域无对应值，也会使用 '用户登录名' 创建帐号
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">选择创建部门的AD域属性：</td>
+                        <td>
+                            <select name="dept_type" class="form-control">
+                                <option value="1">组织单位(OU)</option>
+                                <option value="0" selected="">用户属性列表中的'部门'属性</option>
+                            </select>
+                            <p class="help-block">
+                                <span class="red">注：</span> 默认会读取用户属性中的'部门'属性来创建/更新部门。同步部门时，本地创建的其他部门会被删除。
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="table-footer">
+                        <span class="red">注：</span>
+                        <ul>
+                            <li>1、如果需要自动同步功能，需要先启用“综合功能开关->系统功能设置->LDAP帐号自动同步”功能，系统会自动每隔10分钟执行一次同步操作；</li>
+                            <li>2、除自动同步外，也可以点击上方的“手动同步帐号”按钮来手动同步</li>
+                            <li>3、“邮件系统”中的域名可以和“AD服务器”中的域名不同；</li>
+                            <li>4、系统会使用 AD 中用户帐号的“用户登录名”做为邮箱名称；</li>
+                            <li>5、系统会将 AD 中用户帐号的以下信息同步至邮件系统：显示名称、部门、职务、电话号码、家庭电话、移动电话、国家/地区、省/自治区、市/县、街道、邮政编码、网页；</li>
+                            <li>6、如果 AD 中有帐号而邮件系统中没有，则会自动添加；如果邮件系统中有帐号而 AD 中没有，则会删除邮件系统中的帐号；AD 中的帐号信息更新后会自动同步到邮件系统中；</li>
+                            <li>7、本功能和“综合功能开关 -> 用户注册登录设置 -> 第三方登录验证”功能不能同时使用；</li>
+                        </ul>
+                </div>
+                <div class="hr hr-18 dotted hr-double"></div>
+                <div class="table-header">
+                    LDAP服务器帐号同步
+                </div>
+                <table class="table  table-bordered ">
+                    <tbody>
+                    <tr >
+
+                        <td class="text-right">服务器地址：</td>
+                        <td style="width:75%;">
+                            <input type="text" style="width:220px;">:<input type="text" style="width:80px;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">登录帐号：</td>
+                        <td>
+
+                            <input type="text"  class="form-control" value="gxm.com">
+                            <p class="help-block">
+                                <span class="red">注：</span>如不需要登录请留空
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">登录密码：</td>
+                        <td>
+
+                            <input type="password"  class="form-control" value="test">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">搜索路径(基础DN)：</td>
+                        <td>
+
+                            <input type="text" class="form-control" >
+                            <p class="help-block">
+                                eg:“ou=mailboxs,dc=example,dc=com”，最后组合成的完整邮箱DN为“uid=username,ou=mailboxs,dc=example,dc=com”。
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">部门规则：</td>
+                        <td>
+
+                            <textarea type="text"  class="form-control" rows="3">ewfesdfffffffffjlskdf</textarea>
+                            <p class="help-block">
+                                <span class="red">注：</span>如不修改请留空,格式:研发部->技术部;市场部
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="table-footer">
+                        <span class="red">注：</span>
+                        <ul>
+                            <li>1、如果需要自动同步功能，需要先启用“综合功能开关->系统功能设置->LDAP帐号自动同步”功能，系统会自动每隔10分钟执行一次同步操作；</li>
+                            <li>2、除自动同步外，也可以点击上方的“手动同步帐号”按钮来手动同步</li>
+                            <li>3、“邮件系统”中的域名可以和“AD服务器”中的域名不同；</li>
+                            <li>4、LDAP 中邮箱帐号的“密码”(userPassword)属性值必须为“明文密码”或“MD5-Crypt加密密码”，例如“123456”或“$1$JMY5yLn5$jhwT2ERMdCFdSrQsZotuL0”；</li>
+                            <li>5、如果 LDAP 中有帐号而邮件系统中没有，则会自动添加；如果邮件系统中有的帐号 LDAP 中没有，则会删除邮件系统中的帐号；如果一个帐号在 LDAP 系统和邮件系统中同时存在，则会使用 LDAP 中的帐号密码更新邮箱系统中的密码；</li>
+                            <li>6、本功能和“综合功能开关 -> 用户注册登录设置 -> 第三方登录验证”功能不能同时使用；</li>
+                        </ul>
+                </div>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">提交</button>
+                <button type="button" class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="userscore" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Webmail用户积分设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">登录Webmail：</label>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <input type="number" value="0" class="form-control">
+                                <span class="input-group-addon">分</span>
+                            </div>
+                            <p class="help-block"><span class="red"> 注：</span>每登录一次 Webmail 所增加的分数</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">查看邮件：</label>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <input type="number" value="0" class="form-control">
+                                <span class="input-group-addon">分</span>
+                            </div>
+                            <p class="help-block"><span class="red"> 注：</span>每查看一封邮件所增加的分数</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">发送邮件：</label>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <input type="number" value="0" class="form-control">
+                                <span class="input-group-addon">分</span>
+                            </div>
+                            <p class="help-block"><span class="red"> 注：</span>每发送一封邮件所增加的分数</p>
+                        </div>
+                    </div>
+                </form>
+                <ul class="alert-warning" style="padding:4px;">
+                    <li><p class="red">备注：</p>
+                        需要先启用“综合功能开关->Webmail功能设置->用户积分”功能。
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">提交</button>
+                <button type="button" class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $('.table-header').click(function(){
         $(this).next().toggle();
     })
+
+
+
+    initEditor('#editor1');
+    initEditor('#editor2');
+
+
+
 </script>

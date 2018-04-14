@@ -1,0 +1,56 @@
+<div id="static-div">
+    <h3 class="header smaller lighter blue">ICP 备案信息设置
+
+    </h3>
+    <div class="row" style="margin-bottom:6px;">
+        <div class="col-sm-3">
+            <div class="input-group">
+                <span class="input-group-addon">选择域名：</span>
+                <select name="yname" class="yname form-control">
+                    <option value="test.com">test.com</option>
+                    <option value="domain.com">domain.com</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="table-header">
+        ICP 备案信息设置
+    </div>
+    <table class="table  table-bordered">
+        <tr>
+            <td class="text-right">ICP 备案是否显示：</td>
+            <td>
+                <label class="radio-inline">
+                    <input type="radio" name="icp_radio" checked value="1"> 启用
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="icp_radio" value="0"> 关闭
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">ICP 备案号：</td>
+            <td>
+                <input type="text" style="width:40%;min-width:100px;" value="备案号wdfs">
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">ICP 备案号链接地址：</td>
+            <td>
+                <input type="text" style="width:40%;min-width:100px;" value="http://www.baidu.com">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <div class="row">
+                    <div class="col-xs-2 col-xs-offset-4">
+                        <button class="btn btn-primary btn-block btn-sm">提交</button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button class="btn btn-warning btn-block btn-sm">重置</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

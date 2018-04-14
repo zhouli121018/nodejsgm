@@ -1,0 +1,113 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue">客户端在线附件设置
+
+    </h3>
+
+    <div class="row" style="margin-bottom:6px;">
+        <div class="col-sm-3">
+            <div class="input-group">
+                <span class="input-group-addon">切换当前域名：</span>
+                <select name="yname" class="yname form-control">
+                    <option value="test.com">test.com</option>
+                    <option value="domain.com">domain.com</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <button  type="button" class="btn btn-info" style="border:none;">查询</button>
+        </div>
+    </div>
+    <div class="table-header">
+        客户端在线附件设置
+    </div>
+    <div>
+        <table class="table table-bordered">
+            <tr>
+                <td style="width:25%;" class="text-right">客户端在线附件开关：</td>
+                <td>
+                    <label class="radio-inline">
+                        <input type="radio" name="custom_radio"  checked value="open"> 开启
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="custom_radio" value="close"> 关闭
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right" style="vertical-align: middle">转存附件大小：</td>
+                <td>
+                    <div class="input-group" style="width:40%;">
+                        <input type="text" class="form-control" value="50">
+                        <span class="input-group-addon">M</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right" style="vertical-align: middle">附件下载地址：</td>
+                <td>
+                    <input type="text" value="http://www.baidu.com" style="width:40%;">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="center">
+                    <button type="button" class="btn btn-info">提交</button>
+                    <button type="button" class="btn btn-danger">返回</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="well" style="margin-top:5px;background:#fff;">
+        <div class="user_content_box">
+            <div class="wysiwyg_content_show">
+                <p class="red"><b>备注：</b></p>
+                <p> 1、当“审核类型”设置为“外发邮件”时，只会审核“被审核人”发送给外部邮件域的邮件，发送给本域其它邮箱的邮件不会进行审核；“审核类型”为“所有发送邮件”时，会对“被审核人”发送的所有邮件进行审核；</p>
+                <p> 2、当设置了同一个“被审核人”被多个“审核人”审核时，每个审核人都可以对此人的邮件进行审核；只需要有一个审核人执行审核操作即可</p>
+            </div>
+            <div class="hr hr-18 dotted"></div>
+            <button class="btn btn-sm btn-primary admin_edit">
+                <i class="ace-icon fa fa-pencil bigger-125"></i>
+                编辑
+            </button>
+
+        </div>
+        <div class="wysiwyg-editor-box">
+            <div class="wysiwyg-editor" id="editor_review">
+                <p class="red"><b>备注：</b></p>
+                <p> 1、当“审核类型”设置为“外发邮件”时，只会审核“被审核人”发送给外部邮件域的邮件，发送给本域其它邮箱的邮件不会进行审核；“审核类型”为“所有发送邮件”时，会对“被审核人”发送的所有邮件进行审核；</p>
+                <p> 2、当设置了同一个“被审核人”被多个“审核人”审核时，每个审核人都可以对此人的邮件进行审核；只需要有一个审核人执行审核操作即可</p>
+            </div>
+            <div class="widget-toolbox padding-4 clearfix admin_setted">
+                <div class="btn-group pull-left">
+                    <button class="btn btn-sm btn-info">
+                        <i class="ace-icon fa fa-times bigger-125"></i>
+                        取消
+                    </button>
+                </div>
+
+                <div class="btn-group pull-right">
+                    <button class="btn btn-sm btn-purple">
+                        <i class="ace-icon fa fa-floppy-o bigger-125"></i>
+                        保存
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(function(){
+        initEditor('#editor_review')
+    })
+
+    $('.admin_edit').click(function(){
+        $('.user_content_box').hide();
+        $('.wysiwyg-editor-box').show();
+    })
+    $('.admin_setted button').click(function(){
+        $('.wysiwyg-editor-box').hide();
+        $('.user_content_box').show();
+    })
+
+</script>

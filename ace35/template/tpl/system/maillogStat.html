@@ -1,0 +1,409 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue">邮件统计与分析</h3>
+
+    <div class="clearfix">
+        <div class="pull-right tableTools-container"></div>
+        <div class="row clearfix">
+            <div class="col-sm-10">
+                <div class="row">
+                    <div class="col-sm-3" style="margin-bottom:4px;">
+                        <div class="input-group">
+                            <span class="input-group-addon">域名</span>
+                            <select name="yname" class="yname form-control">
+                                <option value="test.com">test.com</option>
+                                <option value="domain.com">domain.com</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-9" style="margin-bottom:4px;">
+                        <div class="button-group">
+                            <button id="search-btn" type="button" class="btn btn-info" style="border:none;">邮件收发统计报告</button>
+                            <button type="button" class="btn btn-warning" style="border:none;">用户统计</button>
+                            <button type="button" class="btn btn-primary" style="border:none;">邮件日志查询</button>
+                            <button type="button" class="btn btn-pink" style="border:none;">活跃发件人</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div>
+        <table id="dynamic-table1" class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>SMTP/IMAP/POP</th>
+                <th>根节点计数</th>
+                <th>7天总计</th>
+                <th>今日</th>
+                <th>昨日</th>
+                <th>2日之前</th>
+                <th>3日之前</th>
+                <th>4日之前</th>
+                <th>5日之前</th>
+                <th>6日之前</th>
+            </tr>
+            </thead>
+
+            <tbody id="data-body1">
+
+            </tbody>
+        </table>
+    </div>
+    <hr>
+    <div class="clearfix" style="margin-bottom:8px;">
+        <div class="pull-right tableTools-container2"></div>
+    </div>
+
+    <div>
+        <table id="dynamic-table2" class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>垃圾/病毒邮件</th>
+                <th>根节点计数</th>
+                <th>7天总计</th>
+                <th>今日</th>
+                <th>昨日</th>
+                <th>2日之前</th>
+                <th>3日之前</th>
+                <th>4日之前</th>
+                <th>5日之前</th>
+                <th>6日之前</th>
+            </tr>
+            </thead>
+
+            <tbody id="data-body2">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    var myTable,myTable2;
+    function initDate1(p){
+        for(var i= 0,html='';i<p;i++){
+            html+=`<tr class="">
+                        <td >SMTP 邮件（入）</td>
+                        <td>8</td>
+                        <td>7<br>0.04/hr</td>
+                        <td>2<br>0.11/hr</td>
+                        <td>0<br>0.00/hr</td>
+                        <td>0<br>0.00/hr</td>
+                        <td>5<br>0.21/hr</td>
+                        <td>0<br>0.00/hr</td>
+                        <td>0<br>0.00/hr</td>
+                        <td>0<br>0.00/hr</td>
+                    </tr>`
+        }
+        $('#data-body1').html(html);
+
+    }
+    function initDate2(p){
+        for(var i= 0,html='';i<p;i++){
+            html+=`<tr class="">
+                        <td >已接收的垃圾邮件</td>
+                        <td>8</td>
+                        <td>7<br>0.04/hr</td>
+                        <td>2<br>0.11/hr</td>
+                        <td>0<br>0.00/hr</td>
+                        <td>0<br>0.00/hr</td>
+                        <td>5<br>0.21/hr</td>
+                        <td>0<br>0.00/hr</td>
+                        <td>0<br>0.00/hr</td>
+                        <td>0<br>0.00/hr</td>
+                    </tr>`
+        }
+        $('#data-body2').html(html);
+
+    }
+
+    function initDataTable1(el){
+        myTable =
+                $(el)
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+
+
+                            //"bProcessing": true,
+                            //"bServerSide": true,
+                            //"sAjaxSource": "http://127.0.0.1/table.php"	,
+
+                            //,
+                            //"sScrollY": "200px",
+                            //"bPaginate": false,
+
+                            //"sScrollX": "100%",
+                            //"sScrollXInner": "120%",
+                            //"bScrollCollapse": true,
+                            //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
+                            //you may want to wrap the table inside a "div.dataTables_borderWrap" element
+
+                            //"iDisplayLength": 50
+
+
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 5,
+                            "lengthMenu":  [5,10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+        $.fn.dataTable.Buttons.swfPath = "../assets/js/dataTables/extensions/Buttons/swf/flashExport.swf"; //in Ace demo ../assets will be replaced by correct assets path
+        $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
+
+        new $.fn.dataTable.Buttons( myTable, {
+            buttons: [
+                {
+                    "extend": "colvis",
+                    "text": "<i class='fa fa-search bigger-110 blue'></i> <span class='hidden'>显示 / 隐藏 列</span>",
+                    "className": "btn btn-white btn-primary btn-bold",
+                    columns: ':not(:first):not(:last)'
+                },
+                {
+                    "extend": "copy",
+                    "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>复制到剪贴板</span>",
+                    "className": "btn btn-white btn-primary btn-bold"
+                },
+                {
+                    "extend": "csv",
+                    "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>导出到 CSV</span>",
+                    "className": "btn btn-white btn-primary btn-bold"
+                },
+                {
+                    "extend": "excel",
+                    "text": "<i class='fa fa-file-excel-o bigger-110 green'></i> <span class='hidden'>输出到 Excel</span>",
+                    "className": "btn btn-white btn-primary btn-bold"
+                },
+                {
+                    "extend": "pdf",
+                    "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>输出到 PDF</span>",
+                    "className": "btn btn-white btn-primary btn-bold"
+                },
+                {
+                    "extend": "print",
+                    "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>打印</span>",
+                    "className": "btn btn-white btn-primary btn-bold",
+                    autoPrint: false,
+                    message: 'This print was produced using the Print button for DataTables'
+                }
+            ]
+        } );
+        myTable.buttons().container().appendTo( $('.tableTools-container') );
+
+        //style the message box
+        var defaultCopyAction = myTable.button(1).action();
+        myTable.button(1).action(function (e, dt, button, config) {
+            defaultCopyAction(e, dt, button, config);
+            $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
+        });
+
+
+        var defaultColvisAction = myTable.button(0).action();
+        myTable.button(0).action(function (e, dt, button, config) {
+
+            defaultColvisAction(e, dt, button, config);
+
+
+            if($('.dt-button-collection > .dropdown-menu').length == 0) {
+                $('.dt-button-collection')
+                        .wrapInner('<ul class="dropdown-menu dropdown-light dropdown-caret dropdown-caret" />')
+                        .find('a').attr('href', '#').wrap("<li />")
+            }
+            $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
+        });
+
+        ////
+
+        setTimeout(function() {
+            $($('.tableTools-container')).find('a.dt-button').each(function() {
+                var div = $(this).find(' > div').first();
+                if(div.length == 1) div.tooltip({container: 'body', title: div.parent().text()});
+                else $(this).tooltip({container: 'body', title: $(this).text()});
+            });
+        }, 500);
+    }
+    function initDataTable2(el){
+        myTable2 =
+                $(el)
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+
+
+                            //"bProcessing": true,
+                            //"bServerSide": true,
+                            //"sAjaxSource": "http://127.0.0.1/table.php"	,
+
+                            //,
+                            //"sScrollY": "200px",
+                            //"bPaginate": false,
+
+                            //"sScrollX": "100%",
+                            //"sScrollXInner": "120%",
+                            //"bScrollCollapse": true,
+                            //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
+                            //you may want to wrap the table inside a "div.dataTables_borderWrap" element
+
+                            //"iDisplayLength": 50
+
+
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 5,
+                            "lengthMenu":  [5,10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+        $.fn.dataTable.Buttons.swfPath = "../assets/js/dataTables/extensions/Buttons/swf/flashExport.swf"; //in Ace demo ../assets will be replaced by correct assets path
+        $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
+
+        new $.fn.dataTable.Buttons( myTable2, {
+            buttons: [
+                {
+                    "extend": "colvis",
+                    "text": "<i class='fa fa-search bigger-110 blue'></i> <span class='hidden'>显示 / 隐藏 列</span>",
+                    "className": "btn btn-white btn-primary btn-bold",
+                    columns: ':not(:first):not(:last)'
+                },
+                {
+                    "extend": "copy",
+                    "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>复制到剪贴板</span>",
+                    "className": "btn btn-white btn-primary btn-bold"
+                },
+                {
+                    "extend": "csv",
+                    "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>导出到 CSV</span>",
+                    "className": "btn btn-white btn-primary btn-bold"
+                },
+                {
+                    "extend": "excel",
+                    "text": "<i class='fa fa-file-excel-o bigger-110 green'></i> <span class='hidden'>输出到 Excel</span>",
+                    "className": "btn btn-white btn-primary btn-bold"
+                },
+                {
+                    "extend": "pdf",
+                    "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>输出到 PDF</span>",
+                    "className": "btn btn-white btn-primary btn-bold"
+                },
+                {
+                    "extend": "print",
+                    "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>打印</span>",
+                    "className": "btn btn-white btn-primary btn-bold",
+                    autoPrint: false,
+                    message: 'This print was produced using the Print button for DataTables'
+                }
+            ]
+        } );
+        myTable2.buttons().container().appendTo( $('.tableTools-container2') );
+
+        //style the message box
+        var defaultCopyAction = myTable2.button(1).action();
+        myTable2.button(1).action(function (e, dt, button, config) {
+            defaultCopyAction(e, dt, button, config);
+            $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
+        });
+
+
+        var defaultColvisAction = myTable2.button(0).action();
+        myTable2.button(0).action(function (e, dt, button, config) {
+
+            defaultColvisAction(e, dt, button, config);
+
+
+            if($('.dt-button-collection > .dropdown-menu').length == 0) {
+                $('.dt-button-collection')
+                        .wrapInner('<ul class="dropdown-menu dropdown-light dropdown-caret dropdown-caret" />')
+                        .find('a').attr('href', '#').wrap("<li />")
+            }
+            $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
+        });
+
+        ////
+
+        setTimeout(function() {
+            $($('.tableTools-container')).find('a.dt-button').each(function() {
+                var div = $(this).find(' > div').first();
+                if(div.length == 1) div.tooltip({container: 'body', title: div.parent().text()});
+                else $(this).tooltip({container: 'body', title: $(this).text()});
+            });
+        }, 500);
+    }
+
+    initDate1(28);
+    initDate2(26);
+    initDataTable1('#dynamic-table1');
+    initDataTable2('#dynamic-table2');
+
+    $('#search-btn').click(function(){
+        myTable.destroy();
+        myTable2.destroy();
+        initDate1(3);
+        initDate2(2);
+        initDataTable1('#dynamic-table1');
+        initDataTable2('#dynamic-table2');
+    })
+
+
+
+
+    $(document).on('click', '#dynamic-table .dropdown-toggle', function(e) {
+        e.stopImmediatePropagation();
+        e.stopPropagation();
+        e.preventDefault();
+    });
+</script>

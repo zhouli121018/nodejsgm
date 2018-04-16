@@ -72,6 +72,42 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="edit_template" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">编辑或新增模板</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">模板名称：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="umail微信公众号" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">微信模板ID：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="umail201703" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">调用方法表示code：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="SDJFOSDIJFES" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group center">
+                        <button type="button" class="btn btn-sm btn-info">保存</button>
+                        <button type="button" class="btn btn-sm btn-danger">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     var myTable;
     function initDate(p){
@@ -92,7 +128,7 @@
                     <td>操作字段</td>
                     <td>
                         <div class="hidden-sm hidden-xs action-buttons">
-                            <a class="green" href="#">
+                            <a class="green" href="#" data-toggle="modal" data-target="#edit_template">
                                 <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 编辑
                             </a>

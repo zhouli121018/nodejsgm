@@ -32,6 +32,54 @@
         </table>
     </div>
 </div>
+<div class="modal fade" id="edit_config" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">配置服务号/企业号</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">服务号/企业号名称：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="umail微信公众号" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">服务号token：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="umail201703" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">appid/CorpID：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="SDJFOSDIJFES" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="col-sm-4 control-label">agentid：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="1000002" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">appsecret：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="dsfjsdiofjdsofjodsi" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group center">
+                        <button type="button" class="btn btn-sm btn-info">保存</button>
+                        <button type="button" class="btn btn-sm btn-danger">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     var myTable;
     function initDate(p){
@@ -46,7 +94,7 @@
                         <td>待验证</td>
                         <td>
                             <div class="action-buttons">
-                                <a class="green" href="#">
+                                <a class="green" href="#" data-toggle="modal" data-target="#edit_config">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                     修改
                                 </a>

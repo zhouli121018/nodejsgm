@@ -1,8 +1,6 @@
 <div id="dynamic-div">
     <h3 class="header smaller lighter blue">反垃圾级别组
-        <button type="button" class="btn btn-primary pull-right" style="margin-right:32px;margin-top:-18px;">
-            添加组
-        </button>
+
     </h3>
 
     <div class="clearfix">
@@ -18,7 +16,10 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <button id="search-btn" type="button" class="btn btn-info" style="border:none;">查询</button>
+                <button id="search-btn" type="button" class="btn btn-info btn-sm">查询</button>
+                <button type="button" data-toggle="modal" data-target="#add_group" class="btn btn-success btn-sm" >
+                    添加组
+                </button>
             </div>
         </div>
     </div>
@@ -50,6 +51,100 @@
         </table>
     </div>
 </div>
+<div class="modal fade" id="edit_group">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改组信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">
+                            <span class="red">*</span>组名称：
+                        </label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" value="11111111">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">反垃圾过滤级别：</label>
+                        <div class="col-sm-4">
+                            <select class="form-control">
+                                <option value="1">基础反垃圾</option>
+                                <option value="2">中级反垃圾</option>
+                                <option value="3">高级反垃圾</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">
+                            组描述：
+                        </label>
+                        <div class="col-sm-8">
+                            <textarea  rows="8" class="form-control">许多许多的</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 center">
+                            <button type="button" class="btn btn-primary btn-sm">确定</button>
+                            <button type="button" class="btn btn-danger btn-sm">返回</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add_group">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加组信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">
+                            <span class="red">*</span>组名称：
+                        </label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">反垃圾过滤级别：</label>
+                        <div class="col-sm-4">
+                            <select class="form-control">
+                                <option value="1">基础反垃圾</option>
+                                <option value="2">中级反垃圾</option>
+                                <option value="3">高级反垃圾</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">
+                            组描述：
+                        </label>
+                        <div class="col-sm-8">
+                            <textarea  rows="8" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12 center">
+                            <button type="button" class="btn btn-primary btn-sm">确定</button>
+                            <button type="button" class="btn btn-danger btn-sm">返回</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     var myTable;
     function initDate(p){
@@ -62,7 +157,7 @@
                         <td>成员数${100+1}</td>
                         <td>
                             <div class="action-buttons">
-                                <a class="green" href="#">
+                                <a class="green" href="#" data-toggle="modal" data-target="#edit_group">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                     修改组
                                 </a>

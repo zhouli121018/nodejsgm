@@ -50,6 +50,65 @@
         </table>
     </div>
 </div>
+<div class="modal fade" id="edit_manager" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">编辑域管理员信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class=" col-sm-4 control-label">管理员名称:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control manager_name" value="name1" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4 ">登录密码:</label>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" >
+                            <p class="help-block"><span class="red">注：</span>密码长度最少为8位，其中必须包括字母和数字！</p>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">确认密码:</label>
+                        <div class="col-sm-6">
+                            <input type="password" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">管理员状态:</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline">
+                                <input type="radio" name="manager_radio" checked value="1"> 启用
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="manager_radio"  value="0"> 禁用
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+
+                        <div class="col-sm-8 col-sm-offset-2 center">
+                            <button type="button" class="btn btn-primary ">提交</button>
+                            <button type="button" class="btn btn-danger ">返回</button>
+                        </div>
+
+
+                    </div>
+                </form>
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+            <!--<button type="button" class="btn btn-primary">保存</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
 <script src="../assets/js/date-time/moment.js"></script>
 <script src="../assets/js/date-time/bootstrap-datetimepicker.js"></script>
 <script>
@@ -76,12 +135,12 @@
                         <td>启用</td>
                         <td>
                             <div class="action-buttons">
-                                <a class="green" href="#">
+                                <a class="green edit" href="${i}" data-toggle="modal" data-target="#edit_manager">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                     修改
                                 </a>
 
-                                <a class="red" href="#">
+                                <a class="red delete" href="#">
                                     <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                     删除
                                 </a>
@@ -103,26 +162,9 @@
                             "aaSorting": [],
 
 
-                            //"bProcessing": true,
-                            //"bServerSide": true,
-                            //"sAjaxSource": "http://127.0.0.1/table.php"	,
-
-                            //,
-                            //"sScrollY": "200px",
-                            //"bPaginate": false,
-
-                            //"sScrollX": "100%",
-                            //"sScrollXInner": "120%",
-                            //"bScrollCollapse": true,
-                            //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
-                            //you may want to wrap the table inside a "div.dataTables_borderWrap" element
-
-                            //"iDisplayLength": 50
-
-
-                            select: {
-                                style: 'multi'
-                            },
+//                            select: {
+//                                style: 'multi'
+//                            },
                             "iDisplayLength": 15,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
@@ -152,11 +194,6 @@
                     columns: ':not(:first):not(:last)'
                 },
                 {
-                    "extend": "copy",
-                    "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>复制到剪贴板</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
                     "extend": "csv",
                     "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>导出到 CSV</span>",
                     "className": "btn btn-white btn-primary btn-bold"
@@ -170,13 +207,6 @@
                     "extend": "pdf",
                     "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>输出到 PDF</span>",
                     "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
-                    "extend": "print",
-                    "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>打印</span>",
-                    "className": "btn btn-white btn-primary btn-bold",
-                    autoPrint: false,
-                    message: 'This print was produced using the Print button for DataTables'
                 }
             ]
         } );
@@ -229,4 +259,13 @@
         e.stopPropagation();
         e.preventDefault();
     });
+
+    $('.edit').click(function(){
+      var data = $(this).attr('href');
+        $('#edit_manager .manager_name').val("name"+data);
+    })
+    $('.delete').click(function(e){
+        e.preventDefault();
+        confirm('确定删除？')
+    })
 </script>

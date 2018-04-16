@@ -100,6 +100,59 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="translate_edit" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">邮件头翻译设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">类型：</label>
+                        <div class="col-sm-8">
+                            <select name="type" style="width: 110px;">
+                                <option value="-1">外发</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">状态：</label>
+                        <div class="col-sm-8">
+                            <select name="disabled" style="width: 110px;">
+                                <option value="-1">启用</option>
+                                <option value="1">禁用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">被翻译值：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="被翻译值">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">目标值：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="目标值">
+                        </div>
+                    </div>
+                </form>
+                <div class="alert-warning" style="padding:4px;">
+                    <ul>
+                        <li>1、当“类型”设置为“外发”时，表示翻译规则只在外发生效。</li>
+                        <li>2、被翻译值将会被翻译为目标值；被翻译值和目标值禁止输入特殊符号和空格</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">提交</button>
+                <button type="button"  class="btn btn-warning">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     var myTable;
     function initDate(p){
@@ -112,7 +165,7 @@
                         <td>禁用</td>
                         <td>
                             <div class="action-buttons">
-                                <a class="green" href="#">
+                                <a class="green" href="#" data-toggle="modal" data-target="#translate_edit">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                     修改
                                 </a>

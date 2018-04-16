@@ -2,10 +2,8 @@
     <h3 class="header smaller lighter blue">邮件列表管理
 
         <div class="btn-group pull-right" style="margin-right:32px;margin-top:-18px;">
-            <button class="btn btn-primary">导入txt</button>
-            <button class="btn btn-info">导入excel</button>
-            <button class="btn btn-success">添加列表</button>
-            <button class="btn btn-default">导出excel</button>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#import_txt">导入txt</button>
+            <button class="btn btn-info" data-toggle="modal" data-target="#import_excel">导入excel</button>
             <button class="btn btn-warning" data-toggle="modal" data-target="#addMailList">添加邮件列表</button>
         </div>
     </h3>
@@ -129,8 +127,173 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="editMailList" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改邮件列表</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-block alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
+
+                    <p><strong class="red">
+                        注：
+                    </strong>设置为公开列表，所有人都可以向此邮件列表发送邮件；</p>
+                    <p style="text-indent: 2.2em;">设置为私有列表,只有设置了发送权限的邮箱才可向此邮件列表发送邮件;</p>
+                    <p style="text-indent: 2.2em;">设置为本域公共列表 ,只有同服务器的邮箱才可向此邮件列表发送邮件。</p>
+                </div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">邮件列表名称：</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" value="新城国际店"  placeholder="邮件列表名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">邮件列表地址：</label>
+                        <div class="col-sm-5 ">
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="d_11-@test.com">
+                                <span class="input-group-addon">@test.com</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">说明信息：</label>
+                        <div class="col-sm-5">
+                            <textarea  rows="5" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">权限类型：</label>
+                        <div class="col-sm-5">
+                            <select name="permission"  class="form-control">
+                                <option value="public">公开列表</option>
+                                <option value="private">私有列表</option>
+                                <option value="domain">本域公共列表</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">列表状态：</label>
+                        <div class="col-sm-7">
+                            <label class="radio-inline">
+                                <input type="radio" name="listStatus" value="1" > 正常
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="listStatus" value="0" checked> 禁用
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-4 ">
+                            <button type="button" class="btn btn-primary btn-block">确定</button>
+                        </div>
+                        <div class="col-sm-4 ">
+                            <button type="button" class="btn btn-warning btn-block">返回</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+            <!--<button type="button" class="btn btn-primary">保存</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="MaintainMailList" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">邮件列表 <b>test.com</b> 发件人列表</h4>
+            </div>
+            <div class="modal-body">
+                <div class="clearfix">
+                    <div class="pull-right tableTools-container"></div>
+                </div>
+               <table id="dynamic-table2" class="table table-bordered table-striped table-hover">
+                   <thead>
+                        <tr>
+                            <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                                <label class="pos-rel">
+                                    <input type="checkbox" class="ace">
+                                    <span class="lbl"></span>
+                                </label>
+                            </th>
+                            <th>序号</th>
+                            <th>邮箱地址</th>
+                            <th>成员权限</th>
+                            <th>修改时间</th>
+                            <th>昵称</th>
+                            <th>操作</th>
+                        </tr>
+                   </thead>
+                   <tbody id="data-body2">
+
+                   </tbody>
+               </table>
+                <div>
+                    <button class="btn btn-danger btn-sm delete" type="button">删除所选地址</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="import_txt" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">导入txt</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">选择文件：</label>
+                        <div class="col-sm-8">
+                            <input type="file">
+                        </div>
+                    </div>
+                </form>
+                <div>
+                    <button class="btn btn-success btn-sm import" type="button">导入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="import_excel" tabindex="-1" role="dialog" >
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">导入excel</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4">选择文件：</label>
+                        <div class="col-sm-8">
+                            <input type="file">
+                        </div>
+                    </div>
+                </form>
+                <div>
+                    <button class="btn btn-success btn-sm import" type="button">导入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
-    var myTable;
+    var myTable,myTable2;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
             html+=`<tr class="">
@@ -142,12 +305,12 @@
                         <td>正常</td>
                         <td>
                             <div class="action-buttons">
-                                <a class="green" href="#">
+                                <a class="green" href="#" data-toggle="modal" data-target="#editMailList">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                     修改
                                 </a>
 
-                                <a class="blue" href="#">
+                                <a class="blue" href="#" data-toggle="modal" data-target="#MaintainMailList">
                                     <i class="ace-icon fa fa-cogs  bigger-130"></i>
                                     维护
                                 </a>
@@ -203,11 +366,6 @@
                     columns: ':not(:first):not(:last)'
                 },
                 {
-                    "extend": "copy",
-                    "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>复制到剪贴板</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
                     "extend": "csv",
                     "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>导出到 CSV</span>",
                     "className": "btn btn-white btn-primary btn-bold"
@@ -221,13 +379,6 @@
                     "extend": "pdf",
                     "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>输出到 PDF</span>",
                     "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
-                    "extend": "print",
-                    "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>打印</span>",
-                    "className": "btn btn-white btn-primary btn-bold",
-                    autoPrint: false,
-                    message: 'This print was produced using the Print button for DataTables'
                 }
             ]
         } );
@@ -267,11 +418,224 @@
     }
     initDate(28);
 
+    initDate2(6);
+    function initDate2(p){
+        for(var i= 0,html='';i<p;i++){
+            html+=`<tr role="row">
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+
+                    <td>
+                        ${i+1}
+                    </td>
+                    <td>test.com</td>
+                    <td>
+                        <label class="radio-inline">
+                          <input type="radio" name="inlineRadioOptions" value="option1"> 收发
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="inlineRadioOptions" value="option2"> 只收
+                        </label>
+                        <label class="radio-inline">
+                          <input type="radio" name="inlineRadioOptions" value="option3"> 只发
+                        </label>
+                    </td>
+                    <td>2018-01-01 17:12:20</td>
+                    <td>nickname</td>
+                    <td>
+                        <div class="hidden-sm hidden-xs action-buttons">
+                            <a class="green" href="#">
+                                更新
+                            </a>
+                        </div>
+                    </td>
+                </tr>`
+        }
+        $('#data-body2').html(html);
+
+        myTable2 =
+                $('#dynamic-table2')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                null,
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 10,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+
+
+
+        $.fn.dataTable.Buttons.swfPath = "../assets/js/dataTables/extensions/Buttons/swf/flashExport.swf"; //in Ace demo ../assets will be replaced by correct assets path
+        $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
+
+        new $.fn.dataTable.Buttons( myTable2, {
+            buttons: [
+                {
+                    "extend": "colvis",
+                    "text": "<i class='fa fa-search bigger-110 blue'></i> <span class='hidden'>显示 / 隐藏 列</span>",
+                    "className": "btn btn-white btn-primary btn-bold",
+                    columns: ':not(:first):not(:last)'
+                },
+                {
+                    "extend": "csv",
+                    "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>导出到 CSV</span>",
+                    "className": "btn btn-white btn-primary btn-bold"
+                },
+                {
+                    "extend": "excel",
+                    "text": "<i class='fa fa-file-excel-o bigger-110 green'></i> <span class='hidden'>输出到 Excel</span>",
+                    "className": "btn btn-white btn-primary btn-bold"
+                },
+                {
+                    "extend": "pdf",
+                    "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>输出到 PDF</span>",
+                    "className": "btn btn-white btn-primary btn-bold"
+                }
+            ]
+        } );
+        myTable2.buttons().container().appendTo( $('.tableTools-container2') );
+
+        //style the message box
+        var defaultCopyAction = myTable2.button(1).action();
+        myTable2.button(1).action(function (e, dt, button, config) {
+            defaultCopyAction(e, dt, button, config);
+            $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
+        });
+
+
+        var defaultColvisAction = myTable2.button(0).action();
+        myTable2.button(0).action(function (e, dt, button, config) {
+
+            defaultColvisAction(e, dt, button, config);
+
+
+            if($('.dt-button-collection > .dropdown-menu').length == 0) {
+                $('.dt-button-collection')
+                        .wrapInner('<ul class="dropdown-menu dropdown-light dropdown-caret dropdown-caret" />')
+                        .find('a').attr('href', '#').wrap("<li />")
+            }
+            $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
+        });
+
+        ////
+
+        setTimeout(function() {
+            $($('.tableTools-container2')).find('a.dt-button').each(function() {
+                var div = $(this).find(' > div').first();
+                if(div.length == 1) div.tooltip({container: 'body', title: div.parent().text()});
+                else $(this).tooltip({container: 'body', title: $(this).text()});
+            });
+        }, 500);
+
+
+        myTable2.on( 'select', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable2.row( index ).node() ).find('input:checkbox').prop('checked', true);
+            }
+        } );
+        myTable2.on( 'deselect', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable2.row( index ).node() ).find('input:checkbox').prop('checked', false);
+            }
+        } );
+
+
+
+
+        /////////////////////////////////
+        //table checkboxes
+        $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
+
+        //select/deselect all rows according to table header checkbox
+        $('#dynamic-table > thead > tr > th input[type=checkbox], #dynamic-table_wrapper input[type=checkbox]').eq(0).on('click', function(){
+            var th_checked = this.checked;//checkbox inside "TH" table header
+
+            $('#dynamic-table').find('tbody > tr').each(function(){
+                var row = this;
+                if(th_checked) myTable2.row(row).select();
+                else  myTable2.row(row).deselect();
+            });
+        });
+
+        //select/deselect a row when the checkbox is checked/unchecked
+        $('#dynamic-table').on('click', 'td input[type=checkbox]' , function(){
+            var row = $(this).closest('tr').get(0);
+            if(this.checked) myTable2.row(row).deselect();
+            else myTable2.row(row).select();
+        });
+        $(document).on('click', '#dynamic-table .dropdown-toggle', function(e) {
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+
+        /********************************/
+        //add tooltip for small view action buttons in dropdown menu
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+        //tooltip placement on right or left
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            //var w2 = $source.width();
+
+            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+            return 'left';
+        }
+        /***************/
+        $('.show-details-btn').on('click', function(e) {
+            e.preventDefault();
+            $(this).closest('tr').next().toggleClass('open');
+            $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+        });
+
+
+
+    }
+
+
     $('#search-btn').click(function(){
         myTable.destroy();
         initDate(8);
     })
-
+$('.delete').click(function(){
+    confirm('确认删除？')
+})
 
 
 

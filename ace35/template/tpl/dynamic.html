@@ -51,6 +51,215 @@
         </table>
     </div>
 </div>
+<div class="modal fade" id="edit_mail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">邮件域基本信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">
+                    邮件域基本信息
+                </div>
+                <table id="email-basic-table" class="table  table-bordered table-hover table-striped">
+
+                    <tbody>
+                    <tr >
+                        <td class="text-right">
+                            邮件域名称：
+                        </td>
+
+                        <td>
+                            <b class="test_name">test.com</b>
+                        </td>
+                        <td class="text-right">邮件域状态：</td>
+                        <td>
+                            <label class="radio-inline">
+                                <input type="radio" name="admin-status" id="open" checked value="open"> 启用
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="admin-status" id="close" value="close"> 禁用
+                            </label>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right">*限定邮箱数量：</td>
+                        <td>
+                            <input type="text" class="col-sm-2" value="8000"><span> 个 （已分配 2466 个）</span>
+                        </td>
+                        <td class="text-right">*限定别名数量：</td>
+                        <td>
+                            <input type="text" class="col-sm-2" value="0"><span> 个 （已分配 1 个）</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">*限定邮箱空间总容量：</td>
+                        <td>
+                            <input type="text" class="col-sm-2" value="0"><span> MB （已分配 276635 MB）</span>
+                        </td>
+                        <td class="text-right">*限定网络硬盘总容量：</td>
+                        <td>
+                            <input type="text" class="col-sm-2" value="0"><span> MB （已分配 250965 MB）</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">发送邮件限制大小：</td>
+                        <td>
+                            <input type="text" class="col-sm-2" value="500"><span> MB （填写0默认限制为100MB以内）</span>
+                        </td>
+                        <td class="text-right">超大附件限制大小：</td>
+                        <td>
+                            <input type="text" class="col-sm-2" value="10"><span> MB （填写0默认限制为100MB以内）</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">*用户邮箱默认容量：</td>
+                        <td>
+                            <input type="text" class="col-sm-2" value="100"><span> MB </span>
+                        </td>
+                        <td class="text-right">*网络硬盘默认容量：</td>
+                        <td>
+                            <input type="text" class="col-sm-2" value="100"><span> MB</span>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td class="text-right">
+                            接口修改密码是否加密：
+                        </td>
+
+                        <td>
+                            <label class="radio-inline">
+                                <input type="radio" name="encryption" checked  value="open">是
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="encryption"  value="close">否
+                            </label>
+                            <span>（注意：开启后php5.4版本及以上生效，加密密钥:6D9A39C1018F6783E545B0D1A9EB2E98）</span>
+                        </td>
+                        <td class="text-right">批量修改收发信功能开关：</td>
+                        <td>
+                            <label class="radio-inline">
+                                <input type="radio" name="limit"   value="open">是
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="limit" checked value="close">否
+                            </label>
+                            <span>（选择是将会修改该域名下的所有邮箱收发功能）</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">*发信功能限制：</td>
+                        <td>
+                            <select name="limit_send">
+                                <option value="-1" selected>不限制邮件发送</option>
+                                <option value="1">禁止发送所有邮件</option>
+                                <option value="2">只发送本地域邮件</option>
+                                <option value="3">可发送指定外域邮件</option>
+                                <option value="4">可发送本地所有域邮件</option>
+                            </select>
+                            <span>（批量修改收发信功能开关选择是后,将针对域名下全部邮箱设置修改；请谨慎修改）</span>
+                        </td>
+                        <td class="text-right">*收信功能限制：</td>
+                        <td>
+                            <select name="limit_recv">
+                                <option value="-1" selected>不限制邮件接收</option>
+                                <option value="1">禁此接收所有邮件</option>
+                                <option value="2">只接收本地域邮件</option>
+                                <option value="3">可接收指定外域邮件</option>
+                            </select>
+                            <span>（批量修改收发信功能开关选择是后,将针对域名下全部邮箱设置修改；请谨慎修改）</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">邮件域功能：</td>
+                        <td>请在 <a href="#"> 此页面 </a> 设置邮件域功能</td>
+                        <td class="text-right">Webmail 页面定制：</td>
+                        <td>请在 <a href="#"> 此页面 </a> 设置邮件域功能</td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">邮件域开通时间：</td>
+                        <td>2014-12-11 11:12:05</td>
+                        <td colspan="2">
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div class="hr hr-18 dotted hr-double"></div>
+                <div class="table-header">
+                    企业基本信息
+                </div>
+                <table id="company" class="table  table-bordered table-hover  table-striped">
+                    <tr>
+                        <td class="text-right">*企业名称：</td>
+                        <td>
+                            <input type="text" class="col-sm-4" value="dfffff">
+                        </td>
+                        <td class="text-right">国家：</td>
+                        <td>
+                            <input type="text" class="col-sm-4">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">省份/地区：</td>
+                        <td>
+                            <input type="text" class="col-sm-4">
+                        </td>
+                        <td class="text-right">城市：</td>
+                        <td>
+                            <input type="text" class="col-sm-4">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">通信地址：</td>
+                        <td>
+                            <input type="text" class="col-sm-4">
+                        </td>
+                        <td class="text-right">邮政编码：</td>
+                        <td>
+                            <input type="text" class="col-sm-4">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">电话号码：</td>
+                        <td>
+                            <input type="text" class="col-sm-4">
+                        </td>
+                        <td class="text-right">传真号码：</td>
+                        <td>
+                            <input type="text" class="col-sm-4">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">网站地址：</td>
+                        <td>
+                            <input type="text" class="col-sm-4" value="http://www.baidu.com">
+                        </td>
+                        <td colspan="2">
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <div class="row">
+                                <div class="col-xs-2 col-xs-offset-4">
+                                    <button class="btn btn-primary btn-block btn-sm">确定</button>
+                                </div>
+                                <div class="col-xs-2">
+                                    <button class="btn btn-warning btn-block btn-sm">返回</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../assets/js/date-time/moment.js"></script>
 <script src="../assets/js/date-time/bootstrap-datetimepicker.js"></script>
 <script>
@@ -78,12 +287,12 @@
                         <td>${p+i}</td>
                         <td>
                             <div class="action-buttons">
-                                <a class="green" href="#">
+                                <a class="green edit" href="${i}" data-toggle="modal" data-target="#edit_mail">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                     修改
                                 </a>
 
-                                <a class="red" href="#">
+                                <a class="red delete" href="${i}">
                                     <i class="ace-icon fa fa-trash-o bigger-130"></i>
                                     删除
                                 </a>
@@ -105,26 +314,9 @@
                             "aaSorting": [],
 
 
-                            //"bProcessing": true,
-                            //"bServerSide": true,
-                            //"sAjaxSource": "http://127.0.0.1/table.php"	,
-
-                            //,
-                            //"sScrollY": "200px",
-                            //"bPaginate": false,
-
-                            //"sScrollX": "100%",
-                            //"sScrollXInner": "120%",
-                            //"bScrollCollapse": true,
-                            //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
-                            //you may want to wrap the table inside a "div.dataTables_borderWrap" element
-
-                            //"iDisplayLength": 50
-
-
-                            select: {
-                                style: 'multi'
-                            },
+//                            select: {
+//                                style: 'multi'
+//                            },
                             "iDisplayLength": 15,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
@@ -154,11 +346,6 @@
                     columns: ':not(:first):not(:last)'
                 },
                 {
-                    "extend": "copy",
-                    "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>复制到剪贴板</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
                     "extend": "csv",
                     "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>导出到 CSV</span>",
                     "className": "btn btn-white btn-primary btn-bold"
@@ -172,13 +359,6 @@
                     "extend": "pdf",
                     "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>输出到 PDF</span>",
                     "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
-                    "extend": "print",
-                    "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>打印</span>",
-                    "className": "btn btn-white btn-primary btn-bold",
-                    autoPrint: false,
-                    message: 'This print was produced using the Print button for DataTables'
                 }
             ]
         } );
@@ -231,4 +411,13 @@
         e.stopPropagation();
         e.preventDefault();
     });
+    $('.edit').click(function(){
+        var dy = $(this).attr('href');
+        $('#edit_mail .test_name').html("test"+dy+".com");
+    })
+    $('.delete').click(function(e){
+        e.preventDefault();
+        confirm('确定删除？')
+    })
+
 </script>

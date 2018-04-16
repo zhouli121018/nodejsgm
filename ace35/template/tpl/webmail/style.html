@@ -24,14 +24,14 @@
                 <a href="#tabs_title">页面标题设置</a>
             </li>
             <li>
-                <a href="#tabs_notice">页面LOGO设置</a>
+                <a href="#tabs_logo">页面LOGO设置</a>
             </li>
             <li>
-                <a href="#tabs_addr">登录页面设置</a>
+                <a href="#tabs_login">登录页面设置</a>
             </li>
 
             <li>
-                <a href="#tabs_code">页面广告设置</a>
+                <a href="#tabs_ad">页面广告设置</a>
             </li>
             <li>
                 <a href="#tabs_jump">首页链接设置</a>
@@ -62,112 +62,235 @@
             </div>
         </div>
 
-        <div id="tabs_notice">
+        <div id="tabs_logo">
             <div class="content_1">
+                <div class="table-header">
+                    Webmail Logo 设置
+                </div>
                 <table class="table table-bordered">
                     <tr>
-                        <td style="width:20%;min-width:150px;">系统公告标题：</td>
                         <td>
-                            <input type="text" style="width:40%;" value="测试测试">
+                            <span class="blue">当前Logo：</span>
+                        </td>
+                        <td>
+                            <span>当前没有设置Logo！</span>
                         </td>
                     </tr>
                     <tr>
-                        <td style="width:20%;min-width:150px;">系统公告标题颜色：</td>
-                        <td style="width:40%;" class="row">
-                            <div class="col-xs-2" style="width:30px;">
-                                <select name="mycolor" id="mycolor" class="form-control">
-                                    <option value="red">red</option>
-                                    <option value="blue" selected>blue</option>
-                                    <option value="black">black</option>
-                                    <option value="green">green</option>
-                                    <option value="purple">purple</option>
-                                </select>
-                            </div>
-                            <div class="col-xs-10">
-                                点击选择颜色
-                            </div>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width:20%;min-width:150px;">系统公告高度：</td>
                         <td>
-                            <div class="input-group" style="width:40%;">
-                                <input type="number" class="form-control" value="260">
-                                <span class="input-group-addon">px</span>
+                            <span class="blue">更新Logo：</span>
+                        </td>
+                        <td class="row no-padding-left">
+                            <div class="col-sm-6">
+                                <input type="file">
+                                <p class="help-block">
+                                    注：图片推荐大小为 180 x 45 像素。
+                                </p>
+                            </div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-default" type="button">上传</button> <span>允许后缀:jpg, png, gif</span>
                             </div>
                         </td>
                     </tr>
-
                 </table>
-                <div class="wysiwyg-editor" id="editor_all_2">
-                    <h3>City Gallery</h3>
-                    <p>1、设置的登录页面只有在使用域名访问时才生效；使用IP地址访问时将会使用默认登录页面。</p>
-                    <p>2、设置的登录页面只有在使用域名访问时才生效；使用IPdfds地址访问时将会使用默认登录页面。</p>
-                    <p>3、设置的登录页面只有在使用域名访问时才生效；使用IPdfds地址访问时将会使用默认登录页面。</p>
-                </div>
-                <div class="center" style="margin-top:6px;">
-                    <button type="button" class="btn btn-success btn-sm">提交</button>
-                    <button type="button" class="btn btn-danger btn-sm">重置</button>
-                </div>
-            </div>
-        </div>
-        <div id="tabs_addr">
-            <div class="table-header">
-                帮助文件地址设置
-            </div>
-            <form class="form-horizontal" style="margin-top:12px;">
-                <div class="form-group">
-                    <div class="col-sm-2" style="line-height:34px;">帮助文件地址：</div>
-                    <div class="col-sm-4">
-                        <input type="text" value="http://www.baidu.com" class="form-control">
-                    </div>
-                </div>
-            </form>
-            <div class="row">
-                <div class="col-sm-6 center">
-                    <button type="button" class="btn btn-success btn-sm">提交</button>
-                    <button type="button" class="btn btn-danger btn-sm">重置</button>
 
+                <div class="hr hr-18 dotted hr-double"></div>
+                <div class="table-header">
+                    登录页面 Logo 设置
                 </div>
-            </div>
-        </div>
-        <div id="tabs_code">
-            <div class="table-header">
-                请选择邮件发送编码
-            </div>
-            <form class="form-horizontal" style="margin-top:12px;">
-                <div class="form-group">
-                    <div class="col-sm-2" style="line-height:34px;">邮件发送编码：</div>
-                    <div class="col-sm-4">
-                        <select class="form-control">
-                            <option value="1">UTF-8</option>
-                            <option value="2">GB</option>
-                            <option value="3">DDF</option>
-                        </select>
+                <table class="table table-bordered">
+                    <tr>
+                        <td>
+                            <span class="blue">当前Logo：</span>
+                        </td>
+                        <td>
+                            <span>当前没有设置Logo！</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="blue">更新Logo：</span>
+                        </td>
+                        <td class="row no-padding-left">
+                            <div class="col-sm-6">
+                                <input type="file">
+                                <p class="help-block">
+                                    注：图片推荐大小为 350 x 50 像素。
+                                </p>
+                            </div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-default" type="button">上传</button> <span>允许后缀:jpg, png, gif</span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="hr hr-18 dotted hr-double"></div>
+                <div class="row">
+                    <div class="col-sm-12 center">
+                        <button type="button" class="btn btn-success ">提交</button>
+                        <button type="button" class="btn btn-warning ">重置</button>
                     </div>
                 </div>
-            </form>
+                <div class="well" style="background:#fff;margin-top:10px;">
+                    备注：定制的登录页面 Logo 只有在使用域名访问时才生效；使用 IP 地址访问时只显示默认内容
+                </div>
+
+            </div>
+        </div>
+        <div id="tabs_login">
             <div class="row" style="margin-bottom:12px;">
-                <div class="col-sm-6 center">
-                    <button type="button" class="btn btn-success btn-sm">提交</button>
-                    <button type="button" class="btn btn-danger btn-sm">重置</button>
+                <div class="col-sm-3" class="active">
+                    <div class="active">
+                        <img src="../assets/img/login_temp1.png" class="img-responsive" alt="1" >
+                        <div>
+                            默认登录页面
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-sm-3">
+                    <div>
+                        <img src="../assets/img/login_temp2.png" class="img-responsive" alt="1">
+                        <div>
+                            手动域名登录页面
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div>
+                        <img src="../assets/img/login_temp3.png" class="img-responsive" alt="1">
+                        <div>
+                            广告风格登录页面
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div>
+                        <img src="../assets/img/login_temp4.png" class="img-responsive" alt="1">
+                        <div>
+                            大气管理员风格页面
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div style="position: relative;">
+                        <img src="../assets/img/login_temp5.png" class="img-responsive" alt="1" >
+                        <div style="">
+                            轮播图风格登录页面
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div>
+                        <img src="../assets/img/login_temp6.png" class="img-responsive" alt="1">
+                        <div>
+                            登录框居中登录页面
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div>
+                        <img src="../assets/img/login_temp7.png" class="img-responsive" alt="1">
+                        <div>
+                            背景图风格登录页面
+                        </div>
+                    </div>
 
                 </div>
             </div>
-            <div class="well" style="background:#fff;">
-                <p class="red">备注：</p>
-                <p>1、设置的登录页面只有在使用域名访问时才生效；使用IP地址访问时将会使用默认登录页面。</p>
-                <p>2、设置的登录页面只有在使用域名访问时才生效；使用IPdfds地址访问时将会使用默认登录页面。</p>
+            <div class="row">
+
+            </div>
+        </div>
+        <div id="tabs_ad">
+            <div class="table-header">
+                登录页面广告设置
+            </div>
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <span class="blue">广告位1：</span>
+                    </td>
+                    <td class="row no-padding-left">
+                        <div class="col-sm-6">
+                            <p>当前广告（没有设置）</p>
+                            <input type="file">
+                            <p class="help-block">
+                                注：图片推荐大小为 380 x 60 像素。
+                            </p>
+                            <p class="red">链接地址</p>
+                            <input type="text" style="width:200px;">
+                        </div>
+                        <div class="col-sm-6">
+                            <button class="btn btn-default" type="button">上传</button> <span>允许后缀:jpg, png, gif</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="blue">广告位2：</span>
+                    </td>
+                    <td class="row no-padding-left">
+                        <div class="col-sm-6">
+                            <p>当前广告（没有设置）</p>
+                            <input type="file">
+                            <p class="help-block">
+                                注：图片推荐大小为 380 x 330 像素。
+                            </p>
+                            <p class="red">链接地址</p>
+                            <input type="text" style="width:200px;">
+                        </div>
+                        <div class="col-sm-6">
+                            <button class="btn btn-default" type="button">上传</button> <span>允许后缀:jpg, png, gif</span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="hr hr-18 dotted hr-double"></div>
+            <div class="table-header">
+                Webmail 首页广告设置
+            </div>
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <span class="blue">广告位1：</span>
+                    </td>
+                    <td class="row no-padding-left">
+                        <div class="col-sm-6">
+                            <p>当前广告（没有设置）</p>
+                            <input type="file">
+                            <p class="help-block">
+                                注：图片推荐大小为 230 x 490 像素。
+                            </p>
+                            <p class="red">链接地址</p>
+                            <input type="text" style="width:200px;">
+                        </div>
+                        <div class="col-sm-6">
+                            <button class="btn btn-default" type="button">上传</button> <span>允许后缀:jpg, png, gif</span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class="hr hr-18 dotted hr-double"></div>
+            <div class="center">
+                <button class="btn btn-success" type="button">设置</button>
+            </div>
+            <div class="hr hr-18 dotted hr-double"></div>
+            <div class="well" style="margin-top:8px;background:#fff;">
+                <span class="red">注：</span>要使用“登录页面广告”需要先启用 “综合功能开关->用户注册登录设置->登录页面广告” 功能。
             </div>
         </div>
         <div id="tabs_jump">
             <div class="table-header">
-                登出跳转地址
+                首页链接设置
             </div>
             <form class="form-horizontal" style="margin-top:12px;">
                 <div class="form-group">
-                    <div class="col-sm-2" style="line-height:34px;">跳转地址：</div>
+                    <div class="col-sm-2" style="line-height:34px;">链接地址：</div>
                     <div class="col-sm-4">
                         <input type="text" value="http://www.baidu.com" class="form-control">
                     </div>
@@ -201,6 +324,9 @@
 //        alert(this.selectedIndex);
     });
 
+    $('#tabs_login .row .col-sm-3>div').click(function(){
+        $(this).parent().addClass('active').siblings().removeClass('active');
+    })
 
 
 </script>

@@ -239,9 +239,9 @@
 
                    </tbody>
                </table>
-                <div>
-                    <button class="btn btn-danger btn-sm delete" type="button">删除所选地址</button>
-                </div>
+            </div>
+            <div class="modal-footer center">
+                <button class="btn btn-danger btn-sm delete" type="button">删除所选地址</button>
             </div>
         </div>
     </div>
@@ -448,7 +448,7 @@
                     <td>nickname</td>
                     <td>
                         <div class="hidden-sm hidden-xs action-buttons">
-                            <a class="green" href="#">
+                            <a class="green update" href="#">
                                 更新
                             </a>
                         </div>
@@ -578,10 +578,10 @@
         $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
 
         //select/deselect all rows according to table header checkbox
-        $('#dynamic-table > thead > tr > th input[type=checkbox], #dynamic-table_wrapper input[type=checkbox]').eq(0).on('click', function(){
+        $('#dynamic-table2 > thead > tr > th input[type=checkbox], #dynamic-table2_wrapper input[type=checkbox]').eq(0).on('click', function(){
             var th_checked = this.checked;//checkbox inside "TH" table header
 
-            $('#dynamic-table').find('tbody > tr').each(function(){
+            $('#dynamic-table2').find('tbody > tr').each(function(){
                 var row = this;
                 if(th_checked) myTable2.row(row).select();
                 else  myTable2.row(row).deselect();
@@ -589,12 +589,12 @@
         });
 
         //select/deselect a row when the checkbox is checked/unchecked
-        $('#dynamic-table').on('click', 'td input[type=checkbox]' , function(){
+        $('#dynamic-table2').on('click', 'td input[type=checkbox]' , function(){
             var row = $(this).closest('tr').get(0);
             if(this.checked) myTable2.row(row).deselect();
             else myTable2.row(row).select();
         });
-        $(document).on('click', '#dynamic-table .dropdown-toggle', function(e) {
+        $(document).on('click', '#dynamic-table2 .dropdown-toggle', function(e) {
             e.stopImmediatePropagation();
             e.stopPropagation();
             e.preventDefault();
@@ -636,6 +636,9 @@
 $('.delete').click(function(){
     confirm('确认删除？')
 })
+    $('#dynamic-table2').on('click','.update',function(e){
+        confirm('确定更新？');
+    })
 
 
 

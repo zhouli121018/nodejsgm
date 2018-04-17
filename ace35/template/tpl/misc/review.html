@@ -171,6 +171,78 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="edit_review" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改邮件审核设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">被审核地址：</label>
+                        <div class="col-sm-6">
+                            <input type="text" value="cs1@test.com" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">审核人：</label>
+                        <div class="col-sm-6">
+                            <input type="text" value="cs@test.com" class="form-control">
+                            <p class="help-block"><span class="red">注：</span>请填写审核人的邮箱名称；</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">审核类型：</label>
+                        <div class="col-sm-6">
+                            <select name="workmode" class="form-control">
+                                <option value="outbound">外发邮件</option>
+                                <option value="allsend" selected>所有发送邮件</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">状态：</label>
+                        <div class="col-sm-6">
+                            <select name="disabled" class="form-control">
+                                <option value="-1" selected="">正常</option>
+                                <option value="1">禁用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="col-sm-4 control-label">审核条件：</label>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <select  name="type" class="form-control">
+                                        <option value="subject">主题</option>
+                                        <option value="content">邮件内容</option>
+                                        <option value="recipient">收件人</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <select  name="action" class="form-control">
+                                        <option value="in">包含</option>
+                                        <option value="not in">不包含</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group center">
+                        <button type="button" class="btn btn-sm btn-info">保存</button>
+                        <button type="button" class="btn btn-sm btn-danger">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(function(){
         initEditor('#editor_review')
@@ -186,7 +258,7 @@
                         <td>正常</td>
                         <td>
                             <div class="action-buttons">
-                                <a class="green" href="#">
+                                <a class="green" href="#" data-toggle="modal" data-target="#edit_review">
                                     <i class="ace-icon fa fa-pencil bigger-130"></i>
                                     修改
                                 </a>

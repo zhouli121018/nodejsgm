@@ -90,22 +90,69 @@
                                     <input type="file" value="预览" class="form-control" style="border:none;">
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="file"  class="form-control" style="border:none;"> 允许后缀 .jpg .png .gif
+                                    <button class="btn btn-xs btn-info" type="button">上传</button> 允许后缀 .jpg .png .gif
                                 </div>
                             </div>
                         </div>
                     </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-primary">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="edit_stationery">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改信纸</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
                     <div class="form-group">
-                        <div class="col-sm-offset-4 col-sm-4 text-center">
-                            <button type="button" class="btn btn-primary btn-block">提交</button>
+                        <label class="col-sm-offset-1 col-sm-2 control-label">名称：</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control"  placeholder="名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-2 control-label">格式说明：</label>
+                        <div class="col-sm-7">
+                            <p>请将信纸中的内容部分填写为“{MAIL_CONTENT}”，写邮件时会自动替换为邮件内容。</p>
+                            <p class="red">示例：</p>
+                            <textarea class="form-control" rows="5" disabled><div style="font-size:12px;">
+                                <div>页眉内容</div>
+                                <div>页脚内容</div>
+                            </div></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-2 control-label">内容：</label>
+                        <div class="col-sm-7">
+                            <textarea  rows="5" class="form-control">内容内容</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2 col-sm-offset-1">预览图：</label>
+                        <div class="col-sm-9">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <input type="file" value="预览" class="form-control" style="border:none;">
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn btn-xs btn-info" type="button">上传</button> 允许后缀 .jpg .png .gif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
             </div>
-            <!--<div class="modal-footer">-->
-            <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
-            <!--<button type="button" class="btn btn-primary">保存</button>-->
-            <!--</div>-->
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-primary">提交</button>
+            </div>
         </div>
     </div>
 </div>
@@ -130,7 +177,7 @@
                     <td>
                         <div class="hidden-sm hidden-xs action-buttons">
 
-                            <a class="green" href="#">
+                            <a class="green" href="#" data-toggle="modal" data-target="#edit_stationery">
                                 <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 修改
                             </a>

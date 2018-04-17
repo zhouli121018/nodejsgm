@@ -24,10 +24,10 @@
                     </div>
                     <div class="col-sm-7" style="margin-bottom:4px;">
                         <button id="search-btn" type="button" class="btn btn-info" style="border:none;">查询</button>
-                        <button type="button" class="btn btn-success" style="border:none;">添加客户</button>
-                        <button type="button" class="btn btn-warning" style="border:none;">批量导入</button>
-                        <button type="button" class="btn btn-danger" style="border:none;">批量删除</button>
-                        <button type="button" class="btn btn-primary" style="border:none;">批量导出</button>
+                        <button data-toggle="modal" data-target="#add_public" type="button" class="btn btn-success" style="border:none;">添加客户</button>
+                        <button data-toggle="modal" data-target="#import_public" type="button" class="btn btn-warning" style="border:none;">批量导入</button>
+                        <button data-toggle="modal" data-target="#delete_public" type="button" class="btn btn-danger" style="border:none;">批量删除</button>
+                        <!--<button type="button" class="btn btn-primary" style="border:none;">批量导出</button>-->
                         <button type="button" class="btn btn-info" style="border:none;">客户分类</button>
                     </div>
                 </div>
@@ -73,7 +73,341 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="edit_public" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">编辑客户</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">姓名：</label>
+                        <div class="col-sm-6">
+                            <input type="text" value="上山打老虎" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">选择域名：</label>
+                        <div class="col-sm-6">
+                            <select  name="domain_id" class="form-control">
+                                <option value="1" selected="">test.com</option>
+                                <option value="21">bbb.com</option>
+                                <option value="31">bcec.com.cn</option>
+                                <option value="26">chinazndd.com</option>
+                                <option value="36">cufs.cc</option>
+                                <option value="37">cufs.com.cn</option>
+                                <option value="32">dexingroup.com</option>
+                                <option value="8">domain.com</option>
+                                <option value="13">hao123.com</option>
+                                <option value="12">heqq.com</option>
+                                <option value="14">hhhh</option>
+                                <option value="11">hokai.com</option>
+                                <option value="33">kylin.com.cn</option>
+                                <option value="10">linbihuan-test.com</option>
+                                <option value="5">linbihuan1.com</option>
+                                <option value="6">linbihuan2.com</option>
+                                <option value="28">llzzb.gov</option>
+                                <option value="27">lvchichuxing.com</option>
+                                <option value="7">magvision.com</option>
+                                <option value="34">modousport.com</option>
+                                <option value="30">ncc-edu.com</option>
+                                <option value="35">shengquanwuye.com</option>
+                                <option value="20">shfjny123.cc</option>
+                                <option value="23">shfjny123456.cc</option>
+                                <option value="22">shfjny123456.cn</option>
+                                <option value="24">testtest.com</option>
+                                <option value="29">wiprocc.com.cn</option>
+                                <option value="9">wsdk.com</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">邮箱：</label>
+                        <div class="col-sm-6">
+                            <input type="text" value="7777777@qq.com" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">所属分类：</label>
+                        <div class="col-sm-6">
+                            <select class="form-control">
+                                <option value="">请选择分类</option>
+                                <option value="2">test02</option>
+                                <option value="1">　test012</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">手机/电话：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">生日：</label>
+                        <div class="col-sm-6">
+                            <input type="datetime" class="mydatetime form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">性别：</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline">
+                                <input type="radio" name="Gender" checked  value="1">男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="Gender"  value="2">女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">工作电话：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">住宅电话：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">QQ：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">MSN：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">备注：</label>
+                        <div class="col-sm-6">
+                            <textarea  rows="5" class="form-control">777777@qq.com</textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                    <button type="button" class="btn btn-sm btn-info">保存</button>
+                    <button type="button" class="btn btn-sm btn-danger">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add_public" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加客户</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">姓名：</label>
+                        <div class="col-sm-6">
+                            <input type="text" value="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">选择域名：</label>
+                        <div class="col-sm-6">
+                            <select  name="domain_id" class="form-control">
+                                <option value="1" selected="">test.com</option>
+                                <option value="21">bbb.com</option>
+                                <option value="31">bcec.com.cn</option>
+                                <option value="26">chinazndd.com</option>
+                                <option value="36">cufs.cc</option>
+                                <option value="37">cufs.com.cn</option>
+                                <option value="32">dexingroup.com</option>
+                                <option value="8">domain.com</option>
+                                <option value="13">hao123.com</option>
+                                <option value="12">heqq.com</option>
+                                <option value="14">hhhh</option>
+                                <option value="11">hokai.com</option>
+                                <option value="33">kylin.com.cn</option>
+                                <option value="10">linbihuan-test.com</option>
+                                <option value="5">linbihuan1.com</option>
+                                <option value="6">linbihuan2.com</option>
+                                <option value="28">llzzb.gov</option>
+                                <option value="27">lvchichuxing.com</option>
+                                <option value="7">magvision.com</option>
+                                <option value="34">modousport.com</option>
+                                <option value="30">ncc-edu.com</option>
+                                <option value="35">shengquanwuye.com</option>
+                                <option value="20">shfjny123.cc</option>
+                                <option value="23">shfjny123456.cc</option>
+                                <option value="22">shfjny123456.cn</option>
+                                <option value="24">testtest.com</option>
+                                <option value="29">wiprocc.com.cn</option>
+                                <option value="9">wsdk.com</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">邮箱：</label>
+                        <div class="col-sm-6">
+                            <input type="text" value="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">所属分类：</label>
+                        <div class="col-sm-6">
+                            <select class="form-control">
+                                <option value="">请选择分类</option>
+                                <option value="2">test02</option>
+                                <option value="1">　test012</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">手机/电话：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">生日：</label>
+                        <div class="col-sm-6">
+                            <input type="datetime" class="mydatetime form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">性别：</label>
+                        <div class="col-sm-8">
+                            <label class="radio-inline">
+                                <input type="radio" name="Gender" checked  value="1">男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="Gender"  value="2">女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">工作电话：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">住宅电话：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">QQ：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">MSN：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">备注：</label>
+                        <div class="col-sm-6">
+                            <textarea  rows="5" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-sm btn-info">保存</button>
+                <button type="button" class="btn btn-sm btn-danger">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="import_public" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">批量导入客户</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-block alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
+
+                    <p><strong class="red">
+                        注：
+                    </strong>一行为一个客户，每一行的格式为"客户名称;邮件地址;联系电话;客户分组;备注;生日;性别;工作电话;家庭电话;QQ;MSN"，各字段间用";"或者"TAB"制表符分隔
+                        性别说明："M"表示男,"F"表示女</p>
+                    <p class="red">eg：</p>
+                    <p>lihong;lh@domain.com;444444;catrogname;des;1980-04-24;F;tel;home tel;QQ;MSN</p>
+                </div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-8">
+                            <textarea  rows="5" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-sm btn-info">保存</button>
+                <button type="button" class="btn btn-sm btn-danger">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="delete_public" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">批量删除客户</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-block alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
+
+                    <p><strong class="red">
+                        注：
+                    </strong>请输入客户名称，一个名称占一行。</p>
+                    <p class="red">eg：</p>
+                    <p>张三</p>
+                    <p>李四</p>
+                </div>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-8">
+                            <textarea  rows="5" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-sm btn-info">保存</button>
+                <button type="button" class="btn btn-sm btn-danger">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/js/date-time/moment.js"></script>
+<script src="../assets/js/date-time/bootstrap-datetimepicker.js"></script>
 <script>
+    $(".mydatetime").datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+//        autoclose:true
+    });
     var myTable;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
@@ -95,7 +429,7 @@
                     <td>工作：3567876 <br>住宅：13712341234</td>
                     <td>
                         <div class="hidden-sm hidden-xs action-buttons">
-                            <a class="green" href="#">
+                            <a class="green" href="#" data-toggle="modal" data-target="#edit_public">
                                 <i class="ace-icon fa fa-pencil bigger-130"></i>
                                 修改
                             </a>

@@ -26,6 +26,7 @@
                 <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add_email">批量添加帐号</button>
                 <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit_email">批量修改帐号</button>
                 <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_email">批量删除帐号</button>
+                <button type="button" class="btn btn-purple btn-sm" data-toggle="modal" data-target="#backup">导入导出账号</button>
             </div>
         </div>
 
@@ -350,17 +351,12 @@
                         <tr>
                             <td colspan="2" class="center">
                                 <button type="button" class="btn btn-sm btn-primary">保存</button>
-                                <button type="button" class="btn btn-sm btn-danger">取消</button>
+                                <button type="button" class="btn btn-sm btn-danger cancel-btn">返回</button>
                             </td>
                         </tr>
                     </table>
                 </div>
-
             </div>
-            <!--<div class="modal-footer">-->
-            <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
-            <!--<button type="button" class="btn btn-primary">保存</button>-->
-            <!--</div>-->
         </div>
     </div>
 </div>
@@ -618,12 +614,11 @@
                         <tr>
                             <td colspan="2" class="center">
                                 <button type="button" class="btn btn-sm btn-primary">保存</button>
-                                <button type="button" class="btn btn-sm btn-danger">取消</button>
+                                <button type="button" class="btn btn-sm btn-danger cancel-btn">返回</button>
                             </td>
                         </tr>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>
@@ -1214,22 +1209,14 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
                             <textarea  rows="6" class="form-control"></textarea>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="6">
-                            <div class="row">
-                                <div class="col-xs-2 col-xs-offset-4">
-                                    <button class="btn btn-primary btn-block btn-sm">添加</button>
-                                </div>
-                                <div class="col-xs-2">
-                                    <button class="btn btn-warning btn-block btn-sm">重置</button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
 
                     </tbody>
                 </table>
 
+            </div>
+            <div class="modal-footer center">
+                <button class="btn btn-primary  btn-sm" type="button">添加</button>
+                <button class="btn btn-warning  btn-sm" type="button">重置</button>
             </div>
         </div>
     </div>
@@ -1295,22 +1282,13 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
                             <input type="file">
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="6">
-                            <div class="row">
-                                <div class="col-xs-2 col-xs-offset-4">
-                                    <button class="btn btn-primary btn-block btn-sm">编辑</button>
-                                </div>
-                                <div class="col-xs-2">
-                                    <button class="btn btn-warning btn-block btn-sm">重置</button>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-
                     </tbody>
                 </table>
 
+            </div>
+            <div class="modal-footer center">
+                <button class="btn btn-primary" type="button">编辑</button>
+                <button class="btn btn-warning" type="button">重置</button>
             </div>
         </div>
     </div>
@@ -1352,19 +1330,71 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
                             <textarea  rows="8" class="form-control"></textarea>
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="6">
-                            <div class="row">
-                                <div class="col-xs-2 col-xs-offset-4">
-                                    <button class="btn btn-primary btn-block btn-sm">确定</button>
-                                </div>
-                                <div class="col-xs-2">
-                                    <button class="btn btn-warning btn-block btn-sm">重置</button>
-                                </div>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer center">
+                <button class="btn btn-primary" type="button">确定</button>
+                <button class="btn btn-warning" type="button">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="backup">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">导入导出账号</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">
+                    导入导出帐号
+                </div>
+                <table id="email-basic-table" class="table  table-bordered  table-striped">
+                    <tbody>
+                    <tr >
+                        <td class="center" style="vertical-align: middle"><b>备份域“test.com”的邮箱</b></td>
+                        <td class="text-right">
+                            备份文件名称：
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="backup_20180412">
+                                <span class="input-group-addon">.dat</span>
                             </div>
                         </td>
+                        <td>
+                            <button type="button" class="btn btn-info">备份数据</button>
+                        </td>
                     </tr>
-
+                    <tr >
+                        <td class="center"><b>恢复域“test.com”的备份</b></td>
+                        <td class="text-right">
+                            请选择备份文件：：
+                        </td>
+                        <td>
+                            <input type="file">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info">恢复备份</button>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td class="center"><b>导出域“test.com”的邮箱列表</b></td>
+                        <td class="text-right">
+                            导出文件名称：
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="backup_20180412">
+                                <span class="input-group-addon">.cvs</span>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info">导出邮箱</button>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -1440,25 +1470,6 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
                                 { "bSortable": false }
                             ],
                             "aaSorting": [],
-
-
-                            //"bProcessing": true,
-                            //"bServerSide": true,
-                            //"sAjaxSource": "http://127.0.0.1/table.php"	,
-
-                            //,
-                            //"sScrollY": "200px",
-                            //"bPaginate": false,
-
-                            //"sScrollX": "100%",
-                            //"sScrollXInner": "120%",
-                            //"bScrollCollapse": true,
-                            //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
-                            //you may want to wrap the table inside a "div.dataTables_borderWrap" element
-
-                            //"iDisplayLength": 50
-
-
                             select: {
                                 style: 'multi'
                             },
@@ -1489,18 +1500,13 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
             buttons: [
                 {
                     "extend": "colvis",
-                    "text": "<i class='fa fa-search bigger-110 blue'></i> <span class='hidden'>显示 / 隐藏 列</span>",
+                    "text": "<i class='fa fa-search bigger-110 blue'></i> <span class=''>显示/隐藏 列</span>",
                     "className": "btn btn-white btn-primary btn-bold",
                     columns: ':not(:first):not(:last)'
                 },
                 {
-                    "extend": "copy",
-                    "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>复制到剪贴板</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
                     "extend": "csv",
-                    "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>导出到 CSV</span>",
+                    "text": "<i class='fa fa-database bigger-110 orange'></i> <span class=''>导出数据</span>",
                     "className": "btn btn-white btn-primary btn-bold"
                 },
                 {
@@ -1512,25 +1518,10 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
                     "extend": "pdf",
                     "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>输出到 PDF</span>",
                     "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
-                    "extend": "print",
-                    "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>打印</span>",
-                    "className": "btn btn-white btn-primary btn-bold",
-                    autoPrint: false,
-                    message: 'This print was produced using the Print button for DataTables'
                 }
             ]
         } );
         myTable.buttons().container().appendTo( $('.tableTools-container') );
-
-        //style the message box
-        var defaultCopyAction = myTable.button(1).action();
-        myTable.button(1).action(function (e, dt, button, config) {
-            defaultCopyAction(e, dt, button, config);
-            $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
-        });
-
 
         var defaultColvisAction = myTable.button(0).action();
         myTable.button(0).action(function (e, dt, button, config) {
@@ -1647,6 +1638,9 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
         e.preventDefault();
     });
 $('.modal-body>div .add-btn').click(function(){
+    $(this).parents('.active').removeClass('active').siblings().addClass('active');
+})
+$('.modal-body>div .cancel-btn').click(function(){
     $(this).parents('.active').removeClass('active').siblings().addClass('active');
 })
 $(document).on('click', '#dynamic-table a', function(e) {

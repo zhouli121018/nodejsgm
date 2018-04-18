@@ -1,8 +1,6 @@
 <div id="dynamic-div">
     <h3 class="header smaller lighter blue">邮箱别名管理
-        <button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#mailboxalias_add" style="margin-right:32px;margin-top:-18px;">
-            新建别名
-        </button>
+
     </h3>
 
     <div class="clearfix">
@@ -18,7 +16,10 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <button id="search-btn" type="button" class="btn btn-info" style="border:none;">查询</button>
+                <button id="search-btn" type="button" class="btn btn-info btn-sm" >查询</button>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#mailboxalias_add" >
+                    新建别名
+                </button>
             </div>
         </div>
     </div>
@@ -190,24 +191,6 @@
                             ],
                             "aaSorting": [],
 
-
-                            //"bProcessing": true,
-                            //"bServerSide": true,
-                            //"sAjaxSource": "http://127.0.0.1/table.php"	,
-
-                            //,
-                            //"sScrollY": "200px",
-                            //"bPaginate": false,
-
-                            //"sScrollX": "100%",
-                            //"sScrollXInner": "120%",
-                            //"bScrollCollapse": true,
-                            //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
-                            //you may want to wrap the table inside a "div.dataTables_borderWrap" element
-
-                            //"iDisplayLength": 50
-
-
                             select: {
                                 style: 'multi'
                             },
@@ -238,18 +221,18 @@
             buttons: [
                 {
                     "extend": "colvis",
-                    "text": "<i class='fa fa-search bigger-110 blue'></i> <span class='hidden'>显示 / 隐藏 列</span>",
+                    "text": "<i class='fa fa-search bigger-110 blue'></i> <span class=''>显示/隐藏 列</span>",
                     "className": "btn btn-white btn-primary btn-bold",
                     columns: ':not(:first):not(:last)'
                 },
-                {
-                    "extend": "copy",
-                    "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>复制到剪贴板</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                },
+//                {
+//                    "extend": "copy",
+//                    "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>复制到剪贴板</span>",
+//                    "className": "btn btn-white btn-primary btn-bold"
+//                },
                 {
                     "extend": "csv",
-                    "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>导出到 CSV</span>",
+                    "text": "<i class='fa fa-database bigger-110 orange'></i> <span class=''>导出数据</span>",
                     "className": "btn btn-white btn-primary btn-bold"
                 },
                 {
@@ -262,13 +245,13 @@
                     "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>输出到 PDF</span>",
                     "className": "btn btn-white btn-primary btn-bold"
                 },
-                {
-                    "extend": "print",
-                    "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>打印</span>",
-                    "className": "btn btn-white btn-primary btn-bold",
-                    autoPrint: false,
-                    message: 'This print was produced using the Print button for DataTables'
-                }
+//                {
+//                    "extend": "print",
+//                    "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>打印</span>",
+//                    "className": "btn btn-white btn-primary btn-bold",
+//                    autoPrint: false,
+//                    message: 'This print was produced using the Print button for DataTables'
+//                }
             ]
         } );
         myTable.buttons().container().appendTo( $('.tableTools-container') );

@@ -31,6 +31,7 @@
     <![endif]-->
 
     <link rel="stylesheet" href="../assets/css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="../assets/css/chosen.css" />
     <!-- inline styles related to this page -->
 
     <!-- ace settings handler -->
@@ -109,6 +110,12 @@
         #auto_replay .modal-body>div.active,#auto_forward .modal-body>div.active{
             display:block;
         }
+        .chosen-container-multi .chosen-choices li.search-choice .search-choice-close{
+            background:none !important;
+        }
+        .clearfix>div.row{
+            margin-right:240px;
+        }
     </style>
 </head>
 
@@ -162,6 +169,59 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="global_set" tabindex="-1"  >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设置后台标题以及全局参数</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class=" col-sm-4 control-label">超域管理后台标题:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="超域管理员后台" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" col-sm-4 control-label">系统管理后台标题:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="系统222" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" col-sm-4 control-label">域管理后台标题:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="域22" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" col-sm-4 control-label">部门管理后台标题:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="部门22" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" col-sm-4 control-label">附件预览服务器域名:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="http://office.comingchina.com" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" col-sm-4 control-label">主域名和端口:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="http://mail.test.com" >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- #section:basics/navbar.layout -->
 <div id="navbar" class="navbar navbar-default          ace-save-state">
@@ -197,18 +257,19 @@
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
                 <li class="grey">
-                    <a   href="#" data-toggle="modal" data-target="#resetPwd">
-                        <i class="ace-icon fa fa-cog icon-animated-wrench"></i>
-                        修改密码
-                    </a>
+                    <!--<a   href="#" data-toggle="modal" data-target="#resetPwd">-->
+                        <!--<i class="ace-icon fa fa-cog icon-animated-wrench"></i>-->
+                        <!--修改密码-->
+                    <!--</a>-->
 
 
                 </li>
 
                 <li class="purple">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <a  href="http://192.168.1.35/operation/login" target="_blank">
                         <i class="ace-icon fa fa-bell icon-animated-bell"></i>
-                        <span class="badge badge-important">8</span>
+                        运维后台
+                        <!--<span class="badge badge-important">8</span>-->
                     </a>
 
                     <ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
@@ -274,113 +335,10 @@
                 </li>
 
                 <li class="green">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <a  href="http://192.168.1.29"  target="_black">
                         <i class="ace-icon fa fa-envelope icon-animated-vertical"></i>
-                        <span class="badge badge-success">5</span>
+                        邮箱首页
                     </a>
-
-                    <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
-                        <li class="dropdown-header">
-                            <i class="ace-icon fa fa-envelope-o"></i>
-                            5 Messages
-                        </li>
-
-                        <li class="dropdown-content">
-                            <ul class="dropdown-menu dropdown-navbar">
-                                <li>
-                                    <a href="#" class="clearfix">
-                                        <img src="../assets/avatars/avatar.png" class="msg-photo" alt="Alex's Avatar" />
-												<span class="msg-body">
-													<span class="msg-title">
-														<span class="blue">Alex:</span>
-														Ciao sociis natoque penatibus et auctor ...
-													</span>
-
-													<span class="msg-time">
-														<i class="ace-icon fa fa-clock-o"></i>
-														<span>a moment ago</span>
-													</span>
-												</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="clearfix">
-                                        <img src="../assets/avatars/avatar3.png" class="msg-photo" alt="Susan's Avatar" />
-												<span class="msg-body">
-													<span class="msg-title">
-														<span class="blue">Susan:</span>
-														Vestibulum id ligula porta felis euismod ...
-													</span>
-
-													<span class="msg-time">
-														<i class="ace-icon fa fa-clock-o"></i>
-														<span>20 minutes ago</span>
-													</span>
-												</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="clearfix">
-                                        <img src="../assets/avatars/avatar4.png" class="msg-photo" alt="Bob's Avatar" />
-												<span class="msg-body">
-													<span class="msg-title">
-														<span class="blue">Bob:</span>
-														Nullam quis risus eget urna mollis ornare ...
-													</span>
-
-													<span class="msg-time">
-														<i class="ace-icon fa fa-clock-o"></i>
-														<span>3:15 pm</span>
-													</span>
-												</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="clearfix">
-                                        <img src="../assets/avatars/avatar2.png" class="msg-photo" alt="Kate's Avatar" />
-												<span class="msg-body">
-													<span class="msg-title">
-														<span class="blue">Kate:</span>
-														Ciao sociis natoque eget urna mollis ornare ...
-													</span>
-
-													<span class="msg-time">
-														<i class="ace-icon fa fa-clock-o"></i>
-														<span>1:33 pm</span>
-													</span>
-												</span>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#" class="clearfix">
-                                        <img src="../assets/avatars/avatar5.png" class="msg-photo" alt="Fred's Avatar" />
-												<span class="msg-body">
-													<span class="msg-title">
-														<span class="blue">Fred:</span>
-														Vestibulum id penatibus et auctor  ...
-													</span>
-
-													<span class="msg-time">
-														<i class="ace-icon fa fa-clock-o"></i>
-														<span>10:09 am</span>
-													</span>
-												</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="dropdown-footer">
-                            <a href="inbox.html">
-                                See all messages
-                                <i class="ace-icon fa fa-arrow-right"></i>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
 
                 <!-- #section:basics/navbar.user_menu -->
@@ -397,16 +355,16 @@
 
                     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                         <li>
-                            <a href="#">
-                                <i class="ace-icon fa fa-cog"></i>
-                                Settings
+                            <a href="#" data-toggle="modal" data-target="#resetPwd">
+                                <i class="ace-icon fa fa-user"></i>
+                                修改密码
                             </a>
                         </li>
 
                         <li>
-                            <a href="profile.html">
-                                <i class="ace-icon fa fa-user"></i>
-                                Profile
+                            <a href="#" data-toggle="modal" data-target="#global_set">
+                                <i class="ace-icon fa fa-cog"></i>
+                                全局设置
                             </a>
                         </li>
 
@@ -415,7 +373,7 @@
                         <li>
                             <a href="#">
                                 <i class="ace-icon fa fa-power-off"></i>
-                                Logout
+                                退出登录
                             </a>
                         </li>
                     </ul>
@@ -551,29 +509,28 @@
                     <li class="">
                         <a href="mailbox/recheck">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            审批申请账号
+                            审批管理
                         </a>
-
                         <b class="arrow"></b>
                     </li>
 
-                    <li class="">
-                        <a href="mailbox/accountcancel">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            审批注销申请
-                        </a>
+                    <!--<li class="">-->
+                        <!--<a href="mailbox/accountcancel">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
+                            <!--审批注销申请-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
-                    </li>
+                        <!--<b class="arrow"></b>-->
+                    <!--</li>-->
 
-                    <li class="">
-                        <a href="mailbox/profilereview">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            审批个人资料修改
-                        </a>
+                    <!--<li class="">-->
+                        <!--<a href="mailbox/profilereview">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
+                            <!--审批个人资料修改-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
-                    </li>
+                        <!--<b class="arrow"></b>-->
+                    <!--</li>-->
 
                     <!--<li class="">-->
                         <!--<a href="mailbox/import">-->
@@ -602,16 +559,16 @@
                         <!--<b class="arrow"></b>-->
                     <!--</li>-->
 
-                    <li class="">
-                        <a href="mailbox/backup">
-                            <i class="menu-icon fa fa-caret-right"></i>
+                    <!--<li class="">-->
+                        <!--<a href="mailbox/backup">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
 
-                            导入导出账号
-                        </a>
+                            <!--导入导出账号-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
+                        <!--<b class="arrow"></b>-->
 
-                    </li>
+                    <!--</li>-->
                 </ul>
             </li>
 
@@ -627,9 +584,17 @@
 
                 <ul class="submenu">
                     <li class="">
-                        <a href="group">
+                        <a href="group/group">
                             <i class="menu-icon fa fa-caret-right"></i>
                             反垃圾级别组
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="group/group0">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            权限组管理
                         </a>
 
                         <b class="arrow"></b>
@@ -1070,14 +1035,14 @@
                 </ul><!-- /.breadcrumb -->
 
                 <!-- #section:basics/content.searchbox -->
-                <div class="nav-search" id="nav-search">
-                    <form class="form-search">
-								<span class="input-icon">
-									<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />
-									<i class="ace-icon fa fa-search nav-search-icon"></i>
-								</span>
-                    </form>
-                </div><!-- /.nav-search -->
+                <!--<div class="nav-search" id="nav-search">-->
+                    <!--<form class="form-search">-->
+								<!--<span class="input-icon">-->
+									<!--<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />-->
+									<!--<i class="ace-icon fa fa-search nav-search-icon"></i>-->
+								<!--</span>-->
+                    <!--</form>-->
+                <!--</div>&lt;!&ndash; /.nav-search &ndash;&gt;-->
 
                 <!-- /section:basics/content.searchbox -->
             </div>
@@ -1263,6 +1228,9 @@
 <script src="../assets/js/jquery.ui.touch-punch.js"></script>
 
 <script src="../assets/js/fuelux/fuelux.tree.js"></script>
+<script src="../assets/js/chosen.jquery.js"></script>
+<script src="../assets/js/date-time/moment.js"></script>
+<script src="../assets/js/date-time/bootstrap-datetimepicker.js"></script>
 
 <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
 <script src="../assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>
@@ -1382,6 +1350,7 @@
             $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
         });
         /***************/
+
 
 
 

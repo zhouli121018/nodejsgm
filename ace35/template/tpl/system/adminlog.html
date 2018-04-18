@@ -3,65 +3,60 @@
 
     <div class="clearfix">
         <div class="pull-right tableTools-container"></div>
-        <div class="row clearfix">
-            <div class="col-sm-10">
-                <div class="row">
-                    <div class="col-sm-3" style="margin-bottom:4px;">
-                        <div class="input-group">
-                            <span class="input-group-addon">域名</span>
-                            <select name="yname" class="yname form-control">
-                                <option value="test.com">test.com</option>
-                                <option value="domain.com">domain.com</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3" style="margin-bottom:4px;">
-                        <div class="input-group">
-                            <span class="input-group-addon">开始时间</span>
-                            <input type="datetime" name="start-time" class="mydatetime form-control" />
-                        </div>
-                    </div>
-                    <div class="col-sm-3" style="margin-bottom:4px;">
-                        <div class="input-group">
-                            <span class="input-group-addon">结束时间</span>
-                            <input type="datetime" name="end-time" class="mydatetime form-control" />
-                        </div>
-                    </div>
-                    <div class="col-sm-3" style="margin-bottom:4px;">
-                        <div class="input-group">
-                            <span class="input-group-addon">IP</span>
-                            <input type="text" name="ip" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="col-sm-3" style="margin-bottom:4px;">
-                        <select class="form-control">
-                            <option value="0">选择管理员</option>
-                            <option value="1">种类1</option>
-                            <option value="2">种类2</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-3" style="margin-bottom:4px;">
-                        <select class="form-control">
-                            <option value="0">选择种类</option>
-                            <option value="1">种类1</option>
-                            <option value="2">种类2</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-3" style="margin-bottom:4px;">
-                        <select class="form-control">
-                            <option value="0">选择结果</option>
-                            <option value="1">成功</option>
-                            <option value="2">失败</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-3" style="margin-bottom:4px;">
-                        <button id="search-btn" type="button" class="btn btn-info" style="border:none;">筛选日志</button>
-                        <button type="button" class="btn btn-danger delete" style="border:none;">删除日志</button>
-
-                    </div>
+        <div class="row">
+            <div class="col-sm-3" style="margin-bottom:4px;">
+                <div class="input-group">
+                    <span class="input-group-addon">域名</span>
+                    <select name="yname" class="yname form-control">
+                        <option value="test.com">test.com</option>
+                        <option value="domain.com">domain.com</option>
+                    </select>
                 </div>
             </div>
+            <div class="col-sm-3" style="margin-bottom:4px;">
+                <div class="input-group">
+                    <span class="input-group-addon">开始时间</span>
+                    <input type="datetime" name="start-time" class="mydatetime form-control" />
+                </div>
+            </div>
+            <div class="col-sm-3" style="margin-bottom:4px;">
+                <div class="input-group">
+                    <span class="input-group-addon">结束时间</span>
+                    <input type="datetime" name="end-time" class="mydatetime form-control" />
+                </div>
+            </div>
+            <div class="col-sm-3" style="margin-bottom:4px;">
+                <div class="input-group">
+                    <span class="input-group-addon">IP</span>
+                    <input type="text" name="ip" class="form-control" />
+                </div>
+            </div>
+            <div class="col-sm-3" style="margin-bottom:4px;">
+                <select class="form-control">
+                    <option value="0">选择管理员</option>
+                    <option value="1">种类1</option>
+                    <option value="2">种类2</option>
+                </select>
+            </div>
+            <div class="col-sm-3" style="margin-bottom:4px;">
+                <select class="form-control">
+                    <option value="0">选择种类</option>
+                    <option value="1">种类1</option>
+                    <option value="2">种类2</option>
+                </select>
+            </div>
+            <div class="col-sm-3" style="margin-bottom:4px;">
+                <select class="form-control">
+                    <option value="0">选择结果</option>
+                    <option value="1">成功</option>
+                    <option value="2">失败</option>
+                </select>
+            </div>
+            <div class="col-sm-3" style="margin-bottom:4px;">
+                <button id="search-btn" type="button" class="btn btn-info" style="border:none;">筛选日志</button>
+                <button type="button" class="btn btn-danger delete" style="border:none;">删除日志</button>
 
+            </div>
         </div>
     </div>
     <div class="table-header">
@@ -168,18 +163,18 @@
             buttons: [
                 {
                     "extend": "colvis",
-                    "text": "<i class='fa fa-search bigger-110 blue'></i> <span class='hidden'>显示 / 隐藏 列</span>",
+                    "text": "<i class='fa fa-search bigger-110 blue'></i> <span class=''>显示/隐藏 列</span>",
                     "className": "btn btn-white btn-primary btn-bold",
                     columns: ':not(:first):not(:last)'
                 },
-                {
-                    "extend": "copy",
-                    "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>复制到剪贴板</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                },
+//                {
+//                    "extend": "copy",
+//                    "text": "<i class='fa fa-copy bigger-110 pink'></i> <span class='hidden'>复制到剪贴板</span>",
+//                    "className": "btn btn-white btn-primary btn-bold"
+//                },
                 {
                     "extend": "csv",
-                    "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'>导出到 CSV</span>",
+                    "text": "<i class='fa fa-database bigger-110 orange'></i> <span class=''>导出数据</span>",
                     "className": "btn btn-white btn-primary btn-bold"
                 },
                 {
@@ -192,13 +187,13 @@
                     "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>输出到 PDF</span>",
                     "className": "btn btn-white btn-primary btn-bold"
                 },
-                {
-                    "extend": "print",
-                    "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>打印</span>",
-                    "className": "btn btn-white btn-primary btn-bold",
-                    autoPrint: false,
-                    message: 'This print was produced using the Print button for DataTables'
-                }
+//                {
+//                    "extend": "print",
+//                    "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'>打印</span>",
+//                    "className": "btn btn-white btn-primary btn-bold",
+//                    autoPrint: false,
+//                    message: 'This print was produced using the Print button for DataTables'
+//                }
             ]
         } );
         myTable.buttons().container().appendTo( $('.tableTools-container') );

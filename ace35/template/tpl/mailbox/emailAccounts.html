@@ -16,7 +16,7 @@
             <div class="col-sm-6">
                 <input type="datetime" name="start-time" class="mydatetime" />
                 <input type="datetime" name="end-time" class="mydatetime" />
-                <button id="search-btn" type="button" class="btn btn-info" style="border:none;">查询</button>
+                <button id="search-btn" type="button" class="btn btn-info btn-sm">查询</button>
             </div>
         </div>
     </div>
@@ -1401,20 +1401,7 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
         </div>
     </div>
 </div>
-<script src="../assets/js/date-time/moment.js"></script>
-<script src="../assets/js/date-time/bootstrap-datetimepicker.js"></script>
 <script>
-//    var mydate = $('#mydate')[0];
-//    if(mydate.type !== 'date') {//if browser doesn't support "date" input
-//        $(mydate).datepicker({
-//            //options
-//        })
-//    }
-    $(".mydatetime").datetimepicker({
-        format: 'YYYY-MM-DD HH:mm:ss',
-//        autoclose:true
-    });
-
     var myTable;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
@@ -1437,7 +1424,7 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
                     <td>发送: 正常；POP3: 正常；接收: 正常；IMAP: 正常</td>
                     <td>192.168.1.1-200</td>
                     <td>正常</td>
-                    <td>2018-01-01 17:12:20</td>
+                    <td>2018-01-01 ${i+10}:12:00</td>
                     <td>
                         <div class="hidden-sm hidden-xs action-buttons">
 
@@ -1464,9 +1451,12 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
                             bAutoWidth: false,
                             "aoColumns": [
                                 { "bSortable": false },
-                                null, null,null,
+                                null,
                                 { "bSortable": false },
-                                null, null,{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },null,
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                null,{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },null,
                                 { "bSortable": false }
                             ],
                             "aaSorting": [],
@@ -1507,16 +1497,6 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
                 {
                     "extend": "csv",
                     "text": "<i class='fa fa-database bigger-110 orange'></i> <span class=''>导出数据</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
-                    "extend": "excel",
-                    "text": "<i class='fa fa-file-excel-o bigger-110 green'></i> <span class='hidden'>输出到 Excel</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                },
-                {
-                    "extend": "pdf",
-                    "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'>输出到 PDF</span>",
                     "className": "btn btn-white btn-primary btn-bold"
                 }
             ]

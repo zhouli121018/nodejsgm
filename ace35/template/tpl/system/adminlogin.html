@@ -39,54 +39,5 @@
             </td>
         </tr>
     </table>
-    <div class="well" style="margin-top:5px;background:#fff;">
-        <div class="user_content_box">
-            <div class="wysiwyg_content_show">
-                <p class="red"><b>备注：</b></p>
-                <p>设置的登录页面只有在使用域名访问时才生效；使用IP地址访问时将会使用默认登录页面。</p>
-            </div>
-            <div class="hr hr-18 dotted"></div>
-            <button class="btn btn-sm btn-primary admin_edit">
-                <i class="ace-icon fa fa-pencil bigger-125"></i>
-                编辑
-            </button>
 
-        </div>
-        <div class="wysiwyg-editor-box">
-            <div class="wysiwyg-editor" id="editor_adminlogin">
-                <p class="red"><b>备注：</b></p>
-                <p>设置的登录页面只有在使用域名访问时才生效；使用IP地址访问时将会使用默认登录页面。</p>
-            </div>
-            <div class="widget-toolbox padding-4 clearfix admin_setted">
-                <div class="btn-group pull-left">
-                    <button class="btn btn-sm btn-info">
-                        <i class="ace-icon fa fa-times bigger-125"></i>
-                        取消
-                    </button>
-                </div>
-
-                <div class="btn-group pull-right">
-                    <button class="btn btn-sm btn-purple">
-                        <i class="ace-icon fa fa-floppy-o bigger-125"></i>
-                        保存
-                    </button>
-                </div>
-            </div>
-        </div>
-
-    </div>
 </div>
-<script>
-    $(function(){
-        initEditor('#editor_adminlogin');
-
-        $('.admin_edit').click(function(){
-            $('.user_content_box').hide();
-            $('.wysiwyg-editor-box').show();
-        })
-        $('.admin_setted button').click(function(){
-            $('.wysiwyg-editor-box').hide();
-            $('.user_content_box').show();
-        })
-    })
-</script>

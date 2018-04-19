@@ -21,12 +21,13 @@
                 </select>
             </div>
             <div class="col-sm-7" style="margin-bottom:4px;">
-                <button id="search-btn" type="button" class="btn btn-info" style="border:none;">查询</button>
-                <button data-toggle="modal" data-target="#add_public" type="button" class="btn btn-success" style="border:none;">添加客户</button>
-                <button data-toggle="modal" data-target="#import_public" type="button" class="btn btn-warning" style="border:none;">批量导入</button>
-                <button data-toggle="modal" data-target="#delete_public" type="button" class="btn btn-danger" style="border:none;">批量删除</button>
+                <button id="search-btn" type="button" class="btn btn-info btn-sm" >查询</button>
+                <button data-toggle="modal" data-target="#add_public" type="button" class="btn btn-success btn-sm" >添加客户</button>
+                <button data-toggle="modal" data-target="#import_public" type="button" class="btn btn-warning btn-sm" >批量导入</button>
+                <button data-toggle="modal" data-target="#delete_public" type="button" class="btn btn-danger btn-sm" >批量删除</button>
                 <!--<button type="button" class="btn btn-primary" style="border:none;">批量导出</button>-->
-                <button type="button" class="btn btn-info" style="border:none;">客户分类</button>
+                <button data-toggle="modal" data-target="#add_customer" type="button" class="btn btn-info btn-sm" >客户分类</button>
+                <button data-toggle="modal" data-target="#add_customer_type" type="button" class="btn btn-purple btn-sm" >添加客户分类</button>
             </div>
         </div>
     </div>
@@ -396,14 +397,79 @@
         </div>
     </div>
 </div>
-<script src="../assets/js/date-time/moment.js"></script>
-<script src="../assets/js/date-time/bootstrap-datetimepicker.js"></script>
+<div class="modal fade" id="add_customer">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">客户分类管理</h4>
+            </div>
+            <div class="modal-body">
+                <table id="dynamic-table2" class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">排序</th>
+                        <th>分类名称</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="data-body2">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer center">
+                <button type="button"  class="btn btn-danger">修改顺序</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add_customer_type" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加客户分类</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">分类名称：</label>
+                        <div class="col-sm-6">
+                            <input type="text" value="" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">上级分类：</label>
+                        <div class="col-sm-6">
+                            <select name="parent_id" class="form-control">
+                                <option value="-1">无上级分类</option>
+                                <option value="2">test02</option>
+                                <option value="1">　test012</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">排序顺序：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-sm btn-info">提交</button>
+                <!--<button type="button" class="btn btn-sm btn-danger">返回</button>-->
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(".mydatetime").datetimepicker({
         format: 'YYYY-MM-DD HH:mm:ss',
 //        autoclose:true
     });
-    var myTable;
+    var myTable,myTable2;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
             html+=`<tr role="row">
@@ -622,6 +688,63 @@
         myTable.destroy();
         initDate(8);
     })
+
+    initDate2(12);
+    function initDate2(p){
+        for(var i= 0,html='';i<p;i++){
+            html+=`<tr>
+                    <td class="center">
+                        <input type="text" value="1" style="width:60px;">
+                    </td>
+                    <td>test.com</td>
+                    <td>
+                        <div class="hidden-sm hidden-xs action-buttons">
+                            <a class="green" href="#" >
+                                <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                修改
+                            </a>
+                            <a class="red" href="#" >
+                                <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                删除
+                            </a>
+                        </div>
+                    </td>
+                </tr>`
+
+
+        }
+        $('#data-body2').html(html);
+
+        myTable2 =
+                $('#dynamic-table2')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+
+                            "iDisplayLength": 5,
+                            "lengthMenu":  [5,10,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+    }
 
     $('.table-footer button').click(function(){
         if($(this).hasClass('edit')){

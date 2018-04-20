@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <title>超域管理后台</title>
 
-    <meta name="description" content="overview &amp; stats" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
     <link rel="shortcut icon" type="image/x-icon" href="../assets/img/favicon.ico" media="screen">
@@ -124,6 +124,22 @@
         #ace-settings-container{
             display:none;
         }
+        .btn-danger.btn-white{
+            border-color:#e4393c;
+
+            color:#e4393c !important;
+        }
+        .btn-white{
+            border-radius:4px;
+        }
+        .btn-danger.btn-white:hover{
+            border-color: red;
+            color: red !important;
+        }
+        .ui-tabs ul.ui-tabs-nav li{
+            margin-bottom:2px;
+        }
+
     </style>
 </head>
 
@@ -641,14 +657,14 @@
                 <b class="arrow"></b>
 
                 <ul class="submenu">
-                    <li class="">
-                        <a href="misc/function">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            综合功能开关
-                        </a>
+                    <!--<li class="">-->
+                        <!--<a href="misc/function">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
+                            <!--综合功能开关-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
-                    </li>
+                        <!--<b class="arrow"></b>-->
+                    <!--</li>-->
                     <li class="">
                         <a href="misc/translate">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -746,50 +762,6 @@
                         <b class="arrow"></b>
                     </li>
 
-                </ul>
-            </li>
-
-            <li class="">
-                <a href="#" class="dropdown-toggle">
-                    <i class="menu-icon fa fa-picture-o"></i>
-                    <span class="menu-text"> Webmail 设置 </span>
-                    <b class="arrow fa fa-angle-down"></b>
-                </a>
-
-                <b class="arrow"></b>
-                <ul class="submenu">
-                    <li class="">
-                        <a href="webmail/all">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            综合设置
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                    <li class="">
-                        <a href="webmail/style">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            风格定制
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                    <li class="">
-                        <a href="webmail/Stationery">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            信纸管理
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                    <li class="">
-                        <a href="webmail/public">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            公共通讯录
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
                 </ul>
             </li>
 
@@ -1165,13 +1137,13 @@
 
 <!-- basic scripts -->
 
-<!--[if !IE]> -->
-<script src="../assets/js/jquery.js"></script>
-<!-- <![endif]-->
+<!--&lt;!&ndash;[if !IE]> &ndash;&gt;-->
+<!--<script src="../assets/js/jquery.js"></script>-->
+<!--&lt;!&ndash; <![endif]&ndash;&gt;-->
 
-<!--[if IE]>
+<!--&lt;!&ndash;[if IE]>-->
 <script src="../assets/js/jquery1x.js"></script>
-<![endif]-->
+<!--<![endif]&ndash;&gt;-->
 
 <script type="text/javascript">
     if('ontouchstart' in document.documentElement) document.write("<script src='../assets/js/jquery.mobile.custom.js'>"+"<"+"/script>");

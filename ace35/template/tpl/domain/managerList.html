@@ -4,7 +4,7 @@
     <div class="clearfix">
         <div class="pull-right tableTools-container"></div>
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-3" style="width:240px;">
                 <div class="input-group">
                     <span class="input-group-addon">选择域名：</span>
                     <select name="yname" class="yname form-control">
@@ -14,9 +14,10 @@
                 </div>
             </div>
             <div class="col-sm-9">
-                <input type="datetime" name="start-time" class="mydatetime" />
-                <input type="datetime" name="end-time" class="mydatetime" />
                 <button id="search-btn" type="button" class="btn btn-info btn-sm">查询</button>
+                <button type="button" class="btn btn-purple btn-sm" data-toggle="modal" data-target="#manager_admin">
+                    添加域管理员
+                </button>
             </div>
         </div>
     </div>
@@ -100,6 +101,55 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="manager_admin" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加域管理员</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class=" col-sm-3 control-label">管理员名称:</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control"  >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3 ">登录密码:</label>
+                        <div class="col-sm-7">
+                            <input type="password" class="form-control" >
+                            <p class="help-block"><span class="red">注：</span>密码长度最少为8位，其中必须包括字母和数字！</p>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">确认密码:</label>
+                        <div class="col-sm-7">
+                            <input type="password" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3">管理员状态:</label>
+                        <div class="col-sm-7">
+                            <label class="radio-inline">
+                                <input type="radio" name="status0"   value="1" checked> 正常
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="status0" value="0" > 禁用
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-primary">提交</button>
+                <button type="button" class="btn btn-danger">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
 //    var mydate = $('#mydate')[0];
 //    if(mydate.type !== 'date') {//if browser doesn't support "date" input
@@ -122,14 +172,12 @@
                         <td>192.168.1.24</td>
                         <td>启用</td>
                         <td>
-                            <div class="action-buttons">
-                                <a class="green edit" href="${i}" data-toggle="modal" data-target="#edit_manager">
-                                    <i class="ace-icon fa fa-pencil bigger-130"></i>
+                            <div class="">
+                                <a class="green edit btn btn-white btn-primary btn-xs" href="${i}" data-toggle="modal" data-target="#edit_manager">
                                     修改
                                 </a>
 
-                                <a class="red delete" href="#">
-                                    <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                <a class="red delete btn btn-white btn-danger btn-xs" href="#">
                                     删除
                                 </a>
                             </div>

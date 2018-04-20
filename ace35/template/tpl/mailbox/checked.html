@@ -1,123 +1,101 @@
 <div id="dynamic-div">
-    <h3 class="header smaller lighter blue">微信公众号配置</h3>
+    <h3 class="header smaller lighter blue">已审核列表</h3>
+    <div id="tabs">
+        <ul>
+            <li>
+                <a href="#tabs_title">审核通过列表</a>
+            </li>
+            <li>
+                <a href="#tabs_logo">拒绝通过列表</a>
+            </li>
+            <li>
+                <a href="#tabs_login">已注销列表</a>
+            </li>
 
-    <div class="clearfix">
-        <div class="pull-right tableTools-container"></div>
-    </div>
-    <div class="table-header">
-        域名管理
-    </div>
-
-    <!-- div.table-responsive -->
-
-    <!-- div.dataTables_borderWrap -->
-    <div>
-        <table id="dynamic-table" class="table table-striped table-bordered table-hover">
-            <thead>
-            <tr>
-                <th class="center">序号</th>
-                <th>服务号/企业号名称</th>
-                <th>服务号token</th>
-                <th>AppID/CorpID</th>
-                <th>agentid</th>
-                <th>appsecret/secret</th>
-                <th>状态</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-
-            <tbody id="data-body">
-
-            </tbody>
-        </table>
-    </div>
-</div>
-<div class="modal fade" id="edit_config" >
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">配置服务号/企业号</h4>
+            <li>
+                <a href="#tabs_ad">拒绝注销列表</a>
+            </li>
+        </ul>
+        <div id="tabs_title">
+            <div class="table-header">
+                审核通过列表
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">服务号/企业号名称：</label>
-                        <div class="col-sm-8">
-                            <input type="text" value="umail微信公众号" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">服务号token：</label>
-                        <div class="col-sm-8">
-                            <input type="text" value="umail201703" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">appid/CorpID：</label>
-                        <div class="col-sm-8">
-                            <input type="text" value="SDJFOSDIJFES" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group ">
-                        <label class="col-sm-4 control-label">agentid：</label>
-                        <div class="col-sm-8">
-                            <input type="text" value="1000002" class="form-control">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">appsecret：</label>
-                        <div class="col-sm-8">
-                            <input type="text" value="dsfjsdiofjdsofjodsi" class="form-control">
-                        </div>
-                    </div>
-                </form>
+            <div>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="center">序号</th>
+                            <th>账号名称</th>
+                            <th>姓名</th>
+                            <th>员工代码（工号、警号等）</th>
+                            <th>部门</th>
+                            <th>状态</th>
+                            <th>备注</th>
+                            <th>申请日期</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-body">
+
+                    </tbody>
+                </table>
             </div>
-            <div class="modal-footer center">
-                <button type="button" class="btn btn-sm btn-info">保存</button>
-                <button type="button" class="btn btn-sm btn-danger">返回</button>
+            <div class="row" style="margin-bottom:12px;">
+                <div class="col-sm-6 center">
+                    <button type="button" class="btn btn-success btn-sm">提交</button>
+                    <button type="button" class="btn btn-danger btn-sm">重置</button>
+                </div>
             </div>
+        </div>
+
+        <div id="tabs_logo">
+
+        </div>
+        <div id="tabs_login">
+
+        </div>
+        <div id="tabs_ad">
+
         </div>
     </div>
 </div>
 <script>
+    $( "#tabs" ).tabs();
+    $(".mydatetime").datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss',
+//        autoclose:true
+    });
+
     var myTable;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
             html+=`<tr class="">
                         <td class="center middle">${i+1}</td>
-                        <td>U-Mail微信公众号</td>
-                        <td>U-Mail20173</td>
-                        <td>wwcdsljdfj</td>
-                        <td>1000002</td>
-                        <td>dsfjksodjfosifjsdiojfo</td>
-                        <td>待验证</td>
-                        <td>
-                            <div class="">
-                                <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_config">
-                                    修改
-                                </a>
-                            </div>
-                        </td>
+                        <td>emailname</td>
+                        <td>username</td>
+                        <td>15648892</td>
+                        <td>department</td>
+                        <td>审核通过</td>
+                        <td>333</td>
+                        <td>2018-01-02 17:15:20</td>
                     </tr>`
         }
         $('#data-body').html(html);
             myTable =
                 $('#dynamic-table')
-                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
                         .DataTable( {
                             bAutoWidth: false,
                             "aoColumns": [
+                                null,
                                 { "bSortable": false },
                                 { "bSortable": false },
                                 { "bSortable": false },
                                 { "bSortable": false },
                                 { "bSortable": false },
                                 { "bSortable": false },
-                                { "bSortable": false },
-                                { "bSortable": false }
+                                null
                             ],
                             "aaSorting": [],
+
                             select: {
                                 style: 'multi'
                             },

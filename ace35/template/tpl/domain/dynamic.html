@@ -4,7 +4,7 @@
     <div class="clearfix">
         <div class="pull-right tableTools-container"></div>
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-3" style="width:240px;">
                 <div class="input-group">
                     <span class="input-group-addon">选择域名：</span>
                     <select name="yname" class="yname form-control">
@@ -13,10 +13,18 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm-9">
-                <input type="datetime" name="start-time" class="mydatetime" />
-                <input type="datetime" name="end-time" class="mydatetime" />
+            <div class="col-sm-3">
+                <div class="input-group" style="width:240px;">
+                    <span class="input-group-addon">域名查询</span>
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+            <div class="col-sm-6">
+
                 <button id="search-btn" type="button" class="btn btn-info btn-sm">查询</button>
+                <button type="button" class="btn btn-purple btn-sm"  data-toggle="modal" data-target="#myModal">
+                    添加域名
+                </button>
             </div>
         </div>
     </div>
@@ -39,6 +47,7 @@
                 </th>
                 <th>限定别名数量</th>
                 <th>限定总容量</th>
+                <th>开通时间</th>
                 <th>状态</th>
                 <th>是否微信主域名</th>
                 <th>操作</th>
@@ -51,7 +60,7 @@
         </table>
     </div>
 </div>
-<div class="modal fade" id="edit_mail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="edit_mail" tabindex="-1" >
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -253,16 +262,167 @@
         </div>
     </div>
 </div>
-<script>
-//    var mydate = $('#mydate')[0];
-//    if(mydate.type !== 'date') {//if browser doesn't support "date" input
-//        $(mydate).datepicker({
-//            //options
-//        })
-//    }
-    $(".mydatetime").datetimepicker({
-        format: 'YYYY-MM-DD HH:mm:ss',
-    //        autoclose:true
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">邮件域基本信息</h4>
+            </div>
+            <div class="modal-body">
+                <!--<form>-->
+                <!--<div class="form-group">-->
+                <!--<label for="recipient-name" class="control-label">Recipient:</label>-->
+                <!--<input type="text" class="form-control" id="recipient-name">-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                <!--<label for="message-text" class="control-label">Message:</label>-->
+                <!--<textarea class="form-control" id="message-text"></textarea>-->
+                <!--</div>-->
+                <!--</form>-->
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">邮件域名称：</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control"  placeholder="邮件域名称">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">邮件域状态：</label>
+                        <div class="col-sm-5">
+                            <label class="radio-inline">
+                                <input type="radio" name="status" value="1" checked> 启用
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="status" value="0"> 禁用
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red bold">*</span>限定邮箱数量：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="限定邮箱数量" >
+                                <span class="input-group-addon" >个</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red bold">*</span>限定别名数量：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="0" placeholder="限定别名数量" >
+                                <span class="input-group-addon" >个</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red bold">*</span>限定邮箱空间总容量：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="0"  placeholder="限定邮箱空间总容量">
+                                <span class="input-group-addon" >MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red bold">*</span>限定网络硬盘总容量：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="0"  placeholder="限定网络硬盘总容量">
+                                <span class="input-group-addon" >MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">发送邮件限制大小：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="500"  placeholder="发送邮件限制大小">
+                                <span class="input-group-addon" >MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">超大附件限制大小：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="10"  placeholder="超大附件限制大小">
+                                <span class="input-group-addon" >MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red bold">*</span>用户邮箱默认容量：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="100"  placeholder="用户邮箱默认容量">
+                                <span class="input-group-addon" >MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red bold">*</span>网络硬盘默认容量：</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control" value="100"  placeholder="网络硬盘默认容量">
+                                <span class="input-group-addon" >MB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label">接口修改密码是否加密：</label>
+                        <div class="col-sm-7">
+                            <label class="radio-inline">
+                                <input type="radio" name="isPwd" value="1" > 是
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="isPwd" value="0" checked> 否
+                            </label>
+                            <p class="help-block">
+                                <span class="red">注意：</span>开启后php5.4版本及以上生效，加密密钥:6D9A39C1018F6783E545B0D1A9EB2E98
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red bold">*</span>发信功能限制：</label>
+                        <div class="col-sm-5">
+                            <select class="form-control">
+                                <option value="-1" selected="">不限制邮件发送</option>
+                                <option value="1">禁止发送所有邮件</option>
+                                <option value="2">只发送本地域邮件</option>
+                                <option value="3">可发送指定外域邮件</option>
+                                <option value="4">可发送本地所有域邮件</option>
+                            </select>
+                            <!--<p class="help-block">-->
+                            <!--批量修改收发信功能开关选择是后,将针对域名下全部邮箱设置修改；请谨慎修改-->
+                            <!--</p>-->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-offset-1 col-sm-4 control-label"><span class="red bold">*</span>收信功能限制：</label>
+                        <div class="col-sm-5">
+                            <select class="form-control">
+                                <option value="-1" selected="">不限制邮件接收</option>
+                                <option value="1">禁此接收所有邮件</option>
+                                <option value="2">只接收本地域邮件</option>
+                                <option value="3">可接收指定外域邮件</option>
+                            </select>
+                            <!--<p class="help-block">-->
+                            <!--批量修改收发信功能开关选择是后,将针对域名下全部邮箱设置修改；请谨慎修改-->
+                            <!--</p>-->
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>$(".mydatetime").datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss'
     });
     var myTable;
     function initDate(p){
@@ -273,17 +433,16 @@
                         <td>${2000+i}</td>
                         <td>不限制</td>
                         <td>邮箱：不限制；网盘：不限制</td>
+                        <td>2018-02-02 17:25:10</td>
                         <td>启用</td>
                         <td>${p+i}</td>
                         <td>
-                            <div class="action-buttons">
-                                <a class="green edit" href="${i}" data-toggle="modal" data-target="#edit_mail">
-                                    <i class="ace-icon fa fa-pencil bigger-130"></i>
+                            <div class="">
+                                <a class="green edit btn btn-white btn-primary btn-xs" href="${i}" data-toggle="modal" data-target="#edit_mail">
                                     修改
                                 </a>
 
-                                <a class="red delete" href="${i}">
-                                    <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                <a class="red delete btn btn-danger btn-white btn-xs" href="${i}">
                                     删除
                                 </a>
                             </div>
@@ -293,25 +452,20 @@
         $('#data-body').html(html);
             myTable =
                 $('#dynamic-table')
-                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
                         .DataTable( {
                             bAutoWidth: false,
                             "aoColumns": [
                                 { "bSortable": false },
                                 { "bSortable": false },
-                                null, null,{ "bSortable": false }, null, null,
+                                null, null,{ "bSortable": false }, null,{ "bSortable": false }, null,
                                 { "bSortable": false }
                             ],
                             "aaSorting": [],
 
 
-//                            select: {
-//                                style: 'multi'
-//                            },
                             "iDisplayLength": 10,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
-//                                "sLengthMenu": ,
                                 "sZeroRecords": "对不起! 信息筛选结果为空!",
                                 "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
                                 "sInfoEmpty": "总计: 0 条记录",
@@ -345,7 +499,6 @@
         } );
         myTable.buttons().container().appendTo( $('.tableTools-container') );
 
-        //style the message box
         var defaultCopyAction = myTable.button(1).action();
         myTable.button(1).action(function (e, dt, button, config) {
             defaultCopyAction(e, dt, button, config);
@@ -367,7 +520,6 @@
             $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
         });
 
-        ////
 
         setTimeout(function() {
             $($('.tableTools-container')).find('a.dt-button').each(function() {

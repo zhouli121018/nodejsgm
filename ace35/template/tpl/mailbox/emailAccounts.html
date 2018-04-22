@@ -4,32 +4,16 @@
     <div class="clearfix">
         <div class="pull-right tableTools-container"></div>
         <div class="row">
-            <div class="col-sm-3">
-                <div class="input-group">
-                    <span class="input-group-addon">选择域名：</span>
-                    <select name="yname" class="yname form-control">
-                        <option value="test.com">test.com</option>
-                        <option value="domain.com">domain.com</option>
-                    </select>
+            <div class="col-sm-12 text-right">
+                <div class="button-group">
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add_email">添加帐号</button>
+                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add_email">批量添加帐号</button>
+                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit_email">批量修改帐号</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_email">批量删除帐号</button>
+                    <button type="button" class="btn btn-purple btn-sm" data-toggle="modal" data-target="#backup">导入导出账号</button>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <input type="datetime" name="start-time" class="mydatetime" />
-                <input type="datetime" name="end-time" class="mydatetime" />
-                <button id="search-btn" type="button" class="btn btn-info btn-sm">查询</button>
-            </div>
         </div>
-    </div>
-    <div class="row" style="margin-bottom:12px;">
-        <div class="col-sm-12">
-            <div class="button-group">
-                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add_email">批量添加帐号</button>
-                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit_email">批量修改帐号</button>
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_email">批量删除帐号</button>
-                <button type="button" class="btn btn-purple btn-sm" data-toggle="modal" data-target="#backup">导入导出账号</button>
-            </div>
-        </div>
-
     </div>
     <div class="table-header">
         邮箱账号管理

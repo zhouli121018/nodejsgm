@@ -1,0 +1,599 @@
+<div id="static-div">
+    <h3 class="header smaller lighter blue">批量添加账号
+
+    </h3>
+    <div class="table-header">
+        批量添加账号
+    </div>
+    <table id="email-basic-table" class="table  table-bordered  ">
+        <tbody>
+        <tr >
+            <td class="text-right">
+                邮箱域名：
+            </td>
+            <td>
+                <b>test.com</b>
+            </td>
+            <td class="text-right">默认邮箱容量：</td>
+            <td>
+                <div class="input-group">
+                    <input type="text" value="100" class="form-control">
+                    <span class="input-group-addon">MB</span>
+                </div>
+            </td>
+            <td class="text-right">默认网盘容量：</td>
+            <td>
+                <div class="input-group">
+                    <input type="text" value="100" class="form-control">
+                    <span class="input-group-addon">MB</span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">默认所属部门：</td>
+            <td colspan="2">
+                <select name="dept_id" class="tree_select form-control">
+                    <option value="0">请选择所属部门</option>
+                    <option value="519">大中华区</option>
+                    <option value="520">　华南区</option>
+                    <option value="521">　　财务部</option>
+                    <option value="523">zsh部门</option>
+                    <option value="524">zzz</option>
+                    <option value="424">丽兹行集团</option>
+                    <option value="511">　上海丽兹行房地产经纪有限公司</option>
+                    <option value="228">　　运营</option>
+                    <option value="326">　　　浦东区</option>
+                    <option value="351">　　　　陆家嘴四区</option>
+                    <option value="490">　　　　　陆家嘴世茂店</option>
+                    <option value="488">　　　　　　陆家嘴世茂店D组</option>
+                    <option value="491">　　　　　　陆家嘴世茂店A组</option>
+                    <option value="492">　　　　　　陆家嘴世茂店B组</option>
+                    <option value="493">　　　　　　陆家嘴世茂店C组</option>
+                    <option value="344">　　　　陆家嘴二区</option>
+                    <option value="480">　　　　　陆家嘴旗舰店</option>
+                    <option value="389">　　　　　　陆家嘴旗舰店F组</option>
+                    <option value="481">　　　　　　陆家嘴旗舰店A组</option>
+                    <option value="482">　　　　　　陆家嘴旗舰店B组</option>
+                    <option value="483">　　　　　　陆家嘴旗舰店C组</option>
+                    <option value="484">　　　　　　陆家嘴旗舰店D组</option>
+                    <option value="485">　　　　　　陆家嘴旗舰店E组</option>
+                    <option value="378">　　　　陆家嘴一区</option>
+                    <option value="425">　　　　　陆家嘴金融中心店</option>
+                    <option value="358">　　　　　　陆家嘴金融中心店B组</option>
+                    <option value="359">　　　　　　陆家嘴金融中心店A组</option>
+                    <option value="361">　　　　　　陆家嘴金融中心店E组</option>
+                    <option value="362">　　　　　　陆家嘴金融中心店D组</option>
+                    <option value="306">　　　　联洋区</option>
+                    <option value="201">　　　　　仁恒河滨城店</option>
+                    <option value="380">　　　　　　仁恒河滨城店B组</option>
+                    <option value="200">　　　　　　仁恒河滨城店A组</option>
+                    <option value="202">　　　　　　仁恒河滨城店C组</option>
+                    <option value="204">　　　　　　仁恒河滨城店E组</option>
+                    <option value="205">　　　　　　仁恒河滨城店D组</option>
+                    <option value="206">　　　　　　仁恒河滨城店H组</option>
+                    <option value="207">　　　　　　仁恒河滨城店F组</option>
+                    <option value="208">　　　　　　仁恒河滨城店G组</option>
+                    <option value="407">　　　　陆家嘴三区</option>
+                    <option value="163">　　　　　陆家嘴滨江店</option>
+                    <option value="164">　　　　　　陆家嘴滨江店A组</option>
+                    <option value="161">　　　　　　陆家嘴滨江店B组</option>
+                    <option value="162">　　　　　　陆家嘴滨江店C组</option>
+                    <option value="222">　　　　陆家嘴中区</option>
+                    <option value="156">　　　　　陆家嘴中央公寓店</option>
+                    <option value="449">　　　　　　陆家嘴中央公寓店C组</option>
+                    <option value="450">　　　　　　陆家嘴中央公寓店B组</option>
+                    <option value="447">　　　　　　陆家嘴中央公寓店A组</option>
+                    <option value="446">　　　　　　陆家嘴中央公寓店D组</option>
+                    <option value="154">　　　　花木区</option>
+                    <option value="272">　　　　　星河湾店</option>
+                    <option value="269">　　　　　　星河湾店E组</option>
+                    <option value="270">　　　　　　星河湾店B组</option>
+                    <option value="271">　　　　　　星河湾店C组</option>
+                    <option value="273">　　　　　　星河湾店A组</option>
+                    <option value="159">　　　　碧云别墅区</option>
+                    <option value="402">　　　　　碧云店</option>
+                    <option value="398">　　　　　　碧云店D组</option>
+                    <option value="399">　　　　　　碧云店C组</option>
+                    <option value="400">　　　　　　碧云店B组</option>
+                    <option value="401">　　　　　　碧云店A组</option>
+                    <option value="182">　　　　花木别墅区</option>
+                    <option value="297">　　　　　御翠园店</option>
+                    <option value="295">　　　　　　御翠园店E组</option>
+                    <option value="296">　　　　　　御翠园店F组</option>
+                    <option value="298">　　　　　　御翠园店A组</option>
+                    <option value="299">　　　　　　御翠园店B组</option>
+                    <option value="300">　　　　　　御翠园店C组</option>
+                    <option value="496">　　　运营管理部</option>
+                    <option value="334">　　　　运营管理部</option>
+                    <option value="443">　　　交易中心</option>
+                    <option value="246">　　　　运营交易中心交易部</option>
+                    <option value="261">　　渠道</option>
+                    <option value="512">　　　渠道渠道中心</option>
+                    <option value="379">　　　　渠道渠道中心项目部</option>
+                    <option value="286">　　　　渠道渠道中心拓展部</option>
+                    <option value="192">　　　　渠道渠道中心店面拓展部</option>
+                    <option value="160">　　职能</option>
+                    <option value="339">　　　职能职能中心</option>
+                    <option value="486">　　　　职能职能中心能力发展部</option>
+                    <option value="510">　　　　职能职能中心招聘部</option>
+                    <option value="458">　　　　职能职能中心运营支持部</option>
+                    <option value="459">　　　　　职能职能中心运营支持部浦东区</option>
+                    <option value="229">　　　　职能职能中心财务部</option>
+                    <option value="215">　　　　职能职能中心总经办</option>
+                    <option value="243">　　　　职能职能中心人事部</option>
+                    <option value="435">　北京丽兹行房地产投资顾问有限公司</option>
+                    <option value="433">　　职能</option>
+                    <option value="343">　　　职能运营支持中心</option>
+                    <option value="473">　　　　职能运营支持中心总经办</option>
+                    <option value="518">　　　　职能运营支持中心店面支持部</option>
+                    <option value="248">　　　　职能运营支持中心运营支持部</option>
+                    <option value="329">　　　　　职能运营支持中心运营支持部顶豪区</option>
+                    <option value="247">　　　　　职能运营支持中心运营支持部北区</option>
+                    <option value="249">　　　　　职能运营支持中心运营支持部南区</option>
+                    <option value="250">　　　　　职能运营支持中心运营支持部东区</option>
+                    <option value="251">　　　　　职能运营支持中心运营支持部西区</option>
+                    <option value="284">　　　职能财务中心</option>
+                    <option value="155">　　　　职能财务中心财务部</option>
+                    <option value="313">　　　职能人力资源中心</option>
+                    <option value="158">　　　　职能人力资源中心人事部</option>
+                    <option value="508">　　　职能信息科技中心</option>
+                    <option value="305">　　　　职能信息科技中心研发部</option>
+                    <option value="408">　　　　职能信息科技中心产品运营部</option>
+                    <option value="197">　　　　职能信息科技中心产品部</option>
+                    <option value="457">　　　职能总裁办</option>
+                    <option value="321">　　　　职能总裁办中心业务管理部</option>
+                    <option value="434">　　　　职能临时岗</option>
+                    <option value="227">　　　　职能总裁办中心总裁办</option>
+                    <option value="231">　　　职能交易中心</option>
+                    <option value="328">　　　　职能交易中心交易部</option>
+                    <option value="183">　　　职能知识管理中心</option>
+                    <option value="352">　　　　职能知识管理中心客服部</option>
+                    <option value="426">　　　　职能知识管理中心能力发展部</option>
+                    <option value="218">　　　　职能知识管理中心招聘部</option>
+                    <option value="444">　　运营</option>
+                    <option value="337">　　　北区</option>
+                    <option value="381">　　　　北八区</option>
+                    <option value="354">　　　　　远洋万和城店</option>
+                    <option value="355">　　　　　　远洋万和城店A组</option>
+                    <option value="356">　　　　　　远洋万和城店B组</option>
+                    <option value="364">　　　　　　远洋万和城店C组</option>
+                    <option value="353">　　　　　　远洋万和城店D组</option>
+                    <option value="293">　　　　北二区</option>
+                    <option value="169">　　　　　太阳宫旗舰店</option>
+                    <option value="166">　　　　　　太阳宫旗舰店D组</option>
+                    <option value="167">　　　　　　太阳宫旗舰店F组</option>
+                    <option value="168">　　　　　　太阳宫旗舰店A组</option>
+                    <option value="170">　　　　　　太阳宫旗舰店C组</option>
+                    <option value="171">　　　　　　太阳宫旗舰店B组</option>
+                    <option value="165">　　　　　　太阳宫旗舰店E组</option>
+                    <option value="304">　　　　北三区</option>
+                    <option value="429">　　　　　裘马都店</option>
+                    <option value="428">　　　　　　裘马都店A组</option>
+                    <option value="430">　　　　　　裘马都店C组</option>
+                    <option value="431">　　　　　　裘马都店B组</option>
+                    <option value="406">　　　　　凤凰城店</option>
+                    <option value="301">　　　　　　凤凰城店A组</option>
+                    <option value="404">　　　　　　凤凰城店B组</option>
+                    <option value="405">　　　　　　凤凰城店C组</option>
+                    <option value="501">　　　　北七区</option>
+                    <option value="368">　　　　　大湖山庄店</option>
+                    <option value="365">　　　　　　大湖山庄店E组</option>
+                    <option value="366">　　　　　　大湖山庄店D组</option>
+                    <option value="367">　　　　　　大湖山庄店A组</option>
+                    <option value="369">　　　　　　大湖山庄店C组</option>
+                    <option value="370">　　　　　　大湖山庄店B组</option>
+                    <option value="448">　　　　北五区</option>
+                    <option value="495">　　　　　中央别墅区旗舰店</option>
+                    <option value="219">　　　　　　中央别墅区旗舰店D组</option>
+                    <option value="220">　　　　　　中央别墅区旗舰店E组</option>
+                    <option value="221">　　　　　　中央别墅区旗舰店F组</option>
+                    <option value="223">　　　　　　中央别墅区旗舰店A组</option>
+                    <option value="224">　　　　　　中央别墅区旗舰店B组</option>
+                    <option value="225">　　　　　　中央别墅区旗舰店C组</option>
+                    <option value="432">　　　　北六区</option>
+                    <option value="320">　　　　　紫玉新新店</option>
+                    <option value="315">　　　　　　紫玉新新店E组</option>
+                    <option value="316">　　　　　　紫玉新新店D组</option>
+                    <option value="317">　　　　　　紫玉新新店C组</option>
+                    <option value="318">　　　　　　紫玉新新店B组</option>
+                    <option value="319">　　　　　　紫玉新新店A组</option>
+                    <option value="214">　　　　　紫玉新新店222222</option>
+                    <option value="157">　　　　北九区</option>
+                    <option value="195">　　　　　润泽新店</option>
+                    <option value="292">　　　　　　润泽新店C组</option>
+                    <option value="291">　　　　　　润泽新店B组</option>
+                    <option value="290">　　　　　　润泽新店A组</option>
+                    <option value="288">　　　　　　润泽新店D组</option>
+                    <option value="377">　　　顶豪区</option>
+                    <option value="427">　　　　顶级豪宅部</option>
+                    <option value="312">　　　　　营销部</option>
+                    <option value="184">　　　　　　营销部A组</option>
+                    <option value="185">　　　　　　营销部B组</option>
+                    <option value="193">　　　　　　营销部C组</option>
+                    <option value="194">　　　　　　营销部D组</option>
+                    <option value="216">　　　　　管家部</option>
+                    <option value="294">　　　　　　管家部F组</option>
+                    <option value="336">　　　　　　管家部E组</option>
+                    <option value="186">　　　　　　管家部D组</option>
+                    <option value="188">　　　　　　管家部B组</option>
+                    <option value="189">　　　　　　管家部C组</option>
+                    <option value="191">　　　　　　管家部A组</option>
+                    <option value="190">　　　　　顶级豪宅部</option>
+                    <option value="153">　　　　四合院事业部</option>
+                    <option value="418">　　　　　四合院事业部E组</option>
+                    <option value="423">　　　　　四合院事业部</option>
+                    <option value="417">　　　　　　四合院事业部F组</option>
+                    <option value="419">　　　　　　四合院事业部D组</option>
+                    <option value="420">　　　　　　四合院事业部C组</option>
+                    <option value="421">　　　　　　四合院事业部B组</option>
+                    <option value="422">　　　　　　四合院事业部A组</option>
+                    <option value="416">　　　　　　四合院事业部G组</option>
+                    <option value="415">　　　　　　四合院事业部H组</option>
+                    <option value="414">　　　　　　四合院事业部E组</option>
+                    <option value="226">　　　南区</option>
+                    <option value="342">　　　　南二区</option>
+                    <option value="469">　　　　　新光天地旗舰店</option>
+                    <option value="467">　　　　　　新光天地旗舰店D组</option>
+                    <option value="468">　　　　　　新光天地旗舰店E组</option>
+                    <option value="470">　　　　　　新光天地旗舰店A组</option>
+                    <option value="471">　　　　　　新光天地旗舰店B组</option>
+                    <option value="472">　　　　　　新光天地旗舰店C组</option>
+                    <option value="302">　　　　南四区</option>
+                    <option value="187">　　　　　山水文园店</option>
+                    <option value="338">　　　　　　山水文园店D组</option>
+                    <option value="333">　　　　　　山水文园店C组</option>
+                    <option value="335">　　　　　　山水文园店A组</option>
+                    <option value="487">　　　　　　山水文园店B组</option>
+                    <option value="513">　　　　南五区</option>
+                    <option value="289">　　　　　新城国际店</option>
+                    <option value="363">　　　　　　新城国际店D组</option>
+                    <option value="198">　　　　　　新城国际店B组</option>
+                    <option value="199">　　　　　　新城国际店C组</option>
+                    <option value="196">　　　　　　新城国际店A组</option>
+                    <option value="262">　　　　　新城国际店（禁用）</option>
+                    <option value="263">　　　　　　新城国际店A组（禁用）</option>
+                    <option value="264">　　　　　　新城国际店B组（禁用）</option>
+                    <option value="265">　　　　　　新城国际店C组（禁用）</option>
+                    <option value="266">　　　　　　新城国际店D组（禁用）</option>
+                    <option value="403">　　　　北一区</option>
+                    <option value="392">　　　　　当代Moma店</option>
+                    <option value="393">　　　　　　当代Moma店A组</option>
+                    <option value="310">　　　　　海晟名苑店</option>
+                    <option value="307">　　　　　　海晟名苑店C组</option>
+                    <option value="308">　　　　　　海晟名苑店B组</option>
+                    <option value="309">　　　　　　海晟名苑店A组</option>
+                    <option value="209">　　　　　万国城店</option>
+                    <option value="212">　　　　　　万国城店C组</option>
+                    <option value="213">　　　　　　万国城店D组</option>
+                    <option value="211">　　　　　　万国城店B组</option>
+                    <option value="210">　　　　　　万国城店A组</option>
+                    <option value="236">　　　　南三区</option>
+                    <option value="462">　　　　　广渠路金茂府店</option>
+                    <option value="463">　　　　　　广渠路金茂府店C组</option>
+                    <option value="464">　　　　　　广渠路金茂府店B组</option>
+                    <option value="465">　　　　　　广渠路金茂府店E组</option>
+                    <option value="466">　　　　　　广渠路金茂府店D组</option>
+                    <option value="461">　　　　　　广渠路金茂府店A组</option>
+                    <option value="180">　　　　南一区</option>
+                    <option value="245">　　　　　CBD旗舰店</option>
+                    <option value="314">　　　　　　CBD旗舰店A组</option>
+                    <option value="409">　　　　　　CBD旗舰店G组</option>
+                    <option value="410">　　　　　　CBD旗舰店F组</option>
+                    <option value="411">　　　　　　CBD旗舰店E组</option>
+                    <option value="412">　　　　　　CBD旗舰店C组</option>
+                    <option value="413">　　　　　　CBD旗舰店B组</option>
+                    <option value="217">　　　西区</option>
+                    <option value="360">　　　　西一区</option>
+                    <option value="173">　　　　　西山壹号院店</option>
+                    <option value="172">　　　　　　西山壹号院店A组</option>
+                    <option value="174">　　　　　　西山壹号院店C组</option>
+                    <option value="175">　　　　　　西山壹号院店B组</option>
+                    <option value="176">　　　　　　西山壹号院店E组</option>
+                    <option value="177">　　　　　　西山壹号院店D组</option>
+                    <option value="178">　　　　　　西山壹号院店F组</option>
+                    <option value="341">　　　　西三区</option>
+                    <option value="474">　　　　　唐宁one店</option>
+                    <option value="287">　　　　　　唐宁one店A组</option>
+                    <option value="479">　　　　　　唐宁one店E组</option>
+                    <option value="478">　　　　　　唐宁one店D组</option>
+                    <option value="477">　　　　　　唐宁one店C组</option>
+                    <option value="476">　　　　　　唐宁one店B组</option>
+                    <option value="345">　　　　西六区</option>
+                    <option value="499">　　　　　西山华府店</option>
+                    <option value="497">　　　　　　西山华府店B组</option>
+                    <option value="498">　　　　　　西山华府店C组</option>
+                    <option value="500">　　　　　　西山华府店A组</option>
+                    <option value="455">　　　　　　西山华府店D组</option>
+                    <option value="456">　　　　　　西山华府店E组</option>
+                    <option value="453">　　　　　紫金长安店</option>
+                    <option value="451">　　　　　　紫金长安店B组</option>
+                    <option value="452">　　　　　　紫金长安店C组</option>
+                    <option value="454">　　　　　　紫金长安店A组</option>
+                    <option value="303">　　　　西四区</option>
+                    <option value="254">　　　　　西山别墅区旗舰店</option>
+                    <option value="258">　　　　　　西山别墅区旗舰店D组</option>
+                    <option value="257">　　　　　　西山别墅区旗舰店E组</option>
+                    <option value="253">　　　　　　西山别墅区旗舰店A组</option>
+                    <option value="255">　　　　　　西山别墅区旗舰店C组</option>
+                    <option value="256">　　　　　　西山别墅区旗舰店B组</option>
+                    <option value="509">　　　　西二区</option>
+                    <option value="385">　　　　　万柳旗舰店</option>
+                    <option value="386">　　　　　　万柳旗舰店F组</option>
+                    <option value="387">　　　　　　万柳旗舰店E组</option>
+                    <option value="388">　　　　　　万柳旗舰店D组</option>
+                    <option value="384">　　　　　　万柳旗舰店A组</option>
+                    <option value="382">　　　　　　万柳旗舰店C组</option>
+                    <option value="285">　　　　　　万柳旗舰店B组</option>
+                    <option value="230">　　　　西五区</option>
+                    <option value="494">　　　　　金融街店</option>
+                    <option value="323">　　　　　　金融街店E组</option>
+                    <option value="324">　　　　　　金融街店B组</option>
+                    <option value="325">　　　　　　金融街店C组</option>
+                    <option value="327">　　　　　　金融街店A组</option>
+                    <option value="322">　　　　　　金融街店D组</option>
+                    <option value="259">　　　　北四区</option>
+                    <option value="507">　　　　　亚奥旗舰店</option>
+                    <option value="502">　　　　　　亚奥旗舰店E组</option>
+                    <option value="503">　　　　　　亚奥旗舰店D组</option>
+                    <option value="504">　　　　　　亚奥旗舰店C组</option>
+                    <option value="505">　　　　　　亚奥旗舰店B组</option>
+                    <option value="506">　　　　　　亚奥旗舰店A组</option>
+                    <option value="244">　　　东区</option>
+                    <option value="376">　　　　东一区</option>
+                    <option value="279">　　　　　朝阳公园旗舰店</option>
+                    <option value="275">　　　　　　朝阳公园旗舰店D组</option>
+                    <option value="276">　　　　　　朝阳公园旗舰店G组</option>
+                    <option value="277">　　　　　　朝阳公园旗舰店F组</option>
+                    <option value="278">　　　　　　朝阳公园旗舰店A组</option>
+                    <option value="280">　　　　　　朝阳公园旗舰店C组</option>
+                    <option value="281">　　　　　　朝阳公园旗舰店B组</option>
+                    <option value="282">　　　　　　朝阳公园旗舰店I组</option>
+                    <option value="283">　　　　　　朝阳公园旗舰店H组</option>
+                    <option value="274">　　　　　　朝阳公园旗舰店E组</option>
+                    <option value="330">　　　　东四区</option>
+                    <option value="442">　　　　　丽都商圈旗舰店</option>
+                    <option value="489">　　　　　　丽都商圈旗舰店A组</option>
+                    <option value="437">　　　　　　丽都商圈旗舰店F组</option>
+                    <option value="438">　　　　　　丽都商圈旗舰店D组</option>
+                    <option value="439">　　　　　　丽都商圈旗舰店E组</option>
+                    <option value="440">　　　　　　丽都商圈旗舰店B组</option>
+                    <option value="441">　　　　　　丽都商圈旗舰店C组</option>
+                    <option value="332">　　　　东五区（原）</option>
+                    <option value="311">　　　　东六区</option>
+                    <option value="394">　　　　　远洋万和公馆店</option>
+                    <option value="390">　　　　　　远洋万和公馆店D组</option>
+                    <option value="391">　　　　　　远洋万和公馆店E组</option>
+                    <option value="395">　　　　　　远洋万和公馆店A组</option>
+                    <option value="396">　　　　　　远洋万和公馆店B组</option>
+                    <option value="397">　　　　　　远洋万和公馆店C组</option>
+                    <option value="475">　　　　东二区</option>
+                    <option value="237">　　　　　棕榈泉店</option>
+                    <option value="238">　　　　　　棕榈泉店A组</option>
+                    <option value="239">　　　　　　棕榈泉店B组</option>
+                    <option value="240">　　　　　　棕榈泉店C组</option>
+                    <option value="241">　　　　　　棕榈泉店D组</option>
+                    <option value="242">　　　　　　棕榈泉店E组</option>
+                    <option value="260">　　　　东七区</option>
+                    <option value="347">　　　　　公园大道店</option>
+                    <option value="357">　　　　　　公园大道店D组</option>
+                    <option value="346">　　　　　　公园大道店A组</option>
+                    <option value="348">　　　　　　公园大道店C组</option>
+                    <option value="349">　　　　　　公园大道店B组</option>
+                    <option value="350">　　　　　　公园大道店E组</option>
+                    <option value="267">　　　　东三区</option>
+                    <option value="517">　　　　　星河湾店</option>
+                    <option value="514">　　　　　　星河湾店C组</option>
+                    <option value="515">　　　　　　星河湾店B组</option>
+                    <option value="516">　　　　　　星河湾店A组</option>
+                    <option value="252">　　　　　保利东郡店</option>
+                    <option value="383">　　　　　　保利东郡店A组</option>
+                    <option value="179">　　　　　　保利东郡店B组</option>
+                    <option value="181">　　　　　　保利东郡店C组</option>
+                    <option value="268">　　　　东五区</option>
+                    <option value="373">　　　　　望京金茂府店</option>
+                    <option value="371">　　　　　　望京金茂府店B组</option>
+                    <option value="372">　　　　　　望京金茂府店C组</option>
+                    <option value="374">　　　　　　望京金茂府店A组</option>
+                    <option value="375">　　　　　　望京金茂府店D组</option>
+                    <option value="203">　　渠道</option>
+                    <option value="445">　　　渠道渠道中心</option>
+                    <option value="340">　　　　渠道渠道中心国际部</option>
+                    <option value="331">　　　　渠道渠道中心拓展部</option>
+                    <option value="460">　　　　渠道渠道中心策划部</option>
+                    <option value="232">　　　　渠道渠道中心项目部</option>
+                    <option value="233">　　　　　渠道渠道中心项目部A组</option>
+                    <option value="234">　　　　　渠道渠道中心项目部B组</option>
+                    <option value="235">　　　　　渠道渠道中心项目部C组</option>
+                    <option value="436">　集团本部</option>
+                    <option value="63">莆系民营客户部</option>
+                    <option value="81">售后服务部</option>
+                    <option value="85">国内营销系统2222</option>
+                    <option value="89">　国内市场部</option>
+                    <option value="101">　　市场策划部</option>
+                    <option value="105">　　超声市场部</option>
+                    <option value="92">　售后服务部</option>
+                    <option value="111">　　售后服务部</option>
+                    <option value="102">　　技术支持部</option>
+                    <option value="104">　　产品技术部</option>
+                    <option value="95">　国内销售部</option>
+                    <option value="110">　　项目部</option>
+                    <option value="109">　　国内销售部</option>
+                    <option value="108">　　渠道推广部</option>
+                    <option value="103">　　国内销售部(大区)</option>
+                    <option value="106">　　销售管理部</option>
+                    <option value="107">　　莆系民营客户部</option>
+                    <option value="145">　深圳市</option>
+                    <option value="146">　　福田区</option>
+                    <option value="86">审计部</option>
+                    <option value="87">董事会办公室</option>
+                    <option value="98">　董事会办公室</option>
+                    <option value="88">总裁办</option>
+                    <option value="99">　总裁办</option>
+                    <option value="77">中美、墨西哥区域</option>
+                    <option value="64">渠道推广部</option>
+                    <option value="65">国内销售部</option>
+                    <option value="66">项目部</option>
+                    <option value="68">亚洲区域</option>
+                    <option value="72">国际营销系统(公共)</option>
+                    <option value="112">国际营销系统</option>
+                    <option value="113">　国际销售部</option>
+                    <option value="114">　　内窥镜组</option>
+                    <option value="115">测试部门</option>
+                    <option value="116">财务部</option>
+                    <option value="117">财务部1</option>
+                    <option value="118">技术部</option>
+                    <option value="119">高级工程师</option>
+                    <option value="120">off</option>
+                    <option value="122">后勤部</option>
+                    <option value="144">LED事业部22</option>
+                    <option value="1">职能支持系统</option>
+                    <option value="2">　供应商管理部</option>
+                    <option value="3">　行政部</option>
+                    <option value="4">　质量部</option>
+                    <option value="7">　人力资源部</option>
+                    <option value="9">　国内售后服务部</option>
+                    <option value="10">　IT组</option>
+                    <option value="11">　财务部</option>
+                    <option value="21">中东区域</option>
+                    <option value="23">检验生产</option>
+                    <option value="24">超声软件部</option>
+                    <option value="25">检验软件部</option>
+                    <option value="27">内窥镜硬件部</option>
+                    <option value="30">探头</option>
+                    <option value="16">研发中心</option>
+                    <option value="17">　研发中心通用部门</option>
+                    <option value="80">　　研发人力资源部</option>
+                    <option value="70">　　工业设计部</option>
+                    <option value="74">　　通用硬件技术部</option>
+                    <option value="18">　　通用硬件测试部</option>
+                    <option value="19">　　临床与需求部</option>
+                    <option value="20">　　通用软件测试部</option>
+                    <option value="22">　　通用软件技术部</option>
+                    <option value="26">　　通用工艺技术部</option>
+                    <option value="28">　　项目管理部</option>
+                    <option value="29">　　通用pcb设计部</option>
+                    <option value="53">　　法规部</option>
+                    <option value="35">　研发中心检验</option>
+                    <option value="79">　　检验生产</option>
+                    <option value="69">　　检验试剂部</option>
+                    <option value="75">　　检验结构部</option>
+                    <option value="76">　　检验硬件部</option>
+                    <option value="49">　　检验系统部</option>
+                    <option value="42">　　检验软件部</option>
+                    <option value="36">　研发中心超声</option>
+                    <option value="67">　　超声软件部</option>
+                    <option value="54">　　超声硬件部</option>
+                    <option value="61">　　超声系统部</option>
+                    <option value="43">　　超声结构部</option>
+                    <option value="37">　研发中心内窥镜</option>
+                    <option value="71">　　内窥镜</option>
+                    <option value="56">　　内窥镜硬件部</option>
+                    <option value="58">　　内窥镜软件部</option>
+                    <option value="59">　　内窥镜系统部</option>
+                    <option value="62">　　内窥镜结构部</option>
+                    <option value="38">　研发中心探头</option>
+                    <option value="82">　　探头</option>
+                    <option value="78">　　探头结构部</option>
+                    <option value="73">　　探头系统部</option>
+                    <option value="5">制造系统</option>
+                    <option value="100">　供应商管理部</option>
+                    <option value="6">　供应部</option>
+                    <option value="8">　探头制造部</option>
+                    <option value="12">　主机制造部</option>
+                    <option value="13">　资财部</option>
+                    <option value="39">　内窥镜生产部</option>
+                    <option value="40">　质量部</option>
+                    <option value="83">　　来料检验/体系</option>
+                    <option value="84">　　成品检验</option>
+                    <option value="41">　资材部</option>
+                    <option value="14">营销系统</option>
+                    <option value="15">　国际营销系统</option>
+                    <option value="91">　　国际市场部</option>
+                    <option value="94">　　国际售后管理部</option>
+                    <option value="96">　　国际商务管理部</option>
+                    <option value="34">　　国际销售部</option>
+                    <option value="31">成品检验</option>
+                    <option value="32">职能系统</option>
+                    <option value="90">　人力资源部</option>
+                    <option value="93">　财务部</option>
+                    <option value="97">　it组</option>
+                    <option value="33">　行政部</option>
+                    <option value="50">国内销售部(大区)</option>
+                    <option value="51">欧洲区域</option>
+                    <option value="52">产品技术部</option>
+                    <option value="55">超声市场部</option>
+                    <option value="57">美德区域</option>
+                    <option value="60">销售管理部</option>
+                    <option value="48">技术支持部</option>
+                    <option value="47">内窥镜组</option>
+                    <option value="46">非洲区域</option>
+                    <option value="44">市场策划部</option>
+                    <option value="45">南美区域</option>
+                    <option value="151">on 13528775736 0755</option>
+                    <option value="152">　89421857</option>
+                    <option value="126">总经理办公室</option>
+                    <option value="143">　test</option>
+                </select>
+            </td>
+            <td class="text-right">兼容模式：</td>
+            <td colspan="2">
+                <select name="compatible_id" class="tree_select form-control">
+                    <option value="1">U-Mail Linux 版数据格式</option>
+                    <option value="2">U-Mail Windows 版数据格式</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">格式说明：</td>
+            <td colspan="5">
+                <p>用户名可以是字符、数字、上划线、下划线、点，但用户名的第一个字必须是数字或字母。
+                    如果输入的用户名是大写字母，系统将自动转为小写！</p>
+                <p><span class="red">注意：</span>每行的格式为
+                    <span class="blue">
+                    用户名 密码 邮箱大小 网盘大小 真实名称 所属部门 工号 职位 手机号码 电话号码 QQ 出生日期
+                    </span> 之间用“TAB”符号隔开
+                    “邮箱大小”和“网盘大小”的单位为“M”</p>
+                <p>eg:</p>
+                <textarea   rows="3" class="form-control">tina	password1	500	100	水中花	技术部	12345	高级工程师	13600000000	88776655	123456	1985-01-01
+gary	password2	100	100	张三	财务部	12346	会计员	13700000000	88995566	987456	1990-10-25
+tom	djd834kjd	200	50	李四	后勤部	12347	司机	13811110000	88661122	657823	1980-07-11</textarea>
+                <div class="hr hr-18 dotted hr-double"></div>
+                <p>另外:有相同的子部门时，所属部门用 - 隔开如：</p>
+                <textarea  rows="2" class="form-control">toy	password4	100	100	王五	华南区-财务部	12348	出纳	13122223333	56485264	545847	1984-08-16
+mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264	58746932	568742	1977-05-11</textarea>
+                <div class="hr hr-18 dotted hr-double"></div>
+                <p>标准操作步骤：</p>
+                <ul>
+                    <li>1、使用EXCEL先进行数据处理，处理成sys_mailbox_eg格式</li>
+                    <li>2、然后将EXCEL文件内容拷贝到文本文件，见然后将EXCEL文件内容拷贝到文本文件，见。</li>
+                    <li>3、然后将文本文件内容拷入下面的表格。</li>
+                    <li>4、点击表格下方的添加进行批量添加用户</li>
+                    <li>5、eg:显示名称 为空，则默认为选择列表"所属部门"的设置值</li>
+                    <li>6、eg:邮箱大小或网盘大小为空，则默认为邮箱容量或网盘容量的设置值</li>
+                    <li>7、eg:所属部门为空，则默认为选择列表"所属部门"的设置值</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">导入数据：</td>
+            <td colspan="5">
+                <textarea  rows="6" class="form-control"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6">
+                <div class="row">
+                    <div class="col-xs-2 col-xs-offset-4">
+                        <button class="btn btn-primary btn-block btn-sm">添加</button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button class="btn btn-warning btn-block btn-sm">重置</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        
+        </tbody>
+    </table>
+
+</div>

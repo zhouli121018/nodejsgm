@@ -2,80 +2,10 @@
     <h3 class="header smaller lighter blue">邮件审核设置
 
     </h3>
-
-    <div class="clearfix">
-        <div class="pull-right tableTools-container"></div>
-        <div class="row">
-            <div class="col-sm-12 text-right">
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#review_add">
-                    添加审核
-                </button>
-            </div>
-        </div>
+    <div style="min-height:300px;">
+        从“运维后台-系统功能设置-审核管理”迁移至此
     </div>
-    <div class="table-header">
-        邮件审核设置
-    </div>
-    <div>
-        <table id="dynamic-table" class="table table-striped table-bordered table-hover">
-            <thead>
-            <tr>
-                <th class="center">序号</th>
-                <th>被审核邮箱</th>
-                <th>审核人</th>
-                <th>审核类型</th>
-                <th>状态</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody id="data-body">
 
-            </tbody>
-        </table>
-    </div>
-    <!--<div class="well" style="margin-top:5px;background:#fff;">-->
-        <!--<div class="user_content_box">-->
-            <!--<div class="wysiwyg_content_show">-->
-                <!--<p class="red"><b>备注：</b></p>-->
-                <!--<p> 1、当“审核类型”设置为“外发邮件”时，只会审核“被审核人”发送给外部邮件域的邮件，发送给本域其它邮箱的邮件不会进行审核；“审核类型”为“所有发送邮件”时，会对“被审核人”发送的所有邮件进行审核；</p>-->
-                <!--<p> 2、当设置了同一个“被审核人”被多个“审核人”审核时，每个审核人都可以对此人的邮件进行审核；只需要有一个审核人执行审核操作即可</p>-->
-                <!--<p> 3、当被审核的邮件通过审核时，会直接将邮件发送给原邮件指定的收件人；当被拒绝通过审核时，则会将邮件丢弃，并给发件人发送“邮件未通过审核回执”；</p>-->
-                <!--<p> 4、当“审核类型”设置为“外发邮件”时，如果被审核的邮件同时指定了本域收件人和外部邮件域收件人，该邮件会被拆分为“本域邮件”、“外部域邮件”两份，其中“本域邮件”会直接投递给本域收件人，“外部域邮件”需要进行审核；</p>-->
-
-            <!--</div>-->
-            <!--<div class="hr hr-18 dotted"></div>-->
-            <!--<button class="btn btn-sm btn-primary admin_edit">-->
-                <!--<i class="ace-icon fa fa-pencil bigger-125"></i>-->
-                <!--编辑-->
-            <!--</button>-->
-
-        <!--</div>-->
-        <!--<div class="wysiwyg-editor-box">-->
-            <!--<div class="wysiwyg-editor" id="editor_review">-->
-                <!--<p class="red"><b>备注：</b></p>-->
-                <!--<p> 1、当“审核类型”设置为“外发邮件”时，只会审核“被审核人”发送给外部邮件域的邮件，发送给本域其它邮箱的邮件不会进行审核；“审核类型”为“所有发送邮件”时，会对“被审核人”发送的所有邮件进行审核；</p>-->
-                <!--<p> 2、当设置了同一个“被审核人”被多个“审核人”审核时，每个审核人都可以对此人的邮件进行审核；只需要有一个审核人执行审核操作即可</p>-->
-                <!--<p> 3、当被审核的邮件通过审核时，会直接将邮件发送给原邮件指定的收件人；当被拒绝通过审核时，则会将邮件丢弃，并给发件人发送“邮件未通过审核回执”；</p>-->
-                <!--<p> 4、当“审核类型”设置为“外发邮件”时，如果被审核的邮件同时指定了本域收件人和外部邮件域收件人，该邮件会被拆分为“本域邮件”、“外部域邮件”两份，其中“本域邮件”会直接投递给本域收件人，“外部域邮件”需要进行审核；</p>-->
-            <!--</div>-->
-            <!--<div class="widget-toolbox padding-4 clearfix admin_setted">-->
-                <!--<div class="btn-group pull-left">-->
-                    <!--<button class="btn btn-sm btn-info">-->
-                        <!--<i class="ace-icon fa fa-times bigger-125"></i>-->
-                        <!--取消-->
-                    <!--</button>-->
-                <!--</div>-->
-
-                <!--<div class="btn-group pull-right">-->
-                    <!--<button class="btn btn-sm btn-purple">-->
-                        <!--<i class="ace-icon fa fa-floppy-o bigger-125"></i>-->
-                        <!--保存-->
-                    <!--</button>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-
-    <!--</div>-->
 </div>
 <div class="modal fade" id="review_add" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -238,6 +168,7 @@
     $(function(){
 //        initEditor('#editor_review')
     })
+    $('#switch-email').hide();
     var myTable;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
@@ -347,29 +278,10 @@
             });
         }, 500);
     }
-    initDate(28);
+    //initDate(28);
 
     $('#search-btn').click(function(){
         myTable.destroy();
         initDate(8);
     })
-
-    $('.admin_edit').click(function(){
-        $('.user_content_box').hide();
-        $('.wysiwyg-editor-box').show();
-    })
-    $('.admin_setted button').click(function(){
-        $('.wysiwyg-editor-box').hide();
-        $('.user_content_box').show();
-    })
-
-
-
-
-
-    $(document).on('click', '#dynamic-table .dropdown-toggle', function(e) {
-        e.stopImmediatePropagation();
-        e.stopPropagation();
-        e.preventDefault();
-    });
 </script>

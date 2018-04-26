@@ -11,10 +11,6 @@
             <li>
                 <a href="#tabs_login">已注销列表</a>
             </li>
-
-            <li>
-                <a href="#tabs_ad">拒绝注销列表</a>
-            </li>
         </ul>
         <div id="tabs_title">
             <div class="table-header">
@@ -39,12 +35,6 @@
                     </tbody>
                 </table>
             </div>
-            <div class="row" style="margin-bottom:12px;">
-                <div class="col-sm-6 center">
-                    <button type="button" class="btn btn-success btn-sm">提交</button>
-                    <button type="button" class="btn btn-danger btn-sm">重置</button>
-                </div>
-            </div>
         </div>
 
         <div id="tabs_logo">
@@ -53,17 +43,9 @@
         <div id="tabs_login">
 
         </div>
-        <div id="tabs_ad">
-
-        </div>
     </div>
 </div>
 <script>
-    $( "#tabs" ).tabs();
-    $(".mydatetime").datetimepicker({
-        format: 'YYYY-MM-DD HH:mm:ss',
-//        autoclose:true
-    });
 
     var myTable;
     function initDate(p){
@@ -116,71 +98,6 @@
                                 }
                             }
                 } );
-        $.fn.dataTable.Buttons.swfPath = "../assets/js/dataTables/extensions/Buttons/swf/flashExport.swf"; //in Ace demo ../assets will be replaced by correct assets path
-        $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
-
-        new $.fn.dataTable.Buttons( myTable, {
-            buttons: [
-                {
-                    "extend": "colvis",
-                    "text": "<i class='fa fa-search bigger-110 blue'></i> <span class=''>显示/隐藏 列</span>",
-                    "className": "btn btn-white btn-primary btn-bold",
-                    columns: ':not(:first):not(:last)'
-                },
-                {
-                    "extend": "csv",
-                    "text": "<i class='fa fa-database bigger-110 orange'></i> <span class=''>导出数据</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                }
-            ]
-        } );
-        myTable.buttons().container().appendTo( $('.tableTools-container') );
-
-        //style the message box
-        var defaultCopyAction = myTable.button(1).action();
-        myTable.button(1).action(function (e, dt, button, config) {
-            defaultCopyAction(e, dt, button, config);
-            $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
-        });
-
-
-        var defaultColvisAction = myTable.button(0).action();
-        myTable.button(0).action(function (e, dt, button, config) {
-
-            defaultColvisAction(e, dt, button, config);
-
-
-            if($('.dt-button-collection > .dropdown-menu').length == 0) {
-                $('.dt-button-collection')
-                        .wrapInner('<ul class="dropdown-menu dropdown-light dropdown-caret dropdown-caret" />')
-                        .find('a').attr('href', '#').wrap("<li />")
-            }
-            $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
-        });
-
-        ////
-
-        setTimeout(function() {
-            $($('.tableTools-container')).find('a.dt-button').each(function() {
-                var div = $(this).find(' > div').first();
-                if(div.length == 1) div.tooltip({container: 'body', title: div.parent().text()});
-                else $(this).tooltip({container: 'body', title: $(this).text()});
-            });
-        }, 500);
     }
     initDate(28);
-
-    $('#search-btn').click(function(){
-        myTable.destroy();
-        initDate(8);
-    })
-
-
-
-
-    $(document).on('click', '#dynamic-table .dropdown-toggle', function(e) {
-        e.stopImmediatePropagation();
-        e.stopPropagation();
-        e.preventDefault();
-    });
 </script>

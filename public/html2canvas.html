@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>test</title>
+	<script type="text/javascript" src="js/jquery-2.1.4.js"></script>
+	<script type="text/javascript" src="js/html2canvas.js"></script>
+</head>
+<body id="capture" >
+
+<div style="padding: 10px; background: #f5da55">
+    <h4 style="color: #000; ">Hello world!</h4>
+</div>
+<hr>
+<div id="test">
+	123
+</div>
+<script type="text/javascript">
+	html2canvas(document.querySelector("#capture")).then(canvas => {
+	   $('#test').append(canvas)
+	});
+</script>
+</body>
+</html>

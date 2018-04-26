@@ -16,6 +16,8 @@
 
     <!-- page specific plugin styles -->
     <link rel="stylesheet" href="../assets/css/jquery-ui.css" />
+    <link rel="stylesheet" href="../assets/css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="../assets/css/chosen.css" />
 
     <!-- text fonts -->
     <link rel="stylesheet" href="../assets/css/ace-fonts.css" />
@@ -32,8 +34,7 @@
     <link rel="stylesheet" href="../assets/css/ace-ie.css" />
     <![endif]-->
 
-    <link rel="stylesheet" href="../assets/css/bootstrap-datetimepicker.css">
-    <link rel="stylesheet" href="../assets/css/chosen.css" />
+
     <!-- inline styles related to this page -->
 
     <!-- ace settings handler -->
@@ -121,9 +122,6 @@
         .clearfix>div.row{
             margin-right:240px !important;
         }
-        .tableTools-container>.btn-group>a:nth-child(3),.tableTools-container>.btn-group>a:nth-child(4){
-            display:none !important;
-        }
         #ace-settings-container{
             display:none;
         }
@@ -149,14 +147,76 @@
             margin-bottom:4px;
             margin-top:8px;
         }
-
+        .ace.ace-switch + .lbl::before{
+            content:"启用 a0\a0\a0\a0 禁用" !important;
+        }
+        table td{
+            vertical-align: middle !important;
+        }
+        .lbl{
+            vertical-align: middle;
+        }
+        .action-buttons a{
+            margin:0;
+        }
+        .same_width{
+            display:inline-block;
+            width:70px;
+        }
+        .margin-bottom-8{
+            margin-bottom:8px;
+        }
+        /*#img_box>canvas{*/
+            /*width:100% !important;*/
+            /*height:auto !important;*/
+        /*}*/
+        /*.wrap{*/
+            /*display: inline-block;*/
+            /*position: relative;*/
+            /*box-shadow: 0 0 4px #C79F5A;*/
+        /*}*/
+        /*.wrap span{*/
+            /*display: inline-block;*/
+        /*}*/
+        /*.wrap span.red-ball{*/
+            /*position: absolute;*/
+            /*!*background-color: red;*!*/
+            /*border:2px solid red;*/
+            /*opacity: .7;*/
+            /*!*border-radius: 100%;*!*/
+            /*transition: .4s;*/
+        /*}*/
     </style>
 </head>
 
-<body class="no-skin">
+<body class="no-skin" id="capture">
 
 
 <!-- Modal -->
+<div class="modal fade" id="fankui"  >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#607D8B;color:#fff;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">发送反馈</h4>
+            </div>
+            <div class="modal-body" style="background:#FAFAFA;">
+                <form class="form-horizontal">
+                    <div class="form-group">
+
+                        <div class="col-sm-12">
+                            <textarea class="form-control" rows="20" placeholder="请说明您的问题或分享您的想法"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer text-right">
+                <button type="button" class="btn btn-warning" >取消</button>
+                <button type="button" class="btn btn-success" id="tijiao">发送</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="resetPwd" tabindex="-1" role="dialog" >
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -289,128 +349,94 @@
         <!-- #section:basics/navbar.dropdown -->
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
-                <li class="grey">
-                    <!--<a   href="#" data-toggle="modal" data-target="#resetPwd">-->
-                        <!--<i class="ace-icon fa fa-cog icon-animated-wrench"></i>-->
-                        <!--修改密码-->
-                    <!--</a>-->
 
-
-                </li>
-
-                <!--<li class="purple">-->
-                    <!--<a  href="http://192.168.1.35/operation/login" target="_blank">-->
-                        <!--<i class="ace-icon fa fa-codepen icon-animated-bell"></i>-->
-                        <!--运维后台-->
-                        <!--&lt;!&ndash;<span class="badge badge-important">8</span>&ndash;&gt;-->
-                    <!--</a>-->
-
-                    <!--<ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">-->
-                        <!--<li class="dropdown-header">-->
-                            <!--<i class="ace-icon fa fa-exclamation-triangle"></i>-->
-                            <!--8 Notifications-->
-                        <!--</li>-->
-
-                        <!--<li class="dropdown-content">-->
-                            <!--<ul class="dropdown-menu dropdown-navbar navbar-pink">-->
-                                <!--<li>-->
-                                    <!--<a href="#">-->
-                                        <!--<div class="clearfix">-->
-													<!--<span class="pull-left">-->
-														<!--<i class="btn btn-xs no-hover btn-pink fa fa-comment"></i>-->
-														<!--New Comments-->
-													<!--</span>-->
-                                            <!--<span class="pull-right badge badge-info">+12</span>-->
-                                        <!--</div>-->
-                                    <!--</a>-->
-                                <!--</li>-->
-
-                                <!--<li>-->
-                                    <!--<a href="#">-->
-                                        <!--<i class="btn btn-xs btn-primary fa fa-user"></i>-->
-                                        <!--Bob just signed up as an editor ...-->
-                                    <!--</a>-->
-                                <!--</li>-->
-
-                                <!--<li>-->
-                                    <!--<a href="#">-->
-                                        <!--<div class="clearfix">-->
-													<!--<span class="pull-left">-->
-														<!--<i class="btn btn-xs no-hover btn-success fa fa-shopping-cart"></i>-->
-														<!--New Orders-->
-													<!--</span>-->
-                                            <!--<span class="pull-right badge badge-success">+8</span>-->
-                                        <!--</div>-->
-                                    <!--</a>-->
-                                <!--</li>-->
-
-                                <!--<li>-->
-                                    <!--<a href="#">-->
-                                        <!--<div class="clearfix">-->
-													<!--<span class="pull-left">-->
-														<!--<i class="btn btn-xs no-hover btn-info fa fa-twitter"></i>-->
-														<!--Followers-->
-													<!--</span>-->
-                                            <!--<span class="pull-right badge badge-info">+11</span>-->
-                                        <!--</div>-->
-                                    <!--</a>-->
-                                <!--</li>-->
-                            <!--</ul>-->
-                        <!--</li>-->
-
-                        <!--<li class="dropdown-footer">-->
-                            <!--<a href="#">-->
-                                <!--See all notifications-->
-                                <!--<i class="ace-icon fa fa-arrow-right"></i>-->
-                            <!--</a>-->
-                        <!--</li>-->
-                    <!--</ul>-->
-                <!--</li>-->
 
                 <li class="green">
-                    <a  href="http://192.168.1.29"  target="_black">
-                        <i class="ace-icon fa fa-envelope icon-animated-vertical"></i>
-                        邮箱首页
-                    </a>
-                </li>
-
-                <!-- #section:basics/navbar.user_menu -->
-                <li class="light-blue">
-                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="../assets/avatars/user.jpg" alt="Jason's Photo" />
-								<span class="user-info">
-									<small>Welcome,</small>
-									Jason
-								</span>
-
+                    <a  href="#" data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <i class="ace-icon glyphicon glyphicon-font"></i>
+                        语言
+                        <!--<span class="badge badge-important">8</span>-->
                         <i class="ace-icon fa fa-caret-down"></i>
                     </a>
-
                     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                         <li>
                             <a href="#" data-toggle="modal" data-target="#resetPwd">
-                                <i class="ace-icon fa fa-user"></i>
-                                修改密码
+                            <!--<i class="ace-icon fa fa-user"></i>-->
+                            中文
                             </a>
                         </li>
 
                         <li>
                             <a href="#" data-toggle="modal" data-target="#global_set">
-                                <i class="ace-icon fa fa-cog"></i>
-                                全局设置
+                            <!--<i class="ace-icon fa fa-cog"></i>-->
+                            English
                             </a>
                         </li>
 
-                        <li class="divider"></li>
 
-                        <li>
-                            <a href="#">
-                                <i class="ace-icon fa fa-power-off"></i>
-                                退出登录
-                            </a>
-                        </li>
                     </ul>
+
                 </li>
+                <li class=" blue">
+                    <a  href="#" data-toggle="modal" id="fankui_btn" data-target="#fankui">
+                        <i class="ace-icon fa fa-codepen"></i>
+                        反馈
+                        <!--<span class="badge badge-important">8</span>-->
+                    </a>
+
+                </li>
+
+                <li class="purple">
+                    <a   href="#" data-toggle="modal" data-target="#resetPwd">
+                        <i class="ace-icon fa fa-cog"></i>
+                        修改密码
+                    </a>
+                </li>
+
+                <li class="light-blue">
+                    <a   href="#" >
+                        <i class="ace-icon fa fa-power-off"></i>
+                        退出登录
+                    </a>
+                </li>
+
+                <!-- #section:basics/navbar.user_menu -->
+                <!--<li class="light-blue">-->
+                    <!--<a data-toggle="dropdown" href="#" class="dropdown-toggle">-->
+                        <!--<img class="nav-user-photo" src="../assets/avatars/user.jpg" alt="Jason's Photo" />-->
+								<!--<span class="user-info">-->
+									<!--<small>Welcome,</small>-->
+									<!--Jason-->
+								<!--</span>-->
+
+                        <!--<i class="ace-icon fa fa-caret-down"></i>-->
+                    <!--</a>-->
+
+                    <!--<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">-->
+                        <!--<li>-->
+                            <!--<a href="#" data-toggle="modal" data-target="#resetPwd">-->
+                                <!--<i class="ace-icon fa fa-user"></i>-->
+                                <!--修改密码-->
+                            <!--</a>-->
+                        <!--</li>-->
+
+                        <!--<li>-->
+                            <!--<a href="#" data-toggle="modal" data-target="#global_set">-->
+                                <!--<i class="ace-icon fa fa-cog"></i>-->
+                                <!--全局设置-->
+                            <!--</a>-->
+                        <!--</li>-->
+
+                        <!--<li class="divider"></li>-->
+
+                        <!--<li>-->
+                            <!--<a href="#">-->
+                                <!--<i class="ace-icon fa fa-power-off"></i>-->
+                                <!--退出登录-->
+                            <!--</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</li>-->
 
                 <!-- /section:basics/navbar.user_menu -->
             </ul>
@@ -598,14 +624,14 @@
 
                         <b class="arrow"></b>
                     </li>
-                    <li class="">
-                        <a href="department/deptadminList">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            部门管理员列表
-                        </a>
+                    <!--<li class="">-->
+                        <!--<a href="department/deptadminList">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
+                            <!--部门管理员列表-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
-                    </li>
+                        <!--<b class="arrow"></b>-->
+                    <!--</li>-->
                     <li class="">
                         <a href="department/shareDomain">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -694,6 +720,22 @@
 
                         <b class="arrow"></b>
                     </li>
+                    <li class="">
+                        <a href="safeSet/no_rubbish">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            反垃圾/反病毒设置
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="safeSet/send_hz">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            发信频率设置
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
                 </ul>
             </li>
             <li class="">
@@ -713,7 +755,7 @@
                     <li class="">
                         <a href="misc/translate">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            翻译邮件头设置
+                            邮件头翻译
                         </a>
 
                         <b class="arrow"></b>
@@ -726,15 +768,6 @@
 
                         <b class="arrow"></b>
                     </li>
-                    <li class="">
-                        <a href="misc/changepwd">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            修改密码通知信
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
                     <li class="">
                         <a href="misc/monitor">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -760,6 +793,88 @@
 
                         <b class="arrow"></b>
                     </li>
+                    <li class="">
+                        <a href="misc/distribute">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            分布式管理
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="misc/ldap_ad">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            LDAP/AD域同步设置
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+
+                    <li class="">
+                        <a href="misc/alias">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            邮件域别名
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="misc/cfilter">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            内容过滤器
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="misc/acct_transfer">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            帐号间数据迁移
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="misc/mail_moving">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            外域邮件数据导入
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="misc/mail_send">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            内网邮件代发
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="misc/ssl_secret">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            SSL数字证书
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="misc/dkim">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            DKIM 设置
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="misc/global_set">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            全局设置开关
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+
                 </ul>
             </li>
 
@@ -1161,26 +1276,24 @@
     <div class="footer">
         <div class="footer-inner">
             <!-- #section:basics/footer -->
-            <div class="footer-content">
+            <div class="footer-content text-left">
 						<span class="bigger-120">
 
-							CopyRight ©fdfffff. Power by <span class="blue bolder">U-Mail</span> 邮件服务器
+							<a href="http://www.comingchina.com/" target="_blank" style="color:#438eb9;">Power by <span >U-Mail</span> 邮件服务器</a>
 						</span>
+						<!--<span class="action-buttons">-->
+							<!--<a href="#">-->
+                                <!--<i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>-->
+                            <!--</a>-->
 
-                &nbsp; &nbsp;
-						<span class="action-buttons">
-							<a href="#">
-                                <i class="ace-icon fa fa-twitter-square light-blue bigger-150"></i>
-                            </a>
+							<!--<a href="#">-->
+                                <!--<i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>-->
+                            <!--</a>-->
 
-							<a href="#">
-                                <i class="ace-icon fa fa-facebook-square text-primary bigger-150"></i>
-                            </a>
-
-							<a href="#">
-                                <i class="ace-icon fa fa-rss-square orange bigger-150"></i>
-                            </a>
-						</span>
+							<!--<a href="#">-->
+                                <!--<i class="ace-icon fa fa-rss-square orange bigger-150"></i>-->
+                            <!--</a>-->
+						<!--</span>-->
             </div>
 
             <!-- /section:basics/footer -->
@@ -1194,13 +1307,13 @@
 
 <!-- basic scripts -->
 
-<!--&lt;!&ndash;[if !IE]> &ndash;&gt;-->
-<!--<script src="../assets/js/jquery.js"></script>-->
-<!--&lt;!&ndash; <![endif]&ndash;&gt;-->
+<!--[if !IE]> -->
+<script src="../assets/js/jquery.js"></script>
+<!-- <![endif]-->
 
-<!--&lt;!&ndash;[if IE]>-->
+<!--[if IE]>
 <script src="../assets/js/jquery1x.js"></script>
-<!--<![endif]&ndash;&gt;-->
+<![endif]-->
 
 <script type="text/javascript">
     if('ontouchstart' in document.documentElement) document.write("<script src='../assets/js/jquery.mobile.custom.js'>"+"<"+"/script>");
@@ -1224,6 +1337,7 @@
 
 <script src="../assets/js/fuelux/fuelux.tree.js"></script>
 <script src="../assets/js/chosen.jquery.js"></script>
+<script src="../assets/js/fuelux/fuelux.spinner.js"></script>
 <script src="../assets/js/date-time/moment.js"></script>
 <script src="../assets/js/date-time/bootstrap-datetimepicker.js"></script>
 
@@ -1262,37 +1376,78 @@
 <script src="../assets/js/ace/ace.settings-skin.js"></script>
 <script src="../assets/js/ace/ace.widget-on-reload.js"></script>
 <script src="../assets/js/ace/ace.searchbox-autocomplete.js"></script>
-<script src="../assets/js/dataTables/jquery.dataTables.js"></script>
-<script src="../assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>
-<script src="../assets/js/dataTables/extensions/Buttons/js/dataTables.buttons.js"></script>
-<script src="../assets/js/dataTables/extensions/Buttons/js/buttons.flash.js"></script>
-<script src="../assets/js/dataTables/extensions/Buttons/js/buttons.html5.js"></script>
-<script src="../assets/js/dataTables/extensions/Buttons/js/buttons.print.js"></script>
-<script src="../assets/js/dataTables/extensions/Buttons/js/buttons.colVis.js"></script>
-<script src="../assets/js/dataTables/extensions/Select/js/dataTables.select.js"></script>
 <!-- ace scripts -->
-
+<script  src="../assets/js/html2canvas.js"></script>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     jQuery(function($) {
+
+//        $('#fankui_btn').click(function(){
+//            html2canvas(document.querySelector("#capture")).then(canvas => {
+//                $('#img_box').html(canvas)
+//            });
+//        })
+//        function convertCanvasToImage(canvas) {
+//            var image = new Image();
+//            image.src = canvas.toDataURL("png");
+//            return image;
+//        }
+//        $('#tijiao').click(function(){
+//            html2canvas(document.querySelector("#img_box")).then(canvas => {
+////                    $('#tijiao_box').html(convertCanvasToImage(canvas));
+//                    function convertCanvasToImage(canvas) {
+//                        var image = new Image();
+//                        image.src = canvas.toDataURL("image/png");
+//                        console.log(canvas.toDataURL("image/png"))
+////                        alert(canvas.toDataURL("image/png"))
+//                        return image;
+//                    }
+//            });
+//        })
+//
+//
+//
+//        function setRedBall(r) {
+//            var $wrap = $('.wrap');
+//            var radius = r;
+//            var w = radius * 2;
+//            var h = radius * 2;
+//            var x, y, offset;
+//
+//            return function (e) {
+//                offset = $(this).offset();
+//                x = e.pageX - offset.left;
+//                y = e.pageY - offset.top;
+//
+//                $('<span class="red-ball">').css({
+//                    left: x - radius,
+//                    top: y - radius,
+//                    width: w,
+//                    height: h
+//                }).appendTo(this);
+//            }
+//        }
+//
+//        $('.wrap').on('click', setRedBall(16))
+
         if(!ace.vars['touch']) {
             $('.chosen-select').chosen({allow_single_deselect:true});
-
-            $(window)
-                    .off('resize.chosen')
-                    .on('resize.chosen', function() {
-                        $('.chosen-select').each(function() {
-                            var $this = $(this);
-                            $this.next().css({'width': $this.parent().width()});
-                        })
-                    }).trigger('resize.chosen');
-            $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
-                if(event_name != 'sidebar_collapsed') return;
-                $('.chosen-select').each(function() {
-                    var $this = $(this);
-                    $this.next().css({'width': $this.parent().width()});
-                })
-            });
+//
+//            $(window)
+//                    .off('resize.chosen')
+//                    .on('resize.chosen', function() {
+//                        $('.chosen-select').each(function() {
+//                            var $this = $(this);
+//                            $this.next().css({'width': $this.parent().width()});
+//                        })
+//                    }).trigger('resize.chosen');
+//            $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+//                if(event_name != 'sidebar_collapsed') return;
+//                $('.chosen-select').each(function() {
+//                    var $this = $(this);
+//                    $this.next().css({'width': $this.parent().width()});
+//                })
+//            });
         }
 
         initEditor("#editor_all");
@@ -1326,9 +1481,49 @@
                 $('#breadcrumbs .breadcrumb li.active').html(str1);
             }
 
-            $('#test-load').load('tpl/'+sessionStorage['load']+'.html');
+            $('#test-load').load('tpl/'+sessionStorage['load']+'.html',function(){
+                if(!ace.vars['touch']) {
+                    $('.chosen-select').chosen();
+
+                    $(window)
+                            .off('resize.chosen')
+                            .on('resize.chosen', function() {
+                                $('.chosen-select').each(function() {
+                                    var $this = $(this);
+                                    $this.next().css({'width': $this.parent().width()});
+                                })
+                            }).trigger('resize.chosen');
+                    $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                        if(event_name != 'sidebar_collapsed') return;
+                        $('.chosen-select').each(function() {
+                            var $this = $(this);
+                            $this.next().css({'width': $this.parent().width()});
+                        })
+                    });
+                }
+            });
         }else{
-            $('#test-load').load('tpl/domain/static.html');
+            $('#test-load').load('tpl/domain/static.html',function(){
+                if(!ace.vars['touch']) {
+                    $('.chosen-select').chosen();
+
+                    $(window)
+                            .off('resize.chosen')
+                            .on('resize.chosen', function() {
+                                $('.chosen-select').each(function() {
+                                    var $this = $(this);
+                                    $this.next().css({'width': $this.parent().width()});
+                                })
+                            }).trigger('resize.chosen');
+                    $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                        if(event_name != 'sidebar_collapsed') return;
+                        $('.chosen-select').each(function() {
+                            var $this = $(this);
+                            $this.next().css({'width': $this.parent().width()});
+                        })
+                    });
+                }
+            });
         }
         $('.nav.nav-list .submenu li a').click(function(e){
             e.preventDefault();
@@ -1358,62 +1553,6 @@
             sessionStorage['load']=href_url;
         })
 
-        /////////////////////////////////////
-        $(document).one('ajaxloadstart.page', function(e) {
-            $tooltip.remove();
-        });
-
-
-
-
-
-
-
-        //Android's default browser somehow is confused when tapping on label which will lead to dragging the task
-        //so disable dragging when clicking on label
-        var agent = navigator.userAgent.toLowerCase();
-        if(ace.vars['touch'] && ace.vars['android']) {
-            $('#tasks').on('touchstart', function(e){
-                var li = $(e.target).closest('#tasks li');
-                if(li.length == 0)return;
-                var label = li.find('label.inline').get(0);
-                if(label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation() ;
-            });
-        }
-
-
-
-
-
-
-        /********************************/
-        //add tooltip for small view action buttons in dropdown menu
-        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
-
-        //tooltip placement on right or left
-        function tooltip_placement(context, source) {
-            var $source = $(source);
-            var $parent = $source.closest('table')
-            var off1 = $parent.offset();
-            var w1 = $parent.width();
-
-            var off2 = $source.offset();
-            //var w2 = $source.width();
-
-            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
-            return 'left';
-        }
-
-
-
-
-        /***************/
-        $('.show-details-btn').on('click', function(e) {
-            e.preventDefault();
-            $(this).closest('tr').next().toggleClass('open');
-            $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
-        });
-        /***************/
 
 
 

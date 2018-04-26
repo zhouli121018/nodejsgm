@@ -2,17 +2,13 @@
     <h3 class="header smaller lighter blue">部门列表
 
     </h3>
-
-    <div class="clearfix">
-        <div class="pull-right tableTools-container"></div>
-        <div class="row">
-            <div class="col-sm-12 text-right">
-                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add_department">添加部门</button>
-            </div>
+    <div class="row">
+        <div class="col-sm-12 text-right">
+            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add_department">添加部门</button>
         </div>
-        <div>
-            <b>当前部门：</b> <span>fdffff</span>
-        </div>
+    </div>
+    <div>
+        <b>当前部门：</b> <span>fdffff</span>
     </div>
     <div class="row">
         <div class="col-sm-10">
@@ -366,58 +362,6 @@
                                 }
                             }
                 } );
-        $.fn.dataTable.Buttons.swfPath = "../assets/js/dataTables/extensions/Buttons/swf/flashExport.swf"; //in Ace demo ../assets will be replaced by correct assets path
-        $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
-
-        new $.fn.dataTable.Buttons( myTable, {
-            buttons: [
-                {
-                    "extend": "colvis",
-                    "text": "<i class='fa fa-search bigger-110 blue'></i> <span class=''>显示/隐藏 列</span>",
-                    "className": "btn btn-white btn-primary btn-bold",
-                    columns: ':not(:first):not(:last)'
-                },
-                {
-                    "extend": "csv",
-                    "text": "<i class='fa fa-database bigger-110 orange'></i> <span class=''>导出数据</span>",
-                    "className": "btn btn-white btn-primary btn-bold"
-                }
-
-            ]
-        } );
-        myTable.buttons().container().appendTo( $('.tableTools-container') );
-
-        //style the message box
-        var defaultCopyAction = myTable.button(1).action();
-        myTable.button(1).action(function (e, dt, button, config) {
-            defaultCopyAction(e, dt, button, config);
-            $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
-        });
-
-
-        var defaultColvisAction = myTable.button(0).action();
-        myTable.button(0).action(function (e, dt, button, config) {
-
-            defaultColvisAction(e, dt, button, config);
-
-
-            if($('.dt-button-collection > .dropdown-menu').length == 0) {
-                $('.dt-button-collection')
-                        .wrapInner('<ul class="dropdown-menu dropdown-light dropdown-caret dropdown-caret" />')
-                        .find('a').attr('href', '#').wrap("<li />")
-            }
-            $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
-        });
-
-        ////
-
-        setTimeout(function() {
-            $($('.tableTools-container')).find('a.dt-button').each(function() {
-                var div = $(this).find(' > div').first();
-                if(div.length == 1) div.tooltip({container: 'body', title: div.parent().text()});
-                else $(this).tooltip({container: 'body', title: $(this).text()});
-            });
-        }, 500);
     }
     initDate(28);
 
@@ -425,32 +369,6 @@
         myTable.destroy();
         initDate(8);
     })
-
-
-
-
-    $(document).on('click', '#dynamic-table .dropdown-toggle', function(e) {
-        e.stopImmediatePropagation();
-        e.stopPropagation();
-        e.preventDefault();
-    });
-
-//    $('#cat-tree').ace_tree({
-//        dataSource: dataSource1,
-//        multiSelect: true,
-//        cacheItems: true,
-//        'open-icon' : 'ace-icon tree-minus',
-//        'close-icon' : 'ace-icon tree-plus',
-//        'itemSelect' : true,
-//        'folderSelect': false,
-//        'selected-icon' : 'ace-icon fa fa-check',
-//        'unselected-icon' : 'ace-icon fa fa-times',
-//        loadingHTML : '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>'
-//    });
-//    $('.tree-container').ace_scroll({size: 250, mouseWheelLock: true});
-//    $('#cat-tree').on('closed.fu.tree disclosedFolder.fu.tree', function() {
-//        $('.tree-container').ace_scroll('reset').ace_scroll('start');
-//    });
     function initiateDemoData(){
         var tree_data = {
             'for-sale' : {text: 'For Sale', type: 'folder'}	,

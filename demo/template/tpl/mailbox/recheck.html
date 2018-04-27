@@ -12,6 +12,9 @@
             <li>
                 <a href="#tab_profile">审批个人资料详情</a>
             </li>
+            <li>
+                <a href="#tab_config">审批配置</a>
+            </li>
         </ul>
 
         <div id="tab_recheck">
@@ -320,6 +323,43 @@
             </div>
 
         </div>
+
+        <div id="tab_config">
+            <div class="table-header">
+                审批配置
+            </div>
+            <div>
+                <table class="table table-bordered">
+                    <tr>
+                        <td class="text-right" style="width:300px;">注册邮箱是否需审批：</td>
+                        <td>
+                            <label class="inline" >
+                                <input  checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl yes_or_no"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">注销邮箱是否需审批：</td>
+                        <td>
+                            <label class="inline" >
+                                <input  checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl yes_or_no"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">修改个人资料是否需审批：</td>
+                        <td>
+                            <label class="inline" >
+                                <input type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl yes_or_no"></span>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 
 
@@ -369,7 +409,7 @@
                             select: {
                                 style: 'multi'
                             },
-                            "iDisplayLength": 10,
+                            "iDisplayLength": 20,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
 //                                "sLengthMenu": ,
@@ -399,7 +439,7 @@
         } );
         /////////////////////////////////
         //table checkboxes
-        $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
+        $('#dynamic-table th input[type=checkbox],#dynamic-table td input[type=checkbox]').prop('checked', false);
 
         //select/deselect all rows according to table header checkbox
         $('#dynamic-table > thead > tr > th input[type=checkbox], #dynamic-table_wrapper input[type=checkbox]').eq(0).on('click', function(){
@@ -508,7 +548,7 @@
                             select: {
                                 style: 'multi'
                             },
-                            "iDisplayLength": 12,
+                            "iDisplayLength": 20,
                             "lengthMenu":  [12,15,20, 50, 100,200],
                             "oLanguage": {
 //                                "sLengthMenu": ,
@@ -537,7 +577,7 @@
         } );
         /////////////////////////////////
         //table checkboxes
-        $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
+        $('#dynamic-table2 th input[type=checkbox],#dynamic-table2 td input[type=checkbox]').prop('checked', false);
 
         //select/deselect all rows according to table header checkbox
         $('#dynamic-table2 > thead > tr > th input[type=checkbox], #dynamic-table2_wrapper input[type=checkbox]').eq(0).on('click', function(){
@@ -649,7 +689,7 @@
                             select: {
                                 style: 'multi'
                             },
-                            "iDisplayLength": 10,
+                            "iDisplayLength": 20,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
 //                                "sLengthMenu": ,
@@ -678,7 +718,7 @@
         } );
         /////////////////////////////////
         //table checkboxes
-        $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
+        $('#dynamic-table3 th input[type=checkbox],#dynamic-table3 td input[type=checkbox]').prop('checked', false);
 
         //select/deselect all rows according to table header checkbox
         $('#dynamic-table3 > thead > tr > th input[type=checkbox], #dynamic-table3_wrapper input[type=checkbox]').eq(0).on('click', function(){
@@ -778,7 +818,7 @@
                             select: {
                                 style: 'multi'
                             },
-                            "iDisplayLength": 15,
+                            "iDisplayLength": 20,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
 //                                "sLengthMenu": ,
@@ -830,7 +870,7 @@
                             select: {
                                 style: 'multi'
                             },
-                            "iDisplayLength": 15,
+                            "iDisplayLength": 20,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
 //                                "sLengthMenu": ,
@@ -883,7 +923,7 @@
                             select: {
                                 style: 'multi'
                             },
-                            "iDisplayLength": 15,
+                            "iDisplayLength": 20,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
 //                                "sLengthMenu": ,
@@ -935,7 +975,7 @@
                             select: {
                                 style: 'multi'
                             },
-                            "iDisplayLength": 15,
+                            "iDisplayLength": 20,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
 //                                "sLengthMenu": ,
@@ -988,7 +1028,7 @@
                             select: {
                                 style: 'multi'
                             },
-                            "iDisplayLength": 15,
+                            "iDisplayLength": 20,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
 //                                "sLengthMenu": ,
@@ -1040,7 +1080,7 @@
                             select: {
                                 style: 'multi'
                             },
-                            "iDisplayLength": 15,
+                            "iDisplayLength": 20,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
 //                                "sLengthMenu": ,

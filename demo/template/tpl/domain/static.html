@@ -26,6 +26,9 @@
                 <li>
                     <a href="#tabs_public">公共通讯录</a>
                 </li>
+                <li>
+                    <a href="#tabs_secret">密级管理</a>
+                </li>
             </ul>
 
             <div id="tabs_email_basic">
@@ -121,22 +124,22 @@
                         <td class="text-right" >
                             用户申请邮箱功能：
                         </td>
-                        <td >
-                            <label class="inline" >
-                                <input name="fun-status" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                <span class="lbl"></span>
-                            </label>
+                        <td class="row">
+                            <div class="col-sm-4 no-padding">
+                                <label class="inline" >
+                                    <input name="fun-status" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+                            <div class="col-sm-8 no-padding">
+                                <label class="inline" >
+                                    <small class="muted smaller-90">管理员审核开通:</small>
+                                    <input name="admin-check" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                    <span class="lbl middle"></span>
+                                </label>
+                            </div>
                         </td>
 
-                    </tr>
-                    <tr>
-                        <td class="text-right">管理员审核：</td>
-                        <td>
-                            <label class="inline" >
-                                <input name="admin-check" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                <span class="lbl"></span>
-                            </label>
-                        </td>
                     </tr>
                     <tr>
                         <td class="text-right" >管理员登陆链接显示在邮件系统登陆页：</td>
@@ -1469,17 +1472,6 @@
 
                             </tr>
                             <tr>
-                                <td class="text-right">邮件日志保存天数：</td>
-                                <td class="row">
-                                    <div class="col-sm-4 no-padding-left">
-                                        <div class="input-group">
-                                            <input name="sw_mail_log_save_day" class="form-control" value="15">
-                                            <span class="input-group-addon"> 天</span>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td class="text-right" >是否默认打开收件箱：</td>
                                 <td>
                                     <label class="inline" >
@@ -1568,7 +1560,86 @@
                                 </thead>
 
                                 <tbody id="data-body-mod">
-
+                                    <tr>
+                                        <td class="center middle">1</td>
+                                        <td>部门机构管理</td>
+                                        <td>
+                                            <label class="inline" >
+                                                <input name="admin_mod1" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center middle">2</td>
+                                        <td>邮件列表管理</td>
+                                        <td>
+                                            <label class="inline" >
+                                                <input name="admin_mod2" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center middle">3</td>
+                                        <td>邮箱监控功能</td>
+                                        <td>
+                                            <label class="inline" >
+                                                <input name="admin_mod3" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center middle">4</td>
+                                        <td>邮箱别名功能</td>
+                                        <td>
+                                            <label class="inline" >
+                                                <input name="admin_mod4" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center middle">5</td>
+                                        <td>用户黑白名单功能</td>
+                                        <td>
+                                            <label class="inline" >
+                                                <input name="admin_mod5" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center middle">6</td>
+                                        <td>POP邮箱接收功能</td>
+                                        <td>
+                                            <label class="inline" >
+                                                <input name="admin_mod6" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center middle">7</td>
+                                        <td>LDAP帐号同步功能</td>
+                                        <td>
+                                            <label class="inline" >
+                                                <input name="admin_mod7" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="center middle">8</td>
+                                        <td>即时通讯软件集成功能</td>
+                                        <td>
+                                            <label class="inline" >
+                                                <input name="admin_mod8" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1629,7 +1700,63 @@
                     </div>
                 </div>
             </div>
+            <div id="tabs_secret">
+                <div class="table-header">
+                    密级管理
+                </div>
 
+                <div>
+                    <table  class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th class="center">序号</th>
+                            <th>密集名称</th>
+                            <th>邮件帐号数量</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr class="">
+                                <td class="center middle">1</td>
+                                <td>秘密</td>
+                                <td>5</td>
+                                <td>
+                                    <div class="">
+                                        <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#set_secret">
+                                            维护
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td class="center middle">2</td>
+                                <td>机密</td>
+                                <td>3</td>
+                                <td>
+                                    <div class="">
+                                        <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#set_secret">
+                                            维护
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="">
+                                <td class="center middle">3</td>
+                                <td>绝密</td>
+                                <td>1</td>
+                                <td>
+                                    <div class="">
+                                        <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#set_secret">
+                                            维护
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     <div class="center" style="background:#fafafa;">
@@ -2018,12 +2145,8 @@
                     </div>
                 </form>
                 <ul class="alert-warning" style="padding:4px;">
-                    <li><p class="red">备注：</p>
-                        1、需要先启用“综合功能开关->域名功能设置->即时通讯软件集成”功能；
-
-                    </li>
-                    <li>
-                        2、接口的具体使用方法请参考“接口文档”；
+                    <li><span class="red">备注：</span>
+                        接口的具体使用方法请参考“接口文档”；
                     </li>
                 </ul>
             </div>
@@ -2779,6 +2902,49 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="set_secret" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">密级 “ <b>秘密</b> ” 邮箱账号列表</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin-bottom:6px;">
+                    <div class="col-sm-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-sm btn-success">添加邮箱账号</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <table id="dynamic-table-secret" class="table table-bordered table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace">
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>序号</th>
+                        <th>邮箱地址</th>
+                    </tr>
+                    </thead>
+                    <tbody id="data-body-secret">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer center">
+                <button type="button"  class="btn btn-danger delete">删除所选邮箱</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     $(function(){
         $( "#tab2" ).tabs();
@@ -2872,7 +3038,7 @@
                             select: {
                                 style: 'multi'
                             },
-                            "iDisplayLength": 10,
+                            "iDisplayLength": 20,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
 //                                "sLengthMenu": ,
@@ -2956,61 +3122,61 @@
     }
     initDate(28);
 
-    function initDate_mod(p){
-        for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>部门机构管理</td>
-                        <td>
-                            <label class="inline" >
-                                    <input name="admin_mod${i}" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                    <span class="lbl"></span>
-                            </label>
-                        </td>
-                    </tr>`
-        }
-        $('#data-body-mod').html(html);
-        myTable_mod =
-                $('#dynamic-table-mod')
-                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
-                        .DataTable( {
-                            bAutoWidth: false,
-                            "aoColumns": [
-                                { "bSortable": false },
-                                { "bSortable": false },
-                                { "bSortable": false }
-                            ],
-                            "aaSorting": [],
-//                            select: {
-//                                style: 'multi'
-//                            },
-                            "iDisplayLength": 10,
-                            "lengthMenu":  [10,15,20, 50, 100,200],
-                            "oLanguage": {
-//                                "sLengthMenu": ,
-                                "sZeroRecords": "对不起! 信息筛选结果为空!",
-                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
-                                "sInfoEmpty": "总计: 0 条记录",
-                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
-                                "sSearch": "搜索: ",
-                                "oPaginate": {
-                                    "sFirst":    "第一页",
-                                    "sPrevious": "上一页",
-                                    "sNext":     "下一页",
-                                    "sLast":     "最后一页"
-                                }
-                            }
-                        } );
-
-    }
-    initDate_mod(18);
+//    function initDate_mod(p){
+//        for(var i= 0,html='';i<p;i++){
+//            html+=`<tr class="">
+//                        <td class="center middle">${i+1}</td>
+//                        <td>部门机构管理</td>
+//                        <td>
+//                            <label class="inline" >
+//                                    <input name="admin_mod${i}" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+//                                    <span class="lbl"></span>
+//                            </label>
+//                        </td>
+//                    </tr>`
+//        }
+//        $('#data-body-mod').html(html);
+//        myTable_mod =
+//                $('#dynamic-table-mod')
+//                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+//                        .DataTable( {
+//                            bAutoWidth: false,
+//                            "aoColumns": [
+//                                { "bSortable": false },
+//                                { "bSortable": false },
+//                                { "bSortable": false }
+//                            ],
+//                            "aaSorting": [],
+////                            select: {
+////                                style: 'multi'
+////                            },
+//                            "iDisplayLength": 20,
+//                            "lengthMenu":  [10,15,20, 50, 100,200],
+//                            "oLanguage": {
+////                                "sLengthMenu": ,
+//                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+//                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+//                                "sInfoEmpty": "总计: 0 条记录",
+//                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+//                                "sSearch": "搜索: ",
+//                                "oPaginate": {
+//                                    "sFirst":    "第一页",
+//                                    "sPrevious": "上一页",
+//                                    "sNext":     "下一页",
+//                                    "sLast":     "最后一页"
+//                                }
+//                            }
+//                        } );
+//
+//    }
+//    initDate_mod(18);
 
     $('#search-btn').click(function(){
         myTable.destroy();
         initDate(8);
     })
 
-    var myTable3,myTable2;
+    var myTable3,myTable2,myTable_secret;
     function initDate3(p){
         for(var i= 0,html='';i<p;i++){
             html+=`<tr role="row">
@@ -3059,7 +3225,7 @@
                             select: {
                                 style: 'multi'
                             },
-                            "iDisplayLength": 10,
+                            "iDisplayLength": 20,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {
 //                                "sLengthMenu": ,
@@ -3202,7 +3368,7 @@
                             ],
                             "aaSorting": [],
 
-                            "iDisplayLength": 5,
+                            "iDisplayLength": 20,
                             "lengthMenu":  [5,10,20, 50, 100,200],
                             "oLanguage": {
 //                                "sLengthMenu": ,
@@ -3219,5 +3385,121 @@
                                 }
                             }
                         } );
+    }
+
+    initDate_secret(6);
+    function initDate_secret(p){
+        for(var i= 0,html='';i<p;i++){
+            html+=`<tr role="row">
+                    <td class="center">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+
+                    <td>
+                        ${i+1}
+                    </td>
+                    <td>test.com</td>
+                </tr>`
+        }
+        $('#data-body-secret').html(html);
+
+        myTable_secret =
+                $('#dynamic-table-secret')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+
+        myTable_secret.on( 'select', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable_secret.row( index ).node() ).find('input:checkbox').prop('checked', true);
+            }
+        } );
+        myTable_secret.on( 'deselect', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable_secret.row( index ).node() ).find('input:checkbox').prop('checked', false);
+            }
+        } );
+
+
+
+
+        /////////////////////////////////
+        //table checkboxes
+        $('#dynamic-table-secret th input[type=checkbox],#dynamic-table-secret td input[type=checkbox]').prop('checked', false);
+
+        //select/deselect all rows according to table header checkbox
+        $('#dynamic-table-secret > thead > tr > th input[type=checkbox], #dynamic-table-secret_wrapper input[type=checkbox]').eq(0).on('click', function(){
+            var th_checked = this.checked;//checkbox inside "TH" table header
+
+            $('#dynamic-table-secret').find('tbody > tr').each(function(){
+                var row = this;
+                if(th_checked) myTable_secret.row(row).select();
+                else  myTable_secret.row(row).deselect();
+            });
+        });
+
+        //select/deselect a row when the checkbox is checked/unchecked
+        $('#dynamic-table-secret').on('click', 'td input[type=checkbox]' , function(){
+            var row = $(this).closest('tr').get(0);
+            if(this.checked) myTable_secret.row(row).deselect();
+            else myTable_secret.row(row).select();
+        });
+
+        /********************************/
+        //add tooltip for small view action buttons in dropdown menu
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+        //tooltip placement on right or left
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            //var w2 = $source.width();
+
+            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+            return 'left';
+        }
+        /***************/
+        $('.show-details-btn').on('click', function(e) {
+            e.preventDefault();
+            $(this).closest('tr').next().toggleClass('open');
+            $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+        });
+
+
+
     }
 </script>

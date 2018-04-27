@@ -17,6 +17,7 @@
     <!-- page specific plugin styles -->
     <link rel="stylesheet" href="../assets/css/jquery-ui.css" />
     <link rel="stylesheet" href="../assets/css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="../assets/css/daterangepicker.css" />
     <link rel="stylesheet" href="../assets/css/chosen.css" />
 
     <!-- text fonts -->
@@ -150,6 +151,9 @@
         .ace.ace-switch + .lbl::before{
             content:"启用 a0\a0\a0\a0 禁用" !important;
         }
+         .ace.ace-switch + .lbl.yes_or_no::before{
+             content:"\a0\a0 是 a0\a0\a0\a0\a0\a0\a0\a0 否\a0" !important;
+         }
         table td{
             vertical-align: middle !important;
         }
@@ -459,7 +463,7 @@
         </script>
 
         <ul class="nav nav-list">
-            <li class="single">
+            <li class="single active">
                 <a href="home">
                     <i class="menu-icon fa fa-tachometer"></i>
                     <span class="menu-text"> 主页 </span>
@@ -475,10 +479,9 @@
 
                 <b class="arrow"></b>
                 <ul class="submenu">
-                    <li class="active" >
+                    <li>
                         <a href="systemStatus/licence" >
                             <i class="menu-icon fa fa-caret-right"></i>
-
                             授权信息
                         </a>
                         <b class="arrow"></b>
@@ -499,13 +502,12 @@
                     </li>
                 </ul>
             </li>
-            <li class="open">
+            <li>
                 <a href="index.html" class="dropdown-toggle">
                     <i class="menu-icon glyphicon glyphicon-book"></i>
                     <span class="menu-text"> 域名管理 </span>
                     <b class="arrow fa fa-angle-down"></b>
                 </a>
-
                 <b class="arrow"></b>
                 <ul class="submenu">
                     <li class="" id="dynamic-table0">
@@ -515,7 +517,7 @@
                         </a>
                         <b class="arrow"></b>
                     </li>
-                    <li class="active" id="static-table">
+                    <li id="static-table">
                         <a href="domain/static" >
                             <i class="menu-icon fa fa-caret-right"></i>
 
@@ -785,14 +787,14 @@
                         <b class="arrow"></b>
                     </li>
 
-                    <li class="">
-                        <a href="misc/secret">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            密级管理
-                        </a>
+                    <!--<li class="">-->
+                        <!--<a href="misc/secret">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
+                            <!--密级管理-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
-                    </li>
+                        <!--<b class="arrow"></b>-->
+                    <!--</li>-->
                     <li class="">
                         <a href="misc/distribute">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -911,15 +913,7 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="">
-                        <a href="system/pop">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            批量设置POP
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                    <li class="">
-                        <a href="system/weixin">
+                        <a href="maintain/weixin">
                             <i class="menu-icon fa fa-caret-right"></i>
                             微信版管理
                         </a>
@@ -1017,15 +1011,6 @@
 
                         <b class="arrow"></b>
                     </li>
-                    <li class="">
-                        <a href="wangguan/opration">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            操作备忘录
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
                 </ul>
             </li>
         </ul><!-- /.nav-list -->
@@ -1044,6 +1029,64 @@
 
             <!-- #section:basics/content.breadcrumbs -->
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                <div class="row pull-right" id="switch-email">
+                    <div class="col-sm-2" style="width:120px;"><span class="">切换当前域名：</span></div>
+                    <div class="col-sm-10" style="width:200px;">
+                        <select class="chosen-select form-control"  data-placeholder="切换当前域名">
+                            <option value="">test.com</option>
+                            <option value="AL">Alabama</option>
+                            <option value="AK">Alaska</option>
+                            <option value="AZ">Arizona</option>
+                            <option value="AR">Arkansas</option>
+                            <option value="CA">California</option>
+                            <option value="CO">Colorado</option>
+                            <option value="CT">Connecticut</option>
+                            <option value="DE">Delaware</option>
+                            <option value="FL">Florida</option>
+                            <option value="GA">Georgia</option>
+                            <option value="HI">Hawaii</option>
+                            <option value="ID">Idaho</option>
+                            <option value="IL">Illinois</option>
+                            <option value="IN">Indiana</option>
+                            <option value="IA">Iowa</option>
+                            <option value="KS">Kansas</option>
+                            <option value="KY">Kentucky</option>
+                            <option value="LA">Louisiana</option>
+                            <option value="ME">Maine</option>
+                            <option value="MD">Maryland</option>
+                            <option value="MA">Massachusetts</option>
+                            <option value="MI">Michigan</option>
+                            <option value="MN">Minnesota</option>
+                            <option value="MS">Mississippi</option>
+                            <option value="MO">Missouri</option>
+                            <option value="MT">Montana</option>
+                            <option value="NE">Nebraska</option>
+                            <option value="NV">Nevada</option>
+                            <option value="NH">New Hampshire</option>
+                            <option value="NJ">New Jersey</option>
+                            <option value="NM">New Mexico</option>
+                            <option value="NY">New York</option>
+                            <option value="NC">North Carolina</option>
+                            <option value="ND">North Dakota</option>
+                            <option value="OH">Ohio</option>
+                            <option value="OK">Oklahoma</option>
+                            <option value="OR">Oregon</option>
+                            <option value="PA">Pennsylvania</option>
+                            <option value="RI">Rhode Island</option>
+                            <option value="SC">South Carolina</option>
+                            <option value="SD">South Dakota</option>
+                            <option value="TN">Tennessee</option>
+                            <option value="TX">Texas</option>
+                            <option value="UT">Utah</option>
+                            <option value="VT">Vermont</option>
+                            <option value="VA">Virginia</option>
+                            <option value="WA">Washington</option>
+                            <option value="WV">West Virginia</option>
+                            <option value="WI">Wisconsin</option>
+                            <option value="WY">Wyoming</option>
+                        </select>
+                    </div>
+                </div>
                 <ul class="breadcrumb">
                     <li>
                         <i class="ace-icon fa fa-home home-icon"></i>
@@ -1167,64 +1210,7 @@
                     </h1>
                 </div><!-- /.page-header -->
 
-                <div class="row" id="switch-email">
-                    <div class="col-sm-2" style="width:120px;"><span class="">切换当前域名：</span></div>
-                    <div class="col-sm-10" style="width:200px;">
-                        <select class="chosen-select form-control"  data-placeholder="切换当前域名">
-                            <option value="">test.com</option>
-                            <option value="AL">Alabama</option>
-                            <option value="AK">Alaska</option>
-                            <option value="AZ">Arizona</option>
-                            <option value="AR">Arkansas</option>
-                            <option value="CA">California</option>
-                            <option value="CO">Colorado</option>
-                            <option value="CT">Connecticut</option>
-                            <option value="DE">Delaware</option>
-                            <option value="FL">Florida</option>
-                            <option value="GA">Georgia</option>
-                            <option value="HI">Hawaii</option>
-                            <option value="ID">Idaho</option>
-                            <option value="IL">Illinois</option>
-                            <option value="IN">Indiana</option>
-                            <option value="IA">Iowa</option>
-                            <option value="KS">Kansas</option>
-                            <option value="KY">Kentucky</option>
-                            <option value="LA">Louisiana</option>
-                            <option value="ME">Maine</option>
-                            <option value="MD">Maryland</option>
-                            <option value="MA">Massachusetts</option>
-                            <option value="MI">Michigan</option>
-                            <option value="MN">Minnesota</option>
-                            <option value="MS">Mississippi</option>
-                            <option value="MO">Missouri</option>
-                            <option value="MT">Montana</option>
-                            <option value="NE">Nebraska</option>
-                            <option value="NV">Nevada</option>
-                            <option value="NH">New Hampshire</option>
-                            <option value="NJ">New Jersey</option>
-                            <option value="NM">New Mexico</option>
-                            <option value="NY">New York</option>
-                            <option value="NC">North Carolina</option>
-                            <option value="ND">North Dakota</option>
-                            <option value="OH">Ohio</option>
-                            <option value="OK">Oklahoma</option>
-                            <option value="OR">Oregon</option>
-                            <option value="PA">Pennsylvania</option>
-                            <option value="RI">Rhode Island</option>
-                            <option value="SC">South Carolina</option>
-                            <option value="SD">South Dakota</option>
-                            <option value="TN">Tennessee</option>
-                            <option value="TX">Texas</option>
-                            <option value="UT">Utah</option>
-                            <option value="VT">Vermont</option>
-                            <option value="VA">Virginia</option>
-                            <option value="WA">Washington</option>
-                            <option value="WV">West Virginia</option>
-                            <option value="WI">Wisconsin</option>
-                            <option value="WY">Wyoming</option>
-                        </select>
-                    </div>
-                </div>
+
 
                 <div class="row">
 
@@ -1234,7 +1220,7 @@
 
                     </div><!-- /.col -->
                 </div><!-- /.row -->
-                <div class="well" style="margin-top:5px;background:#fff;">
+                <div class="well" style="margin-top:5px;background:#fff;" id="remark_content">
                     <div class="user_content_box">
                         <div class="wysiwyg_content_show">
                             <p class="red"><b>备注：</b></p>
@@ -1243,7 +1229,7 @@
                         <div class="hr hr-18 dotted"></div>
                         <button class="btn btn-sm btn-primary admin_edit">
                             <i class="ace-icon fa fa-pencil bigger-125"></i>
-                            编辑
+                            编辑备注
                         </button>
 
                     </div>
@@ -1340,6 +1326,7 @@
 <script src="../assets/js/fuelux/fuelux.spinner.js"></script>
 <script src="../assets/js/date-time/moment.js"></script>
 <script src="../assets/js/date-time/bootstrap-datetimepicker.js"></script>
+<script src="../assets/js/date-time/daterangepicker.js"></script>
 
 <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
 <script src="../assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>
@@ -1460,6 +1447,18 @@
             $('.user_content_box').show();
             if($(this).hasClass('save')){
                 $('.wysiwyg_content_show').html($("#editor_all").html());
+                $.ajax({
+                    url:'http://192.168.1.35:8888/operation/ajax_set_remark',
+                    type:'POST',
+                    dataType:'jsonp',
+                    jsonp:'callback',
+                    data:{base_url:sessionStorage['load']+'.html',remark:$("#editor_all").html()},
+                    success:function(obj){
+                        console.log(obj);
+
+                        $('.wysiwyg_content_show').html($("#editor_all").html());
+                    }
+                })
             }
         })
 
@@ -1482,48 +1481,48 @@
             }
 
             $('#test-load').load('tpl/'+sessionStorage['load']+'.html',function(){
-                if(!ace.vars['touch']) {
-                    $('.chosen-select').chosen();
-
-                    $(window)
-                            .off('resize.chosen')
-                            .on('resize.chosen', function() {
-                                $('.chosen-select').each(function() {
-                                    var $this = $(this);
-                                    $this.next().css({'width': $this.parent().width()});
-                                })
-                            }).trigger('resize.chosen');
-                    $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
-                        if(event_name != 'sidebar_collapsed') return;
-                        $('.chosen-select').each(function() {
-                            var $this = $(this);
-                            $this.next().css({'width': $this.parent().width()});
-                        })
-                    });
-                }
+                $('.wysiwyg-editor-box').hide();
+                $('.user_content_box').show();
             });
+            $.ajax({
+                url:'http://192.168.1.35:8888/operation/ajax_get_remark',
+                type:'POST',
+                dataType:'jsonp',
+                jsonp:'callback',
+                data:{base_url:sessionStorage['load']+'.html'},
+                success:function(obj){
+                    if(obj.remark==""){
+                        $('#remark_content .wysiwyg_content_show  .admin_edit').html('新增备注')
+
+                    }else{
+                        $('#remark_content .wysiwyg_content_show  .admin_edit').html('编辑')
+                    }
+                    $('#remark_content .wysiwyg_content_show').html(obj.remark);
+                    $("#editor_all").html(obj.remark);
+                }
+            })
         }else{
-            $('#test-load').load('tpl/domain/static.html',function(){
-                if(!ace.vars['touch']) {
-                    $('.chosen-select').chosen();
-
-                    $(window)
-                            .off('resize.chosen')
-                            .on('resize.chosen', function() {
-                                $('.chosen-select').each(function() {
-                                    var $this = $(this);
-                                    $this.next().css({'width': $this.parent().width()});
-                                })
-                            }).trigger('resize.chosen');
-                    $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
-                        if(event_name != 'sidebar_collapsed') return;
-                        $('.chosen-select').each(function() {
-                            var $this = $(this);
-                            $this.next().css({'width': $this.parent().width()});
-                        })
-                    });
-                }
+            $('#test-load').load('tpl/home.html',function(){
+                $('.wysiwyg-editor-box').hide();
+                $('.user_content_box').show();
             });
+            $.ajax({
+                url:'http://192.168.1.35:8888/operation/ajax_get_remark',
+                type:'POST',
+                dataType:'jsonp',
+                jsonp:'callback',
+                data:{base_url:'home.html'},
+                success:function(obj){
+                    if(obj.remark==""){
+                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('新增备注')
+
+                    }else{
+                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('编辑')
+                    }
+                    $('#remark_content .wysiwyg_content_show').html(obj.remark);
+                    $("#editor_all").html(obj.remark);
+                }
+            })
         }
         $('.nav.nav-list .submenu li a').click(function(e){
             e.preventDefault();
@@ -1536,7 +1535,28 @@
             var str1 = $(this).text();
             $('#breadcrumbs .breadcrumb a').html(str0);
             $('#breadcrumbs .breadcrumb li.active').html(str1);
-            $('#test-load').load('tpl/'+href_url+'.html');
+            $('#test-load').load('tpl/'+href_url+'.html',function(){
+                $('.wysiwyg-editor-box').hide();
+                $('.user_content_box').show();
+            });
+            $.ajax({
+                url:'http://192.168.1.35:8888/operation/ajax_get_remark',
+                type:'POST',
+                dataType:'jsonp',
+                jsonp:'callback',
+                data:{base_url:href_url+'.html'},
+                success:function(obj){
+                    console.log(obj)
+                    if(obj.remark==""){
+                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('新增备注')
+
+                    }else{
+                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('编辑')
+                    }
+                    $('#remark_content .wysiwyg_content_show').html(obj.remark);
+                    $("#editor_all").html(obj.remark);
+                }
+            })
             $('#switch-email').show();
             sessionStorage['load']=href_url;
         })
@@ -1548,7 +1568,27 @@
             var str0 = $(this).find('.menu-text').text();
             $('#breadcrumbs .breadcrumb a').html(str0);
             $('#breadcrumbs .breadcrumb li.active').html('');
-            $('#test-load').load('tpl/'+href_url+'.html');
+            $('#test-load').load('tpl/'+href_url+'.html',function(){
+                $('.wysiwyg-editor-box').hide();
+                $('.user_content_box').show();
+            });
+            $.ajax({
+                url:'http://192.168.1.35:8888/operation/ajax_get_remark',
+                type:'POST',
+                dataType:'jsonp',
+                jsonp:'callback',
+                data:{base_url:href_url+'.html'},
+                success:function(obj){
+                    if(obj.remark==""){
+                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('新增备注')
+
+                    }else{
+                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('编辑')
+                    }
+                    $('#remark_content .wysiwyg_content_show').html(obj.remark);
+                    $("#editor_all").html(obj.remark);
+                }
+            })
             $('#switch-email').show();
             sessionStorage['load']=href_url;
         })

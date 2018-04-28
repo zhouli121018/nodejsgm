@@ -3,8 +3,81 @@
 
     </h3>
 
-    <div style="min-height:200px;">
-        从“运维后台-系统功能设置-全局设置开关”迁移至此
+    <div class="table-header">
+        综合功能设置
+    </div>
+    <div>
+        <table class="table table-bordered">
+            <tr>
+                <td class="text-right">灰名单功能：</td>
+                <td>
+                    <label class="inline" >
+                        <input name="greylist"  type="checkbox" class="ace ace-switch ace-switch-5">
+                        <span class="lbl middle"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">发件人数量限制：</td>
+                <td class="row">
+                    <div class="col-sm-3 no-padding">
+                        <input type="number" class="form-control" value="100">
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="help-block green">
+                            例如：100、500、1000
+                        </p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">语言设置：</td>
+                <td>
+                    <label style="margin-right:20px;">
+                        <input type="radio" name="notice_lang" value="1" checked=""><span>中文</span>
+                    </label>
+                    <label>
+                        <input type="radio" name="notice_lang" value="-1"><span>英文</span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">登录界面域名检测：</td>
+                <td>
+                    <label class="inline" >
+                        <input name="login_domaincheck"  checked type="checkbox" class="ace ace-switch ace-switch-5">
+                        <span class="lbl middle"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">发信时对本服无效用户进行退信：</td>
+                <td>
+                    <label class="inline" >
+                        <input name="sys_pass_all_local"  type="checkbox" class="ace ace-switch ace-switch-5">
+                        <span class="lbl middle"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">发信时对本服无效用户进行退信：</td>
+                <td class="">
+                        <label class="inline" >
+                            <input name="sys_pass_all_local"  type="checkbox" class="ace ace-switch ace-switch-5">
+                            <span class="lbl middle"></span>
+                        </label>
+                        <span class="help-block green">
+                            <b class="red">
+                                注：
+                            </b>开启这个功能后，每天只会保留收件箱最新的1万封邮件，其余邮件转移到"旧邮件备份"目录中。在邮件量比较大时，开启该功能可以加快收件箱邮件的搜索效率。
+                        </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="table-footer center" style="margin-top:8px;">
+        <button type="button" class="btn btn-success">保存</button>
+        <button type="button"  class="btn btn-warning">重置</button>
     </div>
 </div>
 <script>

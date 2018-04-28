@@ -2,11 +2,140 @@
     <h3 class="header smaller lighter blue"><span class="red">DKIM 设置</span>
 
     </h3>
+    <div class="table-header">
+        DKIM 设置
+    </div>
+    <div>
+        <table id="dkim_set" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>作用域</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>所有域名</td>
+                    <td><span class="label label-xlg label-success arrowed-in arrowed-in-right">已设置</span></td>
+                    <td>
+                        <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#dkim_edit">
+                            设置
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>test.com</td>
+                    <td><span class="label label-xlg label-success arrowed-in arrowed-in-right">已设置</span></td>
+                    <td>
+                        <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#dkim_edit">
+                            设置
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>domain.com</td>
+                    <td><span class="label label-xlg label-danger arrowed-in arrowed-in-right">未设置</span></td>
+                    <td>
+                        <a class="green btn btn-white btn-primary btn-xs" href="#" data_title="no_set" data-toggle="modal" data-target="#dkim_edit">
+                            设置
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="dkim_edit">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">域名设置</h4>
+            </div>
+            <div class="modal-body" style="padding:10px 40px;">
+                <form class="form-horizontal">
 
-    <div style="min-height:200px;">
-        从“运维后台-系统功能设置-DKIM设置”迁移至此
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">作用域：</label>
+                        <div class="col-sm-8">
+                            <input type="text"  disabled value="所有域名" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">状态：</label>
+                        <div class="col-sm-8">
+                            <input type="text"  disabled value="已设置DKIM私钥" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group alr">
+                        <label class="col-sm-3 control-label">域名记录名称：</label>
+                        <div class="col-sm-8">
+                            <input type="text"  disabled value="umail._domainkey.所有域名" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group alr">
+                        <label class="col-sm-3 control-label">域名记录名称：</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" rows="10">k=rsa;p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCaquGuPscT07QxNkZJ1XaNdmnPN4xsTkcXG86fOroMfpTC/NCKibp4Feu1U8kLKS+Bwd6zdBTSVrVQMKgtGbKZryiXkNVtOjF/uVxdA4JOXmeZpcFcwG/pAwZcmVfHcnGv7Byn0ylgTimKe12lbT2sgFr2RIxdL2VM/xCd/AYT3QIDAQAB</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group no_set">
+                        <label class="col-sm-3 control-label">操作：</label>
+                        <div class="col-sm-8">
+                            <button type="button"  class="btn btn-primary btn-sm">生成密钥</button>
+                            <div class="row" style="margin-top:8px;">
+                                <div class="col-sm-6">
+                                    <input type="file" class="form-control" id="id-input-file-2">
+                                </div>
+                                <div class="col-sm-6">
+                                    <button type="button" class="btn btn-danger btn-sm">导入私钥</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group alr">
+                        <label class="col-sm-3 control-label">操作：</label>
+                        <div class="col-sm-8">
+                            <button type="button"  class="btn btn-primary btn-sm">导出密钥</button>
+                            <button type="button" class="btn btn-danger btn-sm">清除密钥</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+
+            </div>
+        </div>
     </div>
 </div>
 <script>
     $('#switch-email').hide();
+    $('#dkim_set a').click(function(e){
+        e.preventDefault();
+        if($(this).attr('data_title')=='no_set'){
+            $('.alr').hide();
+            $('.no_set').show();
+        }else{
+            $('.no_set').hide();
+            $('.alr').show();
+        }
+    })
+    $(' #id-input-file-2').ace_file_input({
+        no_file:'未选中文件',
+        btn_choose:'选择',
+        btn_change:'修改',
+        droppable:false,
+        onchange:null,
+        thumbnail:false //| true | large
+        //whitelist:'gif|png|jpg|jpeg'
+        //blacklist:'exe|php'
+        //onchange:''
+        //
+    });
 </script>

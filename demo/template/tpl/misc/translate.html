@@ -1,10 +1,29 @@
 <div id="dynamic-div">
     <h3 class="header smaller lighter blue"><span class="red">邮件头翻译</span>
     </h3>
+    <div class="text-right margin-bottom-8">
+        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#translate_add" >添加邮件头翻译</button>
+    </div>
+    <div class="table-header">
+        邮件头翻译
+    </div>
+    <div>
+        <table id="dynamic-table" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="center">序号</th>
+                    <th>域名</th>
+                    <th>类型</th>
+                    <th>被翻译值</th>
+                    <th>翻译目标值</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="data-body">
 
-    <div style="min-height:300px;">
-        从“运维后台-系统功能设置-邮件头翻译”迁移至此
-
+            </tbody>
+        </table>
     </div>
 </div>
 <div class="modal fade" id="translate_add" tabindex="-1" role="dialog">
@@ -16,23 +35,24 @@
             </div>
             <div class="modal-body">
                 <form class="">
-                    <div class="form-group">
-                        <label class=" control-label">类型：</label>
-                        <div class="">
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label class=" control-label">选择域名：</label>
                             <select name="type" style="width: 110px;">
-                                <option value="-1">外发</option>
+                                <option value="-1">test.com</option>
+                                <option value="1">domain.com</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class=" control-label">状态：</label>
-                        <div class="">
-                            <select name="disabled" style="width: 110px;">
-                                <option value="-1">启用</option>
-                                <option value="1">禁用</option>
-                            </select>
+                        <div class="col-sm-6">
+                            <label class="inline" >
+                                <small class="muted smaller-90">状态：</small>
+                                <input name="containner-already"  checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl middle"></span>
+                            </label>
                         </div>
+
                     </div>
+
                     <div class="form-group">
                         <label class=" control-label">被翻译值 <--> 目标值：</label>
                         <div class="row">
@@ -51,9 +71,7 @@
                 </form>
                 <div class="alert-warning" style="padding:4px;">
                     <ul>
-                        <li>1、当被翻译值和目标值换行时，表示批量新增多个。</li>
-                        <li>2、当“类型”设置为“外发”时，表示翻译规则只在外发生效。</li>
-                        <li>3、被翻译值将会被翻译为目标值；被翻译值和目标值禁止输入特殊符号和空格</li>
+                        <li>1、注： 目前只会匹配邮件头中From、Sender、Subject字段所对应的内容。</li>
                     </ul>
                 </div>
             </div>
@@ -74,39 +92,41 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">类型：</label>
+                        <label class="col-sm-4 control-label">选择域名：</label>
                         <div class="col-sm-8">
                             <select name="type" style="width: 110px;">
-                                <option value="-1">外发</option>
+                                <option value="-1">test.com</option>
+                                <option value="1">domain.com</option>
                             </select>
                         </div>
+
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">状态：</label>
                         <div class="col-sm-8">
-                            <select name="disabled" style="width: 110px;">
-                                <option value="-1">启用</option>
-                                <option value="1">禁用</option>
-                            </select>
+                            <label class="inline" >
+                                <input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl middle"></span>
+                            </label>
                         </div>
+
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">被翻译值：</label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-6">
                             <input type="text" class="form-control" value="被翻译值">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-4 control-label">目标值：</label>
-                        <div class="col-sm-8">
+                        <div class="col-sm-6">
                             <input type="text" class="form-control" value="目标值">
                         </div>
                     </div>
                 </form>
                 <div class="alert-warning" style="padding:4px;">
                     <ul>
-                        <li>1、当“类型”设置为“外发”时，表示翻译规则只在外发生效。</li>
-                        <li>2、被翻译值将会被翻译为目标值；被翻译值和目标值禁止输入特殊符号和空格</li>
+                        <li>1、注： 目前只会匹配邮件头中From、Sender、Subject字段所对应的内容。</li>
                     </ul>
                 </div>
             </div>
@@ -123,6 +143,7 @@
         for(var i= 0,html='';i<p;i++){
             html+=`<tr class="">
                         <td class="center middle">${i+1}</td>
+                        <td>test.com</td>
                         <td>外发</td>
                         <td>ddd</td>
                         <td>111</td>
@@ -152,6 +173,7 @@
                                 { "bSortable": false },
                                 { "bSortable": false },
                                 { "bSortable": false },
+                                { "bSortable": false },
                                 { "bSortable": false }
                             ],
                             "aaSorting": [],
@@ -176,7 +198,7 @@
                             }
                 } );
     }
-    //initDate(28);
+    initDate(28);
 
     $('#search-btn').click(function(){
         //myTable.destroy();

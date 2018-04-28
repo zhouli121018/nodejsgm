@@ -154,6 +154,7 @@
          .ace.ace-switch + .lbl.yes_or_no::before{
              content:"\a0\a0 是 a0\a0\a0\a0\a0\a0\a0\a0 否\a0" !important;
          }
+
         table td{
             vertical-align: middle !important;
         }
@@ -190,6 +191,12 @@
             /*!*border-radius: 100%;*!*/
             /*transition: .4s;*/
         /*}*/
+        .chosen-container{
+            width:100% !important;
+        }
+        .text-right{
+            font-weight:bold;
+        }
     </style>
 </head>
 
@@ -829,22 +836,6 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="">
-                        <a href="misc/acct_transfer">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            帐号间数据迁移
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                    <li class="">
-                        <a href="misc/mail_moving">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            外域邮件数据导入
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                    <li class="">
                         <a href="misc/mail_send">
                             <i class="menu-icon fa fa-caret-right"></i>
                             内网邮件代发
@@ -905,9 +896,25 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="">
-                        <a href="maintain/isolate">
+                        <a href="maintain/acct_transfer">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            隔离邮件
+                            帐号间数据迁移
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="maintain/mail_moving">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            外域邮件数据导入
+                        </a>
+
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="maintain/mail_queue">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            邮件队列
                         </a>
 
                         <b class="arrow"></b>
@@ -1231,7 +1238,6 @@
                             <i class="ace-icon fa fa-pencil bigger-125"></i>
                             编辑备注
                         </button>
-
                     </div>
                     <div class="wysiwyg-editor-box">
                         <div class="wysiwyg-editor" id="editor_all">
@@ -1327,6 +1333,7 @@
 <script src="../assets/js/date-time/moment.js"></script>
 <script src="../assets/js/date-time/bootstrap-datetimepicker.js"></script>
 <script src="../assets/js/date-time/daterangepicker.js"></script>
+<script src="../assets/js/ace/elements.fileinput.js"></script>
 
 <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
 <script src="../assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>

@@ -1022,8 +1022,67 @@
                         </div>
                     </div>
                     <div id="sub_sign_template">
-                        <div style="min-height:300px;">
-                            从“运维后台-域名功能设置-个人签名模板”迁移至此
+                        <div class="table-header">个人签名模板</div>
+                        <div>
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <td>新邮件默认签名</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="personal_sign_new"   type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl middle"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>回复/转发默认签名</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="personal_sign_forward" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl middle"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>新用户自动应用模板</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="personal_sign_auto" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl middle"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>签名模板</td>
+                                    <td>
+                                        <div class="wysiwyg-editor" id="editor_sign">
+                                            <p>
+                                                <span style="font-size:16px;"><strong>{NAME}&nbsp; [<span style="font-size:14px;">
+                                                    {POSITION}</span>]<br /></strong></span></p><p>
+                                            <span style="white-space:normal;font-size:16px;"><strong>{TELEPHONE}</strong></span></p>
+                                            <p><br /><strong></strong></p>
+                                            <p><span style="font-size:14px;"><strong>这里填公司名称<br />
+                                            </strong></span></p>
+                                            <p>地址：这里填公司地址</p>
+                                            <p>电话：<span style="white-space:normal;">{WORKPHONE}&nbsp;&nbsp; 传真：这里填传真号码&nbsp; 邮箱：{EMAIL}<br /></span></p><br /><p><span style="white-space:normal;"><br /></span></p>
+                                        </div>
+                                        <div class="widget-toolbox padding-4  admin_setted center">
+                                            <button type="button" class="btn btn-info">
+                                                <i class="ace-icon fa fa-floppy-o bigger-110"></i>
+                                                保存但不应用
+                                            </button>
+                                            <button type="button" class="btn btn-success">
+                                                <i class="ace-icon fa fa-check bigger-110"></i>
+                                                保存并应用到域名下所有帐号
+                                            </button>
+                                            <button type="button" class="btn btn-danger">
+                                                <i class="ace-icon fa fa-undo bigger-110"></i>
+                                                重置
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -1133,22 +1192,24 @@
                             </tr>
                             <tr>
                                 <td class="text-right" >企业通讯录功能：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="address-list" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
+                                <td class="row">
+                                    <div class="col-sm-4 no-padding">
+                                        <label class="inline" >
+
+                                            <input name="address-list" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-8 no-padding">
+                                        <label class="inline" >
+                                            <small class="muted smaller-90">导出按钮开关：</small>
+                                            <input name="export" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+
                                 </td>
 
-                            </tr>
-                            <tr>
-                                <td class="text-right">导出按钮开关：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="export" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
                             </tr>
                             <tr>
                                 <td class="text-right" >公共通讯录功能：</td>
@@ -2959,6 +3020,7 @@
         initEditor('#reg_content_editor');
         initEditor('#editor_all_2');
         initEditor('#editor_changepwd');
+        initEditor('#editor_sign');
         $(".mydatetime").datetimepicker({
             format: 'YYYY-MM-DD HH:mm:ss'
 //        autoclose:true

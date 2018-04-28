@@ -2,9 +2,34 @@
     <h3 class="header smaller lighter blue"><span class="red">邮箱别名管理</span>
 
     </h3>
-    <div style="min-height:300px;">
-        从“运维后台-系统功能设置-邮箱别名设置”迁移至此
+    <div class="text-right margin-bottom-8">
+        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#mailboxalias_add" >添加别名</button>
+        <button class="btn btn-danger" type="button">删除选中别名</button>
+    </div>
+    <div class="table-header">
+        邮箱别名列表
+    </div>
+    <div>
+        <table id="dynamic-table" class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace">
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th class="center">序号</th>
+                <th>虚拟地址</th>
+                <th>真实地址</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="data-body">
 
+            </tbody>
+        </table>
     </div>
 </div>
 <div class="modal fade" id="mailboxalias_add" tabindex="-1" role="dialog">
@@ -14,38 +39,46 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">添加邮箱别名</h4>
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">虚拟地址：</label>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <input type="text" class="form-control">
-                                <span class="input-group-addon">@test.com</span>
-                            </div>
+            <div class="modal-body" style="padding:10px 40px;">
+                <form class="">
+                    <div class="corm-group">
+                        <label class="control-label">选择域名：</label>
+                        <div>
+                            <select name="type" class="form-control">
+                                <option value="-1">test.com</option>
+                                <option value="1">domain.com</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">虚拟地址：</label>
-                        <div class="col-sm-6">
-                            <div class="input-group">
-                                <input type="text" class="form-control">
-                                <span class="input-group-addon">@test.com</span>
-                            </div>
+                        <label class=" control-label">虚拟地址：</label>
+                        <div class="">
+                            <input type="text"   class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">状态：</label>
-                        <div class="col-sm-8">
-                            <label class="radio-inline">
-                                <input type="radio" name="status1" value="1" checked> 启用
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="status1" value="0"> 禁用
-                            </label>
+                        <label class=" control-label">真实地址：</label>
+                        <!--<div class="input-group">-->
+                        <!--<input type="text" class="form-control" value="cs">-->
+                        <!--<span class="input-group-addon">@test.com</span>-->
+                        <!--</div>-->
+                        <div class="">
+                            <input type="text"   class="form-control">
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="inline" >
+                            <small class="muted smaller-90">状态：</small>
+                            <input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                            <span class="lbl middle"></span>
+                        </label>
                     </div>
                 </form>
+                <div class="alert-warning" style="padding:4px;">
+                    <ul>
+                        <li>1、注： 请输入邮箱用户名，真实地址的域名后缀与所选域名一致。</li>
+                    </ul>
+                </div>
             </div>
             <div class="modal-footer center">
                 <button type="button" class="btn btn-success">提交</button>
@@ -55,39 +88,44 @@
     </div>
 </div>
 <div class="modal fade" id="edit_name" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">修改邮箱别名</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="padding:10px 40px;">
                 <form class="">
+
                     <div class="form-group">
                         <label class=" control-label">虚拟地址：</label>
                         <div class="">
-                            <input type="text" disabled value="123@test.com" class="form-control">
+                            <input type="text"  disabled value="123@test.com" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class=" control-label">真实地址：</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" value="cs">
-                            <span class="input-group-addon">@test.com</span>
+                        <!--<div class="input-group">-->
+                            <!--<input type="text" class="form-control" value="cs">-->
+                            <!--<span class="input-group-addon">@test.com</span>-->
+                        <!--</div>-->
+                        <div class="">
+                            <input type="text"  value="aaa@test.com" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class=" control-label">状态：</label>
-                        <div class="">
-                            <label class="radio-inline">
-                                <input type="radio" name="mail_name"  checked value="open"> 启用
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="mail_name"  value="close"> 禁用
-                            </label>
-                        </div>
+                        <label class="inline" >
+                            <small class="muted smaller-90">状态：</small>
+                            <input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                            <span class="lbl middle"></span>
+                        </label>
                     </div>
                 </form>
+                <div class="alert-warning" style="padding:4px;">
+                    <ul>
+                        <li>1、注： 请输入邮箱用户名，真实地址的域名后缀与所选域名一致。</li>
+                    </ul>
+                </div>
             </div>
             <div class="modal-footer center">
                 <button type="button" class="btn btn-success">提交</button>
@@ -108,16 +146,20 @@
                         </label>
                     </td>
 
-                    <td>
+                    <td class="center">
                         ${i+1}
                     </td>
                     <td>test.com</td>
                     <td>adfstest.com</td>
-                    <td >启用</td>
+                    <td >
+                    <span class="label label-sm label-info arrowed arrowed-righ">启用</span></td>
                     <td>
                         <div class="">
                             <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_name">
                                 修改
+                            </a>
+                            <a class="red btn btn-white btn-danger btn-xs" href="#">
+                                    删除
                             </a>
                         </div>
                     </td>
@@ -287,6 +329,6 @@
 
 
     }
-    //initDate(28);
+    initDate(28);
 
 </script>

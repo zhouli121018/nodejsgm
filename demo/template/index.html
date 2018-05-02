@@ -151,9 +151,12 @@
         .ace.ace-switch + .lbl::before{
             content:"启用 a0\a0\a0\a0 禁用" !important;
         }
-         .ace.ace-switch + .lbl.yes_or_no::before{
-             content:"\a0\a0 是 a0\a0\a0\a0\a0\a0\a0\a0 否\a0" !important;
+         .ace.ace-switch + .lbl.gender::before{
+             content:"\a0\a0男 a0\a0\a0\a0\a0\a0\a0 女\a0" !important;
          }
+        .ace.ace-switch + .lbl::before{
+            content:"启用 a0\a0\a0\a0 禁用" !important;
+        }
 
         table td{
             vertical-align: middle !important;
@@ -196,6 +199,17 @@
         }
         .text-right{
             font-weight:bold;
+        }
+        .alr_create,.alr_ca{
+            display:none;
+        }
+        table th,.table-center td{
+            text-align: center;
+        }
+        .bold-title{
+            background:#478fca;color:#fff;
+            padding:4px;
+            font-size:20px;
         }
     </style>
 </head>
@@ -371,14 +385,14 @@
                     </a>
                     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
                         <li>
-                            <a href="#" data-toggle="modal" data-target="#resetPwd">
+                            <a href="#" >
                             <!--<i class="ace-icon fa fa-user"></i>-->
                             中文
                             </a>
                         </li>
 
                         <li>
-                            <a href="#" data-toggle="modal" data-target="#global_set">
+                            <a href="#" >
                             <!--<i class="ace-icon fa fa-cog"></i>-->
                             English
                             </a>
@@ -851,18 +865,18 @@
 
                         <b class="arrow"></b>
                     </li>
-                    <li class="">
-                        <a href="misc/dkim">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            DKIM 设置
-                        </a>
+                    <!--<li class="">-->
+                        <!--<a href="misc/dkim">-->
+                            <!--<i class="menu-icon fa fa-caret-right"></i>-->
+                            <!--DKIM 设置-->
+                        <!--</a>-->
 
-                        <b class="arrow"></b>
-                    </li>
+                        <!--<b class="arrow"></b>-->
+                    <!--</li>-->
                     <li class="">
                         <a href="misc/global_set">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            全局设置开关
+                            杂项设置
                         </a>
 
                         <b class="arrow"></b>
@@ -1345,6 +1359,8 @@
 <script src="../assets/js/dataTables/extensions/Select/js/dataTables.select.js"></script>
 
 <script src="../assets/js/jquery.bootstrap-duallistbox.js"></script>
+<script src="../assets/layer/layer.js"></script>
+
 
 
 

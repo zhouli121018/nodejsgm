@@ -9,7 +9,7 @@
                     <a href="#tabs_email_basic">邮件域基本信息</a>
                 </li>
                 <li>
-                    <a href="#tabs_reg_login">用户注册/登录设置</a>
+                    <a href="#tabs_reg_login">用户注册</a>
                 </li>
                 <li>
                     <a href="#tabs_sys">域名功能设置</a>
@@ -21,7 +21,7 @@
                     <a href="#sign">签名</a>
                 </li>
                 <li>
-                    <a href="#module_made">模块定制</a>
+                    <a href="#module_made">前台模块管理</a>
                 </li>
                 <li>
                     <a href="#tabs_public">公共通讯录</a>
@@ -116,7 +116,7 @@
             </div>
             <div id="tabs_reg_login">
                 <div class="table-header" style="cursor:pointer;">
-                    用户注册登录设置
+                    用户注册
                 </div>
                 <table id="email-basic-table" class="table  table-bordered table-hover table-striped">
                     <tbody>
@@ -182,57 +182,6 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td class="text-right">启用验证码功能：</td>
-                        <td class="row">
-                            <div class="col-sm-4 no-padding">
-                                <!--<input type="text" class="form-control" style="width:200px;">-->
-                                <!--<div class="ace-spinner middle" style="width: 125px;">-->
-                                    <!--<div class="input-group">-->
-                                        <!--<input type="text" id="spinner1" class="spinbox-input form-control text-center">-->
-                                        <!--<div class="spinbox-buttons input-group-btn btn-group-vertical">-->
-                                            <!--<button type="button" class="btn spinbox-up btn-sm btn-info">-->
-                                                <!--<i class="icon-only  ace-icon fa fa-chevron-up"></i>-->
-                                            <!--</button>-->
-                                            <!--<button type="button" class="btn spinbox-down btn-sm btn-info">-->
-                                                <!--<i class="icon-only  ace-icon fa fa-chevron-down"></i>-->
-                                            <!--</button>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</div>-->
-                                <input type="text" id="spinner1" class="form-control"/>
-                            </div>
-                            <div class="col-sm-8 no-padding">
-                                <span>注：-1表示永远显示验证码，表示多少次验证错误后显示验证码；</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="text-right">SSL访问：</td>
-                        <td >
-                            <label class="inline" >
-                                <input name="fun-sll" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                <span class="lbl"></span>
-                            </label>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td class="text-right">登录系统地点限制：</td>
-                        <td class="row">
-                            <div class="col-sm-4 no-padding">
-                                <label class="inline" >
-                                    <input name="fun-addr" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                    <span class="lbl"></span>
-                                </label>
-                            </div>
-                            <div class="col-sm-8 no-padding">
-                                    <span>注：打开本功能开关以后，一个邮件账户在一个地方登录后，之前的有效登录将会被强制登出；</span>
-
-                            </div>
-
-                        </td>
-                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -248,16 +197,6 @@
                         <td>
                             <label class="inline" >
                                 <input name="lock" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                <span class="lbl"></span>
-                            </label>
-                        </td>
-
-                    </tr>
-                    <tr>
-                        <td class="text-right">用户黑白名单功能：</td>
-                        <td>
-                            <label class="inline" >
-                                <input name="black-white" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
                                 <span class="lbl"></span>
                             </label>
                         </td>
@@ -504,6 +443,52 @@
                             </div>
                         </td>
                     </tr>
+                    <tr>
+                        <td class="text-right">收件时是否过滤重复邮件：</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="sw_filter_duplicate_mail" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right" >邮件搜索加速：</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="sw_search_speedup" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right" >所有用户的 '保存客户端已发送邮件' 选项设置为'是'：</td>
+                        <td >
+                            <label class="inline" >
+                                <input name="sw_save_client_sent_email" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right" >邮件列表发来邮件显示邮件列表名称：</td>
+                        <td >
+                            <label class="inline" >
+                                <input name="" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right" >登录默认打开收件箱：</td>
+                        <td >
+                            <label class="inline" >
+                                <input name="" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -551,25 +536,26 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-right">帮助文件地址：</td>
-                                <td>
-                                    <input type="text" value="http://www.baidu.com" class="form-control" style="width:200px;">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right">登出跳转地址：</td>
-                                <td>
-                                    <input type="text" value="http://www.baidu.com" class="form-control" style="width:200px;">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right">设置登录页面：</td>
+                                <td class="text-right">显示SSL安全登录框：</td>
                                 <td >
-                                    <select  class="form-control" style="width:200px;">
-                                        <option value="1">默认登录页面</option>
-                                        <option value="2">其他登录页面</option>
-                                    </select>
+                                    <label class="inline" >
+                                        <input name="" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                        <span class="lbl"></span>
+                                    </label>
                                 </td>
+
+                            </tr>
+                            <tr>
+                                <td class="text-right">登录页面自动输入域名：</td>
+                                <td >
+                                    <label style="margin-right:20px;">
+                                        <input type="radio" checked name="auto_login_show"> 显示
+                                    </label>
+                                    <label >
+                                        <input type="radio" name="auto_login_show"> 不显示
+                                    </label>
+                                </td>
+
                             </tr>
                             <tr>
                                 <td class="text-right">ICP 备案是否显示：</td>
@@ -595,6 +581,12 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td class="text-right">帮助文件地址：</td>
+                                <td>
+                                    <input type="text" value="http://www.baidu.com" class="form-control" style="width:200px;">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td class="text-right">设置系统公告：</td>
                                 <td class="row">
                                     <div class="col-sm-4 no-padding">
@@ -609,6 +601,76 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="text-right">登录系统地点限制：</td>
+                                <td class="row">
+                                    <div class="col-sm-4 no-padding">
+                                        <label class="inline" >
+                                            <input name="fun-addr" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-8 no-padding">
+                                        <span>注：打开本功能开关以后，一个邮件账户在一个地方登录后，之前的有效登录将会被强制登出；</span>
+
+                                    </div>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">启用验证码功能：</td>
+                                <td class="row">
+                                    <div class="col-sm-4 no-padding">
+                                        <!--<input type="text" class="form-control" style="width:200px;">-->
+                                        <!--<div class="ace-spinner middle" style="width: 125px;">-->
+                                        <!--<div class="input-group">-->
+                                        <!--<input type="text" id="spinner1" class="spinbox-input form-control text-center">-->
+                                        <!--<div class="spinbox-buttons input-group-btn btn-group-vertical">-->
+                                        <!--<button type="button" class="btn spinbox-up btn-sm btn-info">-->
+                                        <!--<i class="icon-only  ace-icon fa fa-chevron-up"></i>-->
+                                        <!--</button>-->
+                                        <!--<button type="button" class="btn spinbox-down btn-sm btn-info">-->
+                                        <!--<i class="icon-only  ace-icon fa fa-chevron-down"></i>-->
+                                        <!--</button>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+                                        <!--</div>-->
+                                        <input type="text" id="spinner1" class="form-control"/>
+                                    </div>
+                                    <div class="col-sm-8 no-padding">
+                                        <span>注：-1表示永远显示验证码，表示多少次验证错误后显示验证码；</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">登出跳转地址：</td>
+                                <td>
+                                    <input type="text" value="http://www.baidu.com" class="form-control" style="width:200px;">
+                                </td>
+                            </tr>
+                            <!--<tr>-->
+                                <!--<td class="text-right">设置登录页面：</td>-->
+                                <!--<td >-->
+                                    <!--<select  class="form-control" style="width:200px;">-->
+                                        <!--<option value="1">默认登录页面</option>-->
+                                        <!--<option value="2">其他登录页面</option>-->
+                                    <!--</select>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+
+
+
+                            <tr>
+                                <td class="text-right">SSL访问：</td>
+                                <td >
+                                    <label class="inline" >
+                                        <input name="fun-sll" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+
+                            </tr>
+
                         </table>
                     </div>
                     <div id="tabs_logo">
@@ -1091,222 +1153,26 @@
                 <div id="module_made_tabs">
                     <ul>
                         <li >
-                            <a href="#tabs_webmail">前台模块管理</a>
+                            <a href="#tabs_webmail">首页区</a>
                         </li>
                         <li>
-                            <a href="#adminmod">后台模块管理</a>
+                            <a href="#send_mail_block">发邮件区</a>
+                        </li>
+                        <li >
+                            <a href="#setting_block">设置区</a>
+                        </li>
+                        <li>
+                            <a href="#other_block">杂项区</a>
                         </li>
                     </ul>
 
                     <div id="tabs_webmail">
-                        <div class="table-header" style="cursor:pointer;">
-                            前台模块管理
+                        <div class="table-header" >
+                            首页区
                         </div>
-                        <table  class="table  table-bordered table-hover table-striped">
+                        <table  class="table  table-bordered  table-striped">
                             <tbody>
-                            <tr>
-                                <td class="text-right" >
-                                    用户已用邮箱容量查看功能：
-                                </td>
-                                <td class="row" style="padding:8px;">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-                                            <!--<small class="muted smaller-90">Border:</small>-->
-
-                                            <input name="containner-already"  checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl middle"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8 no-padding">
-                                        注：关闭此功能后无法查看用户已用邮箱容量；
-                                    </div>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right">密码修改功能：</td>
-                                <td class="row" style="padding:8px;">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-                                            <input name="reset-pwd" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8 no-padding">
-                                        注：关闭此功能后用户无法修改邮箱密码；；
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right" >个人资料功能：</td>
-                                <td class="row" style="padding:8px;">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-                                            <input name="user-info" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8 no-padding">
-                                        注：关闭此功能后用户无法修改个人资料；
-                                    </div>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right">自动回复功能：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="auto-reply" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right">自动转发功能：</td>
-                                <td class="row" style="padding:8px;">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-                                            <input name="auto-transmit" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8 no-padding">
-                                        <span> 注：全局自动转发开闭开关，除此之外，每个邮箱用户也有单独开启自动转发开关，在邮箱账号管理中设置；</span>
-                                    </div>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right">天气预报功能：</td>
-                                <td class="row" style="padding:8px;">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-                                            <input name="weather" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8 no-padding">
-                                        <span>注：Webmail 欢迎页天气预报功能开关；</span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right" >企业通讯录功能：</td>
-                                <td class="row">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-
-                                            <input name="address-list" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8 no-padding">
-                                        <label class="inline" >
-                                            <small class="muted smaller-90">导出按钮开关：</small>
-                                            <input name="export" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right" >公共通讯录功能：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="pup-address-list" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right">其他域通讯录共享功能：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="share" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right" >保存草稿功能：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="wsw_drafts" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right">网络硬盘功能：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="wsw_netdist" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right" >日程功能：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="wsw_calendar" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right">便签功能：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="wsw_notes" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right" >参数设置功能：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="wsw_options" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right">邮件过滤功能：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="wsw_cfilter" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right" >邮箱搬家功能：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="wsw_mailboxmove" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right">邮件召回记录查看：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="wsw_zhaohui" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
+                                <tr>
                                 <td class="text-right" >商务小工具栏目：</td>
                                 <td>
                                     <div class="row">
@@ -1348,27 +1214,187 @@
                                 </td>
 
                             </tr>
+                                <tr>
+                                    <td class="text-right" >
+                                        邮箱容量查看功能：
+                                    </td>
+                                    <td class="row" style="padding:8px;">
+                                        <div class="col-sm-4 no-padding">
+                                            <label class="inline" >
+                                                <!--<small class="muted smaller-90">Border:</small>-->
+
+                                                <input name="containner-already"  checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                                <span class="lbl middle"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8 no-padding">
+                                            注：关闭此功能后无法查看用户已用邮箱容量；
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-right">天气预报功能：</td>
+                                    <td class="row" style="padding:8px;">
+                                        <div class="col-sm-4 no-padding">
+                                            <label class="inline" >
+                                                <input name="weather" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8 no-padding">
+                                            <span>注：Webmail 欢迎页天气预报功能开关；</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right" >企业通讯录功能：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <label class="inline" >
+
+                                                <input name="address-list" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8 no-padding">
+                                            <label class="inline" >
+                                                <small class="muted smaller-90">导出按钮开关：</small>
+                                                <input name="export" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-right" >公共通讯录功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="pup-address-list" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-right">其他域通讯录共享功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="share" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">企业通讯录域组合：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <label class="inline" >
+                                                <input name="sw_department_openall" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8 no-padding">
+                                            注：用户在邮件系统中，可以开启企业通讯录域组合
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-right" >父部门中是否显示子部门邮件账号：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <label class="inline" >
+                                                <input name="wsw_dept_showall" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8 no-padding">
+                                            注：用户在邮件系统中，点击父部门的时候，是否显示所有子部门的邮箱
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">网络硬盘功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="wsw_netdist" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right" >日程功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="wsw_calendar" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-right">便签功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="wsw_notes" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="send_mail_block">
+                        <div class="table-header">发邮件区</div>
+                        <table class="table table-bordered table-striped">
                             <tr>
-                                <td class="text-right">邮箱意见反馈功能：</td>
+                                <td class="text-right" >保存草稿功能：</td>
+                                <td>
+                                    <label class="inline" >
+                                        <input name="wsw_drafts" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="text-right">发送邮件显示加密选项：</td>
+                                <td>
+                                    <label class="inline" >
+                                        <input name="sw_mail_in_reply_to" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">显示地址簿和信纸模块：</td>
                                 <td class="row">
                                     <div class="col-sm-4 no-padding">
                                         <label class="inline" >
-                                            <input name="wsw_feedback" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <input name="wsw_show_add_paper" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
                                             <span class="lbl"></span>
                                         </label>
                                     </div>
                                     <div class="col-sm-8 no-padding">
-                                        注：Webmail 配置中意见反馈功能开关；
+                                        注：开启此功能，在编辑邮件时，右侧地址簿和信纸功能会直接显示；
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-right" >邮件签名功能：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="wsw_signature" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
+                                <td class="text-right">去掉信纸模块：</td>
+                                <td class="row">
+                                    <div class="col-sm-4 no-padding">
+                                        <label class="inline" >
+                                            <input name="wsw_mailpaper" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-8 no-padding">
+                                        注：开启此功能，在编辑邮件时，右侧信纸功能会直接显示；
+                                    </div>
                                 </td>
 
                             </tr>
@@ -1387,20 +1413,178 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="text-right" >用户积分功能：</td>
-                                <td class="row ">
-                                    <div class="col-sm-4 no-padding-left">
+                                <td class="text-right" >添加Reply-To到邮件头：</td>
+                                <td>
+                                    <label class="inline" >
+                                        <input name="sw_mail_in_reply_to" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="setting_block">
+                        <div class="table-header">设置区</div>
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <td class="text-right" >个人资料功能：</td>
+                                <td class="row" style="padding:8px;">
+                                    <div class="col-sm-4 no-padding">
                                         <label class="inline" >
-                                            <input name="wsw_user_score" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <input name="user-info" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
                                             <span class="lbl"></span>
                                         </label>
                                     </div>
                                     <div class="col-sm-8 no-padding">
-                                        <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#userscore" >设置用户积分</button>
+                                        注：关闭此功能后用户无法修改个人资料；
                                     </div>
                                 </td>
 
                             </tr>
+                            <tr>
+                                <td class="text-right">密码修改功能：</td>
+                                <td class="row" style="padding:8px;">
+                                    <div class="col-sm-4 no-padding">
+                                        <label class="inline" >
+                                            <input name="reset-pwd" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-8 no-padding">
+                                        注：关闭此功能后用户无法修改邮箱密码；；
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right" >参数设置功能：</td>
+                                <td>
+                                    <label class="inline" >
+                                        <input name="wsw_options" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="text-right" >邮件签名功能：</td>
+                                <td>
+                                    <label class="inline" >
+                                        <input name="wsw_signature" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="text-right">自动回复功能：</td>
+                                <td>
+                                    <label class="inline" >
+                                        <input name="auto-reply" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">自动转发功能：</td>
+                                <td class="row" style="padding:8px;">
+                                    <div class="col-sm-4 no-padding">
+                                        <label class="inline" >
+                                            <input name="auto-transmit" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-8 no-padding">
+                                        <span> 注：全局自动转发开闭开关，除此之外，每个邮箱用户也有单独开启自动转发开关，在邮箱账号管理中设置；</span>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="text-right">黑白名单功能：</td>
+                                <td>
+                                    <label class="inline" >
+                                        <input name="black-white" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="text-right" >设置自动转发默认值：</td>
+                                <td class="row">
+                                    <div class="col-sm-4 no-padding">
+                                        <label class="inline" >
+                                            <input name="wsw_autoforward_visible" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-8 no-padding">
+                                        注：选择“是”，在后台邮件账户管理中，用户是否可以自行设置自动转发的默认值是“是”，否则为“否”；
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right" >邮箱搬家功能：</td>
+                                <td>
+                                    <label class="inline" >
+                                        <input name="wsw_mailboxmove" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="text-right">邮箱意见反馈功能：</td>
+                                <td class="row">
+                                    <div class="col-sm-4 no-padding">
+                                        <label class="inline" >
+                                            <input name="wsw_feedback" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-8 no-padding">
+                                        注：Webmail 配置中意见反馈功能开关；
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">邮件召回记录查看：</td>
+                                <td>
+                                    <label class="inline" >
+                                        <input name="wsw_zhaohui" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">邮件过滤功能：</td>
+                                <td>
+                                    <label class="inline" >
+                                        <input name="wsw_cfilter" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right">SMTP外发邮件中转：</td>
+                                <td class="row">
+                                    <div class="col-sm-4 no-padding">
+                                        <label class="inline" >
+                                            <input name="sw_smtptransfer_visible" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-8 no-padding">
+                                        注：开启本开关后，umail将作为邮件客户端，将外发邮件投递到用户设置的邮件服务器
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="other_block">
+                        <div class="table-header">杂项区</div>
+                        <table  class="table  table-bordered  table-striped">
                             <tr>
                                 <td class="text-right">清空文件夹功能：</td>
                                 <td class="row">
@@ -1432,6 +1616,37 @@
 
                             </tr>
                             <tr>
+                                <td class="text-right" >邮件内容中时间显示：</td>
+                                <td>
+                                    <!--<label class="inline" >-->
+                                    <!--<input name="wsw_time_mode" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">-->
+                                    <!--<span class="lbl time"></span>-->
+                                    <!--</label>-->
+                                    <label style="margin-right:20px;">
+                                        <input type="radio" checked name="wsw_time_mode"> 12小时
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="wsw_time_mode"> 24小时
+                                    </label>
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="text-right" >用户积分功能：</td>
+                                <td class="row ">
+                                    <div class="col-sm-4 no-padding-left">
+                                        <label class="inline" >
+                                            <input name="wsw_user_score" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-8 no-padding">
+                                        <button class="btn btn-info btn-xs" data-toggle="modal" data-target="#userscore" >设置用户积分</button>
+                                    </div>
+                                </td>
+
+                            </tr>
+                            <tr>
                                 <td class="text-right" >部门邮件列表：</td>
                                 <td>
                                     <label class="inline" >
@@ -1440,270 +1655,7 @@
                                     </label>
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="text-right" >邮件内容中时间显示：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="wsw_time_mode" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl time"></span>
-                                    </label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right">显示地址簿和信纸模块：</td>
-                                <td class="row">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-                                            <input name="wsw_show_add_paper" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8 no-padding">
-                                        注：开启此功能，在编辑邮件时，右侧地址簿和信纸功能会直接显示；
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right">是否单独去掉信纸模块：</td>
-                                <td class="row">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-                                            <input name="wsw_mailpaper" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8 no-padding">
-                                        注：开启此功能，在编辑邮件时，右侧信纸功能会直接显示；
-                                    </div>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right" >用户是否可以自行设置自动转发默认值：</td>
-                                <td class="row">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-                                            <input name="wsw_autoforward_visible" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8 no-padding">
-                                        注：选择“是”，在后台邮件账户管理中，用户是否可以自行设置自动转发的默认值是“是”，否则为“否”；
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right">企业通讯录域组合：</td>
-                                <td class="row">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-                                            <input name="sw_department_openall" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8 no-padding">
-                                        注：用户在邮件系统中，可以开启企业通讯录域组合
-                                    </div>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right" >父部门中是否显示子部门邮件账号：</td>
-                                <td class="row">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-                                            <input name="wsw_dept_showall" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8 no-padding">
-                                        注：用户在邮件系统中，点击父部门的时候，是否显示所有子部门的邮箱
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right" >接收邮件列表发来邮件是否显示邮件列表名称：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="wdisplay_everyone" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right" >是否默认打开收件箱：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="sw_welcome_open_recipient" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right">发送邮件显示加密选项：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="sw_mail_in_reply_to" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right" >原发送人加到Reply-To控制开关：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="sw_mail_in_reply_to" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right">收件时是否过滤重复邮件：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="sw_filter_duplicate_mail" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right" >邮件搜索加速：</td>
-                                <td>
-                                    <label class="inline" >
-                                        <input name="sw_search_speedup" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="text-right">SMTP外发邮件中转：</td>
-                                <td class="row">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-                                            <input name="sw_smtptransfer_visible" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        注：开启本开关后，umail将作为邮件客户端，将外发邮件投递到用户设置的邮件服务器
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="text-right" >所有用户的 '保存客户端已发送邮件' 选项设置为'是'：</td>
-                                <td >
-                                    <label class="inline" >
-                                        <input name="sw_save_client_sent_email" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
-                            </tr>
-                            </tbody>
                         </table>
-                    </div>
-                    <div id="adminmod">
-                        <div class="table-header">
-                            后台模块管理
-                        </div>
-                        <div>
-                            <table id="dynamic-table-mod" class="table table-striped table-bordered table-hover">
-                                <thead>
-                                <tr>
-                                    <th class="center">序号</th>
-                                    <th>模块名称</th>
-                                    <th>模块设置</th>
-                                </tr>
-                                </thead>
-
-                                <tbody id="data-body-mod">
-                                    <tr>
-                                        <td class="center middle">1</td>
-                                        <td>部门机构管理</td>
-                                        <td>
-                                            <label class="inline" >
-                                                <input name="admin_mod1" checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                                <span class="lbl"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="center middle">2</td>
-                                        <td>邮件列表管理</td>
-                                        <td>
-                                            <label class="inline" >
-                                                <input name="admin_mod2" checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                                <span class="lbl"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="center middle">3</td>
-                                        <td>邮箱监控功能</td>
-                                        <td>
-                                            <label class="inline" >
-                                                <input name="admin_mod3" checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                                <span class="lbl"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="center middle">4</td>
-                                        <td>邮箱别名功能</td>
-                                        <td>
-                                            <label class="inline" >
-                                                <input name="admin_mod4" checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                                <span class="lbl"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="center middle">5</td>
-                                        <td>用户黑白名单功能</td>
-                                        <td>
-                                            <label class="inline" >
-                                                <input name="admin_mod5" checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                                <span class="lbl"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="center middle">6</td>
-                                        <td>POP邮箱接收功能</td>
-                                        <td>
-                                            <label class="inline" >
-                                                <input name="admin_mod6" checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                                <span class="lbl"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="center middle">7</td>
-                                        <td>LDAP帐号同步功能</td>
-                                        <td>
-                                            <label class="inline" >
-                                                <input name="admin_mod7" checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                                <span class="lbl"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="center middle">8</td>
-                                        <td>即时通讯软件集成功能</td>
-                                        <td>
-                                            <label class="inline" >
-                                                <input name="admin_mod8" checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                                <span class="lbl"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1873,14 +1825,11 @@
                     <table class="table table-bordered">
                         <tr>
                             <td style="width:20%;min-width:150px;">系统公告标题：</td>
-                            <td>
-                                <input type="text" style="width:40%;" value="测试测试">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width:20%;min-width:150px;">系统公告标题颜色：</td>
-                            <td style="width:40%;" class="row">
-                                <div class="col-xs-2" style="width:30px;">
+                            <td class="row">
+                                <div class="col-sm-4 no-padding">
+                                    <input type="text" class="form-control" value="测试测试">
+                                </div>
+                                <div class="col-sm-8">
                                     <select name="mycolor" id="mycolor" class="form-control">
                                         <option value="red">red</option>
                                         <option value="blue" selected>blue</option>
@@ -1889,19 +1838,20 @@
                                         <option value="purple">purple</option>
                                     </select>
                                 </div>
-                                <div class="col-xs-10">
-                                    点击选择颜色
-                                </div>
 
                             </td>
                         </tr>
+
                         <tr>
                             <td style="width:20%;min-width:150px;">系统公告高度：</td>
-                            <td>
-                                <div class="input-group" style="width:40%;">
-                                    <input type="number" class="form-control" value="260">
-                                    <span class="input-group-addon">px</span>
+                            <td class="row">
+                                <div class="col-sm-4 no-padding">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" value="260">
+                                        <span class="input-group-addon">px</span>
+                                    </div>
                                 </div>
+
                             </td>
                         </tr>
 
@@ -1961,7 +1911,7 @@
                 </form>
                 <ul class="alert-warning" style="padding:4px;">
                     <li><p class="red">备注：</p>
-                        1、要使用此功能需要先启用“综合功能开关->用户注册登录设置->第三方登录验证”功能；
+                        1、要使用此功能需要先启用“综合功能开关->用户注册->第三方登录验证”功能；
 
                     </li>
                     <li>
@@ -2463,6 +2413,7 @@
                                 <input name="gender" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
                                 <span class="lbl gender"></span>
                             </label>
+
                         </div>
                     </div>
                     <div class="form-group">

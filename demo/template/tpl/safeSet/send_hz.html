@@ -3,7 +3,142 @@
 
     </h3>
 
-    <div style="min-height:200px;">
-        从“运维后台-域名功能设置- 发信频率设置”迁移至此
+    <div class="table-header">发信频率设置</div>
+    <div>
+        <table class="table table-bordered table-striped">
+            <tbody>
+            <tr>
+                <td class="text-right">
+                    选择域名：</td>
+                <td class="row">
+                    <div class="col-sm-4">
+                        <select class="form-control" id="id_selectdomain" name="selectdomain">
+
+                            <option value="test.com" selected=""> test.com </option>
+
+                            <option value="domain.com"> domain.com </option>
+
+                        </select>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">速率：</td>
+                <td class="row">
+                    <div class="col-sm-12">
+                        每
+                        <input type="number" name="minute" id="id_minute" value="5" style="max-width:50px;">
+                        分钟发信数量
+                        <input type="number" name="count" id="id_minute_count" value="200">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right"> 每小时发信数量：</td>
+                <td class="row">
+                    <div class="col-sm-4">
+                        <input type="number" name="hour_count" id="id_hour_count" value="0" class=" form-control">
+
+                    </div>
+                    <div class="col-sm-8">
+                        <div style="clear: both">
+                            <span class="middle text-success "><strong style="color: red">注：</strong> 输入&lt;=0的值代表不限制 </span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right"> 每天发信数量：</td>
+                <td class="row">
+                    <div class="col-sm-4">
+                        <input type="number" name="day_count" id="id_day_count" value="0" class="form-control">
+
+                    </div>
+                    <div class="col-sm-8">
+                        <div style="clear: both">
+                            <span class="middle text-success "><strong style="color: red">注：</strong> 输入&lt;=0的值代表不限制 </span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">超限操作：</td>
+                <td>
+                    <label class="radio radio-inline padding-top-0 margin-top-0 form-inline">
+                        <label>
+                            <input type="radio" name="operate" value="block" checked=""><span>只可发送本地邮件</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="operate" value="disable"><span>禁用帐户</span>
+                        </label>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">警告邮件接收地址：</td>
+                <td class="row">
+                    <div class="col-sm-4" style="margin-top:20px;">
+                        <input type="text" name="alert_address" id="id_alert_address" value="" class="form-control">
+
+                    </div>
+                    <div class="col-sm-8">
+                        <ul class="middle text-success ">
+                            <li>
+                                <b class="red">注：</b>达到上限的帐号会触发一次警告，此栏不填表明不需要接收系统的警告邮件；
+                            </li>
+                            <li>
+                                多个帐号之间用','分隔，可输入外域邮箱；
+                            </li>
+                            <li>
+                                同一个帐号每小时只会触发一次邮件警告；
+                            </li>
+                            <li>
+                                保存"域名功能设置"下的任意页面，都可以重置警告邮件的发送CD。
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">发信频率限制：</td>
+                <td class="row">
+                    <div class="col-sm-4" style="margin-top: 16px;">
+                        <label class="inline" >
+                            <input name="sw_sendlimit"  type="checkbox" class="ace ace-switch ace-switch-5">
+                            <span class="lbl"></span>
+                        </label>
+                    </div>
+                    <div class="col-sm-8">
+                        <ul class="middle text-success " style=" list-style:none;padding:0;margin:0;">
+                            <li>
+                                <strong style="color: red">注：</strong> 此功能开启并做适当设置可以防范账户密码泄露造成的系统性风险；
+                            </li>
+                            <li style="text-indent: 2.2em;">
+                                此功能开启并做适当设置可以防止用户对外大量群发邮件；
+                            </li>
+                            <li style="text-indent: 2.2em;">
+                                本功能只对发往外域（非本服务器）的邮件进行计数。
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 center">
+            <button class="btn btn-info" type="button">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                保存
+            </button>
+            <button class="btn" type="button">
+                <i class="ace-icon fa fa-undo bigger-110"></i>
+                重置
+            </button>
+        </div>
     </div>
 </div>

@@ -8,7 +8,7 @@
         邮件头翻译
     </div>
     <div>
-        <table id="dynamic-table" class="table table-bordered">
+        <table id="dynamic-table" class="table table-bordered table-striped table-center">
             <thead>
                 <tr>
                     <th class="center">序号</th>
@@ -35,21 +35,21 @@
             </div>
             <div class="modal-body">
                 <form class="">
-                    <div class="form-group row">
-                        <div class="col-sm-6">
+                    <div class="form-group">
+                        <div class="">
                             <label class=" control-label">选择域名：</label>
                             <select name="type" style="width: 110px;">
                                 <option value="-1">test.com</option>
                                 <option value="1">domain.com</option>
                             </select>
                         </div>
-                        <div class="col-sm-6">
-                            <label class="inline" >
-                                <small class="muted smaller-90">状态：</small>
-                                <input name="containner-already"  checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                <span class="lbl middle"></span>
-                            </label>
-                        </div>
+                        <!--<div class="col-sm-6">-->
+                            <!--<label class="inline" >-->
+                                <!--<small class="muted smaller-90">状态：</small>-->
+                                <!--<input name="containner-already"  checked  type="checkbox" class="ace ace-switch ace-switch-5">-->
+                                <!--<span class="lbl middle"></span>-->
+                            <!--</label>-->
+                        <!--</div>-->
 
                     </div>
 
@@ -102,16 +102,6 @@
 
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">状态：</label>
-                        <div class="col-sm-8">
-                            <label class="inline" >
-                                <input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                <span class="lbl middle"></span>
-                            </label>
-                        </div>
-
-                    </div>
-                    <div class="form-group">
                         <label class="col-sm-4 control-label">被翻译值：</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" value="被翻译值">
@@ -147,7 +137,12 @@
                         <td>外发</td>
                         <td>ddd</td>
                         <td>111</td>
-                        <td>禁用</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="" checked type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
                         <td>
                             <div class="">
                                 <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#translate_edit">

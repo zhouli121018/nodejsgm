@@ -580,7 +580,7 @@
 
     <!-- div.dataTables_borderWrap -->
     <div>
-            <table id="dynamic-table" class="table table-striped table-bordered table-hover dataTable no-footer" role="grid" >
+            <table id="dynamic-table" class="table table-striped table-bordered table-hover table-center" role="grid" >
                 <thead>
                 <tr role="row">
                     <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
@@ -2382,7 +2382,12 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
                     <td>8MB</td>
                     <td>发送: 正常；POP3: 正常；接收: 正常；IMAP: 正常</td>
                     <td>192.168.1.1-200</td>
-                    <td>正常</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="status${i}" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
                     <td>2018-01-01 ${i+10}:12:00</td>
                     <td>
                         <div class="">
@@ -2441,16 +2446,17 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
                         } );
         myTable.on( 'select', function ( e, dt, type, index ) {
             if ( type === 'row' ) {
-                $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', true);
+                $( myTable.row( index ).node() ).find('input:checkbox:eq(0)').prop('checked', true);
             }
         } );
         myTable.on( 'deselect', function ( e, dt, type, index ) {
             if ( type === 'row' ) {
-                $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', false);
+                $( myTable.row( index ).node() ).find('input:checkbox:eq(0)').prop('checked', false);
             }
         } );
+        /////////////////////////////////
         //table checkboxes
-        $('#dynamic-table th input[type=checkbox],#dynamic-table td input[type=checkbox]').prop('checked', false);
+        $('#dynamic-table th input[type=checkbox]:eq(0),#dynamic-table td input[type=checkbox]:eq(0)').prop('checked', false);
 
         //select/deselect all rows according to table header checkbox
         $('#dynamic-table > thead > tr > th input[type=checkbox], #dynamic-table_wrapper input[type=checkbox]').eq(0).on('click', function(){
@@ -2464,7 +2470,7 @@ mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264
         });
 
         //select/deselect a row when the checkbox is checked/unchecked
-        $('#dynamic-table').on('click', 'td input[type=checkbox]' , function(){
+        $('#dynamic-table').on('click', 'td .pos-rel input[type=checkbox]' , function(){
             var row = $(this).closest('tr').get(0);
             if(this.checked) myTable.row(row).deselect();
             else myTable.row(row).select();

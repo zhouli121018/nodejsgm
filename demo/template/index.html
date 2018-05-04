@@ -17,8 +17,10 @@
     <!-- page specific plugin styles -->
     <link rel="stylesheet" href="../assets/css/jquery-ui.css" />
     <link rel="stylesheet" href="../assets/css/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="../assets/css/bootstrap-datepicker3.css" />
     <link rel="stylesheet" href="../assets/css/daterangepicker.css" />
     <link rel="stylesheet" href="../assets/css/chosen.css" />
+    <link rel="stylesheet" href="../assets/css/select2.css" />
 
     <!-- text fonts -->
     <link rel="stylesheet" href="../assets/css/ace-fonts.css" />
@@ -210,6 +212,22 @@
             background:#478fca;color:#fff;
             padding:4px;
             font-size:20px;
+        }
+        .belong_department,.input_some,.content_size{
+            display:none;
+        }
+        .belong_department.active,.input_some.active,.content_size.active{
+            display:block;
+        }
+        .condition_item{
+            padding-top:4px;
+        }
+        .add_member_box{
+            display:none;
+        }
+        .panel-body{
+            border:1px solid #ddd;
+            border-top:none;
         }
     </style>
 </head>
@@ -598,34 +616,12 @@
                 </ul>
             </li>
 
-            <li class="">
-                <a href="#" class="dropdown-toggle">
+            <li class="single">
+                <a href="group">
                     <i class="menu-icon fa fa-list"></i>
                     <span class="menu-text"> 组权限管理 </span>
-
-                    <b class="arrow fa fa-angle-down"></b>
                 </a>
-
                 <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li class="">
-                        <a href="group/group">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            反垃圾级别组
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                    <li class="">
-                        <a href="group/group0">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            权限组管理
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-                </ul>
             </li>
 
             <li class="">
@@ -674,26 +670,12 @@
                 </ul>
             </li>
 
-            <li class="">
-                <a href="#" class="dropdown-toggle">
+            <li class="single">
+                <a href="maillist">
                     <i class="menu-icon fa fa-envelope-o"></i>
                     <span class="menu-text"> 邮件列表管理 </span>
-                    <b class="arrow fa fa-angle-down"></b>
                 </a>
-
                 <b class="arrow"></b>
-
-                <ul class="submenu">
-                    <li class="">
-                        <a href="maillist/maillist">
-                            <i class="menu-icon fa fa-caret-right"></i>
-                            列出邮件列表
-                        </a>
-
-                        <b class="arrow"></b>
-                    </li>
-
-                </ul>
             </li>
 
             <li class="">
@@ -1346,8 +1328,10 @@
 <script src="../assets/js/fuelux/fuelux.spinner.js"></script>
 <script src="../assets/js/date-time/moment.js"></script>
 <script src="../assets/js/date-time/bootstrap-datetimepicker.js"></script>
+<script src="../assets/js/date-time/bootstrap-datepicker.js"></script>
 <script src="../assets/js/date-time/daterangepicker.js"></script>
 <script src="../assets/js/ace/elements.fileinput.js"></script>
+<script src="../assets/js/select2.js"></script>
 
 <script src="../assets/js/dataTables/jquery.dataTables.js"></script>
 <script src="../assets/js/dataTables/jquery.dataTables.bootstrap.js"></script>
@@ -1470,24 +1454,24 @@
             $('.user_content_box').show();
             if($(this).hasClass('save')){
                 $('.wysiwyg_content_show').html($("#editor_all").html());
-                $.ajax({
-                    url:'http://192.168.1.35:8888/operation/ajax_set_remark',
-                    type:'POST',
-                    dataType:'jsonp',
-                    jsonp:'callback',
-                    data:{base_url:sessionStorage['load']+'.html',remark:$("#editor_all").html()},
-                    success:function(obj){
-                        console.log(obj);
-
-                        $('.wysiwyg_content_show').html($("#editor_all").html());
-                    }
-                })
+//                $.ajax({
+//                    url:'http://192.168.1.35:8888/operation/ajax_set_remark',
+//                    type:'POST',
+//                    dataType:'jsonp',
+//                    jsonp:'callback',
+//                    data:{base_url:sessionStorage['load']+'.html',remark:$("#editor_all").html()},
+//                    success:function(obj){
+//                        console.log(obj);
+//
+//                        $('.wysiwyg_content_show').html($("#editor_all").html());
+//                    }
+//                })
             }
         })
 
         if(sessionStorage['load']){
             $('.nav.nav-list .submenu li').removeClass('active');
-            if(sessionStorage['load']=='home'){
+            if(sessionStorage['load']=='home'||sessionStorage['load']=='maillist'||sessionStorage['load']=='group'){
                 $(".nav.nav-list> li a[href='"+sessionStorage['load']+"']").parent().addClass('active');
                 $(".nav.nav-list >li a[href='"+sessionStorage['load']+"']").parent().siblings().removeClass('active').removeClass('open');
                 var str0 = $(".nav.nav-list > li a[href='"+sessionStorage['load']+"']").find('.menu-text').text();
@@ -1507,45 +1491,45 @@
                 $('.wysiwyg-editor-box').hide();
                 $('.user_content_box').show();
             });
-            $.ajax({
-                url:'http://192.168.1.35:8888/operation/ajax_get_remark',
-                type:'POST',
-                dataType:'jsonp',
-                jsonp:'callback',
-                data:{base_url:sessionStorage['load']+'.html'},
-                success:function(obj){
-                    if(obj.remark==""){
-                        $('#remark_content .wysiwyg_content_show  .admin_edit').html('新增备注')
-
-                    }else{
-                        $('#remark_content .wysiwyg_content_show  .admin_edit').html('编辑')
-                    }
-                    $('#remark_content .wysiwyg_content_show').html(obj.remark);
-                    $("#editor_all").html(obj.remark);
-                }
-            })
+//            $.ajax({
+//                url:'http://192.168.1.35:8888/operation/ajax_get_remark',
+//                type:'POST',
+//                dataType:'jsonp',
+//                jsonp:'callback',
+//                data:{base_url:sessionStorage['load']+'.html'},
+//                success:function(obj){
+//                    if(obj.remark==""){
+//                        $('#remark_content .wysiwyg_content_show  .admin_edit').html('新增备注')
+//
+//                    }else{
+//                        $('#remark_content .wysiwyg_content_show  .admin_edit').html('编辑')
+//                    }
+//                    $('#remark_content .wysiwyg_content_show').html(obj.remark);
+//                    $("#editor_all").html(obj.remark);
+//                }
+//            })
         }else{
             $('#test-load').load('tpl/home.html',function(){
                 $('.wysiwyg-editor-box').hide();
                 $('.user_content_box').show();
             });
-            $.ajax({
-                url:'http://192.168.1.35:8888/operation/ajax_get_remark',
-                type:'POST',
-                dataType:'jsonp',
-                jsonp:'callback',
-                data:{base_url:'home.html'},
-                success:function(obj){
-                    if(obj.remark==""){
-                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('新增备注')
-
-                    }else{
-                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('编辑')
-                    }
-                    $('#remark_content .wysiwyg_content_show').html(obj.remark);
-                    $("#editor_all").html(obj.remark);
-                }
-            })
+//            $.ajax({
+//                url:'http://192.168.1.35:8888/operation/ajax_get_remark',
+//                type:'POST',
+//                dataType:'jsonp',
+//                jsonp:'callback',
+//                data:{base_url:'home.html'},
+//                success:function(obj){
+//                    if(obj.remark==""){
+//                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('新增备注')
+//
+//                    }else{
+//                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('编辑')
+//                    }
+//                    $('#remark_content .wysiwyg_content_show').html(obj.remark);
+//                    $("#editor_all").html(obj.remark);
+//                }
+//            })
         }
         $('.nav.nav-list .submenu li a').click(function(e){
             e.preventDefault();
@@ -1562,29 +1546,30 @@
                 $('.wysiwyg-editor-box').hide();
                 $('.user_content_box').show();
             });
-            $.ajax({
-                url:'http://192.168.1.35:8888/operation/ajax_get_remark',
-                type:'POST',
-                dataType:'jsonp',
-                jsonp:'callback',
-                data:{base_url:href_url+'.html'},
-                success:function(obj){
-                    console.log(obj)
-                    if(obj.remark==""){
-                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('新增备注')
-
-                    }else{
-                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('编辑')
-                    }
-                    $('#remark_content .wysiwyg_content_show').html(obj.remark);
-                    $("#editor_all").html(obj.remark);
-                }
-            })
+//            $.ajax({
+//                url:'http://192.168.1.35:8888/operation/ajax_get_remark',
+//                type:'POST',
+//                dataType:'jsonp',
+//                jsonp:'callback',
+//                data:{base_url:href_url+'.html'},
+//                success:function(obj){
+//                    console.log(obj)
+//                    if(obj.remark==""){
+//                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('新增备注')
+//
+//                    }else{
+//                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('编辑')
+//                    }
+//                    $('#remark_content .wysiwyg_content_show').html(obj.remark);
+//                    $("#editor_all").html(obj.remark);
+//                }
+//            })
             $('#switch-email').show();
             sessionStorage['load']=href_url;
         })
         $('.nav.nav-list  li.single a').click(function(e){
             e.preventDefault();
+            $('.nav.nav-list  li.single').removeClass('active');
             $('.nav.nav-list .submenu li').removeClass('active');
             $(this).parent().addClass('active');
             var href_url = $(this).attr('href');
@@ -1595,23 +1580,23 @@
                 $('.wysiwyg-editor-box').hide();
                 $('.user_content_box').show();
             });
-            $.ajax({
-                url:'http://192.168.1.35:8888/operation/ajax_get_remark',
-                type:'POST',
-                dataType:'jsonp',
-                jsonp:'callback',
-                data:{base_url:href_url+'.html'},
-                success:function(obj){
-                    if(obj.remark==""){
-                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('新增备注')
-
-                    }else{
-                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('编辑')
-                    }
-                    $('#remark_content .wysiwyg_content_show').html(obj.remark);
-                    $("#editor_all").html(obj.remark);
-                }
-            })
+//            $.ajax({
+//                url:'http://192.168.1.35:8888/operation/ajax_get_remark',
+//                type:'POST',
+//                dataType:'jsonp',
+//                jsonp:'callback',
+//                data:{base_url:href_url+'.html'},
+//                success:function(obj){
+//                    if(obj.remark==""){
+//                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('新增备注')
+//
+//                    }else{
+//                        $('#remark_content .wysiwyg_content_show  .admin_edit').text('编辑')
+//                    }
+//                    $('#remark_content .wysiwyg_content_show').html(obj.remark);
+//                    $("#editor_all").html(obj.remark);
+//                }
+//            })
             $('#switch-email').show();
             sessionStorage['load']=href_url;
         })

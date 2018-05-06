@@ -2260,6 +2260,7 @@ if (typeof jQuery === 'undefined') { throw new Error('Ace\'s JavaScript requires
 				<div class="tree-branch-header">\
 					<span class="tree-branch-name">\
 						<i class="icon-folder '+$options['close-icon']+'"></i>\
+						'+($options['folderSelect'] ? ($options['unselected-icon'] == null ? '' : '<i class="icon-item '+$options['unselected-icon']+'"></i>') : '')+'\
 						<span class="tree-label"></span>\
 					</span>\
 				</div>\

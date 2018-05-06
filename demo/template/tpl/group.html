@@ -1,3 +1,4 @@
+
 <div id="dynamic-div">
     <h3 class="header smaller lighter blue">组权限管理
 
@@ -652,6 +653,27 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="test_group">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" modal-transclude=""><div class="select-account-dialog ng-scope"><div class="modal-header"><div class="modal-title ng-binding">选择部门</div><span class="select-close" ng-click="ctrl.cancel();" role="button" tabindex="0"></span></div><div class="modal-body"><div class="row"><div class="col-xs-6"><div class="select-header"><div class="ng-isolate-scope">
+            <ul class="nav nav-tabs" ng-class="{'nav-stacked': vertical, 'nav-justified': justified}" ng-transclude=""><!-- ngRepeat: tab in ctrl.tabs --><li ng-class="{active: active, disabled: disabled}" ng-repeat="tab in ctrl.tabs" select="ctrl.selectTab(tab)" active="tab.active" class="ng-isolate-scope active">
+                <a href="#" ng-click="$event.preventDefault(); select()" tab-heading-transclude="" class="ng-binding" tabindex="0"><tab-heading class="ng-binding ng-scope">选择部门</tab-heading></a>
+            </li><!-- end ngRepeat: tab in ctrl.tabs --></ul>
+            <div class="tab-content">
+                <!-- ngRepeat: tab in tabs --><div class="tab-pane ng-scope active" ng-repeat="tab in tabs" ng-class="{active: tab.active}" tab-content-transclude="tab">
+            </div><!-- end ngRepeat: tab in tabs -->
+            </div>
+        </div></div><!--   部门树  开始   --><div ng-show="ctrl.currentTab === 'unit'" aria-hidden="false"><div class="half-box"><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.keyword" ng-change="ctrl.searchUnits()" tabindex="0" aria-invalid="false"></div><div class="select-body"><div ng-show="ctrl.keyword.length === 0" aria-hidden="false"><div id="unitTreeContainer" class="monaco-tree" style="height: 300px;"><ul class="monaco-tree-wrap" style="height: 66px;"><li class="monaco-tree-item" title="技术支持部" style="padding-left: 0px; top: 0px;">            <label class="monaco-tree-group"><span class="icon js-folder icon-tree-plus"></span>              <span class="icon js-check icon-check-empty"></span><span class="monaco-tree-text">技术支持部</span>            </label>          </li><li class="monaco-tree-item" title="销售部" style="padding-left: 0px; top: 22px;">            <label class="monaco-tree-group"><span class="icon js-folder icon-tree-plus"></span>              <span class="icon js-check icon-check-empty"></span><span class="monaco-tree-text">销售部</span>            </label>          </li><li class="monaco-tree-item" title="默认部门" style="padding-left: 0px; top: 44px;">            <label class="monaco-tree-group"><span class="icon js-folder icon-tree-plus"></span>              <span class="icon js-check icon-check-empty"></span><span class="monaco-tree-text">默认部门</span>            </label>          </li></ul></div></div><div id="searchUnitTreeContainer" ng-hide="ctrl.keyword.length === 0" aria-hidden="true" class="ng-hide" style=""></div></div></div><div class="select-action"><div class="checkbox"><label><input type="checkbox" ng-model="ctrl.selectUnits" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">所有部门</label></div></div></div><!--结束--><!--   部门-帐号树  开始  --><div ng-show="ctrl.currentTab === 'account'" aria-hidden="true" class="ng-hide" style=""><div class="half-box"><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.keyword" ng-change="ctrl.searchAccounts()" tabindex="0" aria-invalid="false"></div><div class="select-body" ng-class="{'f-margin-bottom-25 f-height-275':ctrl.options.manualInput}"><div ng-show="ctrl.keyword.length === 0" aria-hidden="false"><div id="accountTreeContainer"></div></div><div id="searchAccountTreeContainer" ng-hide="ctrl.keyword.length === 0" aria-hidden="true" class="ng-hide" style=""></div></div><div class="select-input ng-hide" ng-show="ctrl.options.manualInput" aria-hidden="true" style=""><input type="text" class="input ng-pristine ng-untouched ng-valid" name="email" placeholder="输入要添加的外域邮箱" ng-model="ctrl.manualEmail" tabindex="0" aria-invalid="false"> <button class="btn btn-default pull-left" ng-click="ctrl.addManualEmail()" tabindex="0">添加</button><div class="emailsError ng-binding" ng-class="{'emailsErrorShow':ctrl.emailsErrorText}"><span class="arrow"></span> <span class="icon icon-exclamation-sign"></span> </div></div></div><div class="select-action"><div class="checkbox"><label><input type="checkbox" ng-model="ctrl.selectAccounts" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">所有帐号</label></div></div></div><!--结束--><!--   公共联系人分组树  开始   --><div ng-show="ctrl.currentTab === 'group'" aria-hidden="true" class="ng-hide" style=""><div class="half-box"><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.keyword" ng-change="ctrl.searchGroups()" tabindex="0" aria-invalid="false"></div><div class="select-body"><div ng-show="ctrl.keyword.length === 0" aria-hidden="false"><div id="groupTreeContainer"></div></div><div id="searchGroupTreeContainer" ng-hide="ctrl.keyword.length === 0" aria-hidden="true" class="ng-hide" style=""></div></div></div><div class="select-action"><div class="checkbox"><label><input type="checkbox" ng-model="ctrl.selectGroups" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">所有通讯录</label></div></div></div><!--结束--><!--   公共联系人分组-地址树  开始  --><div ng-show="ctrl.currentTab === 'address'" aria-hidden="true" class="ng-hide" style=""><div class="half-box"><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.keyword" ng-change="ctrl.searchAddresses()" tabindex="0" aria-invalid="false"></div><div class="select-body"><div ng-show="ctrl.keyword.length === 0" aria-hidden="false"><div id="addressTreeContainer"></div></div><div id="searchAddressTreeContainer" ng-hide="ctrl.keyword.length === 0" aria-hidden="true" class="ng-hide" style=""></div></div></div><div class="select-action"><div class="checkbox"><label><input type="checkbox" ng-model="ctrl.selectAddresses" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">所有联系人</label></div></div></div><!--结束--></div><div class="col-xs-6"><div class="select-header"><div class="ng-isolate-scope">
+            <ul class="nav nav-tabs" ng-class="{'nav-stacked': vertical, 'nav-justified': justified}" ng-transclude=""><!-- ngRepeat: tab in ctrl.tabs --><li ng-class="{active: active, disabled: disabled}" ng-repeat="tab in ctrl.tabs" select="ctrl.selectTab(tab)" active="tab.active" class="ng-isolate-scope active">
+                <a href="#" ng-click="$event.preventDefault(); select()" tab-heading-transclude="" class="ng-binding" tabindex="0"><tab-heading class="ng-binding ng-scope">已选部门</tab-heading></a>
+            </li><!-- end ngRepeat: tab in ctrl.tabs --></ul>
+            <div class="tab-content">
+                <!-- ngRepeat: tab in tabs --><div class="tab-pane ng-scope active" ng-repeat="tab in tabs" ng-class="{active: tab.active}" tab-content-transclude="tab">
+            </div><!-- end ngRepeat: tab in tabs -->
+            </div>
+        </div></div><!--   部门树  开始   --><div ng-show="ctrl.currentTab === 'unit'" aria-hidden="false"><div class="half-box"><div class="select-header"><span class="text-muted text-count ng-binding">已选数量：0</span></div><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.selectedKeyword" ng-change="ctrl.selectedSearchUnits()" tabindex="0" aria-invalid="false"></div><div class="select-body select-body-right"><div id="selectedUnitTreeContainer" class="monaco-list" style="height: 265px;"><ul class="monaco-list-wrap" style="height: 0px; padding-top: 0px;"></ul></div></div></div><div class="select-action"><div class="checkbox f-inline-block ng-hide" ng-show="ctrl.options.adjust" aria-hidden="true" style=""><label><input type="checkbox" ng-model="ctrl.remain" name="remain" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">在原部门保留</label></div><button class="btn btn-link clear-btn pull-right" type="button" ng-click="ctrl.clearAllSelectedUnits();" tabindex="0"><span class="icon icon-trash"></span> 移除全部</button></div></div><!--   部门-帐号树  开始  --><div ng-show="ctrl.currentTab === 'account'" aria-hidden="true" class="ng-hide" style=""><div class="half-box"><div class="select-header"><span class="text-muted text-count ng-binding">已选数量：0</span></div><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.selectedKeyword" ng-change="ctrl.selectedSearchAccounts()" tabindex="0" aria-invalid="false"></div><div class="select-body select-body-right"><div id="selectedAccountTreeContainer"></div></div></div><div class="select-action"><button class="btn btn-link clear-btn pull-right" type="button" ng-click="ctrl.clearAllSelectedAccounts();" tabindex="0"><span class="icon icon-trash"></span> 移除全部</button></div></div><!--   公共联系人分组树  开始   --><div ng-show="ctrl.currentTab === 'group'" aria-hidden="true" class="ng-hide" style=""><div class="half-box"><div class="select-header"><span class="text-muted text-count ng-binding">已选分组：0</span></div><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.selectedKeyword" ng-change="ctrl.selectedSearchGroups()" tabindex="0" aria-invalid="false"></div><div class="select-body select-body-right"><div id="selectedGroupTreeContainer"></div></div></div><div class="select-action"><div class="checkbox f-inline-block ng-hide" ng-show="ctrl.options.adjust" aria-hidden="true" style=""><label><input type="checkbox" ng-model="ctrl.remain" name="remain" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">在原分组保留</label></div><button class="btn btn-link clear-btn pull-right" type="button" ng-click="ctrl.clearAllSelectedGroups();" tabindex="0"><span class="icon icon-trash"></span> 移除全部</button></div></div><!--   公共联系人分组-地址树  开始  --><div ng-show="ctrl.currentTab === 'address'" aria-hidden="true" class="ng-hide" style=""><div class="half-box"><div class="select-header"><span class="text-muted text-count ng-binding">已选数量：0</span></div><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.selectedKeyword" ng-change="ctrl.selectedSearchAddresses()" tabindex="0" aria-invalid="false"></div><div class="select-body select-body-right"><div id="selectedAddressTreeContainer"></div></div></div><div class="select-action"><button class="btn btn-link clear-btn pull-right" type="button" ng-click="ctrl.clearAllSelectedAddresses();" tabindex="0"><span class="icon icon-trash"></span> 移除全部</button></div></div></div><button class="btn btn-link btn-arrow-right" type="button" ng-click="ctrl.addCheckedUnits();" ng-show="ctrl.currentTab === 'unit'" tabindex="0" aria-hidden="false">添加<span class="icon icon-right"></span></button> <button class="btn btn-link btn-arrow-right ng-hide" type="button" ng-click="ctrl.addCheckedAccounts();" ng-show="ctrl.currentTab === 'account'" tabindex="0" aria-hidden="true" style="">添加<span class="icon icon-right"></span></button> <button class="btn btn-link btn-arrow-right ng-hide" type="button" ng-click="ctrl.addCheckedGroups();" ng-show="ctrl.currentTab === 'group'" tabindex="0" aria-hidden="true" style="">添加<span class="icon icon-right"></span></button> <button class="btn btn-link btn-arrow-right ng-hide" type="button" ng-click="ctrl.addCheckedAddresses();" ng-show="ctrl.currentTab === 'address'" tabindex="0" aria-hidden="true" style="">添加<span class="icon icon-right"></span></button></div></div><div class="modal-footer"><button class="btn btn-success ng-binding" ng-click="ctrl.ok()" tabindex="0">确定</button> <button class="btn btn-default ng-binding" ng-click="ctrl.cancel()" tabindex="0">取消</button></div></div></div>
+    </div>
+</div>
 <div class="modal fade" id="add_group">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -702,10 +724,19 @@
                         添加组成员
                     </div>
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-12">
+                            <select multiple="multiple" style="height:200px;" name="duallistbox" id="duallist">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option>Apartments</option> <option>Villas</option> <option>Plots</option> <option>Tickets</option> <option>Services</option> <option>Personals</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-5 no-padding-right">
                             <div class="widget-box widget-color-blue2">
                                 <div class="widget-header">
-                                    <p class="widget-title lighter smaller">通讯录</p>
+                                    <p class="widget-title lighter smaller">未添加</p>
                                 </div>
                                 <div class="widget-body">
                                     <div class="widget-main padding-8">
@@ -714,19 +745,40 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-5 no-padding">
-                            <select multiple  class="select2 form-control"  data-placeholder="选择账号,可多选">
-                                <option value="">选择添加邮箱账号,可多选</option>
-                                <option value="2">成员测试2</option>
-                                <option value="3">成员测试3</option>
-                                <option value="4">成员测试4</option>
-                                <option value="5">成员测试5</option>
-                                <option value="6">成员测试6</option>
-                            </select>
+                        <div class="col-sm-2 center middle" style="padding-top:158px;height:339px;">
+                            <button type="button" class="btn  btn-sm btn-success sure_btn">添加
+                            <i class="glyphicon glyphicon-arrow-right"></i>
+                            </button>
+
+                            <button type="button" class="cancel_add_member btn  btn-sm btn-danger ">取消
+                            <i class="glyphicon glyphicon-arrow-left"></i>
+                            </button>
                         </div>
-                        <div class="col-sm-3">
-                            <button type="button" class="btn  btn-sm btn-success ">确定添加</button>
-                            <button type="button" class="cancel_add_member btn  btn-sm btn-danger ">取消添加</button>
+                        <div class="col-sm-5 no-padding-left">
+                            <div class="widget-box widget-color-blue2">
+                                <div class="widget-header">
+                                    <p class="widget-title lighter smaller">已添加</p>
+                                </div>
+                                <div class="widget-body">
+                                    <div class="widget-main padding-8">
+                                        <ul id="tree_copy"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="col-sm-5 no-padding">-->
+                            <!--<select multiple  class="select2 form-control"  data-placeholder="选择账号,可多选">-->
+                                <!--<option value="">选择添加邮箱账号,可多选</option>-->
+                                <!--<option value="2">成员测试2</option>-->
+                                <!--<option value="3">成员测试3</option>-->
+                                <!--<option value="4">成员测试4</option>-->
+                                <!--<option value="5">成员测试5</option>-->
+                                <!--<option value="6">成员测试6</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                        <div class="col-sm-12">
+
+
                         </div>
                     </div>
                     <div class="hr"></div>
@@ -879,6 +931,22 @@
 </div>
 <script>
     $('#member_manage_tabs').tabs();
+
+    var demo1 = $('select[name="duallistbox"]').bootstrapDualListbox(
+            {infoTextFiltered: '<span class="label label-purple label-lg">筛选</span>',
+                nonSelectedListLabel:"未添加的成员列表",
+                selectedListLabel:"添加的成员列表",
+                moveOnSelect: false,
+                moveAllLabel:'添加全部',
+                moveSelectedLabel:'添加',
+                filterTextClear:'显示所有',
+                removeSelectedLabel:'移除',
+                removeAllLabel:'移除所有',
+            }
+    );
+    var container1 = demo1.bootstrapDualListbox('getContainer');
+    container1.find('.btn').addClass('btn-white btn-info btn-bold');
+
     $('.limit_send_select').change(function(){
         if($(this).val()=='3'){
             $(this).next().show();
@@ -909,7 +977,7 @@
                             </div>
                         </td>
                     </tr>`
-            }else{
+            }else{ 
                 html+=`<tr class="">
                         <td class="center middle">${i+1}</td>
                         <td>sljdsoifjs</td>
@@ -1122,7 +1190,19 @@
 
     function initiateDemoData(){
         var tree_data = {
-            'for-sale' : {text: 'For Sale', type: 'folder'}	,
+            'for-sale' : {text: 'For Sale', type: 'folder',
+                additionalParameters:{
+                    'children' : {
+                        'appliances': {text: 'Appliances', type: 'item'},
+                        'arts-crafts': {text: 'Arts & Crafts', type: 'item'},
+                        'clothing': {text: 'Clothing', type: 'item'},
+                        'computers': {text: 'Computers', type: 'item'},
+                        'jewelry': {text: 'Jewelry', type: 'item'},
+                        'office-business': {text: 'Office & Business', type: 'item'},
+                        'sports-fitness': {text: 'Sports & Fitness', type: 'item'}
+                    }
+                }
+            }	,
             'vehicles' : {text: 'Vehicles', type: 'folder'}	,
             'rentals' : {text: 'Rentals', type: 'folder'}	,
             'real-estate' : {text: 'Real Estate', type: 'folder'}	,
@@ -1131,17 +1211,10 @@
             'services' : {text: 'Services', type: 'item'}	,
             'personals' : {text: 'Personals', type: 'item'}
         }
-        tree_data['for-sale']['additionalParameters'] = {
-            'children' : {
-                'appliances' : {text: 'Appliances', type: 'item'},
-                'arts-crafts' : {text: 'Arts & Crafts', type: 'item'},
-                'clothing' : {text: 'Clothing', type: 'item'},
-                'computers' : {text: 'Computers', type: 'item'},
-                'jewelry' : {text: 'Jewelry', type: 'item'},
-                'office-business' : {text: 'Office & Business', type: 'item'},
-                'sports-fitness' : {text: 'Sports & Fitness', type: 'item'}
-            }
+        var tree_data_copy = {
+            'for-sale' : {text: 'For Sale', type: 'item'}
         }
+
         tree_data['vehicles']['additionalParameters'] = {
             'children' : {
                 'cars' : {text: 'Cars', type: 'folder'},
@@ -1186,10 +1259,33 @@
         }
 
         var dataSource1 = function(options, callback){
+            console.log(options)
+            console.log(111111111)
+            console.log(callback)
             var $data = null
             if(!("text" in options) && !("type" in options)){
                 $data = tree_data;//the root tree
                 callback({ data: $data });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+            console.log($data);
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+        var data_copy = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data_copy;//the root tree
+                callback({ data: tree_data_copy });
                 return;
             }
             else if("type" in options && options.type == "folder") {
@@ -1302,20 +1398,36 @@
         }
 
 
-        return {'dataSource1': dataSource1 , 'dataSource2' : dataSource2}
+        return {'dataSource1': dataSource1 , 'dataSource2' : dataSource2,'dataSource_copy':data_copy}
     }
     var sampleData = initiateDemoData();
     $('#tree1').ace_tree({
         dataSource: sampleData['dataSource1'],
         multiSelect: true,
-        cacheItems: true,
-        'open-icon' : 'ace-icon tree-minus',
-        'close-icon' : 'ace-icon tree-plus',
-        'itemSelect' : true,
-        'folderSelect': false,
+        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+    'open-icon' : 'ace-icon tree-minus hide',
+    'close-icon' : 'ace-icon tree-plus hide',
+    'selectable' : true,
+    'selected-icon' : 'ace-icon fa fa-check',
+    'unselected-icon' : 'ace-icon fa fa-times',
+    'cacheItems': true,
+    'folderSelect': true,
+    'folder-open-icon' : 'ace-icon tree-plus',
+    'folder-close-icon' : 'ace-icon tree-minus'
+    });
+    var tree_copy0 = $('#tree_copy').ace_tree({
+        dataSource: sampleData['dataSource_copy'],
+        multiSelect: true,
+        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+        'open-icon' : 'ace-icon tree-minus hide',
+        'close-icon' : 'ace-icon tree-plus hide',
+        'selectable' : true,
         'selected-icon' : 'ace-icon fa fa-check',
         'unselected-icon' : 'ace-icon fa fa-times',
-        loadingHTML : '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>'
+        'cacheItems': true,
+        'folderSelect': true,
+        'folder-open-icon' : 'ace-icon tree-plus',
+        'folder-close-icon' : 'ace-icon tree-minus'
     });
 
 
@@ -1337,6 +1449,31 @@
     })
     $('.cancel_add_member').click(function(){
         $('.add_member_box').hide();
+    })
+
+    $('.sure_btn').click(function(){
+//        $('#tree_copy').empty();
+        $("#tree_copy").removeData("fu.tree");
+        $("#tree_copy").unbind('click.fu.tree');
+        $('#tree_copy').ace_tree({
+            dataSource: sampleData['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
+        var arrStr=[];
+        $('#tree1 .tree-item.tree-selected .tree-label').each(function(i,dom){
+            arrStr.push('<option>'+$(dom).html()+'</option>');
+        })
+        $('#bootstrap-duallistbox-selected-list_duallistbox').append(arrStr.join(' '));
     })
 
 </script>

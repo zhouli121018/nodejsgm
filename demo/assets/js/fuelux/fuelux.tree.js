@@ -211,11 +211,12 @@
 			if (nodeType === 'folder') {
 				// make the clicked.$element the container branch
 				clicked.$element = clicked.$element.closest('.tree-branch');
-				clicked.$icon = clicked.$element.find('.icon-folder');
+				clicked.$icon = clicked.$element.find('.icon-item');
 			}
 			else {
 				clicked.$icon = clicked.$element.find('.icon-item');
 			}
+
 			clicked.elementData = clicked.$element.data();
 
 			// the below functions pass objects by copy/reference and use modified object in this function
@@ -501,8 +502,14 @@
 	function styleNodeSelected (self, $element, $icon) {
 		$element.addClass('tree-selected');
 		if ( $element.data('type') === 'item' && $icon.hasClass(self.options['unselected-icon']) ) {
+
 			//$icon.removeClass('fueluxicon-bullet').addClass('glyphicon-ok'); // make checkmark
 			$icon.removeClass(self.options['unselected-icon']).addClass(self.options['selected-icon']); //ACE
+		}
+		if ( $element.data('type') === 'folder' && $icon.hasClass(self.options['unselected-icon']) ) {
+			//$icon.removeClass('fueluxicon-bullet').addClass('glyphicon-ok'); // make checkmark
+			$icon.removeClass(self.options['unselected-icon']).addClass(self.options['selected-icon']); //ACE
+			$element.find('.tree-item').addClass('tree-selected');
 		}
 	}
 
@@ -512,8 +519,14 @@
 			//$icon.removeClass('glyphicon-ok').addClass('fueluxicon-bullet'); // make bullet
 		//}
 		//ACE
+		//console.log($element)
 		if ( $element.data('type') === 'item' && $icon.hasClass(self.options['selected-icon']) ) {
 			$icon.removeClass(self.options['selected-icon']).addClass(self.options['unselected-icon']); // make bullet
+		}
+		if ( $element.data('type') === 'folder' && $icon.hasClass(self.options['selected-icon']) ) {
+			$element.find('.tree-item').removeClass('tree-selected');
+			$icon.removeClass(self.options['selected-icon']).addClass(self.options['unselected-icon']); // make bullet
+			//$element.find('.tree-item').removeClass('tree-selected'); // make bullet
 		}
 	}
 

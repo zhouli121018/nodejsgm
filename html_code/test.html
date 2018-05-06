@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>行业管理</title>
+    <script src="jquery-2.1.4.min.js"></script>
+</head>
+<body>
+    <ul class="farther">
+        <li class="class-1"><button class="btn1">缩放</button><input type="checkbox" class="checkbox-1">一级
+            <ul class="class-2">
+                <li><input type="checkbox">二级</li>
+                <li><input type="checkbox">二级</li>
+                <li><input type="checkbox">二级</li>
+                <li><input type="checkbox">二级</li>
+                <li><button class="btn2">缩放</button><input type="checkbox" class="checkbox-2">二级
+                    <ul class="class-3" >
+                        <li ><input type="checkbox">三级</li>
+                        <li><input type="checkbox">三级</li>
+                        <li><input type="checkbox">三级</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+         <li class="class-1"><button class="btn1">缩放</button><input type="checkbox" class="checkbox-1">一级
+            <ul class="class-2">
+                <li><input type="checkbox" >二级</li>
+               <li><button class="btn2">缩放</button ><input type="checkbox" class="checkbox-2">二级
+                     <ul class="class-3" >
+                        <li><input type="checkbox">三级</li>
+                        <li><input type="checkbox">三级</li>
+                        <li><input type="checkbox">三级</li>
+                    </ul>
+                </li>
+                <li><input type="checkbox">二级</li>
+                <li><input type="checkbox">二级</li>
+                <li><button class="btn2">缩放</button ><input type="checkbox" class="checkbox-2">二级
+                     <ul class="class-3" >
+                        <li><input type="checkbox">三级</li>
+                        <li><input type="checkbox">三级</li>
+                        <li><input type="checkbox">三级</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <script>
+       $(".btn1").click(function(){
+            var parentIndex=$(this).parent().index()
+            $(".farther .class-2").eq(parentIndex).toggle()
+            
+       })
+        $(".btn2").click(function(){
+            $(this).parent().children(".class-3").toggle()
+       })
+       
+        $(".checkbox-1").click(function(){
+            var parentIndex=$(this).parent().index();
+              var isChecked = $(this).prop("checked");
+            $(".farther .class-2").eq(parentIndex).find("input").prop("checked", isChecked);
+        })
+         $(".checkbox-2").click(function(){
+            var parentIndex=$(this).parent().index();
+              var isChecked = $(this).prop("checked");
+            $(this).parent().find("input").prop("checked", isChecked);
+        })
+
+         //收缩功能
+$("#hytable tbody tr ").on("click","td>img",function () {
+    var classname=$(this).attr("class")
+    classname="."+classname.substring(2,classname.length);
+    // alert(classname)
+    if($(this).attr("src")=="../static/img/down.png"){
+        $("#hytable tbody").children(classname).hide();
+        $(this).attr("src","../static/img/up.png")
+    }else{
+        $("#hytable tbody").children(classname).show();
+        $("#hytable tbody").children(classname).children("td").children("img:first").attr("src","../static/img/down.png")
+        $(this).attr("src","../static/img/down.png")
+    }
+})
+
+
+
+
+$(".btn").click(function(){
+    alert("asdad")
+})
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -12,7 +12,7 @@
     defaults = {
       bootstrap2Compatible: false,
       filterTextClear: 'show all',
-      filterPlaceHolder: '筛选',
+      filterPlaceHolder: '输入关键字查询',
       moveSelectedLabel: 'Move selected',
       moveAllLabel: 'Move all',
       removeSelectedLabel: 'Remove selected',

@@ -745,14 +745,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-2 center middle" style="padding-top:158px;height:339px;">
+                        <div class="col-sm-2 center middle" style="padding-top:138px;height:339px;">
                             <button type="button" class="btn  btn-sm btn-success sure_btn">添加
                             <i class="glyphicon glyphicon-arrow-right"></i>
                             </button>
-
-                            <button type="button" class="cancel_add_member btn  btn-sm btn-danger ">取消
+                            <div class="space-8"></div>
+                            <button type="button" class="cancel_btn btn  btn-sm btn-danger ">取消
                             <i class="glyphicon glyphicon-arrow-left"></i>
                             </button>
+
+                            <!--<button type="button" class="cancel_add_member btn  btn-sm btn-danger ">取消-->
+                                <!--<i class="glyphicon glyphicon-arrow-left"></i>-->
+                            <!--</button>-->
                         </div>
                         <div class="col-sm-5 no-padding-left">
                             <div class="widget-box widget-color-blue2">
@@ -933,9 +937,9 @@
     $('#member_manage_tabs').tabs();
 
     var demo1 = $('select[name="duallistbox"]').bootstrapDualListbox(
-            {infoTextFiltered: '<span class="label label-purple label-lg">筛选</span>',
-                nonSelectedListLabel:"未添加的成员列表",
-                selectedListLabel:"添加的成员列表",
+            {infoTextFiltered: '',//<span class="label label-purple label-lg">查询结果</span>
+                nonSelectedListLabel:"选择成员",
+                selectedListLabel:"已选成员",
                 moveOnSelect: false,
                 moveAllLabel:'添加全部',
                 moveSelectedLabel:'添加',
@@ -1212,7 +1216,7 @@
             'personals' : {text: 'Personals', type: 'item'}
         }
         var tree_data_copy = {
-            'for-sale' : {text: 'For Sale', type: 'item'}
+
         }
 
         tree_data['vehicles']['additionalParameters'] = {
@@ -1259,9 +1263,6 @@
         }
 
         var dataSource1 = function(options, callback){
-            console.log(options)
-            console.log(111111111)
-            console.log(callback)
             var $data = null
             if(!("text" in options) && !("type" in options)){
                 $data = tree_data;//the root tree
@@ -1451,12 +1452,64 @@
         $('.add_member_box').hide();
     })
 
+
+    var data_copy = [];
+    var hash=[];
     $('.sure_btn').click(function(){
 //        $('#tree_copy').empty();
+
+        var arrStr=[];
+        $('#tree1 .tree-item.tree-selected .tree-label').each(function(i,dom){
+            arrStr.push('<option>'+$(dom).html()+'</option>');
+            var str = $(dom).html();
+            if(!hash[str]){
+                data_copy.push(str);
+                hash[str]=1;
+            }
+
+        })
+        $('#bootstrap-duallistbox-selected-list_duallistbox').append(arrStr.join(' '));
+
+
+        console.log(data_copy);
+        function initiateDemoData1(){
+            var tree_data = {
+
+            }
+            for(var key in data_copy){
+                tree_data[data_copy[key]]={text: data_copy[key], type: 'item'}
+            }
+
+
+            var dataSource1 = function(options, callback){
+                var $data = null
+                if(!("text" in options) && !("type" in options)){
+                    $data = tree_data;//the root tree
+                    callback({ data: $data });
+                    return;
+                }
+                else if("type" in options && options.type == "folder") {
+                    if("additionalParameters" in options && "children" in options.additionalParameters)
+                        $data = options.additionalParameters.children || {};
+                    else $data = {}//no data
+                }
+                console.log($data);
+                if($data != null)//this setTimeout is only for mimicking some random delay
+                    setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+                //we have used static data here
+                //but you can retrieve your data dynamically from a server using ajax call
+                //checkout examples/treeview.html and examples/treeview.js for more info
+            }
+
+
+            return {'dataSource1': dataSource1}
+        }
+        var sampleData1 = initiateDemoData1();
         $("#tree_copy").removeData("fu.tree");
         $("#tree_copy").unbind('click.fu.tree');
         $('#tree_copy').ace_tree({
-            dataSource: sampleData['dataSource1'],
+            dataSource: sampleData1['dataSource1'],
             multiSelect: true,
             loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
             'open-icon' : 'ace-icon tree-minus hide',
@@ -1469,11 +1522,69 @@
             'folder-open-icon' : 'ace-icon tree-plus',
             'folder-close-icon' : 'ace-icon tree-minus'
         });
-        var arrStr=[];
-        $('#tree1 .tree-item.tree-selected .tree-label').each(function(i,dom){
-            arrStr.push('<option>'+$(dom).html()+'</option>');
+
+    })
+
+    $('.cancel_btn').click(function(){
+        $('#tree_copy .tree-item.tree-selected .tree-label').each(function(i,dom){
+            for(var i =0;i<data_copy.length;i++){
+                if($(dom).html()==data_copy[i]){
+                    data_copy.splice(i,1);
+                    hash[$(dom).html()]=0;
+                    break;
+                }
+            }
         })
-        $('#bootstrap-duallistbox-selected-list_duallistbox').append(arrStr.join(' '));
+        function initiateDemoData1(){
+            var tree_data = {
+
+            }
+            for(var key in data_copy){
+                tree_data[data_copy[key]]={text: data_copy[key], type: 'item'}
+            }
+
+
+            var dataSource1 = function(options, callback){
+                var $data = null
+                if(!("text" in options) && !("type" in options)){
+                    $data = tree_data;//the root tree
+                    callback({ data: $data });
+                    return;
+                }
+                else if("type" in options && options.type == "folder") {
+                    if("additionalParameters" in options && "children" in options.additionalParameters)
+                        $data = options.additionalParameters.children || {};
+                    else $data = {}//no data
+                }
+                console.log($data);
+                if($data != null)//this setTimeout is only for mimicking some random delay
+                    setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+                //we have used static data here
+                //but you can retrieve your data dynamically from a server using ajax call
+                //checkout examples/treeview.html and examples/treeview.js for more info
+            }
+
+
+            return {'dataSource1': dataSource1}
+        }
+        var sampleData1 = initiateDemoData1();
+        $("#tree_copy").removeData("fu.tree");
+        $("#tree_copy").unbind('click.fu.tree');
+        $('#tree_copy').ace_tree({
+            dataSource: sampleData1['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
     })
 
 </script>

@@ -195,6 +195,9 @@
                             <a href="#sub_sys_safe">安全类设置</a>
                         </li>
                         <li>
+                            <a href="#pwd_rule">密码规则</a>
+                        </li>
+                        <li>
                             <a href="#sub_sys_third">第三方对接</a>
                         </li>
                         <li>
@@ -293,21 +296,6 @@
                         </div>
                         <table  class="table  table-bordered  table-striped">
                             <tr>
-                                <td class="text-right">用户强密码功能：</td>
-                                <td class="row">
-                                    <div class="col-sm-4 no-padding">
-                                        <label class="inline" >
-                                            <input name="fun-pwd" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-                                            <span class="lbl"></span>
-                                        </label>
-                                    </div>
-                                    <div class="col-sm-8 no-padding">
-                                        <span>注：开通强密码后用户密码长度最少为8位，其中必须包括大小写字母和数字；</span>
-
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td class="text-right">修改密码通知信：</td>
                                 <td class="row">
                                     <div class="col-sm-4 no-padding">
@@ -352,6 +340,204 @@
 
                             </tr>
                         </table>
+                    </div>
+                    <div id="pwd_rule">
+                        <div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="text-right" style="width:144px;">定期密码修改设置：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="nable_set_switch" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="nable_set">
+                                    <td class="text-right" style="width:120px;">密码有效期：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <div class="input-group max-width-200">
+                                                <input type="number" value="365" class="form-control" placeholder="密码有效期">
+                                                <span class="input-group-addon">天</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8 ">
+                                            <p class="help-block green">0代表永远有效，大于0代表多少天密码过期后会强制用户修改密码</p>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="nable_set">
+                                    <td class="text-right">密码有效开始时间：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <div class="input-group max-width-200">
+                                                <input class="form-control date-picker" type="text" data-date-format="yyyy-mm-dd">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8 ">
+                                            <p class="help-block red">注：不能大于当前时间</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="nable_set">
+                                    <td class="text-right">这些用户除外：</td>
+                                    <td>
+                                        <div class="row" style="position:relative;">
+
+                                            <div class="col-xs-6 " style="padding-right:40px;">
+                                                <div class="">
+                                                    <p class=""><span style="padding:3px 15px;border-bottom:2px solid #5090c1;color:#000;">选择帐号</span></p>
+                                                </div>
+                                                <div class="widget-box widget-color-blue2" style="border-color:#E0E0E0;">
+                                                    <div class="">
+                                                        <p class="" style="padding:10px;padding-bottom:0;">
+                                                            <input type="text" class="select_search form-control" placeholder="输入关键字搜索...">
+                                                        </p>
+                                                    </div>
+                                                    <div class="widget-body" style="padding-left:12px">
+                                                        <div class="widget-main padding-8">
+                                                            <ul id="tree_add" class="tree_left"></ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="checkbox" style="margin-top:0;">
+                                                    <label style="padding-left:10px;">
+                                                        <input name="select_all" type="checkbox" class="ace select_all">
+                                                        <span class="lbl"> 所有帐号 </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-6 " style="padding-left:40px;">
+                                                <div class="">
+                                                    <p class=""><span style="padding:3px 15px;border-bottom:2px solid #5090c1;color:#000;">已选帐号</span></p>
+                                                </div>
+                                                <div class="widget-box widget-color-blue2" style="border-color:#E0E0E0;">
+                                                    <div class="">
+                                                        <p class="" style="padding:10px;padding-bottom:0;">
+                                                            <span>已选数量：<b class="selected_count">0</b></span>
+                                                            <input type="text" class="selected_search form-control" placeholder="输入关键字搜索...">
+                                                        </p>
+                                                    </div>
+                                                    <div class="widget-body" style="padding-left:12px;">
+                                                        <div class="widget-main padding-8" style="height: 300px;">
+                                                            <ul id="tree_add_copy" class="tree_right"></ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-right">
+                                                    <a href="#" class="blue remove_all">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                        移除全部
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="center middle" style="position:absolute;left:50%;top:38%;width:70px;margin-left:-35px;">
+                                                <button type="button" class="btn  btn-sm btn-success sure_btn">添加
+                                                    <i class="glyphicon glyphicon-arrow-right"></i>
+                                                </button>
+                                                <div class="space-8"></div>
+                                                <button type="button" class="cancel_btn btn  btn-sm btn-danger ">取消
+                                                    <i class="glyphicon glyphicon-arrow-left"></i>
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">首次登录修改密码：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">密码组成字符种类：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <select class="form-control">
+                                                <option value="2">必须包含两种字符</option>
+                                                <option value="3">必须包含三种字符</option>
+                                                <option value="4">必须包含四种字符</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p class="grey">密码组成字符包括四种：数字、大写字母、小写字母、特殊字符</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">其他密码规则设置：</td>
+                                    <td class="">
+                                        <div class="control-group">
+                                            <!-- #section:custom/checkbox -->
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <span class="lbl">
+                                                            <span class="">密码长度为</span>
+                                                            <select class="">
+                                                                <option value="8" selected>8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                                <option value="11">11</option>
+                                                                <option value="12">12</option>
+                                                                <option value="13">13</option>
+                                                                <option value="14">14</option>
+                                                                <option value="15">15</option>
+                                                                <option value="16">16</option>
+                                                            </select>
+                                                            <span class="">至16位</span>
+
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <span class="lbl"> 密码不能包含账号 </span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <span class="lbl"> 连续3位及以上数字不能连号（例如：123、654） </span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <span class="lbl"> 连续3位及以上字母不能连号（例如：abc、cba） </span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <span class="lbl"> 密码不能包含连续3个及以上相同字符（例如：aaa、rrr） </span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <span class="lbl"> 密码不能包含用户姓名大小写全拼 </span>
+                                                </label>
+                                            </div>
+
+                                            <!-- /section:custom/checkbox -->
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                     <div id="sub_sys_third">
                         <div class="table-header">
@@ -3130,6 +3316,22 @@
 //        alert(this.selectedIndex);
         });
 
+        $("[name='nable_set_switch']").on('click', function(){
+            if($(this).prop('checked')){
+                $('.nable_set').show();
+            }else{
+                $('.nable_set').hide();
+            }
+        });
+        $('.date-picker').datepicker({
+                    autoclose: true,
+                    todayHighlight: true
+                })
+                //show datepicker when clicking on the icon
+                .next().on(ace.click_event, function(){
+            $(this).prev().focus();
+        });
+
         $('#spinner1').ace_spinner(
                 {
                     value:3,min:-1,max:10,step:1, btn_up_class:'btn-info' , btn_down_class:'btn-info'
@@ -3676,4 +3878,412 @@
 
 
     }
+
+    function initiateDemoData(){
+        var tree_data = {
+            'for-sale' : {text: 'For Sale', type: 'folder',
+                additionalParameters:{
+                    'children' : {
+                        'appliances': {text: 'Appliances', type: 'item'},
+                        'arts-crafts': {text: 'Arts & Crafts', type: 'item'},
+                        'clothing': {text: 'Clothing', type: 'item'},
+                        'computers': {text: 'Computers', type: 'item'},
+                        'jewelry': {text: 'Jewelry', type: 'item'},
+                        'office-business': {text: 'Office & Business', type: 'item'},
+                        'sports-fitness': {text: 'Sports & Fitness', type: 'item'}
+                    }
+                }
+            }	,
+            'rentals' : {text: 'Rentals', type: 'folder'}	,
+            'real-estate' : {text: 'Real Estate', type: 'folder'}	,
+            'pets' : {text: 'Pets', type: 'folder'}
+//            'tickets' : {text: 'Tickets', type: 'item'}	,
+//            'services' : {text: 'Services', type: 'item'}	,
+//            'personals' : {text: 'Personals', type: 'item'}
+        }
+        var tree_data_copy = {
+
+        }
+
+
+        tree_data['rentals']['additionalParameters'] = {
+            'children' : {
+                'apartments-rentals' : {text: 'Apartments', type: 'item'},
+                'office-space-rentals' : {text: 'Office Space', type: 'item'},
+                'vacation-rentals' : {text: 'Vacation Rentals', type: 'item'}
+            }
+        }
+        tree_data['real-estate']['additionalParameters'] = {
+            'children' : {
+                'apartments' : {text: 'Apartments', type: 'item'},
+                'villas' : {text: 'Villas', type: 'item'},
+                'plots' : {text: 'Plots', type: 'item'}
+            }
+        }
+        tree_data['pets']['additionalParameters'] = {
+            'children' : {
+                'cats' : {text: 'Cats', type: 'item'},
+                'dogs' : {text: 'Dogs', type: 'item'},
+                'horses' : {text: 'Horses', type: 'item'},
+                'reptiles' : {text: 'Reptiles', type: 'item'}
+            }
+        }
+
+        var dataSource1 = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data;//the root tree
+                callback({ data: $data });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+            console.log($data);
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                callback({ data: $data });
+//                setTimeout(function(){} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+        var data_copy = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data_copy;//the root tree
+                callback({ data: tree_data_copy });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+            console.log($data);
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+
+
+
+
+        var tree_data_2 = {
+            'pictures' : {text: 'Pictures', type: 'folder', 'icon-class':'red'}	,
+            'music' : {text: 'Music', type: 'folder', 'icon-class':'orange'}	,
+            'video' : {text: 'Video', type: 'folder', 'icon-class':'blue'}	,
+            'documents' : {text: 'Documents', type: 'folder', 'icon-class':'green'}	,
+            'backup' : {text: 'Backup', type: 'folder'}	,
+            'readme' : {text: '<i class="ace-icon fa fa-file-text grey"></i> ReadMe.txt', type: 'item'},
+            'manual' : {text: '<i class="ace-icon fa fa-book blue"></i> Manual.html', type: 'item'}
+        }
+        tree_data_2['music']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-music blue"></i> song1.ogg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-music blue"></i> song2.ogg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-music blue"></i> song3.ogg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-music blue"></i> song4.ogg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-music blue"></i> song5.ogg', type: 'item'}
+            ]
+        }
+        tree_data_2['video']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie1.avi', type: 'item'},
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie2.avi', type: 'item'},
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie3.avi', type: 'item'},
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie4.avi', type: 'item'},
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie5.avi', type: 'item'}
+            ]
+        }
+        tree_data_2['pictures']['additionalParameters'] = {
+            'children' : {
+                'wallpapers' : {text: 'Wallpapers', type: 'folder', 'icon-class':'pink'},
+                'camera' : {text: 'Camera', type: 'folder', 'icon-class':'pink'}
+            }
+        }
+        tree_data_2['pictures']['additionalParameters']['children']['wallpapers']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> wallpaper1.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> wallpaper2.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> wallpaper3.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> wallpaper4.jpg', type: 'item'}
+            ]
+        }
+        tree_data_2['pictures']['additionalParameters']['children']['camera']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo1.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo2.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo3.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo4.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo5.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo6.jpg', type: 'item'}
+            ]
+        }
+
+
+        tree_data_2['documents']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-file-text red"></i> document1.pdf', type: 'item'},
+                {text: '<i class="ace-icon fa fa-file-text grey"></i> document2.doc', type: 'item'},
+                {text: '<i class="ace-icon fa fa-file-text grey"></i> document3.doc', type: 'item'},
+                {text: '<i class="ace-icon fa fa-file-text red"></i> document4.pdf', type: 'item'},
+                {text: '<i class="ace-icon fa fa-file-text grey"></i> document5.doc', type: 'item'}
+            ]
+        }
+
+        tree_data_2['backup']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-archive brown"></i> backup1.zip', type: 'item'},
+                {text: '<i class="ace-icon fa fa-archive brown"></i> backup2.zip', type: 'item'},
+                {text: '<i class="ace-icon fa fa-archive brown"></i> backup3.zip', type: 'item'},
+                {text: '<i class="ace-icon fa fa-archive brown"></i> backup4.zip', type: 'item'}
+            ]
+        }
+        var dataSource2 = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data_2;//the root tree
+                callback({ data: $data });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+
+
+        return {'dataSource1': dataSource1 , 'dataSource2' : dataSource2,'dataSource_copy':data_copy}
+    }
+    var sampleData = initiateDemoData();
+    $('.tree_left').ace_tree({
+        dataSource: sampleData['dataSource1'],
+        multiSelect: true,
+        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+        'open-icon' : 'ace-icon tree-minus hide',
+        'close-icon' : 'ace-icon tree-plus hide',
+        'selectable' : true,
+        'selected-icon' : 'ace-icon fa fa-check',
+        'unselected-icon' : 'ace-icon fa fa-times',
+        'cacheItems': true,
+        'folderSelect': true,
+        'folder-open-icon' : 'ace-icon tree-plus',
+        'folder-close-icon' : 'ace-icon tree-minus'
+    });
+    $('.tree_right').ace_tree({
+        dataSource: sampleData['dataSource_copy'],
+        multiSelect: true,
+        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+        'open-icon' : 'ace-icon tree-minus hide',
+        'close-icon' : 'ace-icon tree-plus hide',
+        'selectable' : true,
+        'selected-icon' : 'ace-icon fa fa-check',
+        'unselected-icon' : 'ace-icon fa fa-times',
+        'cacheItems': true,
+        'folderSelect': true,
+        'folder-open-icon' : 'ace-icon tree-plus',
+        'folder-close-icon' : 'ace-icon tree-minus'
+    });
+
+    $('.tree_left>li>.icon-caret.ace-icon.tree-plus').trigger('click');
+    $('.tree_left>li>.icon-caret.ace-icon.tree-minus').trigger('click');
+
+
+    var data_copy = [];
+    var hash=[];
+    function changeData(data_copy){
+        var tree_data = {
+        }
+        for(var key in data_copy){
+            tree_data[data_copy[key]]={text: data_copy[key], type: 'item'}
+        }
+
+
+        var dataSource1 = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data;//the root tree
+                callback({ data: $data });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+            console.log($data);
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+
+
+        return {'dataSource1': dataSource1}
+    }
+    //    var sampleData1 = changeData(data_copy);
+    $('#pwd_rule .sure_btn').click(function(){
+//        $('#tree_copy').empty();
+        var arrStr=[];
+        $('#pwd_rule .tree_left .tree-item.tree-selected .icon-item.ace-icon.fa.fa-check').next().each(function(i,dom){
+            arrStr.push('<option>'+$(dom).html()+'</option>');
+            var str = $(dom).html();
+            if(str&&!hash[str]){
+                data_copy.push(str);
+                hash[str]=1;
+            }
+        })
+//        $('#bootstrap-duallistbox-selected-list_duallistbox').append(arrStr.join(' '));
+        $('#pwd_rule .selected_count').html(data_copy.length);
+        $(".tree_right").removeData("fu.tree");
+        $(".tree_right").unbind('click.fu.tree');
+        $('.tree_right').ace_tree({
+            dataSource: changeData(data_copy)['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
+    })
+    $('#pwd_rule .cancel_btn').click(function(){
+        $('#pwd_rule .tree_right .tree-item.tree-selected .tree-label').each(function(i,dom){
+            for(var i =0;i<data_copy.length;i++){
+                if($(dom).html()==data_copy[i]){
+                    data_copy.splice(i,1);
+                    hash[$(dom).html()]=0;
+                    break;
+                }
+            }
+        })
+        $('#pwd_rule .selected_count').html(data_copy.length);
+        $(".tree_right").removeData("fu.tree");
+        $(".tree_right").unbind('click.fu.tree');
+        $('.tree_right').ace_tree({
+            dataSource: changeData(data_copy)['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
+    })
+    $('#pwd_rule .remove_all').click(function(e){
+        e.preventDefault();
+        if(confirm('确定移除全部邮箱？')){
+            data_copy=[];
+            hash=[];
+            $('#pwd_rule .selected_count').html(data_copy.length);
+            $(".tree_right").removeData("fu.tree");
+            $(".tree_right").unbind('click.fu.tree');
+            $('.tree_right').ace_tree({
+                dataSource: changeData(data_copy)['dataSource1'],
+                multiSelect: true,
+                loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+                'open-icon' : 'ace-icon tree-minus hide',
+                'close-icon' : 'ace-icon tree-plus hide',
+                'selectable' : true,
+                'selected-icon' : 'ace-icon fa fa-check',
+                'unselected-icon' : 'ace-icon fa fa-times',
+                'cacheItems': true,
+                'folderSelect': true,
+                'folder-open-icon' : 'ace-icon tree-plus',
+                'folder-close-icon' : 'ace-icon tree-minus'
+            });
+        }
+    })
+    $('#pwd_rule .select_all').click(function(){
+        if($(this).prop('checked')){
+            $('.tree_left .tree-item').addClass('tree-selected');
+            $('.tree_left .tree-branch').addClass('tree-selected');
+            $('.tree_left .icon-item.ace-icon').removeClass('fa-times').addClass('fa-check');
+        }else{
+            $('.tree_left .tree-item').removeClass('tree-selected');
+            $('.tree_left .tree-branch').removeClass('tree-selected');
+            $('.tree_left .icon-item.ace-icon').addClass('fa-times').removeClass('fa-check');
+        }
+    })
+
+    var initArr = ["Appliances", "Arts & Crafts", "Clothing", "Computers", "Jewelry", "Office & Business", "Sports & Fitness", "Apartments", "Office Space", "Vacation Rentals", "Villas", "Plots", "Cats", "Dogs", "Horses", "Reptiles"]
+    function search(input,initArr,ele){
+        var keyWords = $(input).val()
+        var reg = new RegExp(keyWords, 'i');
+        var arr = [];
+        for(var o of initArr){
+            if(o.match(reg)){
+                arr.push(o);
+            }
+        }
+        $(ele).removeData("fu.tree");
+        $(ele).unbind('click.fu.tree');
+        $(ele).ace_tree({
+            dataSource: changeData(arr)['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
+    }
+    $('#pwd_rule .select_search').keyup(function(){
+        if($(this).val().length==0){
+            $('.tree_left').removeData("fu.tree");
+            $('.tree_left').unbind('click.fu.tree');
+            $('.tree_left').ace_tree({
+                dataSource: sampleData['dataSource1'],
+                multiSelect: true,
+                loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+                'open-icon' : 'ace-icon tree-minus hide',
+                'close-icon' : 'ace-icon tree-plus hide',
+                'selectable' : true,
+                'selected-icon' : 'ace-icon fa fa-check',
+                'unselected-icon' : 'ace-icon fa fa-times',
+                'cacheItems': true,
+                'folderSelect': true,
+                'folder-open-icon' : 'ace-icon tree-plus',
+                'folder-close-icon' : 'ace-icon tree-minus'
+            });
+            $('.tree_left>li>.icon-caret.ace-icon.tree-plus').trigger('click');
+            $('.tree_left>li>.icon-caret.ace-icon.tree-minus').trigger('click');
+        }else{
+            search(this,initArr,".tree_left");
+        }
+    })
+    $('#pwd_rule .selected_search').keyup(function(){
+        search(this,data_copy,".tree_right");
+    })
 </script>

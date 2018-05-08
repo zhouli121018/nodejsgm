@@ -1,0 +1,11 @@
+body{
+    background-color:#fff;
+    color:#666;
+}
+.navbar-default {
+    background-color: #713F8E;
+    border-color: #713F8E;
+}
+.navbar-brand{
+    background:url("img/umail_logo.png") !important;
+}

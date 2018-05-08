@@ -8,7 +8,25 @@
         <table class="table table-bordered table-striped">
             <tbody>
             <tr>
-                <td class="text-right" style="width:200px;">SPF检测：
+                <td class="text-right" style="width:200px;">反病毒功能：</td>
+                <td>
+                    <label class="inline" >
+                        <input name="no_anti" checked type="checkbox" class="ace ace-switch ace-switch-5">
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">反垃圾功能：</td>
+                <td>
+                    <label class="inline" >
+                        <input name="sw_antivirus" checked type="checkbox" class="ace ace-switch ace-switch-5">
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr class="sw_antivirus">
+                <td class="text-right" >SPF检测：
                 </td>
                 <td>
                     <label class="inline" >
@@ -17,7 +35,7 @@
                     </label>
                 </td>
             </tr>
-            <tr>
+            <tr class="sw_antivirus">
                 <td class="text-right">灰名单检测：
                 </td>
                 <td>
@@ -27,57 +45,60 @@
                     </label>
                 </td>
             </tr>
-            <tr>
+            <tr class="sw_antivirus">
                 <td class="text-right">检查附件：
                 </td>
                 <td>
                     <label class="checkbox checkbox-inline no-padding margin-top-0 form-inline">
                         <label style="margin-right:20px;">
-                            <input type="checkbox" name="low_risk_attachment" value="1"><span>小危附件</span>
+                            <input type="checkbox" checked name="low_risk_attachment" value="1"><span>小危附件</span>
                         </label>
                         <label>
-                            <input type="checkbox" name="high_risk_attachment" value="1"><span>高危附件</span>
+                            <input type="checkbox" checked name="high_risk_attachment" value="1"><span>高危附件</span>
                         </label>
                     </label>
                 </td>
             </tr>
-            <tr>
+            <tr class="sw_antivirus">
                 <td class="text-right"> 匹配黑名单：
                 </td>
                 <td>
                     <label class="checkbox checkbox-inline no-padding margin-top-0 form-inline">
                         <label style="margin-right:20px;">
-                            <input type="checkbox" name="sender_blacklist" value="1"><span>发件人黑名单</span>
+                            <input type="checkbox" name="sender_blacklist" checked value="1"><span>发件人黑名单</span>
                         </label>
                         <label style="margin-right:20px;">
-                            <input type="checkbox" name="subject_blacklist" value="1"><span>主题黑名单</span>
+                            <input type="checkbox" name="subject_blacklist" checked value="2"><span>主题黑名单</span>
+                        </label>
+                        <label style="margin-right:20px;">
+                            <input type="checkbox" name="content_blacklist" checked value="3"><span>内容黑名单</span>
                         </label>
                         <label>
-                            <input type="checkbox" name="content_blacklist" value="1"><span>内容黑名单</span>
+                            <input type="checkbox" name="content_blacklist" checked value="4"><span>附件黑名单</span>
                         </label>
                     </label>
                 </td>
             </tr>
-            <tr>
+            <tr class="sw_antivirus">
                 <td class="text-right">反垃圾引擎：</td>
                 <td>
                     <label class="checkbox checkbox-inline no-padding margin-top-0 form-inline">
                         <label style="margin-right:20px;">
-                            <input type="checkbox" name="dspam" value="1"><span> Dspam </span>
+                            <input type="checkbox" checked name="dspam" value="1"><span> Dspam </span>
                         </label>
                         <label>
-                            <input type="checkbox" name="spamassassin" value="1"><span> Spamassassion </span>
+                            <input type="checkbox" checked name="spamassassin" value="1"><span> Spamassassion </span>
                         </label>
                     </label>
                 </td>
             </tr>
-            <tr>
+            <tr class="sw_antivirus">
                 <td class="text-right"> 检查发件人格式：
                 </td>
                 <td class="row">
                     <div class="col-sm-4 no-padding">
                         <label class="inline" >
-                            <input name="format"  type="checkbox" class="ace ace-switch ace-switch-5">
+                            <input name="format" checked  type="checkbox" class="ace ace-switch ace-switch-5">
                             <span class="lbl"></span>
                         </label>
                     </div>
@@ -87,7 +108,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr class="sw_antivirus">
                 <td class="text-right"> 垃圾邮件投递位置：</td>
                 <td class="row">
                     <div class="col-sm-4 no-padding">
@@ -101,7 +122,7 @@
 
                 </td>
             </tr>
-            <tr >
+            <tr class="sw_antivirus">
                 <td class="text-right" >
                     垃圾邮件主题标识：</td>
                 <td class="row">
@@ -110,7 +131,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr class="sw_antivirus">
                 <td class="text-right">隔离邮件保存天数：</td>
                 <td class="row">
                     <div class="col-sm-4 no-padding">
@@ -118,7 +139,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr class="sw_antivirus">
                 <td class="text-right">发送隔离报告：</td>
                 <td>
                     <label class="inline" >
@@ -127,7 +148,7 @@
                     </label>
                 </td>
             </tr>
-            <tr>
+            <tr class="sw_antivirus">
                 <td class="text-right">隔离报告发件人：</td>
                 <td class="row">
                     <div class="col-sm-4 no-padding">
@@ -136,11 +157,11 @@
 
                 </td>
             </tr>
-            <tr>
+            <tr class="sw_antivirus">
                 <td class="text-right">隔离报告链接地址：</td>
                 <td class="row">
                     <div class="col-sm-4 no-padding">
-                        <input type="text" name="host" id="id_host" value="" class="form-control" style="max-width:200px;">
+                        <input type="text" name="host" id="id_host" value="http://mail.test.com" class="form-control" style="max-width:200px;">
 
                     </div>
                     <div class="col-sm-8">
@@ -150,27 +171,27 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr class="sw_antivirus">
                 <td class="text-right">检测对象：
                 </td>
                 <td>
                     <label class="checkbox checkbox-inline no-padding margin-top-0 form-inline">
                         <label style="margin-right:20px;">
-                            <input type="checkbox" name="spam_check_local" value="1" onchange="onchangeSpamLocalOptions(this)"><span>本域进站邮件</span>
+                            <input type="checkbox" checked name="spam_check_local" value="1"><span>本域进站邮件</span>
                         </label>
                         <label>
-                            <input type="checkbox" name="spam_check_outside" value="1" checked="" onchange="onchangeSpamOutsideOptions(this)"><span>外域进站邮件</span>
+                            <input type="checkbox" name="spam_check_outside" value="1" checked ><span>外域进站邮件</span>
                         </label>
                     </label>
                 </td>
             </tr>
-            <tr class="display-none" id="id_spam_local_set">
+            <tr class="sw_antivirus" id="id_spam_local_set">
                 <td class="text-right">本域进站邮件：</td>
                 <td class="row">
                     <div class="col-sm-4 no-padding">
                         <label class="display-none" id="id_spam_local_set2">
-                            <input type="checkbox" name="spam_check_local_spam" value="1" checked=""><span style="margin-right:20px;"> 开启反垃圾 </span>
-                            <input type="checkbox" name="spam_check_local_virus" value="1" checked=""><span> 开启反病毒 </span>
+                            <input type="checkbox" name="spam_check_local_spam" value="1" checked><span style="margin-right:20px;"> 开启反垃圾 </span>
+                            <input type="checkbox" name="spam_check_local_virus" value="1" checked><span> 开启反病毒 </span>
                         </label>
                     </div>
                     <div class="col-sm-8">
@@ -179,7 +200,7 @@
                     </div>
                 </td>
             </tr>
-            <tr id="id_spam_outside_set">
+            <tr id="id_spam_outside_set" class="sw_antivirus">
                 <td class="text-right">外域进站邮件：</td>
                 <td class="row">
                     <div class="col-sm-4 no-padding">
@@ -194,24 +215,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td class="text-right">反病毒功能：</td>
-                <td>
-                    <label class="inline" >
-                        <input name="sw_antivirus" type="checkbox" class="ace ace-switch ace-switch-5">
-                        <span class="lbl"></span>
-                    </label>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-right">反垃圾功能：</td>
-                <td>
-                    <label class="inline" >
-                        <input name="sw_antispam" checked type="checkbox" class="ace ace-switch ace-switch-5">
-                        <span class="lbl"></span>
-                    </label>
-                </td>
-            </tr>
+
             </tbody>
         </table>
     </div>
@@ -228,3 +232,14 @@
         </div>
     </div>
 </div>
+<script>
+    $(function(){
+        $("[name='sw_antivirus']").on('click', function(){
+            if($(this).prop('checked')){
+                $('.sw_antivirus').show();
+            }else{
+                $('.sw_antivirus').hide();
+            }
+        });
+    })
+</script>

@@ -1,7 +1,7 @@
 <div id="dynamic-div">
     <h3 class="header smaller lighter blue">邮箱账号管理</h3>
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col-sm-2 max-width-200">
             <span>选择部门：</span>
             <select id="department_id" class="chosen-select form-control">
                 <option value="0">所有部门</option>
@@ -507,7 +507,7 @@
                 <option value="-2">未分配部门</option>
             </select>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3 max-width-240">
             <span>登录时间：</span>
             <div class="input-group">
                 <span class="input-group-addon">
@@ -517,7 +517,7 @@
 
             </div>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-2 max-width-200">
             <span>筛选用户：</span>
             <select name="search_type" class="chosen-select form-control" id="search_con">
                 <option value="1">按关键词查询</option>
@@ -532,11 +532,11 @@
                 <option value="8">已用容量(MB)</option>
             </select>
         </div>
-        <div class="col-sm-3 key_words" style="padding-top:18px;padding-bottom:8px;">
+        <div class="col-sm-3 key_words max-width-200" style="padding-top:18px;padding-bottom:8px;">
 
             <input type="text" class="form-control" >
         </div>
-        <div class="col-sm-3 email_place" style="padding-top:18px;padding-bottom:8px;display:none;">
+        <div class="col-sm-3 email_place max-width-240" style="padding-top:18px;padding-bottom:8px;display:none;">
             <select name="search_term" style="">
                 <option value="0" selected="">=</option>
                 <option value="-1">&lt;</option>
@@ -544,7 +544,7 @@
             </select>
             <input type="number" min="0">
         </div>
-        <div class="col-sm-3 alr_place" style="display:none">
+        <div class="col-sm-3 alr_place max-width-300" style="display:none">
             <span>已用容量：</span>
             <div class=" input-group">
                 <input type="text" class=" form-control" name="start">

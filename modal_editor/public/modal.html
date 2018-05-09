@@ -199,6 +199,19 @@
 
 
         })
+        function initPop(){
+            var tpl = `<div class="actions">
+        <p class="top0"><i class="glyphicon glyphicon-eject"></i></p>
+        <p><i class="glyphicon glyphicon-chevron-up"></i></p>
+        <p><i class="glyphicon glyphicon-chevron-down"></i></p>
+        <p><i class="glyphicon glyphicon-remove"></i></p>
+        </div>`
+
+            $('.editor-box>.row').attr('data-html',true).attr('data-content',tpl).popover()
+        }
+
+
+        initPop();
 
 
 

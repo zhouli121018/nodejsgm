@@ -56,22 +56,38 @@
     <div style="height:40px;border-top:2px solid #666;"></div>
     </div></div>`;
 
+
             var ibody = document.getElementById('mail-iframe').contentWindow.document.body;
 
+            function initPop(){
+                var tpl = `<div class="actions">
+        <p class="top0"><i class="glyphicon glyphicon-eject"></i></p>
+        <p><i class="glyphicon glyphicon-chevron-up"></i></p>
+        <p><i class="glyphicon glyphicon-chevron-down"></i></p>
+        <p><i class="glyphicon glyphicon-remove"></i></p>
+        </div>`
+
+                $(ibody).find('.editor-box>.row').attr('data-html',true).attr('data-content',tpl).popover()
+            }
             $('.add_btn').click(function(){
-                $(ibody).find('.editor-box').append(button)
+                $(ibody).find('.editor-box').append(button);
+                initPop();
             })
             $('.add_img').click(function(){
                 $(ibody).find('.editor-box').append(img)
+                initPop();
             })
             $('.add_text').click(function(){
                 $(ibody).find('.editor-box').append(text)
+                initPop();
             })
             $('.add_space').click(function(){
                 $(ibody).find('.editor-box').append(spacer)
+                initPop();
             })
             $('.add_ruler').click(function(){
                 $(ibody).find('.editor-box').append(ruler)
+                initPop();
             })
 
             $('#myModal .item-box').click(function(){
@@ -89,6 +105,7 @@
                 }else if(type == 'ruler'){
                     $(ibody).find('.editor-box .cur_box').parent().html(ruler);
                 }
+                initPop();
 
 
             })
@@ -268,8 +285,8 @@
                             </div>
                         </li>
                     </ul>
-                    <button type="button" class="btn btn-default"  data-placement="right" title="Tooltip on right">Tooltip on right</button>
-
+                    <button type="button" data-html="true" class="btn btn-default"  data-placement="right" title="x">Tooltip on right</button>
+                    <a id="popover"  class="btn btn-lg btn-danger" role="button"    >可消失的弹出框</a>
                 </div>
                 <div class="main-editor">
                     <div id="mailReadBody" class="mail-read-body">
@@ -295,8 +312,24 @@
 <script>
 
     $(function () {
-        $('[data-placement="right"]').tooltip('show')
+        var tpl = `<div class="actions">
+        <p class="top0"><i class="glyphicon glyphicon-eject"></i></p>
+        <p><i class="glyphicon glyphicon-chevron-up"></i></p>
+        <p><i class="glyphicon glyphicon-chevron-down"></i></p>
+        <p><i class="glyphicon glyphicon-remove"></i></p>
+        </div>`
+        $('[data-placement="right"]').attr('title',tpl).tooltip();
+        $('#popover').attr('data-html',true).attr('data-content',tpl).popover()
+        $('#popover').on('hidden.bs.popover', function (e) {
+            // do something…
+//            console.log(this)
+
+        })
+        $('body').on('click','.top0',function(){
+            console.log(1234)
+        })
     })
+
 
 
 

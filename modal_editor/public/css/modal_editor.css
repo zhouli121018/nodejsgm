@@ -14,6 +14,9 @@ ul,li{
 html{
     height:100%;
 }
+.navbar-brand img{
+    width:120px;
+}
 .navbar-fixed-top {
     background-color: #713F8E;
     border-color: #713F8E;
@@ -95,7 +98,7 @@ html{
 .margin-2{
     margin:2px;
 }
-.sidebar-left .item-box{
+.sidebar-left .item-box,#myModal .item-box{
     width:86px;
     height:80px;
     background:#fff;
@@ -104,11 +107,20 @@ html{
     padding-top:12px;
     cursor: pointer;
 }
-.sidebar-left .item-box:hover{
+#myModal .item-box{
+    width:138px;
+
+}
+.sidebar-left .item-box:hover,#myModal .item-box:hover{
     border-color:#3FA9F5;
     box-shadow: 0 0 2px #3FA9F5;
 }
-.sidebar-left ul li{
+.clear:after{
+    content:"";
+    display:block;
+    clear:both;
+}
+.sidebar-left ul li,#myModal ul li{
     float:left;
 }
 .drag-area{

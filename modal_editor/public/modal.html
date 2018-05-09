@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/modal_editor.css">
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        .content{
+            height:100%;
+            overflow: auto;
+            padding-bottom:10px;
+            width:80%;
+            margin:0 auto;
+        }
+        p,h1,h2,h3{
+            padding:0;
+            margin:0;
+        }
+        body{
+            color:#000;
+        }
+        a{
+            color:#000;
+            /*text-decoration: underline;*/
+        }
+        a:hover, a:focus{
+            color:#0000A1;
+        }
+        .add-layout{
+            background:#F5F5F5;
+            color:#D2D2D2;
+            cursor: pointer;
+            padding:8px;
+            border:1px dashed #cdcdcd;
+        }
+        .add-layout:hover{
+            border-color:#3FA9F5;
+            color:#3FA9F5;
+        }
+        .layout-img-box>.col-xs-3{
+            text-align: center;
+        }
+        .layout-img-box>.col-xs-3 p{
+            padding:4px;
+            background:#fff;
+            border:1px solid #cdcdcd;
+            border-radius:4px;
+        }
+        .layout-img-box>.col-xs-3 p img{
+            width:100%;
+        }
+        .layout-img-box>.col-xs-3 p:hover{
+            border-color:#3FA9F5;
+        }
+        .select-layout-str{
+            padding:8px;
+        }
+        .select-layout-box{
+            display:none;
+            padding:0 15px 30px;
+            border:1px dashed #cdcdcd;
+            border-top:none;
+            background:#F5F5F5;
+        }
+        .editor-col{
+            border:1px dashed #cdcdcd;
+            background:#F5F5F5;
+            color:#D2D2D2;
+            cursor: pointer;
+            padding:6px 0;
+        }
+        .editor-col:hover{
+            border-color:#3FA9F5;
+            color:#3FA9F5;
+        }
+        .add-layout-row{
+            margin-top:8px;
+        }
+        .editor-box>.row{
+            border:1px solid #cdcdcd;
+            position:relative;
+        }
+        .editor-box>.row:hover{
+            border:1px dashed #3FA9F5;
+        }
+    </style>
+</head>
+<body style="height:100%;">
+
+    <div class="container content">
+
+        <header>
+            <div class="row">
+                <div class="col-xs-6">
+                    <a href="#">退订</a>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <a href="#">邮件无法显示请点击这里</a>
+                </div>
+            </div>
+        </header>
+
+        <div class="editor-box">
+
+        </div>
+        <div>
+            <div class="row add-layout-row">
+                <div class="col-xs-12 text-center add-layout">
+                    <i class="glyphicon glyphicon-plus"></i> 添加布局
+                </div>
+                <div class="col-xs-12 select-layout-box">
+                    <p class="text-center select-layout-str">选择你想添加的布局类型</p>
+                    <div class="row layout-img-box">
+                        <div class="col-xs-3">
+                            <p data-lay="1"><img src="../img/1-col.png" class="img-responsive" alt="1"></p>
+                        </div>
+                        <div class="col-xs-3">
+                            <p data-lay="2"><img src="../img/2-col.png" class="img-responsive" alt="2"></p>
+                        </div>
+                        <div class="col-xs-3">
+                            <p data-lay="3"><img src="../img/3-col.png" class="img-responsive" alt="3"></p>
+                        </div>
+                        <div class="col-xs-3">
+                            <p data-lay="4"><img src="../img/4-col.png" class="img-responsive" alt="4"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-danger" type="button">按钮</button>
+        <a href="http://www.baidu.com" target="_blank">百度</a>
+
+
+    </div>
+    <script src="js/jquery-1.11.3.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script>
+
+        var button = `<div class="row"><div class="col-sm-12 text-center"><button class="btn btn-default" type="button">按钮</button></div></div>`
+        var row = `
+        <div class="row">
+
+            <div class="col-sm-12 editor-col">
+                <div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div>
+            </div>
+        </div>`
+        var row2 = `
+        <div class="row">
+            <div class="col-sm-6 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+            <div class="col-sm-6 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        </div>`
+        var row3 = `
+        <div class="row">
+        <div class="col-sm-4 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        <div class="col-sm-4 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        <div class="col-sm-4 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        </div>`
+        var row4 = `
+        <div class="row">
+        <div class="col-sm-3 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        <div class="col-sm-3 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        <div class="col-sm-3 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        <div class="col-sm-3 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        </div>`
+        $('.add-layout').click(function(){
+            $('.select-layout-box').toggle();
+        })
+        $('.layout-img-box p').click(function(){
+            $('.select-layout-box').hide();
+            var index = $(this).attr('data-lay');
+            if(index == '1'){
+                $('.editor-box').append(row);
+            }else if(index == '2'){
+                $('.editor-box').append(row2);
+            }else if(index == '3'){
+                $('.editor-box').append(row3);
+            }else if(index == '4'){
+                $('.editor-box').append(row4);
+            }
+
+        })
+        $('body').on('click','.editor-col .box-init',function(){
+            //$('#myModal', window.parent.document).modal();
+            $(this).addClass('cur_box');
+            window.parent.window.showModal(this);
+        })
+        window.parent.window.init();
+
+        $('body').on('mouseenter','.editor-box>.row',function(){
+
+
+
+        })
+
+
+
+
+
+    </script>
+
+</body>
+</html>

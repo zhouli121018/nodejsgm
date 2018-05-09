@@ -19,7 +19,9 @@
       <!--1、navbar-header-->
       <div class="navbar-header">
         <!--1.1 navbar-brand-->
-        <a href="#" class="navbar-brand"></a>
+        <a href="#" class="navbar-brand">
+          <img src="img/umail_logo.png" class="img-responsive" alt="">
+        </a>
         <!--1.2 navbar-toggle-->
         <button type="button" class="btn navbar-toggle" data-toggle="collapse" data-target="#myCollapse">
           <span class="icon-bar"></span>
@@ -59,7 +61,7 @@
               <div class="panel panel-default">
                 <div class="panel-body">
                   <h3>登录</h3>
-                  <p>您是否在Intel工作</p>
+                  <p>U-Mail</p>
                   <form>
                     <div class="form-group">
                       <input type="text" class="form-control" placeholder="用户名"/>
@@ -87,37 +89,150 @@
     </div>
   </nav>
   <!--2、主体内容-->
-  <div  class="container">
-    <!--1、标题文本-->
+
+  <div  class="container-fluid">
+
     <div class="row">
-      <div class="col-xs-12">
-        <h2>欢迎来到 U-Mail®</h2>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-3">a</div>
-      <div class="col-sm-9">
-        <ul class="nav nav-tabs">
-          <li role="presentation" class="active"><a href="#">Home</a></li>
-          <li role="presentation"><a href="#">Profile</a></li>
-          <li role="presentation"><a href="#">Messages</a></li>
+      <div class="col-xs-12 nav-div no-padding">
+        <div class="left-nav">a</div>
+        <ul class="nav nav-tabs" >
+          <li role="presentation" class="active"><a href="#" data-toggle="tabs">创建</a></li>
+          <li role="presentation"><a href="#" data-toggle="tabs">个性预览</a></li>
+          <li role="presentation"><a href="#" data-toggle="tabs">分析</a></li>
         </ul>
       </div>
     </div>
+    <div class="row">
+
+        <div class="col-xs-12 no-padding drag-area">
+
+          <div class="editor-header"></div>
+          <div class="sidebar-left">
+            <ul>
+              <li>
+                <div class="item-box text-center margin-2">
+                  <img src="img/masterText.png" alt="text" title="text">
+                </div>
+              </li>
+              <li>
+                <div class="item-box text-center margin-2">
+                  <img src="img/masterImage.png" alt="img" title="image">
+                </div>
+              </li>
+              <li>
+                <div class="item-box text-center margin-2 add_btn">
+                  <img src="img/masterButton.png" alt="button" title="button">
+                </div>
+              </li>
+              <li>
+                <div class="item-box text-center margin-2">
+                  <img src="img/masterSpacer.png" alt="space" title="spacer">
+                </div>
+              </li>
+              <li>
+                <div class="item-box text-center margin-2">
+                  <img src="img/masterRuler.png" alt="ruler" title="ruler">
+                </div>
+              </li>
+            </ul>
+            <button class="btn btn-success test-btn1" type="button" >测试一列</button>
+            <button class="btn btn-success test-btn2" type="button" data-toggle="modal" data-target="#myModal">测试两列</button>
+            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+              Launch demo modal
+            </button>
+            <input type="file">
+            <button class="btn btn-success test-btn3" type="button" >测试三列</button>
+            <button class="btn btn-success test-btnb" type="button" >测试btn</button>
+          </div>
+          <div class="main-editor">
+            <div id="mailReadBody" class="mail-read-body">
+              <iframe width="100%" scrolling="no" height="100%" id="mail-iframe" onload="bodyS(this);" style="min-height: 50px;" frameborder="0" src="public/modal.html"></iframe>
+            </div>
+          </div>
+          <div class="sidebar-right">asdf</div>
+        </div>
+    </div>
   </div>
   <!--3、页面底部-->
-  <footer id="footer">
+  <nav class="navbar navbar-default navbar-fixed-bottom">
     <div class="container">
       页面底部
     </div>
-  </footer>
+  </nav>
+
 
 
 <script src="js/jquery-1.11.3.js"></script>
 <script src="js/bootstrap.js"></script>
 <script src="js/bootlint.js"></script>
 <script>
-  bootlint.showLintReportForCurrentDocument([]);
+//  bootlint.showLintReportForCurrentDocument([]);
+
+  var bodyS = function(iframe) {
+    var i;
+    var obj;
+    //设置 "body"
+    obj = iframe.contentWindow.document.body;
+    obj.style.overflowX  = 'auto';
+    obj.style.overflowY  = 'hidden';
+    obj.style.wordWrap   = 'break-word';
+    obj.style.fontSize = '12px';
+    var head = iframe.contentWindow.document.getElementsByTagName('head')[0];
+    obj = iframe.contentWindow.document.getElementsByTagName('a');
+    for(i=0; i<obj.length; i++) {
+      obj[i].target = "_blank";
+    }
+    obj = iframe.contentWindow.document.getElementsByTagName('p');
+    for(i=0; i<obj.length; i++) {
+//      obj[i].style.marginTop = "5px";
+//      obj[i].style.marginBottom = "5px";
+    }
+  };
+
+  var ibody = document.getElementById('mail-iframe').contentWindow.document.body;
+  $(ibody).on('click','.editor-col>box-init',function(){
+    $('#myModal').fadeIn();
+  })
+  $('.test-btn1').click(function(){
+      console.log($(ibody).html());
+  })
+
+
+  var autoH = function(iframe){
+    try{
+      var tt = jQuery(iframe);
+      var d =  iframe.contentWindow.document||iframe.contentDocument;
+      h = Math.max(d.body.scrollHeight, d.documentElement.scrollHeight, $(d).height());
+      if(h>50000){
+        h = h-2000;
+      }
+      if(h>9000){
+        h = h+1000;
+      }
+      if(h>7000){
+        h = h+1000;
+      }
+      else if(h>5000){
+        h = h+500;
+      }
+      else if(h>3000){
+        h = h+300;
+      }
+      else if(h>1604){
+        h = h+300;
+      }else if(h>900){
+        h = h+250;
+      }
+      else if(h>600){
+        h = h+300;
+      }
+      else{
+        h = h+50;
+      }
+      iframe.height = h;
+
+    } catch(ex) {}
+  };
 </script>
 </body>
 </html>

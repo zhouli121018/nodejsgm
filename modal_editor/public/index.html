@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <title>邮件编辑</title>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/modal_editor.css"/>
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+        function showModal(){
+            $('#myModal').modal()
+        }
+        var bodyS = function(iframe) {
+            var i;
+            var obj;
+            //设置 "body"
+            obj = iframe.contentWindow.document.body;
+            obj.style.overflowX  = 'auto';
+            obj.style.overflowY  = 'hidden';
+            obj.style.wordWrap   = 'break-word';
+            obj.style.fontSize = '12px';
+            var head = iframe.contentWindow.document.getElementsByTagName('head')[0];
+            obj = iframe.contentWindow.document.getElementsByTagName('a');
+            for(i=0; i<obj.length; i++) {
+                obj[i].target = "_blank";
+            }
+            obj = iframe.contentWindow.document.getElementsByTagName('p');
+            for(i=0; i<obj.length; i++) {
+//      obj[i].style.marginTop = "5px";
+//      obj[i].style.marginBottom = "5px";
+            }
+        };
+
+
+        function init(){
+            var button = `
+       <div class="row">
+       <div class="col-sm-12 text-center no-padding">
+       <button class="btn btn-default" type="button">按钮</button></div></div>`
+            var text = `<div class="row"><div class="col-sm-12 no-padding">
+    <textarea class="form-control" rows="4">content</textarea>
+    </div></div>`;
+            var img = `<div class="row"><div class="col-sm-12 no-padding">
+     <div class="text-center" style="background:#F5F5F5;padding-top:20px;padding-bottom:20px;"><img src="img/masterImage.png" style="width:20px;" alt="img"></div>
+    </div></div>`;
+            var spacer = `<div class="row"><div class="col-sm-12 no-padding">
+    <p style="padding:20px 0;"></p>
+    </div></div>`;
+            var ruler = `<div class="row"><div class="col-sm-12 no-padding">
+    <div style="height:40px;border-top:2px solid #666;"></div>
+    </div></div>`;
+
+            var ibody = document.getElementById('mail-iframe').contentWindow.document.body;
+
+            $('.add_btn').click(function(){
+                $(ibody).find('.editor-box').append(button)
+            })
+            $('.add_img').click(function(){
+                $(ibody).find('.editor-box').append(img)
+            })
+            $('.add_text').click(function(){
+                $(ibody).find('.editor-box').append(text)
+            })
+            $('.add_space').click(function(){
+                $(ibody).find('.editor-box').append(spacer)
+            })
+            $('.add_ruler').click(function(){
+                $(ibody).find('.editor-box').append(ruler)
+            })
+
+            $('#myModal .item-box').click(function(){
+                $('#myModal').modal('hide');
+                var type = $(this).find('img').attr('title');
+                $(ibody).find('.editor-box .cur_box').parents('.editor-col').removeClass('editor-col');
+                if(type == 'text'){
+                    $(ibody).find('.editor-box .cur_box').parent().html(text);
+                }else if(type == 'image'){
+                    $(ibody).find('.editor-box .cur_box').parent().html(img);
+                }else if(type == 'button'){
+                    $(ibody).find('.editor-box .cur_box').parent().html(button);
+                }else if(type == 'spacer'){
+                    $(ibody).find('.editor-box .cur_box').parent().html(spacer);
+                }else if(type == 'ruler'){
+                    $(ibody).find('.editor-box .cur_box').parent().html(ruler);
+                }
+
+
+            })
+
+
+        }
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">请选择您要增加的类型</h4>
+                </div>
+                <div class="modal-body">
+                    <ul class="clear">
+                        <li>
+                            <div class="item-box text-center margin-2">
+                                <img src="img/masterText.png" alt="text" title="text">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-box text-center margin-2">
+                                <img src="img/masterImage.png" alt="img" title="image">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-box text-center margin-2 add_btn">
+                                <img src="img/masterButton.png" alt="button" title="button">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-box text-center margin-2">
+                                <img src="img/masterSpacer.png" alt="space" title="spacer">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-box text-center margin-2">
+                                <img src="img/masterRuler.png" alt="ruler" title="ruler">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--1、导航条  -->
+    <nav id="nav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!--1、navbar-header-->
+            <div class="navbar-header">
+                <!--1.1 navbar-brand-->
+                <a href="#" class="navbar-brand">
+                    <img src="img/umail_logo.png" class="img-responsive" alt="">
+                </a>
+                <!--1.2 navbar-toggle-->
+                <button type="button" class="btn navbar-toggle" data-toggle="collapse" data-target="#myCollapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <!--2、navbar-collapse-->
+            <div id="myCollapse" class="navbar-collapse collapse">
+                <!--2.1 下拉菜单-->
+                <div class="dropdown navbar-left hide">
+                    <a href="#" class="dropdown-toggle navbar-text" data-toggle="dropdown">
+                        菜单
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Intel产品</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Intel产品</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Intel产品</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Intel产品</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Intel产品</a></li>
+                    </ul>
+                </div>
+                <!--2.3 导航-->
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#">China(简体中文)</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">登录</a>
+                        <!--下拉菜单-->
+                        <div class="dropdown-menu">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <h3>登录</h3>
+                                    <p>U-Mail</p>
+                                    <form>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="用户名"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" class="form-control" placeholder="密码"/>
+                                        </div>
+                                        <p>您登录表明您同意我们的服务条款</p>
+                                        <button type="submit" class="btn btn-info btn-xs">登录</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <!--2.2 form表单-->
+                <form class="navbar-form navbar-right">
+                    <p class="form-control-static">查找内容</p>
+                    <p class="form-control-static">|</p>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="搜索"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!--2、主体内容-->
+
+    <div  class="">
+
+        <div class="row">
+            <div class="col-xs-12 nav-div no-padding">
+                <div class="left-nav">a</div>
+                <ul class="nav nav-tabs" >
+                    <li role="presentation" class="active"><a href="#" data-toggle="tabs">创建</a></li>
+                    <li role="presentation"><a href="#" data-toggle="tabs">个性预览</a></li>
+                    <li role="presentation"><a href="#" data-toggle="tabs">分析</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-xs-12 no-padding drag-area">
+
+                <div class="editor-header"></div>
+                <div class="sidebar-left">
+                    <ul class="clear">
+                        <li>
+                            <div class="item-box text-center margin-2 add_text">
+                                <img src="img/masterText.png" alt="text" title="text">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-box text-center margin-2 add_img">
+                                <img src="img/masterImage.png" alt="img" title="image">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-box text-center margin-2 add_btn">
+                                <img src="img/masterButton.png" alt="button" title="button">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-box text-center margin-2 add_space">
+                                <img src="img/masterSpacer.png" alt="space" title="spacer">
+                            </div>
+                        </li>
+                        <li>
+                            <div class="item-box text-center margin-2 add_ruler">
+                                <img src="img/masterRuler.png" alt="ruler" title="ruler">
+                            </div>
+                        </li>
+                    </ul>
+                    <button type="button" class="btn btn-default"  data-placement="right" title="Tooltip on right">Tooltip on right</button>
+
+                </div>
+                <div class="main-editor">
+                    <div id="mailReadBody" class="mail-read-body">
+                        <iframe width="100%" scrolling="no" height="100%" id="mail-iframe" onload="bodyS(this);" style="min-height: 50px;" frameborder="0" src="modal.html"></iframe>
+                    </div>
+                </div>
+                <div class="sidebar-right">asdf</div>
+            </div>
+        </div>
+    </div>
+    <!--3、页面底部-->
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+        <div class="container">
+            页面底部
+        </div>
+    </nav>
+
+
+</div>
+<br/><br/>
+<script src="js/jquery-2.1.4.js"></script>
+<script src="js/bootstrap.js"></script>
+<script>
+
+    $(function () {
+        $('[data-placement="right"]').tooltip('show')
+    })
+
+
+
+</script>
+</body>
+</html>

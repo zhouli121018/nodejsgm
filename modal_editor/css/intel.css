@@ -3729,12 +3729,13 @@ tbody.collapse.in {
 }
 .nav-tabs > li > a:hover {
   border-color: #eeeeee #eeeeee #dddddd;
+  color: #000;
 }
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
-  color: #555555;
-  background-color: #0062a8;
+  color: #000;
+  background-color: #fff;
   border: 1px solid #dddddd;
   border-bottom-color: transparent;
   cursor: default;
@@ -5064,7 +5065,7 @@ body {
   background-color:#fff;
 }
 #nav a.navbar-brand {
-  width: 64px;
+  width: 108px;
   height: 42px;
   padding: 0;
   background: url(../img/hdr-spr.png) no-repeat 0px -512px;

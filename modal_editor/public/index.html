@@ -6,6 +6,9 @@
     <meta charset="UTF-8">
     <title>邮件编辑</title>
     <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/fileinput.min.css"/>
+    <link rel="stylesheet" href="css/bootstrap-colorpicker.css"/>
+    <link rel="stylesheet" href="css/select2.css"/>
     <link rel="stylesheet" href="css/modal_editor.css"/>
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
@@ -13,105 +16,7 @@
     <![endif]-->
 
     <script>
-        function showModal(){
-            $('#myModal').modal()
-        }
-        var bodyS = function(iframe) {
-            var i;
-            var obj;
-            //设置 "body"
-            obj = iframe.contentWindow.document.body;
-            obj.style.overflowX  = 'auto';
-            obj.style.overflowY  = 'hidden';
-            obj.style.wordWrap   = 'break-word';
-            obj.style.fontSize = '12px';
-            var head = iframe.contentWindow.document.getElementsByTagName('head')[0];
-            obj = iframe.contentWindow.document.getElementsByTagName('a');
-            for(i=0; i<obj.length; i++) {
-                obj[i].target = "_blank";
-            }
-            obj = iframe.contentWindow.document.getElementsByTagName('p');
-            for(i=0; i<obj.length; i++) {
-//      obj[i].style.marginTop = "5px";
-//      obj[i].style.marginBottom = "5px";
-            }
-        };
 
-
-        function init(){
-            var button = `
-       <div class="row">
-       <div class="col-sm-12 text-center no-padding">
-       <button class="btn btn-default" type="button">按钮</button></div></div>`
-            var text = `<div class="row"><div class="col-sm-12 no-padding">
-    <textarea class="form-control" rows="4">content</textarea>
-    </div></div>`;
-            var img = `<div class="row"><div class="col-sm-12 no-padding">
-     <div class="text-center" style="background:#F5F5F5;padding-top:20px;padding-bottom:20px;"><img src="img/masterImage.png" style="width:20px;" alt="img"></div>
-    </div></div>`;
-            var spacer = `<div class="row"><div class="col-sm-12 no-padding">
-    <p style="padding:20px 0;"></p>
-    </div></div>`;
-            var ruler = `<div class="row"><div class="col-sm-12 no-padding">
-    <div style="height:40px;border-top:2px solid #666;"></div>
-    </div></div>`;
-
-
-            var ibody = document.getElementById('mail-iframe').contentWindow.document.body;
-
-            function initPop(){
-                var tpl = `<div class="actions">
-        <p class="top0"><i class="glyphicon glyphicon-eject"></i></p>
-        <p><i class="glyphicon glyphicon-chevron-up"></i></p>
-        <p><i class="glyphicon glyphicon-chevron-down"></i></p>
-        <p><i class="glyphicon glyphicon-remove"></i></p>
-        </div>`
-
-                $(ibody).find('.editor-box>.row').attr('data-html',true).attr('data-content',tpl).popover()
-            }
-            $('.add_btn').click(function(){
-                $(ibody).find('.editor-box').append(button);
-                initPop();
-            })
-            $('.add_img').click(function(){
-                $(ibody).find('.editor-box').append(img)
-                initPop();
-            })
-            $('.add_text').click(function(){
-                $(ibody).find('.editor-box').append(text)
-                initPop();
-            })
-            $('.add_space').click(function(){
-                $(ibody).find('.editor-box').append(spacer)
-                initPop();
-            })
-            $('.add_ruler').click(function(){
-                $(ibody).find('.editor-box').append(ruler)
-                initPop();
-            })
-
-            $('#myModal .item-box').click(function(){
-                $('#myModal').modal('hide');
-                var type = $(this).find('img').attr('title');
-                $(ibody).find('.editor-box .cur_box').parents('.editor-col').removeClass('editor-col');
-                if(type == 'text'){
-                    $(ibody).find('.editor-box .cur_box').parent().html(text);
-                }else if(type == 'image'){
-                    $(ibody).find('.editor-box .cur_box').parent().html(img);
-                }else if(type == 'button'){
-                    $(ibody).find('.editor-box .cur_box').parent().html(button);
-                }else if(type == 'spacer'){
-                    $(ibody).find('.editor-box .cur_box').parent().html(spacer);
-                }else if(type == 'ruler'){
-                    $(ibody).find('.editor-box .cur_box').parent().html(ruler);
-                }
-                initPop();
-
-
-            })
-
-
-        }
     </script>
 </head>
 <body>
@@ -159,6 +64,44 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="img_modal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">请选择图片...</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-6">
+                            <p class="select_bg">
+                                <img src="img/88.jpg" alt="88" class="img-responsive">
+                            </p>
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <p class="select_bg"><img src="img/98.jpg" alt="98" class="img-responsive"></p>
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <p class="select_bg"><img src="img/111.jpg" alt="111" class="img-responsive"></p>
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <p class="select_bg"><img src="img/156.jpg" alt="156" class="img-responsive"></p>
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <p class="select_bg"><img src="img/158.jpg" alt="158" class="img-responsive"></p>
+                        </div>
+                        <div class="col-sm-3 col-xs-6">
+                            <p class="select_bg"><img src="img/182.jpg" alt="182" class="img-responsive"></p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary sure_bg_btn">确定</button>
                 </div>
             </div>
         </div>
@@ -285,15 +228,635 @@
                             </div>
                         </li>
                     </ul>
-                    <button type="button" data-html="true" class="btn btn-default"  data-placement="right" title="x">Tooltip on right</button>
-                    <a id="popover"  class="btn btn-lg btn-danger" role="button"    >可消失的弹出框</a>
+
                 </div>
                 <div class="main-editor">
-                    <div id="mailReadBody" class="mail-read-body">
-                        <iframe width="100%" scrolling="no" height="100%" id="mail-iframe" onload="bodyS(this);" style="min-height: 50px;" frameborder="0" src="modal.html"></iframe>
+                    <!--<div id="mailReadBody" class="mail-read-body">-->
+                        <!--<iframe width="100%" scrolling="no" height="100%" id="mail-iframe" onload="bodyS(this);" style="min-height: 50px;" frameborder="0" src="modal.html"></iframe>-->
+                    <!--</div>-->
+                    <div class="content">
+
+                        <header style="margin-bottom:30px;padding-bottom:10px;border-bottom:2px dashed #cdcdcd;">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <a href="#">退订</a>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    <a href="#">邮件无法显示请点击这里</a>
+                                </div>
+                            </div>
+                        </header>
+
+                        <div class="editor-box">
+
+                        </div>
+                        <div>
+                            <div class="row add-layout-row">
+                                <div class="col-xs-12 text-center add-layout">
+                                    <i class="glyphicon glyphicon-plus"></i> <b>添加布局</b>
+                                </div>
+                                <div class="col-xs-12 select-layout-box">
+                                    <p class="text-center select-layout-str">选择你想添加的布局类型</p>
+                                    <div class="row layout-img-box">
+                                        <div class="col-xs-3">
+                                            <p data-lay="1"><img src="../img/1-col.png" class="img-responsive" alt="1"></p>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <p data-lay="2"><img src="../img/2-col.png" class="img-responsive" alt="2"></p>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <p data-lay="3"><img src="../img/3-col.png" class="img-responsive" alt="3"></p>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <p data-lay="4"><img src="../img/4-col.png" class="img-responsive" alt="4"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-danger" type="button">按钮</button>
+                        <a href="http://www.baidu.com" target="_blank">百度</a>
+
+
                     </div>
                 </div>
-                <div class="sidebar-right">asdf</div>
+                <div class="sidebar-right">
+                    <div class="global_set" style="height:100%;overflow: auto;">
+                        <h4 class="text-center"><span>模板</span></h4>
+
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            <i class="glyphicon glyphicon-edit"></i> 造型
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                    <div class="panel-body">
+                                        <div class="set_detail">
+                                            <p class="set_title">邮件设置</p>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-3 no-padding-left">
+                                                    <span>余量(上下)</span>
+                                                    <input type="number" value="20" class="form-control global_padding" min="0" max="100">
+                                                </div>
+                                                <div class="col-sm-3 no-padding-left">
+                                                    <span>余量(左右)</span>
+                                                    <input type="number" value="10" class="form-control global_padding_lr" min="0" max="100">
+                                                </div>
+                                                <div class="col-sm-3 no-padding-left">
+                                                    <span>宽度</span>
+                                                    <input type="number" value="600" class="form-control global_width">
+                                                </div>
+                                            </div>
+                                            <div class="row no-margin">
+                                                <div class="col-xs-4 no-padding margin-bottom-28">
+                                                    <div id="global_color" class="input-group colorpicker-component">
+
+                                                        <input type="text" value="#00AABB" class="form-control" />
+
+                                                        <span class="input-group-addon"><i></i></span>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6" style="padding-top:6px;">
+                                                    <span>背景颜色</span>
+                                                </div>
+                                            </div>
+                                            <p class="set_title">背景图</p>
+                                            <div>
+                                                <div class="text-center">
+                                                    <input type="button" class="btn btn-success" data-toggle="modal" data-target="#img_modal" value="选择现有图片">
+                                                    <input type="button" class="btn btn-danger cancel_global_bg"  value="取消背景图片">
+                                                </div>
+                                                <p class="text-center">或者</p>
+                                                <div class="text-center">
+                                                    <label></label>
+                                                    <input id="file-3" type="file" class="global_bg" multiple=true>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingTwo">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            <i class="glyphicon glyphicon-font"></i> 文字
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                    <div class="panel-body">
+                                        <div class="set_detail">
+                                            <p class="set_title">文本</p>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-12 no-padding">
+                                                    <select  class="select2 form-control">
+                                                        <option value="微软雅黑">微软雅黑</option>
+                                                        <option value="宋体">宋体</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin ">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>尺寸</span>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>行高</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                        <option value="30">30</option>
+                                                        <option value="32">32</option>
+                                                        <option value="34">34</option>
+                                                        <option value="36">36</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4 no-padding">
+                                                    <div  class="input-group colorpicker-component global_color">
+
+                                                        <input type="text" value="#333" class="form-control height-30" />
+
+                                                        <span class="input-group-addon"><i></i></span>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 no-padding flex_box">
+                                                    <div class="text-center"><i class="glyphicon glyphicon-bold"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-italic"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-text-width"></i></div>
+                                                </div>
+                                            </div>
+
+                                            <p class="set_title">超链接</p>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-12 no-padding">
+                                                    <select  class="select2 form-control">
+                                                        <option value="微软雅黑">微软雅黑</option>
+                                                        <option value="宋体">宋体</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin ">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>尺寸</span>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>行高</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                        <option value="30">30</option>
+                                                        <option value="32">32</option>
+                                                        <option value="34">34</option>
+                                                        <option value="36">36</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4 no-padding">
+                                                    <div  class="input-group colorpicker-component global_color">
+
+                                                        <input type="text" value="#0080c0" class="form-control height-30" />
+
+                                                        <span class="input-group-addon"><i></i></span>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 no-padding flex_box">
+                                                    <div class="text-center"><i class="glyphicon glyphicon-bold"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-italic"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-text-width"></i></div>
+                                                </div>
+                                            </div>
+
+                                            <!--标题1-->
+                                            <p class="set_title">标题1</p>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-12 no-padding">
+                                                    <select  class="select2 form-control">
+                                                        <option value="微软雅黑">微软雅黑</option>
+                                                        <option value="宋体">宋体</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin ">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>尺寸</span>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>行高</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                        <option value="30">30</option>
+                                                        <option value="32">32</option>
+                                                        <option value="34">34</option>
+                                                        <option value="36">36</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4 no-padding">
+                                                    <div  class="input-group colorpicker-component global_color">
+
+                                                        <input type="text" value="#333" class="form-control height-30" />
+
+                                                        <span class="input-group-addon"><i></i></span>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 no-padding flex_box">
+                                                    <div class="text-center"><i class="glyphicon glyphicon-bold"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-italic"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-text-width"></i></div>
+                                                </div>
+                                            </div>
+
+                                            <!--标题2-->
+                                            <p class="set_title">标题2</p>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-12 no-padding">
+                                                    <select  class="select2 form-control">
+                                                        <option value="微软雅黑">微软雅黑</option>
+                                                        <option value="宋体">宋体</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin ">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>尺寸</span>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>行高</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                        <option value="30">30</option>
+                                                        <option value="32">32</option>
+                                                        <option value="34">34</option>
+                                                        <option value="36">36</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4 no-padding">
+                                                    <div  class="input-group colorpicker-component global_color">
+
+                                                        <input type="text" value="#333" class="form-control height-30" />
+
+                                                        <span class="input-group-addon"><i></i></span>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 no-padding flex_box">
+                                                    <div class="text-center"><i class="glyphicon glyphicon-bold"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-italic"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-text-width"></i></div>
+                                                </div>
+                                            </div>
+
+                                            <!--标题3-->
+                                            <p class="set_title">标题3</p>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-12 no-padding">
+                                                    <select  class="select2 form-control">
+                                                        <option value="微软雅黑">微软雅黑</option>
+                                                        <option value="宋体">宋体</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin ">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>尺寸</span>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>行高</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                        <option value="30">30</option>
+                                                        <option value="32">32</option>
+                                                        <option value="34">34</option>
+                                                        <option value="36">36</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4 no-padding">
+                                                    <div  class="input-group colorpicker-component global_color">
+
+                                                        <input type="text" value="#333" class="form-control height-30" />
+
+                                                        <span class="input-group-addon"><i></i></span>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 no-padding flex_box">
+                                                    <div class="text-center"><i class="glyphicon glyphicon-bold"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-italic"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-text-width"></i></div>
+                                                </div>
+                                            </div>
+
+                                            <!--标题4-->
+                                            <p class="set_title">标题4</p>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-12 no-padding">
+                                                    <select  class="select2 form-control">
+                                                        <option value="微软雅黑">微软雅黑</option>
+                                                        <option value="宋体">宋体</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin ">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>尺寸</span>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>行高</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                        <option value="30">30</option>
+                                                        <option value="32">32</option>
+                                                        <option value="34">34</option>
+                                                        <option value="36">36</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4 no-padding">
+                                                    <div  class="input-group colorpicker-component global_color">
+
+                                                        <input type="text" value="#333" class="form-control height-30" />
+
+                                                        <span class="input-group-addon"><i></i></span>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 no-padding flex_box">
+                                                    <div class="text-center"><i class="glyphicon glyphicon-bold"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-italic"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-text-width"></i></div>
+                                                </div>
+                                            </div>
+
+                                            <!--标题5-->
+                                            <p class="set_title">标题5</p>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-12 no-padding">
+                                                    <select  class="select2 form-control">
+                                                        <option value="微软雅黑">微软雅黑</option>
+                                                        <option value="宋体">宋体</option>
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin ">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>尺寸</span>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <span>行高</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row no-margin margin-bottom-28">
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-2 no-padding-left">
+                                                    <select class="select2 form-control">
+                                                        <option value="8">8</option>
+                                                        <option value="10">10</option>
+                                                        <option value="12">12</option>
+                                                        <option value="14">14</option>
+                                                        <option value="16">16</option>
+                                                        <option value="18">18</option>
+                                                        <option value="20">20</option>
+                                                        <option value="22">22</option>
+                                                        <option value="24">24</option>
+                                                        <option value="26">26</option>
+                                                        <option value="28">28</option>
+                                                        <option value="30">30</option>
+                                                        <option value="32">32</option>
+                                                        <option value="34">34</option>
+                                                        <option value="36">36</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-4 no-padding">
+                                                    <div  class="input-group colorpicker-component global_color">
+
+                                                        <input type="text" value="#333" class="form-control height-30" />
+
+                                                        <span class="input-group-addon"><i></i></span>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 no-padding flex_box">
+                                                    <div class="text-center"><i class="glyphicon glyphicon-bold"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-italic"></i></div>
+                                                    <div class="text-center"><i class="glyphicon glyphicon-text-width"></i></div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -309,9 +872,15 @@
 <br/><br/>
 <script src="js/jquery-2.1.4.js"></script>
 <script src="js/bootstrap.js"></script>
+<script src="js/fileinput.js"></script>
+<script src="js/fileinput_locale_zh.js"></script>
+<script src="js/bootstrap-colorpicker.js"></script>
+<script src="js/select2.js"></script>
 <script>
 
     $(function () {
+        $('.select2').select2();
+
         var tpl = `<div class="actions">
         <p class="top0"><i class="glyphicon glyphicon-eject"></i></p>
         <p><i class="glyphicon glyphicon-chevron-up"></i></p>
@@ -319,7 +888,7 @@
         <p><i class="glyphicon glyphicon-remove"></i></p>
         </div>`
         $('[data-placement="right"]').attr('title',tpl).tooltip();
-        $('#popover').attr('data-html',true).attr('data-content',tpl).popover()
+        $('#popover').attr('data-html',true).attr('data-trigger','focus').attr('data-content',tpl).popover()
         $('#popover').on('hidden.bs.popover', function (e) {
             // do something…
 //            console.log(this)
@@ -328,7 +897,292 @@
         $('body').on('click','.top0',function(){
             console.log(1234)
         })
+
+        function showModal(){
+            $('#myModal').modal()
+        }
+
+        function initPop(){
+            var tpl = `<div class="actions">
+        <p class="top0" title="置顶"><i class="glyphicon glyphicon-triangle-top"></i></p>
+        <p class="top1" title="上移"><i class="glyphicon glyphicon-chevron-up"></i></p>
+        <p class="down1" title="下移"><i class="glyphicon glyphicon-chevron-down"></i></p>
+        <p class="down0" title="置底"><i class="glyphicon glyphicon-triangle-bottom"></i></p>
+        <p class="remove1" title="删除"><i class="glyphicon glyphicon-remove"></i></p>
+        </div>`
+
+            $('.set_popover_btn').attr('data-html',true).attr('data-content',tpl).popover();
+
+        }
+
+        var bodyS = function(iframe) {
+            var i;
+            var obj;
+            //设置 "body"
+            obj = iframe.contentWindow.document.body;
+            obj.style.overflowX  = 'auto';
+            obj.style.overflowY  = 'hidden';
+            obj.style.wordWrap   = 'break-word';
+            obj.style.fontSize = '12px';
+            var head = iframe.contentWindow.document.getElementsByTagName('head')[0];
+            obj = iframe.contentWindow.document.getElementsByTagName('a');
+            for(i=0; i<obj.length; i++) {
+                obj[i].target = "_blank";
+            }
+            obj = iframe.contentWindow.document.getElementsByTagName('p');
+            for(i=0; i<obj.length; i++) {
+//      obj[i].style.marginTop = "5px";
+//      obj[i].style.marginBottom = "5px";
+            }
+        };
+
+        var set_btn='<a class="btn btn-sm btn-warning set_popover_btn" role="button" tabindex="0" data-trigger="focus" style="position:absolute;right:-50px;"><i class="glyphicon glyphicon-cog"></i></a>';
+
+        function init(){
+            var button = `
+       <div class="row">
+            ${set_btn}
+       <div class="col-sm-12 no-padding button_box">
+       <div class="text-center" style="min-height:50px;"><input type="button" value="我的按钮" class="btn btn-default">
+       </div>
+       </div></div>`
+            var text = `<div class="row">
+            ${set_btn}
+            <div class="col-sm-12 no-padding text_box">
+    <p style="min-height:50px;">content</p>
+    </div></div>`;
+            var img = `<div class="row">
+            ${set_btn}<div class="col-sm-12 no-padding image_box">
+     <div class="text-center" style="border:1px solid #cdcdcd;background:#F5F5F5;min-height:50px;vertical-align: middle"><img src="img/masterImage.png" style="width:20px;" alt="img"></div>
+    </div></div>`;
+            var spacer = `<div class="row">
+            ${set_btn}<div class="col-sm-12 no-padding spacer_box">
+    <p style="min-height:50px;"></p>
+    </div></div>`;
+            var ruler = `<div class="row">
+            ${set_btn}<div class="col-sm-12 no-padding ruler_box">
+    <div style="min-height:50px;border-top:2px solid #666;"></div>
+    </div></div>`;
+
+            var button_noset = `
+       <div class="row">
+       <div class="col-sm-12 no-padding button_box">
+       <div class="text-center" style="min-height:50px;"><input type="button" value="我的按钮" class="btn btn-default">
+       </div>
+       </div></div>`
+            var text_noset = `<div class="row">
+            <div class="col-sm-12 no-padding text_box">
+    <p style="min-height:50px;">content</p>
+    </div></div>`;
+            var img_noset = `<div class="row">
+            <div class="col-sm-12 no-padding image_box">
+     <div class="text-center" style="border:1px solid #cdcdcd;background:#F5F5F5;min-height:50px;vertical-align: middle"><img src="img/masterImage.png" style="width:20px;" alt="img"></div>
+    </div></div>`;
+            var spacer_noset = `<div class="row">
+            <div class="col-sm-12 no-padding spacer_box">
+    <p style="min-height:50px;"></p>
+    </div></div>`;
+            var ruler_noset = `<div class="row">
+            <div class="col-sm-12 no-padding ruler_box">
+    <div style="min-height:50px;border-top:2px solid #666;"></div>
+    </div></div>`;
+
+
+//            var ibody = document.getElementById('mail-iframe').contentWindow.document.body;
+
+
+
+            $('.add_btn').click(function(){
+                $('.editor-box').append(button);
+                initPop();
+            })
+            $('.add_img').click(function(){
+                $('.editor-box').append(img)
+                initPop();
+            })
+            $('.add_text').click(function(){
+                $('.editor-box').append(text)
+                initPop();
+            })
+            $('.add_space').click(function(){
+                $('.editor-box').append(spacer)
+                initPop();
+            })
+            $('.add_ruler').click(function(){
+                $('.editor-box').append(ruler)
+                initPop();
+            })
+
+            $('#myModal .item-box').click(function(){
+                $('#myModal').modal('hide');
+                var type = $(this).find('img').attr('title');
+                $('.editor-box .cur_box').parents('.editor-col').removeClass('editor-col');
+                if(type == 'text'){
+                    $('.editor-box .cur_box').parent().html(text_noset);
+                }else if(type == 'image'){
+                    $('.editor-box .cur_box').parent().html(img_noset);
+                }else if(type == 'button'){
+                    $('.editor-box .cur_box').parent().html(button_noset);
+                }else if(type == 'spacer'){
+                    $('.editor-box .cur_box').parent().html(spacer_noset);
+                }else if(type == 'ruler'){
+                    $('.editor-box .cur_box').parent().html(ruler_noset);
+                }
+                initPop();
+            })
+
+
+        }
+        init();
+
+        $('.add-layout').click(function(){
+            $('.select-layout-box').toggle();
+        })
+
+
+        var row = `
+        <div class="row">
+            ${set_btn}
+            <div class="col-sm-12 editor-col">
+                <div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div>
+            </div>
+        </div>`
+        var row2 = `
+        <div class="row">
+            ${set_btn}
+            <div class="col-sm-6 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+            <div class="col-sm-6 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        </div>`
+        var row3 = `
+        <div class="row">
+            ${set_btn}
+        <div class="col-sm-4 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        <div class="col-sm-4 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        <div class="col-sm-4 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        </div>`
+        var row4 = `
+        <div class="row">
+            ${set_btn}
+        <div class="col-sm-3 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        <div class="col-sm-3 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        <div class="col-sm-3 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        <div class="col-sm-3 editor-col"><div class="text-center box-init"><i class="glyphicon glyphicon-plus"></i></div></div>
+        </div>`
+        $('.layout-img-box p').click(function(){
+            $('.select-layout-box').hide();
+            var index = $(this).attr('data-lay');
+            if(index == '1'){
+                $('.editor-box').append(row);
+                initPop();
+            }else if(index == '2'){
+                $('.editor-box').append(row2);
+                initPop();
+            }else if(index == '3'){
+                $('.editor-box').append(row3);
+                initPop();
+            }else if(index == '4'){
+                $('.editor-box').append(row4);
+                initPop();
+            }
+
+        })
+        $('body').on('click','.editor-col .box-init',function(){
+            //$('#myModal', window.parent.document).modal();
+            $(this).addClass('cur_box');
+            showModal();
+        })
+        $('.editor-box').on('click','.actions .remove1',function(){
+            $(this).parents('.popover').parent().remove();
+        })
+        $('.editor-box').on('click','.actions .top0',function(){
+            var $first = $('.editor-box>.row:eq(0)');
+            $(this).parents('.popover').parent().insertBefore($first);
+        })
+        $('.editor-box').on('click','.actions .top1',function(){
+            var $prev = $(this).parents('.popover').parent().prev();
+            $(this).parents('.popover').parent().insertBefore($prev);
+        })
+        $('.editor-box').on('click','.actions .down1',function(){
+            var $next = $(this).parents('.popover').parent().next();
+            $(this).parents('.popover').parent().insertAfter($next);
+        })
+        $('.editor-box').on('click','.actions .down0',function(){
+            var $last = $('.editor-box>.row:last-child');
+            $(this).parents('.popover').parent().insertAfter($last);
+        })
+//        $('.editor-box').on('click','.remove1',function(){
+//            $(this).parents('.popover').parent().remove();
+//        })
+//        $('.editor-box').on('click','.remove1',function(){
+//            $(this).parents('.popover').parent().remove();
+//        })
+
+
+
+
+
+
+
     })
+
+    function initImage(ele){
+        $(ele).fileinput({
+            'allowedFileExtensions' : ['jpg', 'png','gif'],
+            uploadExtraData: {kvId: '10'}
+        });
+    }
+
+    function initImg(ele){
+        $(ele).fileinput({
+            showUpload: false,
+            showCaption: false,
+            browseClass: "btn btn-primary",
+            fileType: "any",
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"
+        });
+    }
+    //initImage("#file-4");
+    initImg("#file-3")
+
+    $('#global_color').colorpicker();
+    $('.global_color').colorpicker();
+    $('#global_color>input').change(function(){
+        $('.content').css('background-color',$(this).val())
+    })
+    $('.global_padding').change(function(){
+        $('.content').css('paddingTop',$(this).val()+'px')
+        $('.content').css('paddingBottom',$(this).val()+'px')
+        console.log($(this).val())
+    })
+    $('.global_padding_lr').change(function(){
+        $('.content').css('paddingLeft',$(this).val()+'px')
+        $('.content').css('paddingRight',$(this).val()+'px')
+        console.log($(this).val())
+//        console.log($('.main-editor').html())
+    })
+    $('.global_width').change(function(){
+        $('.content').css('width',$(this).val()+'px')
+//        console.log($('.main-editor').html())
+    })
+    $('.global_bg').change(function(){
+        var bb=encodeURIComponent($(this).val());
+        var nnow=decodeURIComponent(bb);
+        $('.content').css('backgroundImage',"url("+nnow+")");
+        console.log($(this).val())
+    })
+    $('#img_modal').on('click','p.select_bg',function(){
+        $('#img_modal p.select_bg').removeClass('active');
+        $(this).addClass('active');
+    })
+    $('#img_modal .sure_bg_btn').click(function(){
+        $('#img_modal').modal('hide');
+        var src = $("#img_modal p.select_bg.active img").attr('src')
+        $('.content').css('backgroundImage',"url("+src+")");
+    })
+    $('.cancel_global_bg').click(function(){
+        $('.content').css('backgroundImage',"none");
+    })
+
 
 
 

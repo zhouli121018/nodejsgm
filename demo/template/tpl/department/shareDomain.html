@@ -61,18 +61,14 @@
     var myTable,myTable2;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>test.com</td>
-                        <td>${10+i}</td>
-                        <td>
-                            <div class="">
-                                <a class="blue btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#details_share">
-                                    查看详情
-                                </a>
-                            </div>
-                        </td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>test.com</td>' +
+                    '<td>${10+i}</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="blue btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#details_share">查看详情</a>' +
+                    '</div></td></tr>'
         }
         $('#data-body').html(html);
             myTable =
@@ -112,21 +108,15 @@
     initDate(28);
     function initDate2(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>test.com</td>
-                        <td>是</td>
-                        <td>
-                            <div class="">
-                                <a class="blue btn btn-white btn-primary btn-xs" href="#">
-                                    设为默认
-                                </a>
-                                <a class="red btn btn-white btn-danger btn-xs" href="#">
-                                    删除
-                                </a>
-                            </div>
-                        </td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>test.com</td>' +
+                    '<td>是</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="blue btn btn-white btn-primary btn-xs" href="#">设为默认</a>' +
+                    '<a class="red btn btn-white btn-danger btn-xs" href="#">删除</a>' +
+                    '</div></td></tr>'
         }
         $('#data-body2').html(html);
         myTable2 =

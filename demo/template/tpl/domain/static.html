@@ -3339,7 +3339,7 @@
                 .closest('.ace-spinner')
                 .on('changed.fu.spinbox', function(){
 //                    alert($('#spinner1').val())
-        });
+                });
 
     })
 
@@ -3363,29 +3363,10 @@
     var myTable,myTable_mod;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr role="row">
-                    <td class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </td>
-
-                    <td>
-                        ${i+1}
-                    </td>
-                    <td>名称名称</td>
-                    <td>img.jpg</td>
-                    <td>
-                        <div class="">
-
-                            <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_stationery">
-                                修改
-                            </a>
-
-                        </div>
-                    </td>
-                </tr>`
+            html+='<tr role="row"><td class="center"><label class="pos-rel"><input type="checkbox" class="ace"><span class="lbl"></span>' +
+                    '</label></td><td>'+(i+1)+'</td><td>名称名称</td><td>img.jpg</td><td><div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_stationery">' +
+                    '修改</a></div></td></tr>';
         }
         /*<!--<td class="hidden-480">-->
          <!--<span class="label label-sm label-warning">Expiring</span>-->
@@ -3472,7 +3453,7 @@
         //tooltip placement on right or left
         function tooltip_placement(context, source) {
             var $source = $(source);
-            var $parent = $source.closest('table')
+            var $parent = $source.closest('table');
             var off1 = $parent.offset();
             var w1 = $parent.width();
 
@@ -3491,57 +3472,9 @@
 
 
 
-    }
+    };
     initDate(28);
 
-//    function initDate_mod(p){
-//        for(var i= 0,html='';i<p;i++){
-//            html+=`<tr class="">
-//                        <td class="center middle">${i+1}</td>
-//                        <td>部门机构管理</td>
-//                        <td>
-//                            <label class="inline" >
-//                                    <input name="admin_mod${i}" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
-//                                    <span class="lbl"></span>
-//                            </label>
-//                        </td>
-//                    </tr>`
-//        }
-//        $('#data-body-mod').html(html);
-//        myTable_mod =
-//                $('#dynamic-table-mod')
-//                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
-//                        .DataTable( {
-//                            bAutoWidth: false,
-//                            "aoColumns": [
-//                                { "bSortable": false },
-//                                { "bSortable": false },
-//                                { "bSortable": false }
-//                            ],
-//                            "aaSorting": [],
-////                            select: {
-////                                style: 'multi'
-////                            },
-//                            "iDisplayLength": 20,
-//                            "lengthMenu":  [10,15,20, 50, 100,200],
-//                            "oLanguage": {
-////                                "sLengthMenu": ,
-//                                "sZeroRecords": "对不起! 信息筛选结果为空!",
-//                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
-//                                "sInfoEmpty": "总计: 0 条记录",
-//                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
-//                                "sSearch": "搜索: ",
-//                                "oPaginate": {
-//                                    "sFirst":    "第一页",
-//                                    "sPrevious": "上一页",
-//                                    "sNext":     "下一页",
-//                                    "sLast":     "最后一页"
-//                                }
-//                            }
-//                        } );
-//
-//    }
-//    initDate_mod(18);
 
     $('#search-btn').click(function(){
         myTable.destroy();
@@ -3551,31 +3484,15 @@
     var myTable3,myTable2,myTable_secret;
     function initDate3(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr role="row">
-                    <td class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </td>
-
-                    <td>
-                        ${i+1}
-                    </td>
-                    <td><span class="label  label-info arrowed arrowed-righ">姓名${i+1}</span></td>
-                    <td>1@test.com</td>
-                    <td>test01</td>
-                    <td><span class="label label-sm label-warning arrowed-in">13712341234</span></td>
-                    <td>工作：3567876 <br>
-                    住宅：13712341234</td>
-                    <td>
-                        <div class="">
-                            <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_public">
-                                修改
-                            </a>
-                        </div>
-                    </td>
-                </tr>`
+            html+='<tr role="row"><td class="center"><label class="pos-rel"><input type="checkbox" class="ace"><span class="lbl"></span>' +
+                    '</label></td><td>'+(i+1)+'</td> ' +
+                    '<td><span class="label  label-info arrowed arrowed-righ">姓名'+(i+1)+'</span></td><td>1@test.com</td><td>test01</td>' +
+                    '<td><span class="label label-sm label-warning arrowed-in">13712341234</span></td> <td>工作：3567876 <br>' +
+                    '住宅：13712341234</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    ' <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_public">' +
+                    '修改</a></div></td></tr>';
         }
         $('#data-body3').html(html);
 
@@ -3665,7 +3582,7 @@
         //tooltip placement on right or left
         function tooltip_placement(context, source) {
             var $source = $(source);
-            var $parent = $source.closest('table')
+            var $parent = $source.closest('table');
             var off1 = $parent.offset();
             var w1 = $parent.width();
 
@@ -3684,48 +3601,23 @@
 
 
 
-    }
+    };
     initDate3(28);
 
     $('#search-btn3').click(function(){
         myTable3.destroy();
         initDate3(8);
-    })
+    });
 
     initDate2(12);
     function initDate2(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr>
-                    <td class="center">
-                        ${i+1}
-                    </td>
-                    <td>test.com</td>
-                    <td>
-                        <div class="">
-                            <a class="green btn btn-white btn-primary btn-xs" href="#" >
-                                修改
-                            </a>
-                            <a class="red btn btn-white btn-danger btn-xs" href="#" >
-                                删除
-                            </a>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <a class="grey" title="往前一位">
-                                <i class="glyphicon glyphicon-triangle-top"></i>
-                            </a>
-                            <a class="grey" title="往后一位">
-                                <i class="glyphicon glyphicon-triangle-bottom"></i>
-                            </a>
-                            <a class="blue bold" title="插入此之前">
-                                <i class="glyphicon glyphicon-eject"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>`
-
-
+            html+='<tr><td class="center">'+(i+1)+'</td><td>test.com</td><td>' +
+                    '<div class=""><a class="green btn btn-white btn-primary btn-xs" href="#" >修改</a>' +
+                    '<a class="red btn btn-white btn-danger btn-xs" href="#" >删除</a></div></td><td>' +
+                    '<div class="action-buttons"><a class="grey" title="往前一位"><i class="glyphicon glyphicon-triangle-top"></i></a>' +
+                    '<a class="grey" title="往后一位"><i class="glyphicon glyphicon-triangle-bottom"></i></a><a class="blue bold" title="插入此之前">' +
+                    '<i class="glyphicon glyphicon-eject"></i></a></div></td></tr>';
         }
         $('#data-body2').html(html);
 
@@ -3760,24 +3652,14 @@
                                 }
                             }
                         } );
-    }
+    };
 
     initDate_secret(6);
     function initDate_secret(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr role="row">
-                    <td class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </td>
-
-                    <td>
-                        ${i+1}
-                    </td>
-                    <td>test.com</td>
-                </tr>`
+            html+='<tr role="row"><td class="center"><label class="pos-rel">' +
+                    '<input type="checkbox" class="ace"><span class="lbl"></span>' +
+                    '</label></td><td>'+(i+1)+'</td><td>test.com</td></tr>';
         }
         $('#data-body-secret').html(html);
 
@@ -3858,7 +3740,7 @@
         //tooltip placement on right or left
         function tooltip_placement(context, source) {
             var $source = $(source);
-            var $parent = $source.closest('table')
+            var $parent = $source.closest('table');
             var off1 = $parent.offset();
             var w1 = $parent.width();
 
@@ -4107,7 +3989,7 @@
     var hash=[];
     function changeData(data_copy){
         var tree_data = {
-        }
+        };
         for(var key in data_copy){
             tree_data[data_copy[key]]={text: data_copy[key], type: 'item'}
         }
@@ -4232,14 +4114,16 @@
         }
     })
 
-    var initArr = ["Appliances", "Arts & Crafts", "Clothing", "Computers", "Jewelry", "Office & Business", "Sports & Fitness", "Apartments", "Office Space", "Vacation Rentals", "Villas", "Plots", "Cats", "Dogs", "Horses", "Reptiles"]
+    var initArr = ["Appliances", "Arts & Crafts", "Clothing", "Computers", "Jewelry", "Office & Business", "Sports & Fitness", "Apartments", "Office Space", "Vacation Rentals", "Villas", "Plots", "Cats", "Dogs", "Horses", "Reptiles"];
     function search(input,initArr,ele){
-        var keyWords = $(input).val()
+        var keyWords = $(input).val();
         var reg = new RegExp(keyWords, 'i');
+
         var arr = [];
-        for(var o of initArr){
-            if(o.match(reg)){
-                arr.push(o);
+
+        for(var key in initArr){
+            if(initArr[key].match(reg)){
+                arr.push(initArr[key]);
             }
         }
         $(ele).removeData("fu.tree");

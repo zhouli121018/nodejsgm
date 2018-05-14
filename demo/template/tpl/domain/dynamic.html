@@ -474,41 +474,29 @@
     var myTable;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td><b class="blue">test.com</b> (主域)</td>
-                        <td>${2000+i}</td>
-                        <td>不限制</td>
-                        <td>
-                        <span class="label label-sm label-success">邮箱：不限制</span>
-                        <span class="label label-sm label-info">网盘：不限制</span></td>
-                        <td>2018-02-02 17:25:10</td>
-                        <td>
-                            <label class="inline" >
-                                <input name="grey_name${i}" checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                <span class="lbl"></span>
-                            </label>
-                        </td>
-                        <td>
-                        <span class="label label-sm label-warning arrowed-in arrowed-in-right">否</span>
-                        </td>
-                        <td>
-                            <div class="">
-                                <a class="green edit btn btn-white btn-primary btn-xs jump" href="${i}">
-                                    配置
-                                </a>
-                                <a class="blue edit btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#dkim_edit">
-                                    DKIM 配置
-                                </a>
-                                <a class="red delete btn btn-danger btn-white btn-xs" href="${i}">
-                                    删除
-                                </a>
-                            </div>
-                        </td>
-                    </tr>`
+            html+='<tr class=""><td class="center middle">'+(i+1)+'</td>' +
+                    '<td><b class="blue">test.com</b> (主域)</td>' +
+                    '<td>'+(2000+i)+'</td>' +
+                    '<td>不限制</td>' +
+                    '<td> ' +
+                    ' <span class="label label-sm label-success">邮箱：不限制</span>' +
+                    ' <span class="label label-sm label-info">网盘：不限制</span></td>' +
+                    ' <td>2018-02-02 17:25:10</td>' +
+                    ' <td>' +
+                    '<label class="inline" >' +
+                    '<input name="grey_name${i}" checked  type="checkbox" class="ace ace-switch ace-switch-5">' +
+                    '<span class="lbl"></span>' +
+                    '</label>' +
+                    '</td><td><span class="label label-sm label-warning arrowed-in arrowed-in-right">否</span>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green edit btn btn-white btn-primary btn-xs jump" href="'+i+'">配置</a>' +
+                    '<a class="blue edit btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#dkim_edit">DKIM 配置</a>' +
+                    '<a class="red delete btn btn-danger btn-white btn-xs" href="'+i+'"> 删除</a> </div></td></tr>'
         }
         $('#data-body').html(html);
-            myTable =
+        myTable =
                 $('#dynamic-table')
                         .DataTable( {
                             bAutoWidth: false,
@@ -537,7 +525,7 @@
                                     "sLast":     "最后一页"
                                 }
                             }
-                } );
+                        } );
     }
     initDate(28);
 

@@ -1196,45 +1196,30 @@
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
             if(i==0){
-                html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>sljdsoifjs</td>
-                        <td>说明信息说明信息</td>
-                        <td>成员数${100+1}</td>
-                        <td>
-                            <div class="">
-                                <a class="btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_group">
-                                    组配置
-                                </a>
-                                <a class="btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#member_manage">
-                                    成员管理
-                                </a>
-                                <a class="red delete btn btn-white btn-danger btn-xs" disabled href="#">
-                                    删除
-                                </a>
-                            </div>
-                        </td>
-                    </tr>`
+                html+='<tr class="">' +
+                        '<td class="center middle">'+(i+1)+'</td>' +
+                        '<td>sljdsoifjs</td>' +
+                        '<td>说明信息说明信息</td>' +
+                        '<td>成员数${100+1}</td>' +
+                        '<td>' +
+                        '<div class="">' +
+                        '<a class="btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_group">组配置</a>' +
+                        '<a class="btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#member_manage">成员管理</a>' +
+                        '<a class="red delete btn btn-white btn-danger btn-xs" disabled href="#">删除</a>' +
+                        '</div>' +
+                        '</td></tr>'
             }else{ 
-                html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>sljdsoifjs</td>
-                        <td>说明信息说明信息</td>
-                        <td>成员数${100+1}</td>
-                        <td>
-                            <div class="">
-                                <a class="btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_group">
-                                    组配置
-                                </a>
-                                <a class="btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#member_manage">
-                                    成员管理
-                                </a>
-                                <a class="red delete btn btn-white btn-danger btn-xs" href="#">
-                                    删除
-                                </a>
-                            </div>
-                        </td>
-                    </tr>`
+                html+='<tr class="">' +
+                        '<td class="center middle">'+(i+1)+'</td>' +
+                        '<td>sljdsoifjs</td>' +
+                        '<td>说明信息说明信息</td>' +
+                        '<td>成员数'+(i+1)+'</td>' +
+                        '<td>' +
+                        '<div class="">' +
+                        '<a class="btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_group">组配置</a>' +
+                        '<a class="btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#member_manage">成员管理</a>' +
+                        '<a class="red delete btn btn-white btn-danger btn-xs" href="#">删除</a>' +
+                        '</div></td></tr>'
             }
 
         }
@@ -1296,34 +1281,22 @@
     var myTable_member;
     function initDate_member(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr role="row">
-                    <td class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </td>
-                    <td>
-                        ${i+1}
-                    </td>
-
-                    <td>
-                        <span class="label label-success">姓名${i}</span>
-                    </td>
-                    <td><input type="text" value="dfdsfsd"></td>
-                    <td>asdf@test.com</td>
-                    <td>
-                        <div class="">
-                                <a class="green btn btn-white btn-primary btn-xs">
-                                    修改职位
-                                </a>
-
-                                <a class="red btn btn-white btn-danger btn-xs">
-                                    删除
-                                </a>
-                        </div>
-                    </td>
-                </tr>`
+            html+='<tr role="row">' +
+                    '<td class="center">' +
+                    '<label class="pos-rel">' +
+                    '<input type="checkbox" class="ace">' +
+                    '<span class="lbl"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td>'+(i+1)+'</td>' +
+                    '<td><span class="label label-success">姓名'+i+'</span></td>' +
+                    '<td><input type="text" value="dfdsfsd"></td>' +
+                    '<td>asdf@test.com</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs">修改职位</a>' +
+                    '<a class="red btn btn-white btn-danger btn-xs"> 删除</a>' +
+                    '</div></td></tr>'
         }
         /*<!--<td class="hidden-480">-->
          <!--<span class="label label-sm label-warning">Expiring</span>-->
@@ -1934,9 +1907,9 @@
         var keyWords = $(input).val()
         var reg = new RegExp(keyWords, 'i');
         var arr = [];
-        for(var o of initArr){
-            if(o.match(reg)){
-                arr.push(o);
+        for(var key in initArr){
+            if(initArr[key].match(reg)){
+                arr.push(initArr[key]);
             }
         }
         $(ele).removeData("fu.tree");

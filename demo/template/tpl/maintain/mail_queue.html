@@ -98,26 +98,22 @@
         var myTable;
         function initDate(p){
             for(var i= 0,html='';i<p;i++){
-                html+=`<tr role="row">
-                    <td class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </td>
-
-                    <td class="center">
-                        ${i+1}
-                    </td>
-                    <td>2018-01-02</td>
-                    <td>name</td>
-                    <td>rec_name</td>
-                    <td>主题</td>
-                    <td>gkdfjoi</td>
-                    <td>gkdfjoidsfsd</td>
-                    <td>${i+10}</td>
-                    <td>status</td>
-                </tr>`
+                html+='<tr role="row">' +
+                        '<td class="center">' +
+                        '<label class="pos-rel">' +
+                        '<input type="checkbox" class="ace">' +
+                        '<span class="lbl"></span>' +
+                        '</label>' +
+                        '</td>' +
+                        '<td class="center">'+(i+1)+'</td>' +
+                        '<td>2018-01-02</td>' +
+                        '<td>name</td>' +
+                        '<td>rec_name</td>' +
+                        '<td>主题</td>' +
+                        '<td>gkdfjoi</td>' +
+                        '<td>gkdfjoidsfsd</td>' +
+                        '<td>${i+10}</td>' +
+                        '<td>status</td></tr>'
             }
             /*<!--<td class="hidden-480">-->
              <!--<span class="label label-sm label-warning">Expiring</span>-->

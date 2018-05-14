@@ -258,30 +258,23 @@
     var myTable,myTable2;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>邮件列表名称</td>
-                        <td>邮件列表地址${i}</td>
-                        <td>说明信息说明信息</td>
-                        <td>typetype</td>
-                        <td>
-                            <label class="inline" >
-                                <input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                <span class="lbl"></span>
-                            </label>
-                        </td>
-                        <td>
-                            <div class="">
-                                <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#editMailList">
-                                    修改
-                                </a>
-
-                                <a class="blue btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#MaintainMailList">
-                                    维护
-                                </a>
-                            </div>
-                        </td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>邮件列表名称</td>' +
+                    '<td>邮件列表地址${i}</td>' +
+                    '<td>说明信息说明信息</td>' +
+                    '<td>typetype</td>' +
+                    '<td>' +
+                    '<label class="inline" >' +
+                    '<input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">' +
+                    '<span class="lbl"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#editMailList">修改</a>' +
+                    '<a class="blue btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#MaintainMailList">维护</a>' +
+                    '</div></td></tr>'
         }
         $('#data-body').html(html);
             myTable =
@@ -326,39 +319,22 @@
     initDate2(6);
     function initDate2(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr role="row">
-                    <td class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </td>
-
-                    <td>
-                        ${i+1}
-                    </td>
-                    <td>test.com</td>
-                    <td>
-                        <label class="radio-inline">
-                          <input type="radio" name="inlineRadioOptions" value="option1"> 收发
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" name="inlineRadioOptions" value="option2"> 只收
-                        </label>
-                        <label class="radio-inline">
-                          <input type="radio" name="inlineRadioOptions" value="option3"> 只发
-                        </label>
-                    </td>
-                    <td>2018-01-01 17:12:20</td>
-                    <td>nickname</td>
-                    <td>
-                        <div class="">
-                            <a class="green update btn btn-white btn-primary btn-xs" href="#">
-                                更新
-                            </a>
-                        </div>
-                    </td>
-                </tr>`
+            html+='<tr role="row">' +
+                    '<td class="center">' +
+                    '<label class="pos-rel">' +
+                    '<input type="checkbox" class="ace">' +
+                    '<span class="lbl"></span>' +
+                    '</label></td>' +
+                    '<td>'+(i+1)+'</td>' +
+                    '<td>test.com</td>' +
+                    '<td>' +
+                    '<label class="radio-inline"><input type="radio" name="inlineRadioOptions" value="option1"> 收发</label>' +
+                    '<label class="radio-inline"><input type="radio" name="inlineRadioOptions" value="option2"> 只收</label>' +
+                    '<label class="radio-inline"><input type="radio" name="inlineRadioOptions" value="option3"> 只发</label>' +
+                    '</td>' +
+                    '<td>2018-01-01 17:12:20</td>' +
+                    '<td>nickname</td>' +
+                    '<td><div class=""><a class="green update btn btn-white btn-primary btn-xs" href="#">更新</a></div></td></tr>'
         }
         $('#data-body2').html(html);
 

@@ -123,36 +123,26 @@
     var myTable;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr role="row">
-                    <td class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </td>
-
-                    <td class="center">
-                        ${i+1}
-                    </td>
-                    <td>test.com</td>
-                    <td>adfstest.com</td>
-                    <td >
-                        <label class="inline" >
-                                <input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                <span class="lbl middle"></span>
-                        </label>
-                    </td>
-                    <td>
-                        <div class="">
-                            <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_name">
-                                修改
-                            </a>
-                            <a class="red btn btn-white btn-danger btn-xs" href="#">
-                                    删除
-                            </a>
-                        </div>
-                    </td>
-                </tr>`
+            html+='<tr role="row">' +
+                    '<td class="center">' +
+                    '<label class="pos-rel">' +
+                    '<input type="checkbox" class="ace">' +
+                    '<span class="lbl"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td class="center">'+(i+1)+'</td>' +
+                    '<td>test.com</td>' +
+                    '<td>adfstest.com</td>' +
+                    '<td >' +
+                    '<label class="inline" >' +
+                    '<input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">' +
+                    '<span class="lbl middle"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_name">修改</a>' +
+                    '<a class="red btn btn-white btn-danger btn-xs" href="#">删除</a></div></td></tr>'
         }
         /*<!--<td class="hidden-480">-->
          <!--<span class="label label-sm label-warning">Expiring</span>-->

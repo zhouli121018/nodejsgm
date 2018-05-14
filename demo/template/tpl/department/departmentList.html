@@ -299,35 +299,20 @@
     var myTable;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>sljdsoifjssdaf</td>
-
-                        <td>
-                            <div class="">
-                                <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_department">
-                                    修改
-                                </a>
-
-                                <a class="btn btn-white btn-danger btn-xs delete" href="#">
-                                    删除
-                                </a>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="action-buttons">
-                                <a class="grey" title="往前一位">
-                                    <i class="glyphicon glyphicon-triangle-top"></i>
-                                </a>
-                                <a class="grey" title="往后一位">
-                                    <i class="glyphicon glyphicon-triangle-bottom"></i>
-                                </a>
-                                <a class="blue bold" title="插入此之前">
-                                    <i class="glyphicon glyphicon-eject"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>sljdsoifjssdaf</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_department">修改</a>' +
+                    '<a class="btn btn-white btn-danger btn-xs delete" href="#">删除</a>' +
+                    '</div></td>' +
+                    '<td>' +
+                    '<div class="action-buttons">' +
+                    '<a class="grey" title="往前一位"><i class="glyphicon glyphicon-triangle-top"></i></a>' +
+                    '<a class="grey" title="往后一位"><i class="glyphicon glyphicon-triangle-bottom"></i></a>' +
+                    '<a class="blue bold" title="插入此之前"><i class="glyphicon glyphicon-eject"></i></a>' +
+                    '</div></td></tr>'
         }
         $('#data-body').html(html);
             myTable =
@@ -342,9 +327,9 @@
                                 { "bSortable": false }
                             ],
                             "aaSorting": [],
-//                            select: {
-//                                style: 'multi'
-//                            },
+                            select: {
+                                style: 'multi'
+                            },
                             "iDisplayLength": 20,
                             "lengthMenu":  [10,15,20, 50, 100,200],
                             "oLanguage": {

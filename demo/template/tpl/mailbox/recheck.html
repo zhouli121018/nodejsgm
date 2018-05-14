@@ -371,26 +371,17 @@
     var myTable,myTable2,myTable3;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr role="row">
-                    <td class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </td>
-                    <td>
-                        ${i+1}
-                    </td>
-                    <td>testtest</td>
-                    <td>姓名</td>
-                    <td>${1234+i}</td>
-                    <td>后勤部</td>
-                    <td>等待中</td>
-                    <td>备注备注</td>
-                    <td>
-                        2018-01-02
-                    </td>
-                </tr>`
+            html+='<tr role="row"><td class="center">' +
+                    '<label class="pos-rel">' +
+                    '<input type="checkbox" class="ace">' +
+                    '<span class="lbl"></span></label></td><td> '+(i+1)+' </td> <td>testtest</td> ' +
+                    '<td>姓名</td>' +
+                    '<td>'+(1234+1)+'</td>' +
+                    '<td>后勤部</td>' +
+                    '<td>等待中</td>' +
+                    '<td>备注备注</td>' +
+                    '<td>2018-01-02</td>' +
+                    '</tr>'
         }
         $('#data-body').html(html);
 
@@ -508,26 +499,18 @@
 
     function initDate2(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr role="row">
-                    <td class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </td>
-                    <td>
-                        ${i+1}
-                    </td>
-                    <td>testtest</td>
-                    <td><span class="label label-info arrowed arrowed-righ">姓名${i+1}</span></td>
-                    <td>${1234+i}</td>
-                    <td>后勤部</td>
-                    <td>等待中</td>
-                    <td>备注备注</td>
-                    <td>
-                        2018-01-02
-                    </td>
-                </tr>`
+            html+='<tr role="row"><td class="center">' +
+                    '<label class="pos-rel">' +
+                    '<input type="checkbox" class="ace"><span class="lbl"></span></label></td>' +
+                    '<td>'+(i+1)+'</td>' +
+                    '<td>testtest</td>' +
+                    '<td><span class="label label-info arrowed arrowed-righ">姓名'+(i+1)+'</span></td>' +
+                    '<td>123456</td>' +
+                    '<td>后勤部</td>' +
+                    '<td>等待中</td>' +
+                    '<td>备注备注</td>' +
+                    '<td>2018-01-02</td>' +
+                    '</tr>'
         }
         /*<!--<td class="hidden-480">-->
          <!--<span class="label label-sm label-warning">Expiring</span>-->
@@ -647,27 +630,20 @@
 
     function initDate3(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr role="row">
-                    <td class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </td>
-                    <td>
-                        ${i+1}
-                    </td>
-                    <td>testtest</td>
-                    <td>姓名</td>
-                    <td>${1234+i}</td>
-                    <td>后勤部</td>
-                    <td>真实姓名：cs => 我们</td>
-                    <td>等待中</td>
-                    <td>备注备注</td>
-                    <td>
-                        2018-01-02
-                    </td>
-                </tr>`
+            html+='<tr role="row">' +
+                    '<td class="center"><label class="pos-rel">' +
+                    '<input type="checkbox" class="ace"><span class="lbl"></span></label>' +
+                    '</td>' +
+                    '<td>'+(i+1)+'</td>' +
+                    '<td>testtest</td>' +
+                    '<td>姓名</td>' +
+                    '<td>123456</td>' +
+                    '<td>后勤部</td>' +
+                    '<td>真实姓名：cs => 我们</td>' +
+                    '<td>等待中</td>' +
+                    '<td>备注备注</td>' +
+                    '<td>2018-01-02</td>' +
+                    '</tr>'
         }
         /*<!--<td class="hidden-480">-->
          <!--<span class="label label-sm label-warning">Expiring</span>-->
@@ -790,16 +766,16 @@
     var myTable_check_success,myTable_check_fail,myTable_cancel_success,myTable_cancel_fail,myTable_profile_success,myTable_profile_fail;
     function initDate_check_success(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>emailname</td>
-                        <td>username</td>
-                        <td>15648892</td>
-                        <td>department</td>
-                        <td>审核通过</td>
-                        <td>333</td>
-                        <td>2018-01-02 17:15:20</td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>emailname</td>' +
+                    '<td>username</td>' +
+                    '<td>15648892</td>' +
+                    '<td>department</td>' +
+                    '<td>审核通过</td>' +
+                    '<td>333</td>' +
+                    '<td>2018-01-02 17:15:20</td>' +
+                    '</tr>'
         }
         $('#check_success_body').html(html);
         myTable_check_success =
@@ -843,16 +819,16 @@
     initDate_check_success(16);
     function initDate_check_fail(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>emailname</td>
-                        <td>username</td>
-                        <td>15648892</td>
-                        <td>department</td>
-                        <td>拒绝通过</td>
-                        <td>123456</td>
-                        <td>2018-01-02 17:15:20</td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>emailname</td>' +
+                    '<td>username</td>' +
+                    '<td>15648892</td>' +
+                    '<td>department</td>' +
+                    '<td>拒绝通过</td>' +
+                    '<td>123456</td>' +
+                    '<td>2018-01-02 17:15:20</td>' +
+                    '</tr>'
         }
         $('#check_fail_body').html(html);
         myTable_check_fail =
@@ -897,16 +873,16 @@
 
     function initDate_cancel_success(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>emailname</td>
-                        <td>username</td>
-                        <td>15648892</td>
-                        <td>department</td>
-                        <td>已注销</td>
-                        <td>789546</td>
-                        <td>2018-01-02 17:15:20</td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>emailname</td>' +
+                    '<td>username</td>' +
+                    '<td>15648892</td>' +
+                    '<td>department</td>' +
+                    '<td>已注销</td>' +
+                    '<td>789546</td>' +
+                    '<td>2018-01-02 17:15:20</td>' +
+                    '</tr>'
         }
         $('#cancel_success_body').html(html);
         myTable_cancel_success =
@@ -950,16 +926,16 @@
     initDate_cancel_success(12);
     function initDate_cancel_fail(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>emailname</td>
-                        <td>username</td>
-                        <td>89645692</td>
-                        <td>department</td>
-                        <td>拒绝通过</td>
-                        <td>123456</td>
-                        <td>2018-01-02 17:15:20</td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>emailname</td>' +
+                    '<td>username</td>' +
+                    '<td>89645692</td>' +
+                    '<td>department</td>' +
+                    '<td>拒绝通过</td>' +
+                    '<td>123456</td>' +
+                    '<td>2018-01-02 17:15:20</td>' +
+                    '</tr>'
         }
         $('#cancel_fail_body').html(html);
         myTable_cancel_fail =
@@ -1004,16 +980,16 @@
 
     function initDate_profile_success(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>emailname</td>
-                        <td>username</td>
-                        <td>15648892</td>
-                        <td>department</td>
-                        <td>审核通过</td>
-                        <td>333</td>
-                        <td>2018-01-02 17:15:20</td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>emailname</td>' +
+                    '<td>username</td>' +
+                    '<td>15648892</td>' +
+                    '<td>department</td>' +
+                    '<td>审核通过</td>' +
+                    '<td>333</td>' +
+                    '<td>2018-01-02 17:15:20</td>' +
+                    '</tr>'
         }
         $('#profile_success_body').html(html);
         myTable_profile_success =
@@ -1057,16 +1033,16 @@
     initDate_profile_success(21);
     function initDate_profile_fail(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>emailname</td>
-                        <td>username</td>
-                        <td>15648892</td>
-                        <td>department</td>
-                        <td>拒绝通过</td>
-                        <td>123456</td>
-                        <td>2018-01-02 17:15:20</td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>emailname</td>' +
+                    '<td>username</td>' +
+                    '<td>15648892</td>' +
+                    '<td>department</td>' +
+                    '<td>拒绝通过</td>' +
+                    '<td>123456</td>' +
+                    '<td>2018-01-02 17:15:20</td>' +
+                    '</tr>'
         }
         $('#profile_fail_body').html(html);
         myTable_profile_fail =

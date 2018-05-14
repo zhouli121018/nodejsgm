@@ -75,6 +75,9 @@
             padding-left:0 !important;
 
         }
+        .action-buttons i{
+            cursor: pointer;
+        }
         .select-info{
             display:none;
         }
@@ -518,7 +521,7 @@
 <!-- /section:basics/navbar.layout -->
 <div class="main-container ace-save-state" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.loadState('main-container')}catch(e){}
+        try{ace.settings.loadState('main-container');}catch(e){}
     </script>
 
     <!-- #section:basics/sidebar -->
@@ -1347,7 +1350,6 @@
 <script src="../assets/js/jquery.sparkline.js"></script>
 
 <script src="../assets/js/jquery-ui.js"></script>
-<script src="../assets/js/jquery.ui.touch-punch.js"></script>
 
 <script src="../assets/js/fuelux/fuelux.tree.js"></script>
 <script src="../assets/js/chosen.jquery.js"></script>
@@ -1397,10 +1399,11 @@
 <script src="../assets/js/ace/ace.widget-on-reload.js"></script>
 <script src="../assets/js/ace/ace.searchbox-autocomplete.js"></script>
 <!-- ace scripts -->
-<script  src="../assets/js/html2canvas.js"></script>
+
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
     jQuery(function($) {
+//        alert(12333333333);
 
 //        $('#fankui_btn').click(function(){
 //            html2canvas(document.querySelector("#capture")).then(canvas => {

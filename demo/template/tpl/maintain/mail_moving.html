@@ -222,48 +222,35 @@ helo233@local.com	address2@remote.com	remote.com	remote_password2	1</textarea>
     var myTable;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr role="row">
-                    <td class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </td>
-
-                    <td class="center">
-                        ${i+1}
-                    </td>
-                    <td>abv@test.com</td>
-                    <td>abv@test.com</td>
-                    <td>202.103.191.47</td>
-                    <td>
-                        <span class="label label-xlg label-warning arrowed-in arrowed-in-right">否</span>
-                    </td>
-                    <td>
-                        迁移完毕
-                    </td>
-                    <td>任务结束</td>
-                    <td>2018-04-28 15:56</td>
-                    <td >
-                        <label class="inline" >
-                                <input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">
-                                <span class="lbl middle"></span>
-                        </label>
-                    </td>
-                    <td>
-                        <div class="">
-                            <a class="red btn btn-white btn-purple btn-xs" href="#">
-                                收信
-                            </a>
-                            <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#mail_moving_edit">
-                                修改
-                            </a>
-                            <a class="red btn btn-white btn-danger btn-xs" href="#">
-                                删除
-                            </a>
-                        </div>
-                    </td>
-                </tr>`
+            html+='<tr role="row">' +
+                    '<td class="center">' +
+                    '<label class="pos-rel">' +
+                    '<input type="checkbox" class="ace">' +
+                    '<span class="lbl"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td class="center">'+(i+1)+'</td>' +
+                    '<td>abv@test.com</td>' +
+                    '<td>abv@test.com</td>' +
+                    '<td>202.103.191.47</td>' +
+                    '<td>' +
+                    '<span class="label label-xlg label-warning arrowed-in arrowed-in-right">否</span>' +
+                    '</td>' +
+                    '<td> 迁移完毕</td>' +
+                    '<td>任务结束</td>' +
+                    '<td>2018-04-28 15:56</td>' +
+                    '<td >' +
+                    '<label class="inline" >' +
+                    '<input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">' +
+                    '<span class="lbl middle"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="red btn btn-white btn-purple btn-xs" href="#">收信</a>' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#mail_moving_edit">修改</a>' +
+                    '<a class="red btn btn-white btn-danger btn-xs" href="#">删除</a>' +
+                    '</div></td></tr>'
         }
         /*<!--<td class="hidden-480">-->
          <!--<span class="label label-sm label-warning">Expiring</span>-->

@@ -135,18 +135,14 @@
     var myTable;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>test.com</td>
-                        <td>启用</td>
-                        <td>
-                            <div class="">
-                                <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_group">
-                                    组合
-                                </a>
-                            </div>
-                        </td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>test.com</td>' +
+                    '<td>启用</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_group">组合</a>' +
+                    '</div></td></tr>'
         }
         $('#data-body').html(html);
             myTable =

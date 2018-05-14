@@ -357,22 +357,18 @@
     var myTable,myTable_tpl,myTable_user,myTable_news,myTable_api,myTable_sms;
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>U-Mail微信公众号</td>
-                        <td>U-Mail20173</td>
-                        <td>wwcdsljdfj</td>
-                        <td>1000002</td>
-                        <td>dsfjksodjfosifjsdiojfo</td>
-                        <td>待验证</td>
-                        <td>
-                            <div class="">
-                                <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_config">
-                                    修改
-                                </a>
-                            </div>
-                        </td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>U-Mail微信公众号</td>' +
+                    '<td>U-Mail20173</td>' +
+                    '<td>wwcdsljdfj</td>' +
+                    ' <td>1000002</td>' +
+                    '<td>dsfjksodjfosifjsdiojfo</td>' +
+                    '<td>待验证</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_config">修改</a>' +
+                    '</div></td></tr>'
         }
         $('#data-body').html(html);
             myTable =
@@ -417,32 +413,23 @@
 
     function initDate_tpl(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr role="row">
-                    <td class="center">
-                        <label class="pos-rel">
-                            <input type="checkbox" class="ace">
-                            <span class="lbl"></span>
-                        </label>
-                    </td>
-                    <td>
-                        ${i+1}
-                    </td>
-                    <td>新邮件通知</td>
-                    <td>dslfjsdsdjfodjfdhiof dso</td>
-                    <td >new_maildjfios</td>
-                    <td>操作字段</td>
-                    <td>
-                        <div class="">
-                            <a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_template">
-                                编辑
-                            </a>
-
-                            <a class="red btn btn-white btn-danger btn-xs" href="#">
-                                删除
-                            </a>
-                        </div>
-                    </td>
-                </tr>`
+            html+='<tr role="row">' +
+                    '<td class="center">' +
+                    '<label class="pos-rel">' +
+                    '<input type="checkbox" class="ace">' +
+                    '<span class="lbl"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td>'+(i+1)+'</td>' +
+                    '<td>新邮件通知</td>' +
+                    '<td>dslfjsdsdjfodjfdhiof dso</td>' +
+                    '<td >new_maildjfios</td>' +
+                    '<td>操作字段</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_template">编辑</a>' +
+                    '<a class="red btn btn-white btn-danger btn-xs" href="#">删除</a>' +
+                    '</div></td></tr>'
         }
         $('#data-body-tpl').html(html);
 
@@ -555,21 +542,17 @@
 
     function initDate_user(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr role="row">
-                    <td>
-                        ${i+1}
-                    </td>
-                    <td>nickname</td>
-                    <td>头像</td>
-                    <td >湖南</td>
-                    <td >邵东</td>
-                    <td>test@163.com</td>
-                    <td>2018-01-02</td>
-                    <td>2018-02-02</td>
-                    <td>是</td>
-                    <td>2018-02-01</td>
-
-                </tr>`
+            html+='<tr role="row">' +
+                    '<td>'+(i+1)+'</td>' +
+                    '<td>nickname</td>' +
+                    '<td>头像</td>' +
+                    '<td >湖南</td>' +
+                    '<td >邵东</td>' +
+                    '<td>test@163.com</td>' +
+                    '<td>2018-01-02</td>' +
+                    '<td>2018-02-02</td>' +
+                    '<td>是</td>' +
+                    '<td>2018-02-01</td></tr>'
         }
         $('#data-body-user').html(html);
 
@@ -614,17 +597,16 @@
 
     function initDate_news(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>sdjofjdsfiojfdifjosdjf</td>
-                        <td>dsjfugfyeftettdfjidfjdijfdsi</td>
-                        <td>sdiajjidsjiffjoidsjfjioseefjoifjisfjsoidfjsefjsdiiiiiiidshfsdhfusdfh</td>
-                        <td>http://www.baidu.com</td>
-                        <td>2018-01-02</td>
-                        <td>2018-01-09</td>
-                        <td>启用</td>
-                        <td>192.168.1.24</td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>sdjofjdsfiojfdifjosdjf</td>' +
+                    '<td>dsjfugfyeftettdfjidfjdijfdsi</td>' +
+                    '<td>sdiajjidsjiffjoidsjfjioseefjoifjisfjsoidfjsefjsdiiiiiiidshfsdhfusdfh</td>' +
+                    '<td>http://www.baidu.com</td>' +
+                    '<td>2018-01-02</td>' +
+                    '<td>2018-01-09</td>' +
+                    '<td>启用</td>' +
+                    '<td>192.168.1.24</td></tr>'
         }
         $('#data-body-news').html(html);
         myTable_news =
@@ -668,16 +650,15 @@
 
     function initDate_api(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>方法方法</td>
-                        <td>dsjfugfyeftettdfjidfjdijfdsi</td>
-                        <td>sdiajjidsjiffjoidsjfjioseefjoifjiidshfsdhfusdfh</td>
-                        <td>2018-01-02</td>
-                        <td>192.168.1.24</td>
-                        <td>192.168.1.23</td>
-                        <td>启用</td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>方法方法</td>' +
+                    '<td>dsjfugfyeftettdfjidfjdijfdsi</td>' +
+                    '<td>sdiajjidsjiffjoidsjfjioseefjoifjiidshfsdhfusdfh</td>' +
+                    '<td>2018-01-02</td>' +
+                    '<td>192.168.1.24</td>' +
+                    '<td>192.168.1.23</td>' +
+                    '<td>启用</td></tr>'
         }
         $('#data-body-api').html(html);
         myTable_api =
@@ -720,17 +701,16 @@
 
     function initDate_sms(p){
         for(var i= 0,html='';i<p;i++){
-            html+=`<tr class="">
-                        <td class="center middle">${i+1}</td>
-                        <td>13528775734</td>
-                        <td>${867808+i}</td>
-                        <td>是</td>
-                        <td>绑定帐号发送手机验证码</td>
-                        <td>2018-02-03 17:23:20</td>
-                        <td>2018-02-03 17:23:34</td>
-                        <td>192.168.1.23</td>
-                        <td>微信绑定验证手机号</td>
-                    </tr>`
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>13528775734</td>' +
+                    '<td>'+(i+4564874)+'</td>' +
+                    '<td>是</td>' +
+                    '<td>绑定帐号发送手机验证码</td>' +
+                    '<td>2018-02-03 17:23:20</td>' +
+                    '<td>2018-02-03 17:23:34</td>' +
+                    '<td>192.168.1.23</td>' +
+                    '<td>微信绑定验证手机号</td></tr>'
         }
         $('#data-body-sms').html(html);
         myTable_sms =

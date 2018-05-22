@@ -371,7 +371,7 @@
                                         <div class="col-sm-4 no-padding">
                                             <select class="form-control">
                                                 <option value="2">必须包含两种字符</option>
-                                                <option value="3">必须包含三种字符</option>
+                                                <option value="3" selected>必须包含三种字符</option>
                                                 <option value="4">必须包含四种字符</option>
                                             </select>
                                         </div>
@@ -387,7 +387,7 @@
                                             <!-- #section:custom/checkbox -->
                                             <div class="checkbox">
                                                 <label>
-                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <input name="form-field-checkbox" type="checkbox" checked class="ace">
                                                     <span class="lbl">
                                                             <span class="">密码长度为</span>
                                                             <select class="">
@@ -408,13 +408,13 @@
                                             </div>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <input name="form-field-checkbox" type="checkbox" checked class="ace">
                                                     <span class="lbl"> 密码不能包含账号 </span>
                                                 </label>
                                             </div>
                                             <div class="checkbox">
                                                 <label>
-                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <input name="form-field-checkbox" type="checkbox" checked class="ace">
                                                     <span class="lbl"> 连续3位及以上数字不能连号（例如：123、654） </span>
                                                 </label>
                                             </div>
@@ -1198,27 +1198,27 @@
             if(i==0){
                 html+='<tr class="">' +
                         '<td class="center middle">'+(i+1)+'</td>' +
-                        '<td>sljdsoifjs</td>' +
+                        '<td><span class="label label-success">组名称</span></td>' +
                         '<td>说明信息说明信息</td>' +
                         '<td>成员数${100+1}</td>' +
                         '<td>' +
                         '<div class="">' +
                         '<a class="btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_group">组配置</a>' +
-                        '<a class="btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#member_manage">成员管理</a>' +
-                        '<a class="red delete btn btn-white btn-danger btn-xs" disabled href="#">删除</a>' +
+                        ' <a class="btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#member_manage">成员管理</a>' +
+                        ' <a class="red delete btn btn-white btn-danger btn-xs" disabled href="#">删除</a>' +
                         '</div>' +
                         '</td></tr>'
             }else{ 
                 html+='<tr class="">' +
                         '<td class="center middle">'+(i+1)+'</td>' +
-                        '<td>sljdsoifjs</td>' +
+                        '<td><span class="label label-success">组名称</span></td>' +
                         '<td>说明信息说明信息</td>' +
                         '<td>成员数'+(i+1)+'</td>' +
                         '<td>' +
                         '<div class="">' +
                         '<a class="btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_group">组配置</a>' +
-                        '<a class="btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#member_manage">成员管理</a>' +
-                        '<a class="red delete btn btn-white btn-danger btn-xs" href="#">删除</a>' +
+                        ' <a class="btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#member_manage">成员管理</a>' +
+                        ' <a class="red delete btn btn-white btn-danger btn-xs" href="#">删除</a>' +
                         '</div></td></tr>'
             }
 
@@ -1295,7 +1295,7 @@
                     '<td>' +
                     '<div class="">' +
                     '<a class="green btn btn-white btn-primary btn-xs">修改职位</a>' +
-                    '<a class="red btn btn-white btn-danger btn-xs"> 删除</a>' +
+                    ' <a class="red btn btn-white btn-danger btn-xs"> 删除</a>' +
                     '</div></td></tr>'
         }
         /*<!--<td class="hidden-480">-->

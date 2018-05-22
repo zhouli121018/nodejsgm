@@ -1061,7 +1061,7 @@
 
             <!-- #section:basics/content.breadcrumbs -->
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                <div class="row pull-right" id="switch-email">
+                <div class="row pull-right" id="switch-email" style="margin-right:300px;z-index:100">
                     <div class="col-sm-2" style="width:120px;"><span class="">切换当前域名：</span></div>
                     <div class="col-sm-10" style="width:200px;">
                         <select class="chosen-select form-control"  data-placeholder="切换当前域名">
@@ -1127,17 +1127,19 @@
                     <li class="active">邮件域信息一览</li>
                 </ul><!-- /.breadcrumb -->
 
-                <!-- #section:basics/content.searchbox -->
-                <!--<div class="nav-search" id="nav-search">-->
-                    <!--<form class="form-search">-->
-								<!--<span class="input-icon">-->
-									<!--<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off" />-->
-									<!--<i class="ace-icon fa fa-search nav-search-icon"></i>-->
-								<!--</span>-->
-                    <!--</form>-->
-                <!--</div>&lt;!&ndash; /.nav-search &ndash;&gt;-->
+                 <!--#section:basics/content.searchbox -->
+                <div class="nav-search" id="nav-search">
+                    <form class="form-search">
+								<span class="input-icon">
+									<input type="text" placeholder="输入关键词搜索功能" class="nav-search-input" id="search_fun"  autocomplete="off" />
+									<i class="ace-icon fa fa-search nav-search-icon"></i>
 
-                <!-- /section:basics/content.searchbox -->
+								</span>
+                        <input type="button" class="btn btn-primary btn-xs" id="search_btn" value="搜索">
+                    </form>
+                </div><!-- /.nav-search -->
+
+                 <!--/section:basics/content.searchbox -->
             </div>
 
             <!-- /section:basics/content.breadcrumbs -->
@@ -1713,6 +1715,55 @@
             }
         });
     }
+
+    $('#search_btn').click(function() {
+        $('a[href="domain/static"]').trigger('click');
+        console.log(111111111)
+        setTimeout(function(){
+            var has = false;
+            var content = $('.ui-tabs-panel.ui-widget-content ').html();
+            var keyWord = $('#search_fun').val();
+            console.log(keyWord)
+
+//        $('li a[href=#tabs_email_basic]').trigger('click')
+            for(var i=0;i<$('.ui-tabs-panel.ui-widget-content').length;i++){
+                var $dom = $('.ui-tabs-panel.ui-widget-content:eq('+i+')');
+                var id = $('.ui-tabs-panel.ui-widget-content:eq('+i+')').attr('id');
+
+                if($dom.find('.ui-tabs-panel.ui-widget-content').length>0){
+                    var $child = $dom.find('.ui-tabs-panel.ui-widget-content');
+                    for(var k=0;k<$child.length;k++){
+                        var $self = $dom.find('.ui-tabs-panel.ui-widget-content:eq('+k+')');
+                        var ids=$self.attr('id');
+                        if($self.html().indexOf(keyWord)>=0){
+                            console.log(ids,id);
+                            $('li>a[href=#'+ids+']').trigger('click');
+                            $('li>a[href=#'+id+']').trigger('click');
+                            has = true;
+                            break;
+                        }else{
+
+                        }
+                    }
+                }else{
+                    if($dom.html().indexOf(keyWord)>=0){
+                        console.log(id);
+                        console.log($('li>a[href=#'+id+']'));
+                        $('li>a[href=#'+id+']').trigger('click');
+                        has = true;
+                        break;
+                    }else{
+
+                    }
+                }
+            }
+            if(!has){
+                alert('没找到相应功能！请重新输入！')
+            }
+        },500)
+
+    })
+
 </script>
 </body>
 </html>

@@ -475,7 +475,7 @@
     function initDate(p){
         for(var i= 0,html='';i<p;i++){
             html+='<tr class=""><td class="center middle">'+(i+1)+'</td>' +
-                    '<td><b class="blue">test.com</b> (主域)</td>' +
+                    '<td><span class="label  label-info arrowed arrowed-righ">test.com</span></td>' +
                     '<td>'+(2000+i)+'</td>' +
                     '<td>不限制</td>' +
                     '<td> ' +
@@ -492,8 +492,8 @@
                     '<td>' +
                     '<div class="">' +
                     '<a class="green edit btn btn-white btn-primary btn-xs jump" href="'+i+'">配置</a>' +
-                    '<a class="blue edit btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#dkim_edit">DKIM 配置</a>' +
-                    '<a class="red delete btn btn-danger btn-white btn-xs" href="'+i+'"> 删除</a> </div></td></tr>'
+                    ' <a class="blue edit btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#dkim_edit">DKIM 配置</a>' +
+                    ' <a class="red delete btn btn-danger btn-white btn-xs" href="'+i+'"> 删除</a> </div></td></tr>'
         }
         $('#data-body').html(html);
         myTable =

@@ -1,0 +1,9 @@
+<td>{{ n.id }}</td>
+<td>{{ n.subject }}</td>
+<td>{{ n.content }}</td>
+<td>{{ n.is_sms }}</td>
+<td>{{ n.is_email }}</td>
+<td>{{ n.is_read }}</td>
+<td>{{ n.created|date:'Y-m-d H:i' }}</td>
+<td> <button type="button" class="btn btn-outline btn-danger btn-xs" onclick="Delete('{{ n.id }}')">删除</button> </td>
+

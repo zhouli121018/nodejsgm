@@ -1,0 +1,7 @@
+    <td>{{ d.id }}</td>
+    <td>{{ d.sender|default_if_none:"" }}</a></td>
+    <td><a data-toggle="modal" href="{% url 'collect_mail_read' %}?id={{ d.mail_id }}&modal=1" data-target="#myModal" data-whatever="{{ m.mail_id }}">{{ d.mail_id|default_if_none:"" }}</a></td>
+    <td>{{ d.expect_value|default_if_none:"" }}</td>
+    <td>{{ d.value|default_if_none:"" }}</td>
+    <td>{{ d.reason|default_if_none:"" }}</td>
+    <td>{{ d.create_time|date:"Y-m-d H:i" }}</td>

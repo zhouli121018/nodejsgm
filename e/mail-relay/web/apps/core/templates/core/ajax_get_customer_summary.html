@@ -1,0 +1,11 @@
+<td>{{ l.id }}</td>
+<td><a title="{{l.customer}}" href="{% url 'customer_list' %}?customer_id={{ l.customer.id }}">{{ l.customer }}</a></td>
+<td><span class="{% if l.is_relay_limit %}text-danger{% endif %}">{{ l.relay_limit }}</span></td>
+<td><span class="{% if l.is_relay_limit %}text-danger{% endif %}"><a href="{% url 'active_sender_list' %}?date={{ l.date|date:'Y-m-d' }}&customer_id={{ l.customer.id }}">{{ l.relay_count }}</a></span></td>
+<td><span class="{% if l.is_relay_limit %}text-danger{% endif %}">{{ l.is_relay_limit }}</span></td>
+<td><span class="{% if l.is_collect_limit %}text-danger{% endif %}">{{ l.collect_limit }}</span></td>
+<td><span class="{% if l.is_collect_limit %}text-danger{% endif %}"><a href="{% url 'active_receiver_list' %}?date={{ l.date|date:'Y-m-d' }}&customer_id={{ l.customer.id }}">{{ l.collect_count }}</a></span></td>
+<td><span class="{% if l.is_collect_limit %}text-danger{% endif %}">{{ l.is_collect_limit }}</span></td>
+<td>{{ l.customer.sale|default_if_none:"" }}--{{ l.customer.tech|default_if_none:"" }}</td>
+<td>{{ l.date|date:"Y-m-d" }}</td>
+

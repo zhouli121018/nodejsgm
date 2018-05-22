@@ -1,0 +1,15 @@
+                                <td>{{ d.id }}</td>
+                                <td>{{ d.keyword }}</td>
+                                <td>{% if d.disabled %}禁用{% else %}启用{% endif %}</td>
+                                <td>{% if d.customer %}{{ d.customer }}{% endif %}</td>
+                                <td>{{ d.creater|default_if_none:"" }}</td>
+                                <td>{{ d.created|date:"Y-m-d H:i" }}</td>
+                                <td>{{ d.operater|default_if_none:"" }}</td>
+                                <td>{{ d.operate_time|date:"Y-m-d H:i"  }}</td>
+                                <td>
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'collect_recipient_whitelist_modify' d.id %}">修改</a>
+                                    <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: DeleteRecipientWhitelist({{ d.id }}, '{{ d.keyword }}')">删除</a>
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'auditlog' %}?content_type=mail.collectrecipientwhitelist&id={{d.id}}">日志</a>
+                                </td>
+
+

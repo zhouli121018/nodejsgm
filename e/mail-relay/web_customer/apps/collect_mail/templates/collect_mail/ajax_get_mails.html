@@ -1,0 +1,11 @@
+{% load collect_mail_tags %}
+{% load mail_tags %}
+<td><div class="tooltip-demo"><span data-original-title="{{ m.mail_from }} {{ m.mail_to }}" data-toggle="tooltip" data-placement="top" title="">{{ m.mail_from|truncatechars:25 }}<br/>{{ m.mail_to|truncatechars:20 }}</span></div></td>
+<td>{{ m.size|filesizeformat }}</td>
+<td><a href="{% url 'c_mail_list' %}?date={{date}}&mail_id={{ m.get_mail_id }}">{{ m|c_get_mail_count:date }}</a></td>
+<td><a href="{% url 'c_deliver_logs' m.date_id %}">{{ m.get_retry_count }}</a></td>
+<td>{{ m.client_ip }}</td>
+<td>{{ m.created|date:"Y-m-d H:i:s" }}<br/>{% if m.deliver_time %}{{ m.deliver_time|date:"Y-m-d H:i:s" }}{% endif %}</td>
+<td><a data-toggle="modal" href="{% url 'c_mail_read' %}?id={{ m.date_id }}&modal=1" data-target="#myModal" data-whatever="{{ m.date_id }}">{{ m.subject|truncatechars:50|default:"--" }}</a></td>
+<td><span class="{% if m.state == 'finished' %}label label-success arrowed-in arrowed-in-right{% else %}
+{% if m.state == 'fail_finished' or m.state == 'reject' or m.state == 'c_reject' or m.state == 'bounce' %}label label-danger arrowed{% else %}label label-warning arrowed arrowed-right{% endif %}{% endif %}">{{ m.get_state_display }}</span></td>

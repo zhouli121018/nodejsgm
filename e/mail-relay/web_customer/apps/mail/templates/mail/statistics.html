@@ -1,0 +1,142 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load mail_tags %}
+{% block title %}{% trans "中继出站报告" %}{% endblock %}
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'assets/css/jquery-ui.min.css' %}" />
+{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "中继管理" %}</a> </li>
+    <li class="active">{% trans "出站报告" %}</li>
+{% endblock %}
+
+{% block page-content %}
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-4">
+            <div class="page-header">
+                <h1>
+                    {% trans "出站报告" %}
+                    <small>
+                        <i class="ace-icon fa fa-angle-double-right"></i>
+                        {% trans "日期" %}： {{date_start|date:"Y-m-d"}} ---- {{date_end|date:"Y-m-d"}}(<span class="text-danger">{% trans "总共" %}：{{ statistics.count }}</span>)
+                    </small>
+                </h1>
+            </div>
+        </div>
+
+        <div class="col-xs-8">
+            <div class="pull-right" style="margin-right:30px;">
+                <form method="get" action="">
+                    {{ form }}
+                    <button type="submit" class="btn btn-primary">{% trans "查询" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="hr hr-18 dotted hr-double"></div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <table id="ajax-table" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>{% trans "日期" %}</th>
+                    <th>{% trans "出站总数" %}</th>
+                    <th>{% trans "成功数" %}</th>
+                    <th>{% trans "失败数" %}</th>
+                    <th>{% trans "超大" %}/满</th>
+                    <th>{% trans "连接失败" %}</th>
+                    <th>{% trans "发送超时" %}</th>
+                    <th>{% trans "不存在" %}</th>
+                    <th>{% trans "垃圾" %}</th>
+                    <th>{% trans "拒收" %}</th>
+                    <th>{% trans "SPF错误" %}</th>
+                    <th>{% trans "其他失败" %}</th>
+                    <th>{% trans "出站成功率" %}(%)</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for s in statistics %}
+                    <tr>
+                        <td><a href="{% url 'mail_list' %}?date={{s.date|date:'Y-m-d'}}&state=out_all">{{ s.date|date:"Y-m-d" }}</a></td>
+                        <td><a href="{% url 'mail_list' %}?date={{s.date|date:'Y-m-d'}}&state=out_all">{{ s.count }}</a></td>
+                        <td><a href="{% url 'mail_list' %}?date={{s.date|date:'Y-m-d'}}&state=finished">{{ s.success }}</a></td>
+                        <td><a href="{% url 'mail_list' %}?date={{s.date|date:'Y-m-d'}}&state=fail_finished">{{ s.fail }}</a></td>
+                        <td><a href="{% url 'mail_list' %}?date={{s.date|date:'Y-m-d'}}&error_type=4&state=out_all">{{ s.error_type_4 }}</a></td>
+                        <td><a href="{% url 'mail_list' %}?date={{s.date|date:'Y-m-d'}}&error_type=1&state=out_all">{{ s.error_type_1 }}</a></td>
+                        <td><a href="{% url 'mail_list' %}?date={{s.date|date:'Y-m-d'}}&error_type=8&state=out_all">{{ s.error_type_8 }}</a></td>
+                        <td><a href="{% url 'mail_list' %}?date={{s.date|date:'Y-m-d'}}&error_type=2&state=out_all">{{ s.error_type_2 }}</a></td>
+                        <td><a href="{% url 'mail_list' %}?date={{s.date|date:'Y-m-d'}}&error_type=5&state=out_all">{{ s.error_type_5 }}</a></td>
+                        <td><a href="{% url 'mail_list' %}?date={{s.date|date:'Y-m-d'}}&error_type=6&state=out_all">{{ s.error_type_6 }}</a></td>
+                        <td><a href="{% url 'mail_list' %}?date={{s.date|date:'Y-m-d'}}&error_type=7&state=out_all">{{ s.error_type_7 }}</a></td>
+                        <td><a href="{% url 'mail_list' %}?date={{s.date|date:'Y-m-d'}}&error_type=3&state=out_all">{{ s.error_type_3 }}</a></td>
+                        <td><code>{{ s.success|get_rate:s.count }}</code></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div><!-- /.span -->
+    </div><!-- /.row -->
+
+    <!-- Modal -->
+
+
+{% endblock %}
+{% block my_jsblock %}
+    <script src="{% static 'assets/js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/dataTables.tableTools.min.js' %}"></script>
+    <script src="{% static 'assets/js/dataTables.colVis.min.js' %}"></script>
+    <script>
+        $(function () {
+
+            $('.dateinput').datepicker({
+                dateFormat: "yy-mm-dd",
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                minView: 2,
+                pickerPosition: "bottom-left"
+
+            });
+
+            var ajax_url = "{% url 'ajax_get_mails' %}" + window.location.search;
+
+
+            ip_table = $('#ajax-table').dataTable({
+                //"columnDefs": [ { "targets": [ 0 ], "visible": false, "searchable": false }],
+                "iDisplayLength": {% if request.GET.check == 'spam' %}200{% else %}100{% endif %},
+                //"processing": true,
+                //"serverSide": true,
+                "lengthMenu": [[20, 50, 100, 200, 500], [20, 50, 100, 200, 500]],
+                //"ajax": ajax_url,
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "{% blocktrans %}显示 _MENU_ 每页{% endblocktrans %}",
+                    "sZeroRecords": "{% blocktrans %}对不起! 信息筛选结果为空!{% endblocktrans %}",
+                    "sInfo": "{% blocktrans %}从 _START_ 到 _END_ 总计: _TOTAL_ 条记录{% endblocktrans %}",
+                    "sInfoEmpty": "{% blocktrans %}总计: 0 条记录{% endblocktrans %}",
+                    "sInfoFiltered": "{% blocktrans %}(从 _MAX_ 条记录筛选出){% endblocktrans %}",
+                    "sSearch": "{% blocktrans %}搜索: {% endblocktrans %}",
+                    "oPaginate": {
+                        "sFirst":    "{% blocktrans %}第一页{% endblocktrans %}",
+                        "sPrevious": " {% blocktrans %}上一页 {% endblocktrans %}",
+                        "sNext":     " {% blocktrans %}下一页 {% endblocktrans %}",
+                        "sLast":     " {% blocktrans %}最后一页 {% endblocktrans %}"
+                    }
+                }
+            });
+
+
+        });
+    </script>
+
+{% endblock %}

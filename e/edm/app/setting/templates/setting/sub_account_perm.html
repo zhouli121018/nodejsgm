@@ -1,0 +1,72 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans '修改子账户权限' %}</h4>
+</div>
+
+<form role="form" action="{% url 'sub_account_perm' user_id %}" method="post">
+    {% csrf_token %}
+    <div class="modal-body padding-10 margin-bottom-10">
+        <div class="form-horizontal">
+            <fieldset>
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{% trans '查看地址池权限' %}</label>
+                            <div class="col-md-6 input-group">
+                                <div class="">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="id_is_address" name="is_address" type="checkbox" {% if sub_service_obj.is_address %}checked="checked"{% endif %}><span></span>
+                                        </label>
+                                        <p class="help-block">{% trans '勾选：子账户有查看其它子账户地址池的权限（包括母账户）。' %}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{% trans '查看模板权限' %}</label>
+                            <div class="col-md-6 input-group">
+                                <div class="">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="id_is_template" name="is_template" type="checkbox" {% if sub_service_obj.is_template %}checked="checked"{% endif %}><span></span>
+                                        </label>
+                                        <p class="help-block">{% trans '勾选：子账户有查看其它子账户模板的权限（包括母账户）。' %}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{% trans '查看任务权限' %}</label>
+                            <div class="col-md-6 input-group">
+                                <div class="">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="id_is_task" name="is_task" type="checkbox" {% if sub_service_obj.is_task %}checked="checked"{% endif %}><span></span>
+                                        </label>
+                                        <p class="help-block">{% trans '勾选：子账户有查看其它子账户任务的权限（包括母账户）。' %}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </fieldset>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit"  class="btn btn-primary">{% trans '确定' %}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+    </div>
+</form>

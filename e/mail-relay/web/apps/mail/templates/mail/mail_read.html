@@ -1,0 +1,381 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load static %}
+{% load mail_tags %}
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{{ m.subject }}</title>
+    <link href="{% static 'css/mod_mail.css' %}" rel="stylesheet">
+</head>
+<body style="overflow: auto;" scroll="yes">
+
+<div id="mailReadHeader" class="mail-read-header" style="overflow-x:hidden;{% if mail_obj.check_result == 'auto_reject' %}{% if mail_obj.review_result == 'pass_undo' %}background-color:#C0D9D9;{% endif %}{% if mail_obj.dspam_study %}background-color:#A8A8A8;{% endif %}{% endif %}">
+    <a href="{% url 'mail_read' %}?id={{mail_obj.date_id}}&view_source=1&is_del_attach={{request.GET.is_del_attach}}" target="_blank" class="btn btn-primary">查看邮件头</a>
+    <a href="{% url 'mail_read' %}?id={{mail_obj.date_id}}&export=1&is_del_attach={{request.GET.is_del_attach}}" class="btn btn-primary">下载邮件</a>
+    <div id="header-subject"><h1><b>
+        {% autoescape off %}
+        {{ subject }}
+        {% endautoescape %}
+    </b></h1></div>
+    <div id="mail-more-info" class="mail-more-info" style="display:;">
+        <div id="customer">
+            <span>公司名称:</span> &nbsp;
+            <span> <strong>{{ mail_obj.customer }}</strong> </span>
+        </div>
+        <div>
+            <span>中继接收时间:</span> &nbsp;
+            <span> <strong>{{ mail_obj.created|date:"Y-m-d H:i:s" }}</strong> </span>
+        </div>
+        <div>
+            <span>客户端IP:</span> &nbsp;
+            <span> <strong>{{ mail_obj.client_ip }}</strong> </span>
+        </div>
+        <div>
+            <span>服务器地址:</span> &nbsp;
+            <span> <strong>{{ mail_obj.get_server_id_display }}</strong> </span>
+        </div>
+        <div>
+            <span>邮件状态:</span> &nbsp;
+            <span> <strong>{{ mail_obj.get_state_display }}</strong> </span>
+        </div>
+        <div>
+            <span>邮件大小:</span> &nbsp;
+            <span> <strong>{{ mail_obj.size|filesizeformat }}</strong> </span>
+        </div>
+        <div>
+            <span>检测结果:</span> &nbsp;
+            <span> <strong>{{ mail_obj.get_check_result_display|default_if_none:"" }}</strong>
+            {% autoescape off %}
+                ({{ mail_obj.check_message|default_if_none:"" }})
+            {% endautoescape %}
+                {% if mail_obj.check_result == 'subject_blacklist' or mail_obj.check_result == 'keyword_blacklist' or mail_obj.check_result == 'sender_blacklist' or mail_obj.check_result == 'custom_blacklist' or 'blacklist' in mail_obj.check_message %}
+                <a class="btn btn-primary btn-xs" target="_blank" href="{% url 'op_keywordlist' %}?id={{mail_obj.date_id}}&operate=modify">修改</a>
+                <a class="btn btn-danger btn-xs" href="JavaScript:DeleteKeyword()">删除</a>
+                {% endif %}
+
+            </span>
+        </div>
+        <div>
+            <span>Dspam-sig:</span> &nbsp;
+            <span> <strong>{{ mail_obj.dspam_sig }}</strong> </span>
+        </div>
+        <div>
+            <span>审核邮件:</span> &nbsp;
+            {% if mail_obj.state == 'review' %}
+                {% if request.GET.modal %}
+                <button type="button" class="btn btn-primary" onClick="ModalReview('pass');">通过</button>
+                <button type="button" class="btn btn-danger" onClick="ModalReview('reject');">拒绝</button>
+                <button type="button" class="btn btn-primary" style="float: right;"  onClick="ModalReview('recipient_whitelist_pass');">通过/收件人白名单</button>
+                <!--<span><a href="#modal-footer">点击这里</a></span>-->
+                {% else %}
+                <span id="review">
+                    <button onclick="Review('{{mail_obj.date_id}}', 'pass');" style="margin-right:10px;padding:0 10px;">通过</button>
+                    <button onclick="Review('{{mail_obj.date_id}}', 'reject');" style="margin-right:10px;padding:0 10px;">拒绝</button>
+                </span>
+                {% endif %}
+            {% else %}
+                <span><strong>{{ mail_obj.get_review_result_display|default_if_none:"" }}</strong> </span>
+                    {% if mail_obj.review_result == 'pass' or mail_obj.review_result == 'reject' %}
+                    <span id="review_undo_{{mail_obj.date_id}}" class="text-danger">
+                    <button onclick="ModalReviewUndo('{{mail_obj.date_id}}');" class="btn btn-danger">审核误判操作</button>
+                    </span>
+                    {% endif %}
+                    {% if mail_obj.review_result == 'reject' %}
+                        <span id="review_undo_whitelist_{{mail_obj.date_id}}" class="text-danger">
+                        <button onclick="ModalReviewUndoWhitelist('{{mail_obj.date_id}}');" class="btn btn-danger">审核误判/收件人白名单</button>
+                        </span>
+                    {% endif %}
+                    {% if mail_obj.review_result == 'reject' and mail_obj.check_result == 'auto_reject' and not mail_obj.dspam_study %}
+                    <span id="study_{{mail_obj.date_id}}" class="text-info">
+                    <button onclick="ModalStudy('spam');" class="btn btn-primary">Dspam学习</button>
+                    </span>
+                    {% endif %}
+            {% endif %}
+        </div>
+        <div>
+            <span>审核人:</span> &nbsp;
+            <span> <strong>{{ mail_obj.reviewer|default_if_none:"" }}</strong> </span>
+        </div>
+        <div>
+            <span>审核时间:</span> &nbsp;
+            <span> <strong>{{ mail_obj.review_time|date:"Y-m-d H:i:s" }}</strong> </span>
+        </div>
+        <div>
+            <span>From:</span> &nbsp;
+            <span> <strong>{% autoescape off %}{{ hl_mail_from }}{% endautoescape %}</strong> </span>&nbsp;
+            <span style="color:red;">被封{{ blocked_obj.count }}次
+                {% with mail_obj.mail_from|get_temp_sender_blacklist as temp_sender %}
+                {% if temp_sender %}
+                (剩余：{{ temp_sender.get_status_display }})
+                {% endif %}
+                {% endwith %}
+                (信誉度:<span id="refresh_sender_credit_{{mail_obj.date_id}}">{{ sender_credit }}</span>)</span>
+            <span id="update_sender_credit_{{mail_obj.date_id}}">
+                <button type="button" class="btn btn-primary btn-xs" onClick="ModelUpdateSenderCredit('{{ mail_obj.mail_from }}', '5');">+5</button>
+                <button type="button" class="btn btn-primary btn-xs" onClick="ModelUpdateSenderCredit('{{ mail_obj.mail_from }}', '-5');">-5</button>
+            </span>
+            &nbsp;
+            {% if mail_obj.mail_from and request.GET.modal %}
+            <span id="model_add_tmp_sender_blacklist_{{mail_obj.date_id}}">
+                <button type="button" class="btn btn-danger btn-xs" onClick="ModelAddTmpSenderBlacklist({{ mail_obj.customer.id }}, '{{ mail_obj.mail_from }}', 1);">封1天</button>
+                <button type="button" class="btn btn-danger btn-xs" onClick="ModelAddTmpSenderBlacklist({{ mail_obj.customer.id }}, '{{ mail_obj.mail_from }}', 3);">封3天</button>
+                <button type="button" class="btn btn-danger btn-xs" onClick="ModelAddTmpSenderBlacklist({{ mail_obj.customer.id }}, '{{ mail_obj.mail_from }}', 7);">封7天</button>
+                <button type="button" class="btn btn-danger btn-xs" onClick="ModelAddTmpSenderBlacklist({{ mail_obj.customer.id }}, '{{ mail_obj.mail_from }}', 30);">封30天</button>
+                <button type="button" class="btn btn-danger btn-xs" onClick="ModelAddTmpSenderBlacklist({{ mail_obj.customer.id }}, '{{ mail_obj.mail_from }}', 3650);">永久封</button>
+            </span>
+            {% endif %}
+
+            {% if request.user.is_superuser and request.GET.modal %}
+            <span id="model_add_relay_sender_whitelist_{{mail_obj.date_id}}">
+                <button type="button" class="btn btn-danger" onClick="ModelAddRelaySenderWhitelist('{{ mail_obj.mail_from }}');">发件人白名单</button>
+            </span>
+            {% endif %}
+            <span id="sender_warning_{{mail_obj.date_id}}">
+                <button type="button" class="btn btn-danger" onClick="SenderWarning('{{ mail_obj.mail_from }}');">邮件提醒发件人</button>
+            </span>
+            <a href="{% url 'mail_review' %}?not_check=k_auto_reject&all_day=1&mail_id=0&show=review&all_check=1&mail_from={{ mail_obj.mail_from }}&reject_sender=1" target="_blank" class="btn btn-primary" style="margin-left:80px;">发件人所有邮件</a>
+            <a href="{% url 'mail_review' %}?not_check=k_auto_reject&all_day=1&mail_id=0&show=review&all_check=1&mail_from={{ mail_obj.mail_from|get_domain }}&reject_sender=1" target="_blank" class="btn btn-primary">发件人域所有邮件</a>
+
+        </div>
+
+        <div>
+            <span>To:</span> &nbsp;
+            <span> <strong>{{ mail_obj.mail_to }}</strong> </span>
+            {% if mail_obj.mail_to %}
+                {% if request.GET.modal %}
+                    <span id="model_forbiden_rcpt_white_{{mail_obj.date_id}}">
+                        <button type="button" class="btn btn-primary" onClick="ModelForbidenRcptWhite('recipient_whitelist_false');">禁用白名单</button>
+                    </span>
+                {% else %}
+                    <span id="forbiden_rcpt_white">
+                        <button style="margin-right:10px;padding:0 10px;" onclick="ForbidenRcptWhite({{ mail_obj.date_id }}, 'recipient_whitelist_false');">禁用白名单</button>
+                    </span>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div id="header-from">
+            <span>发件人:</span>
+            &nbsp;
+            <span class="grayTxt" id="mailAddress">
+                <strong id="mailName"> {% autoescape off %} {{ m.from }} {% endautoescape %}</strong>
+            </span>
+        </div>
+        <div id="header-date">
+            <span>邮件时间:</span>
+            &nbsp;
+            <span style="margin-left:-6px;">{{ m.date|date:"Y-m-d H:i:s" }}</span>
+        </div>
+        <div id="header-to">
+            <span>收件人:</span> &nbsp;
+            <span class="grayTxt">{{ m.to }}</span>
+        </div>
+        {% if mail_obj.return_code %}
+        <div>
+            <span>发送IP:</span> &nbsp;
+            <span>{{ mail_obj.deliver_ip }}</span>
+        </div>
+        <div>
+            <span>发送代码:</span> &nbsp;
+            <span>{{ mail_obj.return_code }}</span>
+        </div>
+        <div>
+            <span>发送时间:</span> &nbsp;
+            <span>{{ mail_obj.deliver_time }}</span>
+        </div>
+        <div>
+            <span>发送详情:</span> &nbsp;
+            <span>{{ mail_obj.return_message }}</span>
+        </div>
+        <div>
+            <span>错误类型:</span> &nbsp;
+            <span>{{ mail_obj.get_error_type_display }}</span>
+        </div>
+        <div>
+            <span>退信时间:</span> &nbsp;
+            <span>{{ mail_obj.bounce_time|date:"Y-m-d H:i:s" }}</span>
+        </div>
+        <div>
+            <span>退信结果:</span> &nbsp;
+            <span>{{ mail_obj.bounce_result }}</span>
+        </div>
+        <div>
+            <span>退信详情:</span> &nbsp;
+            <span>{{ mail_obj.bounce_message }}</span>
+        </div>
+        {% endif %}
+        <div>
+            <span>垃圾报告:</span> &nbsp;
+                {% if request.GET.modal %}
+                <span id="modal_report_{{mail_obj.date_id}}">
+                <button type="button" class="btn btn-primary" onClick="ModalReport('innocent');">正常邮件</button>
+                <button type="button" class="btn btn-danger" onClick="ModalReport('spam');">垃圾邮件</button>
+                </span>
+                <!--<span><a href="#modal-footer">点击这里</a></span>-->
+                {% else %}
+                <span id="report">
+                    <button onclick="Report({{mail_obj.date_id}}, 'innocent');" style="margin-right:10px;padding:0 10px;">正常邮件</button>
+                    <button onclick="Report({{mail_obj.date_id}}, 'spam');" style="margin-right:10px;padding:0 10px;">垃圾邮件</button>
+                </span>
+                {% endif %}
+        </div>
+
+        {% if m.real_attachments %}
+        <div id="header-attach">
+            <span>附&nbsp;&nbsp;&nbsp;件:</span>
+            &nbsp;
+            <span style="margin-left: -8px;">
+                {{ m.real_attachments|length }}个(<span class="grayTxt"> {{ m.real_attachments|list_sum:"size"|filesizeformat }} </span> )
+                {% for attach in m.real_attachments %}
+                <b class="icon"></b>
+                    ({{ attach.decode_name }}
+                    <span class="grayTxt" style="margin-left: 20px">
+                      {{ attach.size|filesizeformat }}
+                    </span>)
+                {% endfor %}
+                <a hidefocus="hidefocus" id="view-attachs" title="查看全部附件" class="link-2" href="#mail-attach-box">查看全部附件</a>
+            </span>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="header-split"></div>
+<div id="mailReadBody" class="mail-read-body">
+    <iframe width="100%" id="mail-iframe" onload="bodyS(this);autoH(this);" height="600px" frameborder="0" src="{% url 'mail_read' %}?id={{mail_obj.date_id}}&view_body=1&is_del_attach={{request.GET.is_del_attach}}"></iframe>
+</div>
+
+
+{% if m.real_attachments %}
+<div id="mail-attach-box" class="mail-attach-box">
+    <div style="" id="mail-attach-head" class="mail-attach-head">
+        <strong>附&nbsp;&nbsp;&nbsp;件({{ m.real_attachments|length }}个)({{ m.real_attachments|list_sum:"size"|filesizeformat }})</strong>
+    </div>
+    <div class="mail-attach-body">
+        <div class="mail-attach-title">
+            <h3>普通附件</h3>
+        </div>
+        <table>
+            <tbody>
+            {% for attach in m.real_attachments %}
+            <tr class="linkStyle04">
+                <td style="padding:0.5em 1em;" width="210">
+                    <div class="attach-img" style="float:left;">
+                        <b class="icon icon-large icon-large-jpg"></b>
+                    </div>
+                    <div style="width:150px;margin-right: 15px;overflow-x: hidden;text-overflow: ellipsis;white-space:nowrap;float:left;">
+                        <a href="{% url 'mail_read' %}?id={{mail_obj.date_id}}&aid={{forloop.counter0}}&download=1" target="_blank" title="{{attach.decode_name}}" style="color:black;">{{attach.decode_name}}</a>
+                    </div>
+                </td>
+                <td style="padding:0.5em 1em;">
+                    <span class="grayTxt" style="margin-left: 20px"> {{ attach.size|filesizeformat }} </span>
+                </td>
+                <td style="padding:0.5em 1em;">
+                    <a href="{% url 'mail_read' %}?id={{mail_obj.date_id}}&aid={{forloop.counter0}}&download=1" target="_blank">下载附件</a>
+                    {% if attach.decode_name|preview_check %}
+                    - <a href="{% url 'mail_read' %}?id={{mail_obj.date_id}}&aid={{forloop.counter0}}" target="_blank">预览</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% if request.GET.modal %}
+<div class="modal-footer" id="modal-footer">
+    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">Close</button>
+    {% if mail_obj.state == 'review' %}
+    <button type="button" class="btn btn-primary" onClick="ModalReview('pass');">通过</button>
+    <button type="button" class="btn btn-danger" onClick="ModalReview('reject');">拒绝</button>
+    {% else %}
+    <button type="button" class="btn btn-primary" onClick="ModalReport('innocent');">正常邮件</button>
+    <button type="button" class="btn btn-danger" onClick="ModalReport('spam');">垃圾邮件</button>
+    {% endif %}
+
+</div>
+{% else %}
+<script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+<script type="">
+        function Review(id, result){
+            var loading_img = "{% static 'img/loading.gif' %}";
+            $('#review').html('<img src="' + loading_img + '"></img>');
+            $.getJSON("{% url 'mail_review' %}?id=" + id + "&result=" + result,  function(data){
+                $('#review').html(data.msg);
+            });
+            return;
+        }
+
+        function Report(id, result){
+            var loading_img = "{% static 'img/loading.gif' %}";
+            $('#report').html('<img src="' + loading_img + '"></img>');
+            $.getJSON("{% url 'report_spam' %}?id=" + id + "&result=" + result,  function(data){
+                $('#report').html(data.msg);
+            });
+            return;
+        }
+
+    function ForbidenRcptWhite(id, result){
+        var loading_img = "{% static 'img/loading.gif' %}";
+        $('#forbiden_rcpt_white').html('<img src="' + loading_img + '"></img>');
+        $.getJSON("{% url 'forbiden_rcpt_white' %}?id=" + id + "&result=" + result,  function(data){
+            $('#forbiden_rcpt_white').html(data.msg);
+        });
+        return;
+    }
+
+        //设置body的显示样式
+var bodyS = function(iframe) {
+    var i;
+    var obj;
+    //设置 "body"
+    obj = iframe.contentWindow.document.body;
+    obj.style.fontSize   = '14px';
+    obj.style.fontFamily = 'Verdana, Arial, Helvetica, sans-serif';
+    obj.style.backgroundColor = '#FFFFFF';
+    obj.style.lineHeight = '150%';
+    obj.style.margin     = '0px';
+    obj.style.padding    = '10px 10px 10px 10px';
+    obj.style.overflowX  = 'auto';
+    obj.style.overflowY  = 'hidden';
+    obj.style.wordWrap   = 'break-word';
+    //设置 "p"
+    obj = iframe.contentWindow.document.getElementsByTagName('p');
+    for(i=0; i<obj.length; i++) {
+        obj[i].style.margin = '0px';
+    }
+    //设置 "pre"
+    obj = iframe.contentWindow.document.getElementsByTagName('pre');
+    for(i=0; i<obj.length; i++) {
+        obj[i].style.margin = '0px';
+    }
+    //设置 "a"
+    obj = iframe.contentWindow.document.getElementsByTagName('a');
+    for(i=0; i<obj.length; i++) {
+        obj[i].target = "_blank";
+    }
+};
+
+//iframe自适应高度
+var autoH = function(iframe){
+    try{
+        var d = iframe.contentWindow.document;
+        iframe.height = Math.max(d.body.scrollHeight, d.documentElement.scrollHeight, $(d).height());
+        //iframe.width = Math.max(d.body.scrollWidth, d.documentElement.scrollWidth, $("#mailReadBody").width());
+    } catch(ex) {}
+};
+</script>
+
+{% endif %}
+<script>
+    function DeleteKeyword(){
+    if (confirm("你确定要删除关键字?" )) {
+        var url = "{% url 'op_keywordlist' %}?id={{mail_obj.date_id}}&operate=delete";
+        $.getJSON(url,  function(data){
+            alert(data.msg);
+            });
+    }
+    }
+
+</script>
+
+</body></html>

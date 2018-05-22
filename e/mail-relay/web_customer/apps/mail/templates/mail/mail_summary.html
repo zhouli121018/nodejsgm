@@ -1,0 +1,330 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load mail_tags %}
+{% block title %}{% trans "中继总体统计" %}{% endblock %}
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'assets/css/jquery-ui.min.css' %}" />
+{% endblock %}
+
+{% block breadcrumb %}
+<li> <a href="#">{% trans "中继管理" %}</a> </li>
+<li class="active">{% trans "总体统计" %}</li>
+{% endblock %}
+
+{% block page-content %}
+<div class="row">
+    <div class="space-6"></div>
+    <div class="col-xs-6">
+        <div class="page-header">
+            <h1>
+                {% trans "总体统计" %}
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    {% trans "日期" %}：{{date_start|date:"Y-m-d"}} ---- {{date_end|date:"Y-m-d"}}(<span class="text-danger">{% trans "总共" %}：{{ res|length }}</span>)
+                </small>
+            </h1>
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div class="pull-right" style="margin-right:30px;">
+            <a onclick="Export()" class="btn btn-primary pull-right bottem">{% trans "导出数据" %}</a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6" id="test">
+        <ul class="nav nav-pills">
+            <li {% if stype == 'day' %}class="active"{% endif %}><a href="{%  url 'mail_summary' %}?stype=day&date_start={{ request.GET.date_start }}&date_end={{ request.GET.date_end }}" title="每日">按天查询</a></li>
+            <li {% if stype == 'week' %}class="active"{% endif %}><a href="{%  url 'mail_summary' %}?stype=week&date_start={{ request.GET.date_start }}&date_end={{ request.GET.date_end }}" title="每周">按周查询</a></li>
+            <li {% if stype == 'month' %}class="active"{% endif %}><a href="{%  url 'mail_summary' %}?stype=month&date_start={{ request.GET.date_start }}&date_end={{ request.GET.date_end }}" title="每月">按月查询</a></li>
+        </ul>
+    </div>
+    <div class="col-xs-6">
+        <div class="pull-right" style="margin-right:30px;">
+            <form method="get" action="">
+                {{ form }}
+                <button type="submit" class="btn btn-primary">{% trans "查询" %}</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="hr hr-18 dotted hr-double"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <table id="ajax-table" class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr>
+                <th rowspan="2">{% trans "序号" %}</th>
+                <th rowspan="2">{% trans "日期" %}</th>
+                <th rowspan="2">{% trans "邮件封数" %}</th>
+                <th colspan="2">{% trans "入站邮件" %}</th>
+                <th colspan="2">{% trans "垃圾过滤邮件" %}</th>
+                <th colspan="2">{% trans "出站邮件" %}</th>
+                <th colspan="2">{% trans "成功出站邮件" %}</th>
+                <th colspan="2">{% trans "失败出站邮件" %}</th>
+                <th rowspan="2">{% trans "垃圾率" %}(%)</th>
+                <th rowspan="2">{% trans "出站成功率" %}(%)</th>
+            </tr>
+            <tr>
+                <th>{% trans "数量" %}</th>
+                <th>{% trans "流量" %}</th>
+                <th>{% trans "数量" %}</th>
+                <th>{% trans "流量" %}</th>
+                <th>{% trans "数量" %}</th>
+                <th>{% trans "流量" %}</th>
+                <th>{% trans "数量" %}</th>
+                <th>{% trans "流量" %}</th>
+                <th>{% trans "数量" %}</th>
+                <th>{% trans "流量" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <div id="resText" style="display:none;">{{res}}</div>
+            {% for r in res %}
+            {% with out_all=r.out_all.0 all=r.all.0 %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                {% if stype == 'day' %}
+                <td><a href="{% url 'active_sender_list' %}?date={{ r.date_start|date:"Y-m-d" }}">{{ r.key }}</a></td>
+                {% else %}
+                    <td>{{ r.key }}</td>
+                {% endif %}
+                <td><a href="{% url 'mail_list' %}?mail_id=0&date_start={{ r.date_start|date:"Y-m-d" }}&date_end={{ r.date_end|date:"Y-m-d" }}">{{ r.total_all }}</a></td>
+                <td><a href="{% url 'mail_list' %}?date_start={{ r.date_start|date:"Y-m-d" }}&date_end={{ r.date_end|date:"Y-m-d" }}">{{ r.all.0 }}</a></td>
+                <td>{{ r.all.1|filesizeformat }}</td>
+                <td><a href="{% url 'mail_list' %}?state=reject&date_start={{ r.date_start|date:"Y-m-d" }}&date_end={{ r.date_end|date:"Y-m-d" }}">{{ r.reject.0|default:0 }}</a></td>
+                <td>{{ r.reject.1|filesizeformat }}</td>
+                <td><a href="{% url 'mail_list' %}?state=out_all&date_start={{ r.date_start|date:"Y-m-d" }}&date_end={{ r.date_end|date:"Y-m-d" }}">{{ out_all }}</a></td>
+                <td>{{ r.out_all.1|filesizeformat }}</td>
+                <td><a href="{% url 'mail_list' %}?state=finished&date_start={{ r.date_start|date:"Y-m-d" }}&date_end={{ r.date_end|date:"Y-m-d" }}">{{ r.finished.0|default:0 }}</a></td>
+                <td>{{ r.finished.1|filesizeformat }}</td>
+                <td><a href="{% url 'mail_list' %}?state=fail_finished&date_start={{ r.date_start|date:"Y-m-d" }}&date_end={{ r.date_end|date:"Y-m-d" }}">{{ r.fail_finished.0|default:0 }}</a></td>
+                <td>{{ r.fail_finished.1|filesizeformat }}</td>
+                <td>{{ r.reject.0|default:0|get_rate:all }}</td>
+                <td>{{ r.finished.0|default:0|get_rate:out_all }}</td>
+            </tr>
+            {% endwith %}
+            {% endfor %}
+
+
+            </tbody>
+        </table>
+
+
+    </div><!-- /.span -->
+</div><!-- /.row -->
+
+
+<div class="hr hr-8 dotted hr-double"></div>
+<div class="row">
+    <div class="text-center fusion-charts col-xs-12">
+        <form class="navbar-form navbar-right">
+            <div class="form-group">
+                <select id="fusion-type" class="form-control">
+                    <option value="MSarea">折线区域图</option>
+                    <option value="msline">折线图</option>
+                    <!--<option value="doughnut3d">3D圈状图</option>-->
+                    <!--<option value="doughnut2d">圈状图</option>-->
+                    <!--<option value="pie3d">饼状图</option>-->
+                </select>
+            </div>
+        </form>
+        <div id="vipAddDay"></div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+
+
+{% endblock %}
+{% block my_jsblock %}
+<script src="{% static 'assets/js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/dataTables.tableTools.min.js' %}"></script>
+<script src="{% static 'assets/js/dataTables.colVis.min.js' %}"></script>
+<script src="{% static 'js/Jquery.Query.js' %}"></script>
+<script>
+        $(function () {
+            $('.dateinput').datepicker({
+                dateFormat: "yy-mm-dd",
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                minView: 2,
+                pickerPosition: "bottom-left"
+
+            });
+
+            $('#test input').click(function(){
+                var param = $(this).attr('data-pa');
+                $('#test input').addClass('btn-default').removeClass('btn-primary');
+                $(this).addClass('btn-primary').removeClass('btn-default');
+                window.location.search='?date_start='+param+'&date_end=';
+            })
+
+            var ajax_url = "{% url 'ajax_get_mails' %}" + window.location.search;
+            console.log(window.location.search);
+            var num = 50;
+            ip_table = $('#ajax-table').dataTable({
+                "iDisplayLength": 20,
+                "lengthMenu": [[20, 50, 100], [20, 50, 100]],
+                "aaSorting": [
+                    [ 0, "asc" ]
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "{% blocktrans %}显示 _MENU_ 每页{% endblocktrans %}",
+                    "sZeroRecords": "{% blocktrans %}对不起! 信息筛选结果为空!{% endblocktrans %}",
+                    "sInfo": "{% blocktrans %}从 _START_ 到 _END_ 总计: _TOTAL_ 条记录{% endblocktrans %}",
+                    "sInfoEmpty": "{% blocktrans %}总计: 0 条记录{% endblocktrans %}",
+                    "sInfoFiltered": "{% blocktrans %}(从 _MAX_ 条记录筛选出){% endblocktrans %}",
+                    "sSearch": "{% blocktrans %}搜索: {% endblocktrans %}",
+                    "oPaginate": {
+                        "sFirst":    "{% blocktrans %}第一页{% endblocktrans %}",
+                        "sPrevious": " {% blocktrans %}上一页 {% endblocktrans %}",
+                        "sNext":     " {% blocktrans %}下一页 {% endblocktrans %}",
+                        "sLast":     " {% blocktrans %}最后一页 {% endblocktrans %}"
+                    }
+                }
+            });
+
+            function rendFusionCharts(day,title,type,managerId){
+                $.ajax({
+                    type: 'GET',
+                    data:{managerId:managerId},
+                    url: '/getAddVipCount/'+day,
+                    success: function(list){
+                        console.log(list);
+
+                        //创建一个图表对象
+                        //var type=$(that).attr('href');
+                        //console.log(type);
+                        var c = new FusionCharts({
+                            type: type,//'doughnut3d',//'doughnut2d',//'pie3d',//'pie2d',//'line',//'bar3d',//'bar2d',//'column3d',//'column2d',
+                            renderAt: 'vipAddDay',
+                            width: '100%',
+                            height: 600,
+                            dataSource: {
+                                "chart": {
+                                    "caption": title,
+                                    //"subCaption": "一周",
+                                    //"xAxisName": "日期",
+                                    "yAxisName": "信息信息"
+                                    //Making the chart export enabled in various formats
+                                },
+                                data: list    //[{label:x, value:x}]
+                            }
+                        });
+                        //渲染出来
+                        c.render();
+                    }
+                });
+            }
+            function drawCharts(type){
+                console.log( 123 );
+                var resText = $('#resText').html();
+                var resArr = [];
+                var str0 = resText.split('{');
+                console.log(str0);
+
+                function find(str,cha,num){
+                    var x=str.indexOf(cha);
+                    for(var i=0;i<num;i++){
+                        x=str.indexOf(cha,x+1);
+                    }
+                    return x;
+                }
+
+                for(var i = 1 ;i<str0.length;i++){
+                    var obj = {};
+
+                    var keyIndex = str0[i].indexOf("key");
+                    var keytext = str0[i].slice(str0[i].indexOf(":",keyIndex)+3,str0[i].indexOf(",",keyIndex)-1);
+                    obj["key"]=keytext;
+                    var allIndex = str0[i].indexOf("all");
+                    var alltext = str0[i].slice(str0[i].indexOf("[",allIndex)+1,str0[i].indexOf(",",allIndex));
+                    obj["all"]=alltext;
+                    var out_allIndex = str0[i].indexOf("out_all");
+                    var out_alltext = str0[i].slice(str0[i].indexOf("[",out_allIndex)+1,str0[i].indexOf(",",out_allIndex));
+                    obj["out_all"]=out_alltext;
+                    var rejectIndex = str0[i].indexOf("reject");
+                    var rejecttext = str0[i].slice(str0[i].indexOf("[",rejectIndex)+1,str0[i].indexOf(",",rejectIndex));
+                    obj["reject"]=rejecttext;
+                    console.log(alltext,keytext,rejecttext,out_alltext);
+                    resArr.unshift(obj);
+                }
+                console.dir(resArr)
+                var dateTimeArr = [];
+                var allMail = [];
+                var rejectMail = [];
+                var out_allMail = [];
+                for(var k=0;k<resArr.length;k++){
+                    dateTimeArr.push({"label":resArr[k]['key']});
+                    allMail.push({"value":resArr[k]['all']});
+                    rejectMail.push({"value":resArr[k]['reject']});
+                    out_allMail.push({"value":resArr[k]['out_all']});
+                }
+                console.log(dateTimeArr);
+//                console.log(eval('(' + resArr[0] + ')'))
+                var c = new FusionCharts({
+                    type: type,//'MSarea' //'msline' //'doughnut3d',//'doughnut2d',//'pie3d',//'pie2d',//'line',//'bar3d',//'bar2d',//'column3d',//'column2d',
+                    renderAt: 'vipAddDay',
+                    width: '100%',
+                    height: 600,
+                    dataSource: {
+                            "chart": {
+                                "caption": "总体统计",
+                                "subcaption": "",
+                                "linethickness": "2",
+                                "showvalues": "0",
+                                "formatnumberscale": "1",
+//                                "labeldisplay": "ROTATE",
+                                "slantlabels": "1",
+                                "divLineAlpha": "40",
+                                "anchoralpha": "0",
+                                "animation": "1",
+                                "legendborderalpha": "10",
+                                "drawCrossLine": "1",
+                                "crossLineColor": "#0d0d0d",
+                                "crossLineAlpha": "100",
+                                "tooltipGrayOutColor": "#80bfff",
+                                "theme": "zune"
+                            },
+                            "categories": [{
+                                "category": dateTimeArr
+                            }],
+                            "dataset": [{
+                                "seriesname": "入站邮件",
+                                "data": allMail
+                            }, {
+                                "seriesname": "系统过滤邮件",
+                                "data": rejectMail
+                            },{
+                                "seriesname": "出站邮件",
+                                "data": out_allMail
+                            }]
+                    }
+                });
+                //渲染出来
+                c.render();
+            }
+            drawCharts('MSarea');
+
+
+            $('#fusion-type').change(function(){
+                drawCharts($(this).val())
+            })
+
+
+        });
+    function Export(){
+        window.location.href = jQuery.query.set('export', '1');
+    }
+    </script>
+
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap %}
+
+{% block header %}信誉度检测区间设置{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                设置信息
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form role="form" action="" method="post">
+                            {% csrf_token %}
+                            <table> {{ form|bootstrap }} </table>
+                            <button type="submit" class="btn btn-primary">确认</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- /.row (nested) -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                信誉度检测区间列表
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <form action="{% url 'credit_interval_settings_change_status' %}" method="POST" id="id_form">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" id="status" />
+                        <input type="hidden" name="id" id="id_id" />
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th width="6%">ID</th>
+                                <th>区间起</th>
+                                <td>区间止</td>
+                                <td>群发邮件阀值</td>
+                                <td>监测时间</td>
+                                <td>发送阀值</td>
+                                <th width="10%">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for d in credit_obj %}
+                            <tr>
+                                <td>{{ d.id }}</td>
+                                <td>{{ d.credit_b }}</td>
+                                <td>{{ d.credit_e }}</td>
+                                <td>{{ d.bulk_max }}</td>
+                                <td>{{ d.bulk_sender_time }}</td>
+                                <td>{{ d.bulk_sender_max }}</td>
+                                <td>
+                                    <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: ChangeStatus({{ d.id }}, 'delete', '是否删除该信誉度检测区间({{d.credit_b}}, {{d.credit_e}})？')">删除</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+{% endblock %}
+{% block css-block %}
+    <link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block js-block %}
+    <script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+
+    <script>
+            $(function () {
+
+            $('#dataTables-example').dataTable({
+                "iDisplayLength": 25,
+                "aaSorting": [
+                    [ 1, "asc" ]
+                ],
+                "oLanguage": {
+                "sLengthMenu": "显示 _MENU_ 每页",
+                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                "sInfoEmpty": "总计: 0 条记录",
+                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                "sSearch": "搜索: ",
+                "oPaginate": {
+                       "sFirst":    "第一页",
+                       "sPrevious": " 上一页 ",
+                       "sNext":     " 下一页 ",
+                       "sLast":     " 最后一页 "
+                   }
+            }
+            });
+            });
+
+        function ChangeStatus(id, status, str){
+            if(confirm(str)) {
+                $('#id_id').val(id);
+                $('#status').val(status);
+                $('#id_form').submit();
+            }
+            return;
+        }
+    </script>
+{% endblock %}

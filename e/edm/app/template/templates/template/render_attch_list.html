@@ -1,0 +1,10 @@
+{% load template_tags %}
+{% for d in lists %}
+    <li style="background: #EFEFEF;" id="id_attach_li_{{ d.id }}" class="padding-5 margin-top-5">
+        <a href="/template/ajax_download_attachfile/{{ d.template_id }}/{{ d.id }}/" target="_blank">{{ d.filename }}</a>
+        <small class="text-muted">({{ d.size|filesizeformat }})</small>
+        <span class="margin-left-5">
+            <a onclick="Javascript:delAttachment({{ d.id }},{{ d.template_id }})"class="myself-txt-color-red">X</a>
+        </span>
+    </li>
+{% endfor %}

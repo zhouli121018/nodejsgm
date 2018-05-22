@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}Postfix日志查询{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12" style="margin-bottom: 10px">
+            <form id="search_form" class="form-inline" role="form" action="" method="POST" style="text-align: center">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit" class="btn btn-primary">查询</button>
+            </form>
+    </div>
+</div>
+{% if iframe_url %}
+        <div class="row">
+           <iframe width="100%" id="mail-iframe" height="600px" onload="bodyS(this);autoH(this);" frameborder="0" src="{{ iframe_url }}"></iframe>
+        </div>
+{% endif %}
+
+
+
+{% endblock %}
+
+        {% block css-block %}
+    <link href="{% static 'datetimepicker/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block js-block %}
+    <script src="{% static 'datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static 'datetimepicker/js/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+        <script>
+            $(function(){
+            $('.dateinput').datetimepicker({
+                format: "yyyy-mm-dd",
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                minView: 2,
+                pickerPosition: "bottom-left"
+                });
+            });
+
+        </script>
+    {% endblock %}
+

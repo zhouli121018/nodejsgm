@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}<a href="{% url 'customer_list' %}">客户列表</a> / {{ c.username }} -- 邮箱帐号{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-12">
+        <form action="" method="POST" class="pull-right" >
+            {% csrf_token %}
+            {{ form }}
+            <button class="btn btn-primary" type="submit">添加帐号</button>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                邮箱帐号
+                <div class="pull-right">
+                    <b>总共:</b>
+                    {{ c.mailbox.count }}
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <form action="{% url 'customer_mailbox_change_status' c.id %}" method="POST" id="id_form">
+                        {% csrf_token %}
+                        <input type="hidden" name="status" id="status" />
+                        <input type="hidden" name="id" id="id_id" />
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th width="6%">ID</th>
+                                <th>帐号</th>
+                                <th>密码</th>
+                                <th width="6%">状态</th>
+                                <th width="10%">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for i in c.mailbox.all %}
+                            <tr>
+                                <td>{{ i.id }}</td>
+                                <td>{{ i.mailbox }}</td>
+                                <td>{{ i.password }}</td>
+                                <td>{% if i.disabled %}禁用{% else %}启用{% endif %}</td>
+                                <td>
+                                    <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: ChangeStatus({{ i.id }}, 'delete', '是否删除帐号 ' + '{{ i.mailbox }}')">删除</a>
+                                    {% if i.disabled %}
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="Javascript: ChangeStatus({{ i.id }}, 'abled', '是否启用帐号 ' + '{{ i.mailbox }}')">启用</a>
+                                    {% else %}
+                                    <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: ChangeStatus({{ i.id }}, 'disabled', '是否禁用帐号 ' + '{{ i.mailbox }}')">禁用</a>
+                                    {% endif  %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+{% endblock %}
+{% block css-block %}
+    <link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block js-block %}
+    <script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+
+    <script>
+            $(function () {
+
+            $('#dataTables-example').dataTable({
+                "iDisplayLength": 25,
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
+                "oLanguage": {
+                "sLengthMenu": "显示 _MENU_ 每页",
+                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                "sInfoEmpty": "总计: 0 条记录",
+                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                "sSearch": "搜索: ",
+                "oPaginate": {
+                       "sFirst":    "第一页",
+                       "sPrevious": " 上一页 ",
+                       "sNext":     " 下一页 ",
+                       "sLast":     " 最后一页 "
+                   }
+            }
+            });
+            });
+
+        function ChangeStatus(id, status, str){
+            if(confirm(str)) {
+                $('#id_id').val(id);
+                $('#status').val(status);
+                $('#id_form').submit();
+            }
+            return;
+        }
+    </script>
+{% endblock %}

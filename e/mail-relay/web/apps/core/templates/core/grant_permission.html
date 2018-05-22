@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mail_tags %}
+{% load core_tags %}
+{% block header %}授予权限/{% if request.GET.g_id %}<a href="{% url 'group_list' %}">用户组</a>{% endif %}({{ obj }}){% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <form id="id_form" action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" id="permission_id" name="ids" />
+                        <input type="hidden" id="action" name="action" />
+                        <div class="tree well">
+                            <ul>
+                                {% for p in mypermissions %}
+                                <li>
+                                    <span><i class="glyphicon {% if p.is_nav %}glyphicon-folder-open{% endif %}"></i> <a href="{{p.url}}">{{p.name}}({{p.nav_name}})</a></span>
+                                    <input type="checkbox" {% if p.per in myperms %} checked {% endif %} name="permission" value="{{ p.id }}" />
+                                    <ul>
+                                        {% for p_child in p.children.all|permission_order_by %}
+                                        <li>
+                                            <span><i class="glyphicon {% if p_child.is_nav %}glyphicon-folder-open{% endif %}"></i> <a href="{{p_child.url}}">{{p_child.name}}({{p_child.nav_name}})</a></span>
+                                            <input type="checkbox" {% if p_child.per in myperms %} checked {% endif %} name="permission" value="{{ p_child.id }}" />
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <button type="button" onclick="Sumbit()" class="btn btn-primary">确认</button>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+{% endblock %}
+{% block css-block %}
+<link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+<link href="{% static 'select/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/tree.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block js-block %}
+<script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'select/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'js/Jquery.Query.js' %}"></script>
+<script src="{% static 'js/my_datatables.js' %}"></script>
+
+<script>
+        $('.selectpicker').selectpicker();
+
+
+  $(function () {
+  $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+  $('.tree li.parent_li > span').on('click', function (e) {
+    var children = $(this).parent('li.parent_li').find(' > ul > li');
+    if (children.is(":visible")) {
+      children.hide('fast');
+      $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+    } else {
+      children.show('fast');
+      $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+    }
+    e.stopPropagation();
+  });
+});
+
+    function Sumbit(){
+            var ids = '';
+            $("input[name='permission']:checked").each(function () {
+                ids += (this.value)+',';
+                $('#show').append(this.value + "  ");
+            });
+            $('#permission_id').val(ids);
+            $('#id_form').submit();
+}
+  </script>
+
+{% endblock %}
+

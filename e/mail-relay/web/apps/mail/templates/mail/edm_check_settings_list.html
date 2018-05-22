@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}群发系统垃圾检测设置{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <a href="{% url 'edm_check_settings_add' %}" style="margin-bottom: 10px;" class="btn btn-primary pull-right">添加设置</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+               群发系统垃圾检测设置
+                <div class="pull-right">
+                    <b>总共:</b>
+                    {{ edm_check_settingss.count }}
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <form id="id_form" action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="ids" id="ids" />
+                        <input type="hidden" name="status" id="status" />
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th width="6%">ID</th>
+                                <th>名称</th>
+                                <th>服务商</th>
+                                <th>端口</th>
+                                <th>账号</th>
+                                <th>密码</th>
+                                <th>收件人邮箱</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for d in edm_check_settingss %}
+                            <tr>
+                                <td>{{ d.id }}</td>
+                                <td>{{ d.name }}</td>
+                                <td>{{ d.smtp_server }}</td>
+                                <td>{{ d.smtp_port }}</td>
+                                <td>{{ d.account }}</td>
+                                <td>{{ d.password }}</td>
+                                <td>{{ d.receiver }}</td>
+                                <td>
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'edm_check_settings_modify' d.id %}">修改</a>
+                                    <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: DeleteEdmCheckSettings({{ d.id }}, '{{ d.name }}')">删除</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 --> </div> </div>
+{% endblock %}
+{% block css-block %}
+    <link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block js-block %}
+    <script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/my_datatables.js' %}"></script>
+
+    <script>
+
+        function DeleteEdmCheckSettings(id, edm_check_settings){
+            var str = '是否要删除设置 "%s"？';
+            str = str.replace(/%s/, edm_check_settings);
+            if(confirm(str)) {
+                $('#ids').val(id);
+                $('#status').val('-1');
+                $('#id_form').submit();
+            }
+            return;
+        }
+    </script>
+{% endblock %}

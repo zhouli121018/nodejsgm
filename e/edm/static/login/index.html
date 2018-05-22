@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>U-mail</title>
+    <meta name="keywords" content="沈阳三洋重工集团企业邮箱"/>
+    <meta name="description" content="沈阳三洋重工集团企业邮箱"/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="stylesheet" href="css/common.css"/>
+    <script type="text/javascript" src="js/jquery.1.11.0.min.js"></script>
+    <script type="text/javascript" src="js/drag.js"></script>
+</head>
+<body>
+
+<div class="g-doc">
+    <!--header start-->
+    <div class="m-header">
+        <div class="logo">
+            <a href="#">
+                <img src="images/logo.png" alt="U-mail" />
+                <h1>邮件营销平台</h1>
+            </a>
+        </div>
+        <div class="right_f">
+            <div class="tel">服务热线：<span>400-8181-568</span></div>
+        </div>
+    </div>
+    <!--header end-->
+
+    <!--main start-->
+    <div class="g-main">
+        <div class="m-login">
+            <div class="loginbox">
+                <div class="m-ways">
+                    <div class="userlogin on">用户登陆</div>
+                    <div class="sep"></div>
+                    <div class="weixinlogin">微信登陆</div>
+                </div>
+                <div class="passmain">
+                    <div class="userpass on">
+                        <form action="">
+                            <div class="inputtag"><input class="username" type="text" placeholder="账号/邮箱账号/手机号" id="name"></div>
+                            <div class="inputtag"><input class="password" type="password" placeholder="密码" id="password"></div>
+                            <div class="inputtag"><div id="drag"></div></div>
+                            <div class="findpassword"><a href="#">忘记密码?</a></div>
+                            <div class="submit"><input type="button" value="登录"></div>
+                        </form>
+                    </div>
+                    <div class="weixinpass">
+                        <img src="images/qrcode.php.png" alt="">
+                        <h1>使用微信扫一扫快捷登录</h1>
+                    </div>
+                </div>
+                <div class="otherways">
+                    <h1>其他快捷登陆</h1>
+                    <a href="#"><img src="images/alipay.png" alt=""></a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--main end-->
+
+    <!--footer end-->
+    <div class="g-footer">
+        <p>当前时间：<span id='timer'></span></p>
+        <p>Copyright ©  U-Mail Co.,Ltd.   <a href='#'>隐私保护</a> | <a href='#'>服务协议   粤ICP备11061369号</p>
+    </div>
+    <!--footer end-->
+</div>
+</body>
+
+<script type="text/javascript">
+    $('.weixinlogin').click(function(){
+        $('.userlogin').removeClass('on');
+        $('.userpass').removeClass('on');
+        $(this).addClass('on');
+        $('.weixinpass').addClass('on');
+    });
+    $('.userlogin').click(function(){
+        $('.weixinlogin').removeClass('on');
+        $('.weixinpass').removeClass('on');
+        $(this).addClass('on');
+        $('.userpass').addClass('on');
+    });
+
+
+    $('#drag').drag();
+    function autoHeight () {
+        var headerHeight = $('.m-header').height()+60;
+        var footerHeight = $('.g-footer').height()+60;
+        var bodyHeight=$(window).height();
+        var mainHeight=(bodyHeight-footerHeight-headerHeight);
+        $('.g-main').height(mainHeight);
+        var loginHeight=$('.m-login').height();
+        var loginTop = (mainHeight-loginHeight)/2;
+        $('.m-login').css('padding-top',loginTop);
+    }
+    function getTimer (){
+        var myDate = new Date();
+        var newtimer = myDate.toLocaleString( );        //获取日期与时间
+        $('#timer').html(newtimer);
+
+    }
+    function addFavorite(sTitle,sURL)
+    {try
+    {
+        window.external.addFavorite(sURL, sTitle);
+    }
+    catch (e)
+    {
+        try
+        {
+            window.sidebar.addPanel(sTitle, sURL, "");
+        }
+        catch (e)
+        {
+            alert("加入收藏失败，请使用Ctrl+D进行添加");
+        }
+    }
+    }
+
+    autoHeight(); //自适应高度
+    setInterval("getTimer()",1000); //获取本地时间
+
+    $(window).resize(function() {
+        autoHeight();
+
+    });
+
+</script>
+
+</html>

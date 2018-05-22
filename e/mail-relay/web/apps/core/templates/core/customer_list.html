@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mail_tags %}
+{% block header %}客户列表{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <a href="{% url 'auditlog' %}?content_type=core.customer" style="margin-left: 10px;margin-bottom: 10px;" class="btn btn-primary pull-right">操作日志</a>
+        {% if perms.core.customer_add %}
+        <a href="{% url 'customer_add' %}" style="margin-bottom: 10px; margin-left: 10px" class="btn btn-primary pull-right">添加客户</a>
+        {% endif %}
+        {% if perms.core.customer_batchadd %}
+        <a href="{% url 'customer_batchadd' %}" style="margin-bottom: 10px; margin-left: 10px" class="btn btn-primary pull-right">批量添加客户</a>
+        {% endif %}
+        <a href="/rest/customers/" style="margin-bottom: 10px;" class="btn btn-primary pull-right">REST接口</a>
+    </div>
+</div>
+        <br/>
+
+<div class="row">
+    <div class="col-lg-12" style="margin-bottom: 10px">
+        <div class="pull-right">
+            <form id="search_form" class="form-inline pull-right" role="form" action="" style="text-align: right">
+                {{ form }}
+                <button type="submit" class="btn btn-primary">查询</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                客户列表
+                    <div class="pull-right" id="id_customer_status">
+                       <img src="{% static 'img/loading.gif' %}" />
+                    </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <form id="id_form" action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" id="customer_id" name="customer_id" />
+                        <input type="hidden" id="action" name="action" />
+                        <input type="hidden" id="ids" name="ids" />
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>
+                                    <button type="button" class="btn btn-link" onclick="fnGetAll();">全选</button>/<button type="button" class="btn btn-link" onclick="fnGetReverse();">取消</button>
+                                    分配到IP发送池:
+                                    <select id="pool_select" name="pool_id" class="selectpicker">
+                                        <option value="">不分配IP池</option>
+                                        {% for p in pools %}
+                                        <option value="{{p.id}}" {% ifequal request.GET.ip_pool_id p.id|stringformat:"s" %}selected{% endifequal %}>{{ p.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <button type="button" class="btn btn-primary" onclick="allocate_ip();">确定分配</button>
+                                </p>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th rowspan="2">ID</th>
+                                <th rowspan="2">公司名称</th>
+                                <th style="text-align:center" colspan="9">中继</th>
+                                <th style="text-align:center" colspan="6">网关</th>
+                                <th rowspan="2">添加记录</th>
+                                <th rowspan="2">最后操作</th>
+                                <th rowspan="2">最后登录</th>
+                                <th rowspan="2">操作</th>
+                            </tr>
+                            <tr>
+                                <th>IP</th>
+                                <th>域名</th>
+                                <th>帐号</th>
+                                <th>分配IP池</th>
+                                <th>用户</th>
+                                <th>超限</th>
+                                <th>服务时间</th>
+                                <th>状态</th>
+                                <th>当天发送详情</th>
+                                <th>域名</th>
+                                <th>用户</th>
+                                <th>超限</th>
+                                <th>服务时间</th>
+                                <th>状态</th>
+                                <th>当天发送详情</th>
+                            </tr>
+                            </thead>
+                            {% comment %}
+                            <tbody>
+                            {% for c in customers %}
+                            <tr class="{% cycle 'even' 'odd' %}">
+                                <td>{{ c.id }}</td>
+                                <td>{{ c.username }}<br/>{{ c.company }}</td>
+                                <td><a href="{% url 'customer_ip' c.id %}">{{ c.ip.count }}</a></td>
+                                <td><a href="{% url 'customer_domain' c.id %}">{{ c.domain.count }}</a></td>
+                                <td><a href="{% url 'customer_mailbox' c.id %}">{{ c.mailbox.count }}</a></td>
+                                <td><a href="{% url 'ip_pool_list' %}?id={{c.ip_pool.id}}">{{ c.ip_pool|default_if_none:"" }}</a> </td>
+                                <td>{{ c.relay_limit }}</td>
+                                {% autoescape off %}
+                                <td>{{ c|get_send_info:"customer" }}</td>
+                                <td>{{ c.collect_limit }}</td>
+                                {% endautoescape %}
+                                <td><a href="{% url 'customer_mailbox' c.id %}">{{ c.col_domain.count }}</a></td>
+                                {% autoescape off %}
+                                <td>{{ c|get_send_info:"customer" }}</td>
+                                {% endautoescape %}
+                                <td>{{ c.ip_pool|default_if_none:"" }}</td>
+                                <td>{{ c.service_start|date:'Y-m-d' }}<br/>{{ c.service_end|date:'Y-m-d' }}</td>
+                                <td>{{ c.created|date:'Y-m-d H:i'}}</td>
+                                <td>{% if c.disabled %}禁用{% else %}启用{% endif %}</td>
+                                <td>
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'customer_modify' c.id %}">修改</a>
+                                    <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: DeleteCustomer({{ c.id }}, '{{ c.username }}')">删除</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                            {% endcomment %}
+                        </table>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+{% endblock %}
+{% block css-block %}
+    <link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+    <link href="{% static 'select/bootstrap-select.min.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block js-block %}
+    <script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'select/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'js/Jquery.Query.js' %}"></script>
+    <!--<script src="{% static 'js/my_datatables.js' %}"></script>-->
+
+    <script>
+        $('.selectpicker').selectpicker();
+
+        function DeleteCustomer(id, customer){
+            var str = '是否要删除客户 "%s"？';
+            str = str.replace(/%s/, customer);
+            if(confirm(str)) {
+                $('#customer_id').val(id);
+                $('#action').val('delete');
+                $('#id_form').submit();
+            }
+            return;
+        }
+
+
+        function allocate_ip() {
+            var id_array = fnGetSelected();
+
+            if (id_array.length == 0){
+                $.notify("你还没有选中要操作的IP！ 请点击需要操作的行", {globalPosition: 'top center', className: 'warn'});
+                return false;
+            }
+            text = $("#pool_select").find("option:selected").text();
+
+            if (!confirm("你确定要分配" + id_array.length + ' 个用户到 ' + text + ' ?')) {
+                return false;
+            } else {
+                $('#ids').val(id_array);
+                $('#action').val('allocate');
+                $('#id_form').submit();
+            }
+        }
+
+    </script>
+
+    <script>
+        var ip_table;
+        $(function () {
+
+            $.getJSON("{% url 'ajax_get_customer_status' %}" + window.location.search,  function(data){
+                $('#id_customer_status').html(data.html);
+            });
+
+            var ajax_url = "{% url 'ajax_get_customers' %}" + window.location.search;
+
+            ip_table = $('#dataTables-example').dataTable({
+                //"columnDefs": [ { "targets": [ 0 ], "visible": false, "searchable": false }],
+                "iDisplayLength": 50,
+                "processing": true,
+                "serverSide": true,
+                "lengthMenu": [[25, 50, 100, 500], [25, 50, 100, 500]],
+                "ajax": ajax_url,
+
+                "drawCallback": function( settings ) {
+                    $('#dataTables-example tr').click( function() {
+                    if ( $(this).hasClass('row_selected') )
+                     $(this).removeClass('row_selected');
+                        else
+                    $(this).addClass('row_selected');
+                    } );
+                },
+                "rowCallback": function( row, data ) {
+                    var status = data[9];
+
+                    if(status=="即将过期"){
+                         $('td', row).css('background-color', '#E89E6C');
+                     }else if(status=="已过期"){
+                         $('td', row).css('background-color', '#854114');
+                     }else if(status=="已禁用"){
+                         $('td', row).css('background-color', '#AAAAAA');
+                     }
+                },
+
+                "aaSorting": [
+                    [ 18, "desc" ]
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "显示 _MENU_ 每页",
+                    "sZeroRecords": "对不起! 信息筛选结果为空!",
+                    "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                    "sInfoEmpty": "总计: 0 条记录",
+                    "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                    "sSearch": "搜索: ",
+                    "oPaginate": {
+                        "sFirst":    "第一页",
+                        "sPrevious": " 上一页 ",
+                        "sNext":     " 下一页 ",
+                        "sLast":     " 最后一页 "
+                    }
+                }
+            });
+
+
+        });
+
+
+    $.fn.dataTableExt.oApi.fnGetFilteredNodes = function ( oSettings )
+    {
+        var anRows = [];
+        //var length = oSettings._iDisplayLength > 0 ? oSettings._iDisplayLength: oSettings.aiDisplay.length;
+        var length = oSettings.aiDisplay.length;
+        for ( var i=0, iLen=length ; i<iLen ; i++ )
+        {
+            var nRow = oSettings.aoData[ oSettings.aiDisplay[i] ].nTr;
+            anRows.push( nRow );
+        }
+        return anRows;
+    };
+
+    function fnGetAll()
+    {
+        var aTrs = ip_table.fnGetFilteredNodes();
+
+        for ( var i=0 ; i<aTrs.length ; i++ )
+        {
+            if ( !$(aTrs[i]).hasClass('row_selected') )
+                $(aTrs[i]).addClass('row_selected');
+        }
+    }
+
+    function fnGetReverse()
+    {
+        var aTrs = ip_table.fnGetFilteredNodes();
+
+        for (var i=0 ; i<aTrs.length ; i++ )
+        {
+            if ( $(aTrs[i]).hasClass('row_selected') )
+            {
+                $(aTrs[i]).removeClass('row_selected');
+            }
+        }
+    }
+
+    function fnGetSelected()
+    {
+        var aReturn = new Array();
+        var aTrs = ip_table.fnGetFilteredNodes();
+        for ( var i=0 ; i<aTrs.length ; i++ )
+        {
+            if ( $(aTrs[i]).hasClass('row_selected') )
+            {
+                var aData = ip_table.fnGetData( aTrs[i]);
+                var iId = aData[0];
+                aReturn.push( iId );
+            }
+        }
+        return aReturn;
+    }
+    function QuerySet(key, value){
+        window.location.href = jQuery.query.set(key, value);
+    }
+
+    </script>
+{% endblock %}
+

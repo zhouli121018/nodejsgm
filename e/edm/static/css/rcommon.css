@@ -1,0 +1,229 @@
+/*页面公共部分样式*/
+
+/****************头部 start****************/
+.u-header {
+    position: fixed;
+    width: 100%;
+    height: 72px;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    background-color: #0c2c4a;
+    z-index: 99;
+}
+
+.u-header .w {
+    height: 72px;
+}
+
+/*logo*/
+.u-header .logo {
+    width: 272px;
+    height: 30px;
+    margin-top: 19px;
+    background: url("../image/common/logo.png") no-repeat;
+}
+
+/*导航*/
+.u-nav {
+    width: 655px;
+    height: 72px;
+    margin-left: 120px;
+}
+
+.u-nav li {
+    float: left;
+    height: 72px;
+    margin-right: 48px;
+    line-height: 72px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.u-nav li.mr0 {
+    margin-right: 0;
+}
+
+.u-nav li a {
+    font-size: 14px;
+    color: #fff;
+}
+
+.u-nav li a:hover{
+    color: #1d98fc;
+}
+
+/*登录 注册按钮*/
+.u-header button {
+    float: right;
+    width: 61px;
+    height: 26px;
+    margin-top: 23px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+/*登录*/
+.u-header .btn-1 {
+    background-color: #217bc4;
+    margin-left: 20px;
+}
+
+.u-header .btn-1:hover {
+    background-color: #068cf9;
+}
+
+/*注册*/
+.u-header .btn-2 {
+    background-color: #ff992c;
+    margin-left: 13px;
+}
+
+.u-header .btn-2:hover {
+    background-color: #f5c188;
+}
+
+/****************头部 end****************/
+
+/****************底部 start****************/
+.bom {
+    height: 317px;
+    width: 100%;
+    background: #26313e url("../image/common/bom-bg.jpg") center center no-repeat;
+
+}
+
+.bom .w {
+    height: 272px;
+}
+
+/*底部logo*/
+.bom .logo {
+    float: left;
+    width: 159px;
+    height: 77px;
+    margin-top: 52px;
+    margin-left: 27px;
+    background: url("../image/common/bom-logo.png") no-repeat;
+}
+
+.bom h2 {
+    font-size: 14px;
+    color: #fff;
+}
+
+.bom .line {
+    width: 32px;
+    height: 2px;
+    background: #414f5f;
+    margin: 19px 0 17px 0;
+}
+
+.bom ul li {
+    margin-bottom: 16px;
+}
+
+.bom a {
+    color: #a1afc0;
+}
+.bom a:hover{
+    color: red;
+}
+
+
+/*产品中心*/
+
+.bom .por {
+    float: left;
+    margin-left: 173px;
+    margin-top: 58px;
+}
+
+/*方案*/
+.bom .sch {
+    float: left;
+    margin-left: 61px;
+    margin-top: 58px;
+}
+
+/*相关*/
+.bom .cor {
+    float: left;
+    margin-left: 68px;
+    margin-top: 58px;
+}
+
+/*关于U-MAIL*/
+.bom .reg {
+    float: left;
+    margin-left: 65px;
+    margin-top: 58px;
+}
+
+/*二维码*/
+.bom .gz-code {
+    float: left;
+    margin-left: 51px;
+    margin-top: 58px;
+}
+
+.bom .gz-code img {
+    margin-left: 13px;
+    margin-bottom: 20px;
+}
+
+.bom .gz-code p {
+    width: 145px;
+    height: 14px;
+    margin-left: 13px;
+    margin-bottom: 20px;
+    line-height: 14px;
+    color: #fff;
+}
+
+/*按钮*/
+.btn-wrap {
+    float: left;
+    width: 112px;
+    height: 178px;
+    margin: 77px 0 0 44px;
+}
+
+.btn-wrap button {
+    width: 88px;
+    height: 28px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.btn-wrap .login-btn {
+    background-color: #217bc4;
+    margin-bottom: 16px;
+}
+
+.btn-wrap .login-btn:hover {
+    background-color: #068cf9;
+}
+
+.btn-wrap .register-btn {
+    background-color: #ff992c;
+}
+
+.btn-wrap .register-btn:hover {
+    background-color: #f5c188;
+}
+
+.bom .banquan {
+    height: 44px;
+    width: 100%;
+    margin: 0 auto;
+    border-top: 1px solid #333f4e;
+    font-size: 14px;
+    color: #596879;
+    line-height: 44px;
+    text-align: center;
+}
+
+/****************底部 end****************/

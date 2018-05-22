@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap %}
+
+{% block header %}<a href="{% url 'cluster_list' %}">SMTP服务器</a> / {{ cluster.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                添加IP
+            </div>
+            <div class="panel-body">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#network" data-toggle="tab">网段添加</a></li>
+                    <li class=""><a href="#single" data-toggle="tab">单个添加</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="network">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <form role="form" action="" method="post">
+                                    {% csrf_token %}
+                                    {{ form|bootstrap }}
+                                    <button type="submit" class="btn btn-primary" id="sub_net">确认</button>
+                                    <a class="btn btn-link" href="{% url 'cluster_list' %}">取消</a>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- /.row (nested) -->
+                    </div>
+                    <div class="tab-pane fade" id="single">
+                        <div class="form-group">
+                            <label></label>
+                            <form role="form" action="" method="post">
+                                <textarea class="form-control" rows="10" name="ips"></textarea>
+                                {% csrf_token %}
+                                <p>注: 每行一个独立的IP配置: "设备名 IP 掩码 helo" 用空格分隔.
+                                    例如: "eth0 &nbsp;&nbsp;&nbsp; 58.211.1.12 &nbsp;&nbsp;&nbsp;
+                                    255.255.255.0 &nbsp;&nbsp;&nbsp; helo.yourhostname.com"
+                                </p>
+                                <input type="hidden" name="single" value="1">
+                                <button type="submit" class="btn btn-primary">确认</button>
+                                <a class="btn btn-link" href="{% url 'cluster_list' %}">取消</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- /.panel-body -->
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+

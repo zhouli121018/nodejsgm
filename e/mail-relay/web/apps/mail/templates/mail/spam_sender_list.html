@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}动态SPAM发件人列表{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                列表
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <form id="id_form" action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="mail_from" id="mail_from" />
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>发件人</th>
+                                <th>发送垃圾次数</th>
+                                <th>最后发送垃圾时间</th>
+                                <th>是否在检测队列</th>
+                                <th>过期时间</th>
+                                <th width="10%">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for b in senders %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ b.mail_from }}</td>
+                                <td><a href="{% url 'mail_list' %}?show=sendlog&mail_from={{ b.mail_from }}&error_type=5&date={{ b.last_time|date:'Y-m-d'}}">{{ b.total }}</a></td>
+                                <td>{{ b.last_time|date:"Y-m-d H:i" }}</td>
+                                {% if b.is_spam_sender %}
+                                <td>是</td>
+                                <td>{{ b.expired|date:"Y-m-d H:i" }}</td>
+                                {% else %}
+                                <td>否</td>
+                                <td></td>
+                                {% endif %}
+                                <td>
+                                    <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: Delete('{{ b.mail_from }}')">删除</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+{% endblock %}
+{% block css-block %}
+<link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block js-block %}
+<script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+
+<script>
+$(document).ready(function() {
+
+
+    ip_table = $('#dataTables-example').dataTable({
+        "iDisplayLength": 50,
+        "order": [[ 4, 'desc' ]],
+        "oLanguage": {
+            "sLengthMenu": "显示 _MENU_ 每页",
+            "sZeroRecords": "对不起! 信息筛选结果为空!",
+            "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+            "sInfoEmpty": "总计: 0 条记录",
+            "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+            "sSearch": "搜索: ",
+            "oPaginate": {
+                   "sFirst":    "第一页",
+                   "sPrevious": " 上一页 ",
+                   "sNext":     " 下一页 ",
+                   "sLast":     " 最后一页 "
+               }
+        }
+    });
+});
+
+
+        function Delete(mail_from){
+            var str = '是否要删除动态发件人 "%s"？';
+            str = str.replace(/%s/, mail_from);
+            if(confirm(str)) {
+                $('#mail_from').val(mail_from);
+                $('#id_form').submit();
+            }
+            return;
+        }
+    </script>
+{% endblock %}

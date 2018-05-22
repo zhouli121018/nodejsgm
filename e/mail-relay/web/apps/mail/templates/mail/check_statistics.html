@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mail_tags %}
+{% block header %}邮件审核通过率统计{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <form class="form-search pull-right form-inline" style="text-align: right" action="">
+
+            <label>开始日期：</label>
+            <span class="input-append date dateinput" data-date="" data-date-format="yyyy-mm-dd">
+            <input type="text" name="start" value="{{ start }}" readonly="" />
+                <span class="add-on"><i class="icon-remove"></i></span>
+                <span class="add-on"><i class="icon-th"></i></span>
+            </span>
+            <label>结束日期：</label>
+            <span class="input-append date dateinput" data-date="" data-date-format="yyyy-mm-dd">
+            <input type="text" name="end" value="{{ end }}" readonly="" />
+                <span class="add-on"><i class="icon-remove"></i></span>
+                <span class="add-on"><i class="icon-th"></i></span>
+            </span>
+            <button type="submit" class="btn btn-primary">选择</button>
+
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th rowspan="2">日期</th>
+                                <th colspan="3">动态SPAM</th>
+                                <th colspan="3">高危邮件</th>
+                                <th colspan="3">高危发件人</th>
+                                <th colspan="3">发件黑</th>
+                                <th colspan="3">主题黑</th>
+                                <th colspan="3">内容黑</th>
+                                <th colspan="3">CYBER</th>
+                                <th colspan="3">Spamassassin</th>
+                            </tr>
+                            <tr>
+                                <th>全部</th>
+                                <th>通过</th>
+                                <th>比例</th>
+                                <th>全部</th>
+                                <th>通过</th>
+                                <th>比例</th>
+                                <th>全部</th>
+                                <th>通过</th>
+                                <th>比例</th>
+                                <th>全部</th>
+                                <th>通过</th>
+                                <th>比例</th>
+                                <th>全部</th>
+                                <th>通过</th>
+                                <th>比例</th>
+                                <th>全部</th>
+                                <th>通过</th>
+                                <th>比例</th>
+                                <th>全部</th>
+                                <th>通过</th>
+                                <th>比例</th>
+                                <th>全部</th>
+                                <th>通过</th>
+                                <th>比例</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for r in res %}
+                            {% with r.date|date:"Y-m-d" as date %}
+                            <tr>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}">{{ date }}</a></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=active_spam">{{ r.active_spam_all }}</a></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=active_spam&review=pass">{{ r.active_spam_pass }}</a></td>
+                                <td><code>{{ r.active_spam_pass|get_rate:r.active_spam_all }}</code></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=high_risk">{{ r.high_risk_all }}</a></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=high_risk&review=pass">{{ r.high_risk_pass }}</a></td>
+                                <td><code>{{ r.high_risk_pass|get_rate:r.high_risk_all }}</code></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=high_sender">{{ r.high_sender_all }}</a></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=high_sender&review=pass">{{ r.high_sender_pass }}</a></td>
+                                <td><code>{{ r.high_sender_pass|get_rate:r.high_sender_all }}</code></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=sender_blacklist">{{ r.sender_blacklist_all }}</a></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=sender_blacklist&review=pass">{{ r.sender_blacklist_pass }}</a></td>
+                                <td><code>{{ r.sender_blacklist_pass|get_rate:r.sender_blacklist_all }}</code></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=subject_blacklist">{{ r.subject_blacklist_all }}</a></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=subject_blacklist&review=pass">{{ r.subject_blacklist_pass }}</a></td>
+                                <td><code>{{ r.subject_blacklist_pass|get_rate:r.subject_blacklist_all }}</code></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=keyword_blacklist">{{ r.keyword_blacklist_all }}</a></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=keyword_blacklist&review=pass">{{ r.keyword_blacklist_pass }}</a></td>
+                                <td><code>{{ r.keyword_blacklist_pass|get_rate:r.keyword_blacklist_all }}</code></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=cyber_spam">{{ r.cyber_spam_all }}</a></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=cyber_spam&review=pass">{{ r.cyber_spam_pass }}</a></td>
+                                <td><code>{{ r.cyber_spam_pass|get_rate:r.cyber_spam_all }}</code></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=spamassassin">{{ r.spamassassin_all }}</a></td>
+                                <td><a href="{% url 'mail_list' %}?date={{ date }}&check=spamassassin&review=pass">{{ r.spamassassin_pass }}</a></td>
+                                <td><code>{{ r.spamassassin_pass|get_rate:r.spamassassin_all }}</code></td>
+                            </tr>
+                            {% endwith %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 --> </div> </div>
+{% endblock %}
+{% block css-block %}
+    <link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+    <link href="{% static "datetimepicker/css/bootstrap-datetimepicker.min.css" %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block js-block %}
+    <script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static "datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
+    <script src="{% static "datetimepicker/js/bootstrap-datetimepicker.zh-CN.js" %}"></script>
+
+
+    <script>
+            $(function () {
+
+            $('#dataTables-example').dataTable({
+                "iDisplayLength": 25,
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
+                "oLanguage": {
+                "sLengthMenu": "显示 _MENU_ 每页",
+                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                "sInfoEmpty": "总计: 0 条记录",
+                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                "sSearch": "搜索: ",
+                "oPaginate": {
+                       "sFirst":    "第一页",
+                       "sPrevious": " 上一页 ",
+                       "sNext":     " 下一页 ",
+                       "sLast":     " 最后一页 "
+                   }
+            }
+            });
+
+            $('.dateinput').datetimepicker({
+                format: "yyyy-mm-dd",
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                minView: 2,
+                pickerPosition: "bottom-left"
+
+            });
+            });
+
+
+    </script>
+{% endblock %}

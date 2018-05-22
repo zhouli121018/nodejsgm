@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+{% load static from staticfiles %}
+{% load core_tags %}
+
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>{% block title %}U-mail 中继管理平台{% endblock %}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="{% static 'metisMenu/dist/metisMenu.min.css' %}" rel="stylesheet">
+
+
+    <!-- Custom Fonts -->
+    <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    {% block css-block %}{% endblock %}
+
+    <!-- Custom CSS -->
+    <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="login-layout">
+<div class="main-container">
+<div class="main-content">
+<div class="row">
+<div class="col-sm-10 col-sm-offset-1">
+<div class="login-container">
+<div class="center">
+<span class="text-success">您已成功退出U-Mail网关/中继平台, 感谢使用!</span>
+        <br/>
+
+<span class="text-info" id="totalSecond">3</span>秒后，跳转回首页.或者<a href="/">点击这里</a>重新登录
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<script language="javascript" type="text/javascript">
+var second = document.getElementById('totalSecond').textContent;
+
+if (navigator.appName.indexOf("Explorer") > -1)  {
+	second = document.getElementById('totalSecond').innerText;
+} else {
+	second = document.getElementById('totalSecond').textContent;
+}
+
+setInterval("redirect()", 1000);
+function redirect() {
+if (second < 0) {
+	location.href = '/';
+} else {
+	if (navigator.appName.indexOf("Explorer") > -1) {
+		document.getElementById('totalSecond').innerText = second--;
+	} else {
+		document.getElementById('totalSecond').textContent = second--;
+	}
+}
+}
+</script>
+</body>

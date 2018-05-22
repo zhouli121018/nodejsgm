@@ -1,0 +1,28 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 class="modal-title" id="myModalLabel" style="font-weight: 600">{% trans '绑定微信' %}</h4>
+</div>
+<div class="modal-body" style="height: 280px;margin-top: -12px;">
+    <div class="contact-dialog-wrap">
+        <div class="tc-15-list-wrap">
+            <div style="float: left;margin-left: 115px;">
+                <img style="max-width: 250px; max-height: 250px;" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket={{ ticket }}" />
+                <p class="tc-15-msg" style="margin-left: 65px;margin-bottom: 0px;margin-top: -20px;">{% trans '扫二维码进行绑定' %}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="ui-button-btn-link" data-dismiss="modal">{% trans '取消' %}</button>
+</div>
+<script>
+    function CheckBind(){
+        $.getJSON("{% url 'wx_check_info' %}",{action:"is_bind"},function(data){
+            if(data.res=='1'){
+                window.location.href="{% url 'customer_bind_success' %}";
+            }
+        });
+    }
+    var t_int = window.setInterval("CheckBind()",5000);
+</script>

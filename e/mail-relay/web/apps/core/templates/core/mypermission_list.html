@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mail_tags %}
+{% load core_tags %}
+{% block header %}客户列表{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <a href="{% url 'mypermission_add' %}" style="margin-bottom: 10px; margin-left: 10px" class="btn btn-primary pull-right">添加权限</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <form id="id_form" action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" id="permission_id" name="id" />
+                        <input type="hidden" id="action" name="action" />
+                        <div class="tree well">
+                            <ul>
+                                {% for p in mypermissions %}
+                                <li>
+                                    <span><i class="glyphicon {% if p.is_nav %}glyphicon-folder-open{% endif %}"></i> <a href="{{p.url}}">{{p.name}}({{p.nav_name}})</a></span>
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'mypermission_modify' p.id %}">修改</a>
+                                    <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: Delete({{ p.id }}, '{{ p.name }}')">删除</a>
+                                    <ul>
+                                        {% for p_child in p.children.all|permission_order_by %}
+                                        <li>
+                                            <span><i class="glyphicon {% if p_child.is_nav %}glyphicon-folder-open{% endif %}"></i> <a href="{{p_child.url}}">{{p_child.name}}({{p_child.nav_name}})</a></span>
+                                            <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'mypermission_modify' p_child.id %}">修改</a>
+                                            <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: Delete({{ p_child.id }}, '{{ p_child.name }}')">删除</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+{% endblock %}
+{% block css-block %}
+<link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+<link href="{% static 'select/bootstrap-select.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/tree.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block js-block %}
+<script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'select/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'js/Jquery.Query.js' %}"></script>
+<script src="{% static 'js/my_datatables.js' %}"></script>
+
+<script>
+        $('.selectpicker').selectpicker();
+
+        function Delete(id, name){
+            var str = '是否要删除权限 "%s"？';
+            str = str.replace(/%s/, name);
+            if(confirm(str)) {
+                $('#permission_id').val(id);
+                $('#action').val('delete');
+                $('#id_form').submit();
+            }
+            return;
+        }
+
+  $(function () {
+  $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+  $('.tree li.parent_li > span').on('click', function (e) {
+    var children = $(this).parent('li.parent_li').find(' > ul > li');
+    if (children.is(":visible")) {
+      children.hide('fast');
+      $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+    } else {
+      children.show('fast');
+      $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+    }
+    e.stopPropagation();
+  });
+});
+  </script>
+
+{% endblock %}
+

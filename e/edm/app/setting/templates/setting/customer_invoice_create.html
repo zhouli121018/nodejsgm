@@ -1,0 +1,477 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans '创建发票' %}</h4>
+</div>
+
+<form action="/setting/invoice/create/" method="post" id="id_createForm" role="form" class="padding-gutter form-horizontal">
+    {% csrf_token %}
+    <input type="hidden" name="order_ids" id="order_ids" value="{{ order_ids }}"/>
+    <input type="hidden" name="amount" id="amount" value="{{ amounts }}"/>
+    <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed margin-bottom-0" width="100%">
+        <tbody>
+        <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin">{% trans '发票明细' %}</legend></td></tr>
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '发票金额' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <span class="form-control no-border"><span class="txt-color-yellow"><strong>{{ amounts|default_if_none:'0' }}</strong></span></span>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '发票类型' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12">
+                        <label class="radio radio-inline form-inline">
+                            <input type="radio" class="radiobox" id="id_invoice_type_1" name="invoice_type"
+                                   value="1" {% if invoice_obj.invoice_type == '1' %} checked="" {% endif %} onchange="onchangeInvoice('1')">
+                            <span>{% trans '增值税普通发票' %}</span>
+                        </label>
+                        <label class="radio radio-inline form-inline">
+                            <input type="radio" class="radiobox" id="id_invoice_type_2" name="invoice_type"
+                                   value="2" {% if invoice_obj.invoice_type == '2' %} checked="" {% endif %} onchange="onchangeInvoice('2')">
+                            <span>{% trans '增值税专用发票' %}</span>
+                        </label>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '发票抬头' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <input class="form-control" id="id_invoice_title" name="invoice_title" maxlength="100" type="text" value="{{ invoice_obj.invoice_title|default_if_none:'' }}" style="width:50%;">
+                        <br><small id="id_invoice_title_error" class="txt-color-red display-none">{% trans '输入不能为空' %}</small>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '纳税人识别号' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <input id="id_tax_number" name="tax_number" maxlength="50" type="text" value="{{ invoice_obj.tax_number|default_if_none:'' }}" class="form-control" style="width: 50%;" onfocus="onfocusField('id_tax_number_error')">
+                        <br><small class="text-muted">{% trans '请与贵公司财务人员核实并填写准确的税务登记证号，以免影响您发票后续的使用' %}</small>
+                        <br><small id="id_tax_number_error" class="myself-txt-color-err display-none">{% trans '税务登记证号只能是15,17,18,20位且为数字与字母组成' %}</small>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed margin-bottom-0 {% if invoice_obj.invoice_type == '1' %}display-none{% endif %}" width="100%" id="id-table-display-none">
+        <tbody>
+
+
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '开户银行' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <input id="id_bank" name="bank" maxlength="100" type="text" value="{{ invoice_obj.bank|default_if_none:'' }}" class="form-control" style="width: 50%;" onfocus="onfocusField('id_bank_error')">
+                        <br><small class="text-muted">{% trans '请填写您开户许可证上的开户银行，银行名称+开户省市区+支行名称' %}</small>
+                        <br><small id="id_bank_error" class="myself-txt-color-err display-none">{% trans '请填写开户银行' %}</small>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '银行账号' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <input id="id_acc_number" name="acc_number" maxlength="50" type="text" value="{{ invoice_obj.acc_number|default_if_none:'' }}" class="form-control" style="width: 50%;" onfocus="onfocusField('id_acc_number_error')">
+                        <br><small class="text-muted">{% trans '请填写您开户许可证上的银行账号' %}</small>
+                        <br><small id="id_acc_number_error" class="myself-txt-color-err display-none">{% trans '基本户开户账号长度为6至32位且为数字与字母组成' %}</small>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '企业注册地址' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <input id="id_company_addr" name="company_addr" maxlength="200" type="text" value="{{ invoice_obj.company_addr|default_if_none:'' }}" class="form-control" style="width: 50%;" onfocus="onfocusField('id_company_addr_error')">
+                        <br><small class="text-muted">{% trans '请填写您营业执照上的注册地址' %}</small>
+                        <br><small id="id_company_addr_error" class="myself-txt-color-err display-none">{% trans '请填写企业注册地址' %}</small>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '企业注册电话' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <input id="id_company_phone" name="company_phone" maxlength="20" type="text" value="{{ invoice_obj.company_phone|default_if_none:'' }}" class="form-control" style="width: 50%;" onfocus="onfocusField('id_company_phone_error')">
+                        <br><small class="text-muted">{% trans '请填写您公司有效的联系电话' %}</small>
+                        <br><small id="id_company_phone_error" class="myself-txt-color-err display-none">{% trans '请填写正确的电话号码' %}</small>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="no-border text-right text-muted myself-width-120">
+                <label class="control-label"><span style="color: red;">*</span> {% trans '一般纳税人资格认证复印件' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <div id="fileQueue"></div>
+                        <input type="file" name="uploadify" id="uploadify"/>
+                        <small class="text-muted">{% trans '仅支持JPG，GIF，PNG图片文件，且需小于2M' %}</small>
+                    </div>
+                    <div class="col-md-12 form-inline">
+                        <a href="/setting/invoice/upload/view/?user_id={{ request.user.id }}&aid=2" target="_blank" id="id_certificate_img">
+                            {% if invoice_obj.file_path %}
+                                <img src="/setting/invoice/upload/view/?user_id={{ request.user.id }}&aid=1" height="100" width="100">
+                            {% endif %}
+                        </a>
+                    </div>
+                    <small id="id_uploadify_error" class="myself-txt-color-err display-none">{% trans '请上传一般纳税人资格认证复印件' %}</small>
+                    <input type="hidden" value="{% if invoice_obj.file_path %}1{% else %}0{% endif %}" name="certificate_uploadify" id="id_certificate_uploadify">
+                </fieldset>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed margin-bottom-0" width="100%">
+        <tbody>
+        <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin">{% trans '物流信息' %}</legend></td></tr>
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '收件人姓名' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <input class="form-control" id="id_recipient" name="recipient" maxlength="50" type="text" value="{{ invoice_obj.recipient|default_if_none:'' }}" style="width:50%;">
+                        <br><small id="id_recipient_error" class="txt-color-red display-none">{% trans '输入不能为空' %}，</small>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '收取地址' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <input class="form-control" id="id_address" name="address" maxlength="200" type="text" value="{{ invoice_obj.address|default_if_none:'' }}" style="width:50%;">
+                        <br><small id="id_address_error" class="txt-color-red display-none">{% trans '输入不能为空' %}，</small>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '联系电话' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <input class="form-control" id="id_phone" name="phone" maxlength="50" type="text" value="{{ invoice_obj.phone|default_if_none:'' }}" style="width:50%;">
+                        <br><small id="id_phone_error" class="txt-color-red display-none">{% trans '请输入正确的手机号' %}，</small>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '邮政编码' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <input class="form-control" id="id_zipcode" name="zipcode" maxlength="20" type="text" value="{{ invoice_obj.zipcode|default_if_none:'' }}" style="width:50%;">
+                        <br><small id="id_zipcode_error" class="txt-color-red display-none">{% trans '请填写6位数字的邮政编码' %}</small>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+
+        <tr><td colspan="2" class="no-border" style="margin-bottom:0!important;padding-bottom:0!important;"><legend class="no-padding no-margin">{% trans '关联订单' %}</legend></td></tr>
+        <tr>
+            <td class="no-border" colspan="4" style="margin-top:0!important;padding-top:0!important;">
+                <table class="table table-hover no-margin" width="100%">
+                    <thead>
+                    <tr>
+                        <th style="background-color:#f6f8fa!important;">{% trans '订单号' %}</th>
+                        <th style="background-color:#f6f8fa!important;">{% trans '金额' %}</th>
+                        <th style="background-color:#f6f8fa!important;">{% trans '充值点数' %}</th>
+                        <th style="background-color:#f6f8fa!important;">{% trans '支付时间' %}</th>
+                        <th style="background-color:#f6f8fa!important;">{% trans '商品描述' %}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for d in order_obj %}
+                        <tr id="id_order-{{ d.id }}">
+                            <td>{{ d.orderno|default_if_none:"" }}</td>
+                            <td>{{ d.fee }}</td>
+                            <td>{{ d.qty_buy }}</td>
+                            <td>{{ d.dt_pay|date:"Y-m-d H:i:s" }}</td>
+                            <td>{{ d.product_desc|default_if_none:"" }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <br>
+                <small id="id_order_error" class="txt-color-red display-none">
+                    <i class="fa fa-warning fa-fw fa-lg"></i>{% trans '标红的行表示已开过发票，请刷新界面并重新选则订单开发票' %}
+                </small>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div class="modal-footer margin-left-negative13 margin-right-negative13">
+        <input value="{% trans '确定' %}" onclick="checkForm()" type="button" class="btn btn-primary">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+    </div>
+</form>
+<script>
+    // ajax post 设置
+    $.ajaxSetup({ data: {csrfmiddlewaretoken: '{{ csrf_token }}' }, });
+
+    $(function() {
+        $("#uploadify").uploadify({
+            'swf': '/static/medias/js/uploadify.swf',
+            'uploader': "/setting/invoice/upload/?user_id={{ request.user.id }}",
+            'queueID': 'fileQueue',
+            'auto': true,
+            'multi': false,
+            'queueSizeLimit': 10,
+            'buttonText': '{% blocktrans %}<div>选择图片</div>{% endblocktrans %}',
+            'fileTypeDesc' : '{% blocktrans %}格式: jpg，gif，png{% endblocktrans %}',     //描述
+            'fileTypeExts' : '*.jpg;*.gif;*.png',       //文件类型
+            'fileObjName': 'filedata',
+            'fileSizeLimit':'2MB',
+            'method':'post',
+            'formData' :{'csrfmiddlewaretoken':"{{ csrf_token }}"},
+            // 'removeCompleted': false, //是否移除掉队列中已经完成上传的文件。false为不移除
+            removeTimeout: 1, //设置上传完成后删除掉文件的延迟时间，默认为3秒。如果removeCompleted为false的话，就没意义了
+
+            'onUploadSuccess': function(file,data,respone){
+                $('#' + file.id).find('.data').html(' {% trans '上传完毕' %}');
+                var jsondata = eval('(' + data + ')');
+                if(jsondata.status=='F') {
+                    alert('{% trans '文件' %} ("' +file.name+ '") {% trans '上传异常，请重新上传.' %}');
+                } else if(jsondata.status=='Y') {
+                    // console.log(jsondata.img_html);
+                    $("#id_certificate_img").html(jsondata.img_html);
+                    $("#id_certificate_uploadify").val("1");
+                    $("#id_uploadify_error").addClass('display-none');
+                } else {
+                    console.log('pass...')
+                }
+            }
+        });
+    });
+
+    function onchangeInvoice(type){
+        if (type=='1'){
+            $("#id-table-display-none").addClass('display-none');
+        } else if (type=='2'){
+            $("#id-table-display-none").removeClass('display-none');
+        }
+        return false;
+    }
+
+    function onfocusField(field){
+        $("#"+field).addClass('display-none');
+    }
+
+    function checkForm(){
+        var recipient = $.trim($("#id_recipient").val());
+        var phone = $.trim($("#id_phone").val());
+        var zipcode = $.trim($("#id_zipcode").val());
+        var address = $.trim($("#id_address").val());
+        var invoice_title = $.trim($("#id_invoice_title").val());
+        var invoice_type = $("[name='invoice_type']:checked").val();
+        var tax_number = $.trim($("#id_tax_number").val());
+        var bank = $.trim($("#id_bank").val());
+        var acc_number = $.trim($("#id_acc_number").val());
+        var company_addr = $.trim($("#id_company_addr").val());
+        var company_phone = $.trim($("#id_company_phone").val());
+
+        if (recipient==''){
+            $("#id_recipient").focus();
+            $("#id_recipient_error").removeClass('display-none');
+            return false;
+        } else {
+            $("#id_invoice_title_error").addClass('display-none');
+        }
+
+        if (phone=='' || !checkMobile(phone)){
+            $("#id_phone").focus();
+            $("#id_phone_error").removeClass('display-none');
+            return false;
+        } else {
+            $("#id_phone_error").addClass('display-none');
+        }
+
+        if (zipcode!='' && !checkNum(zipcode)){
+            $("#id_zipcode").focus();
+            $("#id_zipcode_error").removeClass('display-none');
+            return false;
+        } else {
+            $("#id_zipcode_error").addClass('display-none');
+        }
+
+        if (address==''){
+            $("#id_address").focus();
+            $("#id_address_error").removeClass('display-none');
+            return false;
+        } else {
+            $("#id_address_error").addClass('display-none');
+        }
+
+        if (invoice_title==''){
+            $("#id_invoice_title").focus();
+            $("#id_invoice_title_error").removeClass('display-none');
+            return false;
+        } else {
+            $("#id_invoice_title_error").addClass('display-none');
+        }
+        var tax_numberr_length = tax_number.length;
+        if (tax_number=='' || !checkzfNum(tax_number) || !( tax_numberr_length==15 || tax_numberr_length==17 || tax_numberr_length==18 || tax_numberr_length==20 )){
+            $("#id_tax_number").focus();
+            $("#id_tax_number_error").removeClass('display-none');
+            return false;
+        } else {
+            $("#id_tax_number_error").addClass('display-none');
+        }
+        if (invoice_type=='2'){
+            if (bank==''){
+                $("#id_bank").focus();
+                $("#id_bank_error").removeClass('display-none');
+                return false;
+            } else {
+                $("#id_bank_error").addClass('display-none');
+            }
+            if (acc_number=='' || !checkzfNum(acc_number) || acc_number.length < 6 || acc_number.length > 32){
+                $("#id_acc_number").focus();
+                $("#id_acc_number_error").removeClass('display-none');
+                return false;
+            }
+            if (company_addr==''){
+                $("#id_company_addr").focus();
+                $("#id_company_addr_error").removeClass('display-none');
+                return false;
+            } else {
+                $("#id_company_addr_error").addClass('display-none');
+            }
+            if ( company_phone=='' || !( checkMobile(company_phone)||checkPhone(company_phone) ) ){
+                $("#id_company_phone").focus();
+                $("#id_company_phone_error").removeClass('display-none');
+                return false;
+            } else {
+                $("#id_company_phone_error").addClass('display-none');
+            }
+            if ( $("#id_certificate_uploadify").val() == '0'){
+                $("#id_uploadify_error").removeClass('display-none');
+                return false;
+            } else {
+                $("#id_uploadify_error").addClass('display-none');
+            }
+        }
+
+        $.post("{% url 'ajax_check_order_notapply' %}", {'order_ids': $("#order_ids").val(),}, function(data){
+            if ( data.msg=='N' ){
+                $("#id_order_error").removeClass('display-none');
+                for(var i=0; i<data.lists.length; i++){
+                    $("#id_order-"+String(data.lists[i])).addClass('txt-color-red')
+                }
+                return false;
+            } else {
+                if ( confirm('{% trans '已正确填写发票信息了？' %}') ) {
+                    $('#id_createForm').submit();
+                }
+            }
+            return;
+        });
+
+    }
+
+    function checkMobile(text){
+        var _emp=/^\s*|\s*$/g;
+        text=text.replace(_emp,"");
+        var _d=/^1[3578][01379]\d{8}$/g;
+        var _l=/^1[34578][01256]\d{8}$/g;
+        var _y=/^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/g;
+        if(_d.test(text)){
+            return true;
+        } else if(_l.test(text)){
+            return true;
+        }else if(_y.test(text)){
+            return true;
+        }
+        return false;
+    }
+
+    function checkPhone(str){
+        var re = /^0\d{2,3}-?\d{7,8}$/;
+        if(re.test(str)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function checkzfNum(str){
+        var re = /^[A-Za-z0-9]+$/;
+        if(re.test(str)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    function checkNum(str){
+        if (str.length != 6){
+            return false;
+        }
+        var re = /^[0-9]+$/;
+        if(re.test(str)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+</script>

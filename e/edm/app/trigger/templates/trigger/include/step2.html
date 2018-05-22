@@ -1,0 +1,194 @@
+{% load i18n %}
+{% load bootstrap %}
+    {%  comment %}
+    <!--<div class="form-horizontal action-item">-->
+        <!--<h2 class="action-item-head">动作1</h2>-->
+        <!--<div class="active">-->
+            <!--{{ f.action_name|bootstrap_horizontal }}-->
+            <!--&lt;!&ndash;{{ f.condition|bootstrap_horizontal }}&ndash;&gt;-->
+            <!--{{ f.con_url|bootstrap_horizontal }}-->
+            <!--{{ f.con_holiday|bootstrap_horizontal }}-->
+            <!--&lt;!&ndash;<div  class="form-group">&ndash;&gt;-->
+                <!--&lt;!&ndash;<label class="control-label col-sm-2 col-lg-2 " for="{{ f.action_time.auto_id }}">{{ f.action_time.label }}</label>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div class=" col-sm-10 col-lg-3 ">&ndash;&gt;-->
+                    <!--&lt;!&ndash;{{ f.action_schedule|reg_add_input_classes }}&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;<div id="div_id_action_time" class="col-sm-10 col-lg-7">&ndash;&gt;-->
+                    <!--&lt;!&ndash;触发条件 {{ f.action_time }} 分钟后, 调用触发动作&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--<div class="form-group row">-->
+                <!--<label  class="col-xs-2  text-right">触发器类型</label>-->
+                <!--<div class="col-xs-10">-->
+                    <!--<select class="form-control chufa-type">-->
+                        <!--<option value="open" selected>任务触发器</option>-->
+                        <!--<option value="birthday">生日触发器</option>-->
+                        <!--<option value="holiday">节假日触发器</option>-->
+                        <!--<option value="subscribe">订阅触发器</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group row">-->
+                <!--<label for="" class="col-xs-2  text-right">触发条件</label>-->
+                <!--<div class="col-xs-10 condition">-->
+                    <!--<select name="" class="form-control open active">-->
+                        <!--<option value="open" selected>打开任务时</option>-->
+                        <!--<option value="click">点击任务时</option>-->
+                        <!--<option value="unsubscribe">点击任务中退订链接时</option>-->
+                    <!--</select>-->
+                    <!--<select name="" class="form-control birthday">-->
+                        <!--<option value="birthday">到生日日期时</option>-->
+                    <!--</select>-->
+                    <!--<select name="" class="form-control holiday">-->
+                        <!--<option value="holiday">到指定节假日日期时</option>-->
+                    <!--</select>-->
+                    <!--<select name="" class="form-control subscribe">-->
+                        <!--<option value="subscribe">加入到订阅列表时</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group row holiday-date">-->
+                <!--<label  class="col-xs-2 text-right">节假日日期</label>-->
+                <!--<div class="col-xs-10">-->
+                    <!--<input class="dateinput  form-control" data-date-format="yyyy-mm-dd" id="id_con_holiday" name="con_holiday" readonly="readonly" type="text">-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="control-label col-sm-2 col-lg-2 ">触发动作</label>-->
+                <!--<div class=" col-sm-10 col-lg-10 ">-->
+                    <!--<input name="action_template" id="id_action_template" onclick="return SendTemplate();" type="checkbox" />-->
+                    <!--发送一封邮件-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div id="div_send_template">-->
+                <!--{{ f.template|bootstrap_horizontal }}-->
+                <!--<div class="form-group">-->
+                    <!--<label class="control-label col-sm-2 col-lg-2 ">选择发件人</label>-->
+                    <!--<div class=" col-sm-10 col-lg-4 ">-->
+                        <!--{{ f.send_acct_domain|reg_add_input_classes }}-->
+                    <!--</div>-->
+                    <!--<div class=" col-sm-10 col-lg-4 ">-->
+                        <!--{{ f.send_acct_address|reg_add_input_classes }}-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--{{ f.sendname|bootstrap_horizontal }}-->
+                <!--{{ f.replyto|bootstrap_horizontal }}-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    {% endcomment %}
+
+{% with c=f.condition.value s=f.action_schedule.value %}
+    <div class="action-item" data-order="{{ forloop.counter }}">
+        <button type="button" class="btn btn-danger pull-right action-delete-btn">X</button>
+        <h2 class="action-item-head">动作{{ forloop.counter }}</h2>
+        <div class="active">
+            <div class="form-group row chufa-condition">
+                <label class="col-xs-2  text-right">触发条件</label>
+                <div class="col-xs-10 condition">
+                    <select name="condition" class="form-control open {% if not c or c  ==  'open' or c  ==  'click' or c  ==  'unsubscribe' %}active{% endif %}">
+                        <option value="open" {% if c  ==  'open' %}selected{% endif %}>打开任务时</option>
+                        <option value="click" {% if c  ==  'click' %}selected{% endif %}>点击任务时</option>
+                        <option value="unsubscribe" {% if c  ==  'unsubscribe' %}selected{% endif %}>点击任务中退订链接时</option>
+                    </select>
+                    <select name="condition" class="form-control birthday {% if c == 'birthday'%}active{% endif %}" readonly>
+                        <option value="birthday" {% if c == 'birthday' %}selected{% endif %}>到生日日期时</option>
+                    </select>
+                    <select name="condition" class="form-control holiday {% if c == 'holiday' %}active{% endif %}" readonly>
+                        <option value="holiday" {% if c == 'holiday' %}selected{% endif %}>到指定节假日日期时</option>
+                    </select>
+                    <select name="condition" class="form-control subscribe {% if c == 'uubscribe' %}active{% endif %}">
+                        <option value="subscribe" {% if c == 'open' %}selected{% endif %}>加入到订阅列表时</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row click-url {% if c  ==  'click' %}active{% endif %}">
+                <label class="col-xs-2 text-right">点击的URL</label>
+                <div class="col-xs-10">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {{ f.con_url|reg_add_input_classes  }}
+                        </div>
+                        <div class="col-xs-6">
+                            {{ f.con_url_template|reg_add_input_classes  }}
+                        </div>
+                        <p class="tips">
+                            可以为空，空表示所有点击的动作都会触发，如果有值，表示只有点击的链接包含了该值才会触发<br>
+                            您可以手动输入链接，也可以点击后面的输入框从模板中指定链接
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="form-group row holiday {% if c == 'holiday' %}active{% endif %}">
+                <label class="col-xs-2 text-right">节假日日期</label>
+                <div class="col-xs-10">
+                    <div class="row">
+                        <div class="col-xs-7">
+                            {{ f.con_holiday|reg_add_input_classes  }}
+                        </div>
+                        <div class="col-xs-5 holiday-date">
+                            {{ f.con_holiday_date|reg_add_input_classes  }}
+                        </div>
+                        <p class="tips">您可以快速选择节假日，还可以点击后面的输入框自定义指定日期</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-group row action-time-type">
+                <label class="col-xs-2 text-right">触发时间</label>
+                <div class="col-xs-4">
+                    <select class="form-control advance-action time-choice {% if c == 'birthday' or c == 'holiday' or c == 'unsubscribe' %}active{% endif %}" name="action_schedule">
+                        <option value="immediately" {% if s == 'immediately' %}selected{% endif %}>立即触发</option>
+                        <option value="delay" {% if s == 'delay' %}selected{% endif %}>延迟触发</option>
+                        <option value="advance" {% if s == 'advance' %}selected{% endif %}>提前触发</option>
+                    </select>
+                    <select class="form-control dalay-action time-choice {% if not c or c == 'open' or c == 'click' %}active{% endif %}" name="action_schedule">
+                        <option value="immediately" {% if s == 'immediately' %}selected{% endif %}>立即触发</option>
+                        <option value="delay" {% if s == 'delay' %}selected{% endif %}>延迟触发</option>
+                    </select>
+                </div>
+                <div class="col-xs-6 time-count {% if f.action_schedule.value == 'delay' or f.action_schedule.value == 'advance'%}active{% endif %}">
+                    {{ f.action_time }}
+                    {{ f.time_type }}
+                    调用触发动作
+                </div>
+            </div>
+            <div class="mail-content">
+                <div class="form-group row">
+                    <label  class="col-xs-2 text-right">选择模板</label>
+                    <div class=" col-xs-10">
+                        {{ f.template }}
+                        <p class="tips">还没有模板？ 立即<a  href="Javascript: add_CK_template()">创建一个新模板</a></p>
+                    </div>
+                </div>
+                <div class="form-group row set-more-ele hide">
+                    <label class="col-xs-2 text-right">选择发件人</label>
+                    <div class="col-xs-4">
+                        {{ f.send_acct_domain|reg_add_input_classes }}
+                        <p class="tips"></p>
+                    </div>
+                    <div class="col-xs-4">
+                        {{ f.send_acct_address|reg_add_input_classes }}
+                    </div>
+                </div>
+                <div class="form-group row set-more-ele hide">
+                    <label class="col-xs-2 text-right">发送人名称</label>
+                    <div class="col-xs-10">
+                        {{ f.sendname|reg_add_input_classes  }}
+                    </div>
+                </div>
+                <div class="form-group row set-more-ele hide">
+                    <label class="col-xs-2 text-right">指定回复地址</label>
+                    <div class="col-xs-10">
+                        {{ f.replyto|reg_add_input_classes  }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endwith %}

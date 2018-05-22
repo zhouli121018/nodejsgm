@@ -1,0 +1,202 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans '重置密码' %}  ({% trans '子账户' %}：{{ user_obj.username }})</h4>
+</div>
+
+<form role="form" action="{% url 'sub_account_reset' user_id %}" method="post" id="id_ResetForm">
+    {% csrf_token %}
+    <div class="modal-body padding-10 margin-bottom-10">
+        <div class="form-horizontal">
+            <fieldset>
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{% trans '输入密码' %}</label>
+                            <div class="col-md-6 input-group">
+                                <input class="form-control" id="id_new_password1" name="new_password1" type="password" maxlength="32" value="" onblur="onblurPasswd1()" onfocus="onfocusPasswd1()" onkeyup="onkeyupPasswd1()">
+                            </div>
+                            <div id="id_new_password1_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                            <div class="rules_check_relative display-none" id="rules_check_relative">
+                                <div class="rules_check_wrap" id="aliasValidateWrap" style="z-index: 3000;">
+                                    <span class="rules_check_arrow">
+                                        <span class="arrow_l"></span>
+                                        <span class="arrow_r"></span>
+                                    </span>
+                                    <h3 class="no-margin no-padding">{% trans '密码需满足以下要求' %}：</h3>
+                                    <ul class="no-margin no-padding" style="white-space:nowrap;margin-left: 13px !important;">
+                                        <li style="margin-bottom: 5px; line-height: normal;">
+                                            <span class="icon_rules_check" id="icon_rules_check_1"></span><span id="rules_check_error_1">{% trans '必须包含字母、数字, 可以包含特殊字符' %}</span>
+                                        </li>
+                                        <li style="margin-top: 5px;line-height: normal;">
+                                            <span class="icon_rules_check" id="icon_rules_check_4"></span><span id="rules_check_error_4">{% trans '长度为 6-32 个字符' %}</span>
+                                        </li>
+                                        <li style="margin-top: 5px;line-height: normal;">
+                                            <span class="icon_rules_check" id="icon_rules_check_5"></span><span id="rules_check_error_5">{% trans '不包含空格' %}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{% trans '确认密码' %}</label>
+                            <div class="col-md-6 input-group">
+                                <input class="form-control" id="id_new_password2" name="new_password2" type="password" maxlength="32" value="" onblur="onblurPasswd2()" onfocus="onfocusPasswd2()">
+                            </div>
+                            <div id="id_new_password2_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </fieldset>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input value="{% trans '确定' %}" onclick="checkResetForm()" type="button" class="btn btn-primary" id="id_save_button">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+    </div>
+</form>
+
+<style>
+    /* -------- customer_security.html -------- */
+    /*密码校验提示框样式*/
+    .rules_check_relative{  margin-top: -63px;  position: absolute;  width: 500px; left: 75%;}
+    .rules_check_wrap{  position:absolute;  padding:10px;  text-align:left;  background:#fff;  font-size:12px;  color:#494949;  border-radius:5px;  border:1px solid #bbb;  box-shadow:0px 0px 5px #ccc;  }
+    .rules_check_wrap h3{  font-weight:bold;  color:#232323;  margin:0;  padding:5px 0 5px 19px;  font-size:12px;  height:14px;  line-height:14px;  }
+    .rules_check_wrap li{  height:14px;  line-height:14px;  padding:4px 0;  list-style-type:none;  }
+    .icon_rules_check{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/pwd_circle.png);  background-repeat:no-repeat;  }
+    .rules_check_pass{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) 0px -48px no-repeat;  }
+    .rules_check_error{  color:#c00 !important;  }
+    .rules_check_fail{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) -12px -48px no-repeat;  }
+    .arrow_l, .arrow_r{  position:absolute;  top:0;left:0;  margin-top:38px;  margin-left:-20px;  display:block;  width:0;  height:0;  font-size:0;  overflow:hidden;  border:10px solid transparent;  _border-color:tomato;  _filter:chroma(color=tomato);  }
+    .arrow_l{ border-right-color:#bbb;}
+    .arrow_r{ border-right-color:#fff; margin-left:-19px;}
+    /* --------  -------- */
+</style>
+
+<script type="text/javascript">
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+
+    $(function () {
+        var create_type = $("[name='create_type']:checked").val();
+        onchangeCreateType(create_type);
+    });
+
+    $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+    function checkResetForm(){
+        $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+        var new_password1 = $("#id_new_password1").val();
+        var len = new_password1.length;
+        var new_password2 = $("#id_new_password2").val();
+
+        if ( /\s/.test(new_password1) ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '包含空格，请重新输入' %}');
+            return false;
+        } else if ( new_password1.replace(/^ +| +$/g, '')=='' ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        } else if ( !(( /[a-z]/.test(new_password1) || /[A-Z]/.test(new_password1)) && /[0-9]/.test(new_password1)) ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '必须同时包含字母、数字，请重新输入' %}');
+            return false;
+        } else if (len<6 || len >32 ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '密码不能少于6或大于32个字符，请重新输入' %}');
+            return false;
+        }
+
+        if ( new_password1 != new_password2 ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_new_password2_error").removeClass('display-none').html('{% trans '两次密码不一致，请重新输入' %}');
+            return false;
+        }
+
+        $('#id_ResetForm').submit();
+    }
+
+
+    function onblurPasswd1(){
+        var new_password1 = $("#id_new_password1").val();
+        var len = new_password1.length;
+
+        $("#rules_check_relative").addClass('display-none');
+        if ( /\s/.test(new_password1) ){
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '包含空格，请重新输入' %}');
+            return false;
+        } else if ( new_password1.replace(/^ +| +$/g, '')=='' ){
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        } else if ( !(( /[a-z]/.test(new_password1) || /[A-Z]/.test(new_password1)) && /[0-9]/.test(new_password1)) ){
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '必须同时包含字母、数字，请重新输入' %}');
+            return false;
+        } else if (len<6 || len >32 ){
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '密码不能少于6或大于32个字符，请重新输入' %}');
+            return false;
+        }
+    }
+    function onfocusPasswd1(){
+        $("#rules_check_relative").removeClass('display-none');
+        $("#id_new_password1_error").addClass('display-none');
+    }
+    function onkeyupPasswd1(){
+        var new_password1 = $("#id_new_password1").val();
+        var len = new_password1.length;
+
+        if ( new_password1=='' ){
+            $("#icon_rules_check_1").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+            $("#icon_rules_check_5").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+            $("#icon_rules_check_4").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+            $("#rules_check_error_1").removeClass('rules_check_error');
+            $("#rules_check_error_5").removeClass('rules_check_error');
+            $("#rules_check_error_4").removeClass('rules_check_error');
+            return false;
+        }
+
+        if ( /\s/.test(new_password1) ){
+            $("#rules_check_error_5").addClass('rules_check_error');
+            $("#icon_rules_check_5").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+        } else {
+            $("#rules_check_error_5").removeClass('rules_check_error');
+            $("#icon_rules_check_5").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+        }
+
+        if ( !(( /[a-z]/.test(new_password1) || /[A-Z]/.test(new_password1)) && /[0-9]/.test(new_password1)) ){
+            $("#rules_check_error_1").addClass('rules_check_error');
+            $("#icon_rules_check_1").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+        } else {
+            $("#rules_check_error_1").removeClass('rules_check_error');
+            $("#icon_rules_check_1").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+        }
+
+        if (len<6 || len >32 ){
+            $("#rules_check_error_4").addClass('rules_check_error');
+            $("#icon_rules_check_4").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+        } else {
+            $("#rules_check_error_4").removeClass('rules_check_error');
+            $("#icon_rules_check_4").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+        }
+    }
+
+    function onblurPasswd2(){
+        var new_password1 = $("#id_new_password1").val();
+        var new_password2 = $("#id_new_password2").val();
+        if ( new_password1 != new_password2 ){
+            $("#id_new_password2_error").removeClass('display-none').html('{% trans '两次密码不一致，请重新输入' %}');
+            return false;
+        }
+    }
+    function onfocusPasswd2(){
+        $("#id_new_password2_error").addClass('display-none');
+    }
+
+
+</script>

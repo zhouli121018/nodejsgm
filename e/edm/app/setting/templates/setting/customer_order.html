@@ -1,0 +1,308 @@
+{% extends 'base_site.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans '我的订单' %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans '设置中心' %}</li><li>{% trans '我的订单' %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-list margin-right-5"></i>{% trans '我的订单' %}
+            </h1>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <section id="widget-grid" class=""><!-- widget grid -->
+        <div class="row"><!-- row -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><!-- NEW WIDGET START -->
+                <div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>{% trans '我的订单' %}</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+                        </div>
+                        <!-- end widget edit box -->
+
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <div class="myself-dt-toolbar">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="margin-left-negative13">
+                                        <form id="search_form" role="form" action="" class="form-inline">
+                                            <div class="form-group margin-bottom-5">
+                                                <label class="control-label" for="id_action">{% trans '订单状态' %}：</label>
+                                                <div class="input-group">
+                                                    <select class="form-control" id="id_orderStatus" name="orderStatus" style="width: 150px !important; text-align: left; height: 30px;">
+                                                        <option value="" {% if orderStatus == "" %} selected="selected" {% endif %}>{% trans '全部' %}</option>
+                                                        {% for k, v in status_types %}
+                                                            <option value="{{ k }}" {% if orderStatus == k %} selected="selected" {% endif %}>{{ v }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <label class="control-label" for="id_date_start">{% trans '日期' %}：</label>
+                                                <div class="input-group">
+                                                    <input class="dateinput form-control" id="id_date_start" name="date_start" readonly="readonly" size="12" type="text" style="width: 120px !important;" value="{{ date_start }}">
+                                                    <span class="input-group-addon"><i class="icon-append fa fa-calendar"></i></span>
+                                                </div>{% trans '至' %}
+                                                <div class="input-group">
+                                                    <input class="dateinput form-control" id="id_date_end" name="date_end" readonly="readonly" size="12" type="text" style="width: 120px !important;" value="{{ date_end }}">
+                                                    <span class="input-group-addon"><i class="icon-append fa fa-calendar"></i></span>
+                                                </div>
+                                                <button type="submit" class="btn btn-sm btn-primary margin-right-10">{% trans '查询' %}</button>
+
+                                                {% if orderStatus == 'notapply' and request.user.core_invoiceinfo %}
+                                                    <button type="button" class="btn btn-sm btn-link no-padding-left" onclick="fnGetAll();">{% trans '全选' %}</button>/
+                                                    <button type="button" class="btn btn-sm btn-link" onclick="fnGetReverse();">{% trans '取消' %}</button>
+                                                    <a data-toggle="modal" href="/setting/invoice/create/" data-target="#myModal" data-whatever="" class="btn btn-sm btn-primary" id="id_myModal">{% trans '创建发票' %}</a>
+                                                {% endif %}
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form id="id_form" action="" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" id="id" />
+                                <input type="hidden" name="status" id="status" />
+                            </form>
+                            <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
+                                <thead>
+                                <tr>
+                                    <th width="1%">ID</th>
+                                    <th width="4%">{% trans '序号' %}</th>
+                                    <th>{% trans '订单号' %}</th>
+                                    <th>{% trans '商品描述' %}</th>
+                                    <th>{% trans '金额(元)' %}</th>
+                                    <th>{% trans '充值点数' %}</th>
+                                    <th>{% trans '创建时间' %}</th>
+                                    <th>{% trans '付款时间' %}</th>
+                                    <th>{% trans '支付方式' %}</th>
+                                    <th>{% trans '状态' %}</th>
+                                    <th>{% trans '操作' %}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" style="margin:100px auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans '加载中' %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% trans '页面加载中' %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">{% trans '关闭' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css_block %}
+    <link href="/static/sa/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'medias/css/uploadify.css' %}" />
+
+    <link href="{% static 'sa/js/plugin/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+    <style>
+        .myself-width-small{width: 120px;}
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="/static/sa/js/plugin/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.colVis.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.tableTools.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="/static/sa/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+
+    <script charset="utf-8" src="{% static 'medias/js/jquery.uploadify.js' %}"></script>
+
+    <script src="{% static 'sa/js/plugin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static 'sa/js/plugin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+
+    <script>
+
+        $.ajaxSetup({ data: {csrfmiddlewaretoken: '{{ csrf_token }}' }, });
+
+        // 初始化日期
+        $(function () {
+            $('.dateinput').datetimepicker({
+                format: "yyyy-mm-dd",
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                minView: 2,
+                pickerPosition: "bottom-right"
+            });
+
+            $('#myModal').on('show.bs.modal', function (event) {
+                $(this).removeData('bs.modal');
+            })
+        });
+
+        var ip_table;
+        $(function () {
+            var ajax_url = "{% url 'ajax_order' %}" + window.location.search;
+            ip_table = $('#dt_basic').dataTable({
+                "columnDefs": [ { "targets": [ 0 ], "visible": false, "searchable": false }],
+                "iDisplayLength": 50,
+                "processing": false,
+                "serverSide": true,
+                "stateSave": true,
+                "autoWidth" : true,
+                "lengthMenu": [[10, 25, 50, 100, 200], [10, 25, 50, 100, 200]],
+                "ajax": ajax_url,
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "{% blocktrans %}显示 _MENU_ 每页{% endblocktrans %}",
+                    "sZeroRecords": "{% blocktrans %}对不起! 信息筛选结果为空!{% endblocktrans %}",
+                    "sInfo": "{% blocktrans %}从 _START_ 到 _END_ 总计: _TOTAL_ 条记录{% endblocktrans %}",
+                    "sInfoEmpty": "{% blocktrans %}总计: 0 条记录{% endblocktrans %}",
+                    "sInfoFiltered": "{% blocktrans %}(从 _MAX_ 条记录筛选出){% endblocktrans %}",
+                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+                    "oPaginate": {
+                        "sFirst":    " {% blocktrans %}第一页{% endblocktrans %} ",
+                        "sPrevious": " {% blocktrans %}上一页{% endblocktrans %} ",
+                        "sNext":     " {% blocktrans %}下一页{% endblocktrans %} ",
+                        "sLast":     " {% blocktrans %}最后一页{% endblocktrans %} "
+                    }
+                },
+                "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+ "t"+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                {% if orderStatus == 'notapply' %}
+                    "drawCallback": function(oSettings, json) {
+                        $('#dt_basic tr').click( function() {
+                            if ( $(this).hasClass('row_selected') )
+                                $(this).removeClass('row_selected');
+                            else
+                                $(this).addClass('row_selected');
+                        } );
+                    },
+                {% endif %}
+            });
+        });
+
+        $.fn.dataTableExt.oApi.fnGetFilteredNodes = function ( oSettings ) {
+            var anRows = [];
+            var length = oSettings.aiDisplay.length;
+            for ( var i=0, iLen=length ; i<iLen ; i++ )
+            {
+                var nRow = oSettings.aoData[ oSettings.aiDisplay[i] ].nTr;
+                anRows.push( nRow );
+            }
+            return anRows;
+        };
+
+        function fnGetAll() {
+            var aTrs = ip_table.fnGetFilteredNodes();
+            for ( var i=0 ; i<aTrs.length ; i++ ) {
+                if ( !$(aTrs[i]).hasClass('row_selected') )
+                    $(aTrs[i]).addClass('row_selected');
+            }
+        };
+
+        function fnGetReverse() {
+            var aTrs = ip_table.fnGetFilteredNodes();
+            for (var i=0 ; i<aTrs.length ; i++ ) {
+                if ( $(aTrs[i]).hasClass('row_selected') ) {
+                    $(aTrs[i]).removeClass('row_selected');
+                }
+            }
+        };
+
+        function fnGetSelected() {
+            var aReturn = new Array();
+            var aTrs = ip_table.fnGetFilteredNodes();
+            for ( var i=0 ; i<aTrs.length ; i++ ) {
+                if ( $(aTrs[i]).hasClass('row_selected') ) {
+                    var aData = ip_table.fnGetData( aTrs[i]);
+                    var iId = aData[0];
+                    aReturn.push( iId );
+                }
+            }
+            return aReturn;
+        };
+
+        function fnGetSelectedArray() {
+            var aReturn = new Array();
+            var aTrs = ip_table.fnGetFilteredNodes();
+            for ( var i=0 ; i<aTrs.length ; i++ ){
+                if ( $(aTrs[i]).hasClass('row_selected') ){
+                    var json_arr = {};
+                    var aData = ip_table.fnGetData( aTrs[i]);
+                    json_arr['id'] = aData[0];
+                    json_arr['amount'] = Number(aData[4]);
+                    aReturn.push( json_arr );
+                }
+            }
+            return aReturn;
+        }
+
+        function SetStatus(id, status, msg){
+            var str = '{% trans '是否确认' %}' + msg + '?';
+            if(confirm(str)) {
+                $('#id').val(id);
+                $('#status').val(status);
+                $('#id_form').submit();
+            }
+            return;
+        }
+
+        $(function () {
+            $("#id_myModal").click(function(){
+                var id_array = fnGetSelectedArray();
+                if (id_array.length < 1){
+                    alert('{% trans '请至少选择一个订单！' %}');
+                    return false;
+                }
+                var select_id = new Array(), amounts = 0;
+                for(var i=0; i<id_array.length; i++) {
+                    select_id.push(id_array[i].id);
+                    amounts += id_array[i].amount;
+                }
+                /*
+                 if ( amounts < 500 ){
+                 alert('订单总金额少于500, 暂不能开发票！');
+                 return false;
+                 }
+                 */
+                $("#id_myModal").attr('href', '/setting/invoice/create/?order_ids=' + select_id.toString() + '&amounts=' + String(amounts));
+            });
+        });
+
+
+    </script>
+{% endblock %}

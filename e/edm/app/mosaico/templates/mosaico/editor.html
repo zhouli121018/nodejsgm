@@ -1,0 +1,149 @@
+{% load staticfiles %}
+{% load jsonify %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=1024, initial-scale=1">
+
+    <link rel="canonical" href="http://mosaico.io" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+    <script src="{% static 'mosaico/dist/vendor/knockout.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.ui.touch-punch.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/load-image.all.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/canvas-to-blob.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.fileupload-process.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.fileupload-image.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.fileupload-validate.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/knockout-jqueryui.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/evol.colorpicker.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/tinymce.min.js' %}"></script>
+
+    <script src="{% static 'mosaico/dist/mosaico.min.js' %}"></script>
+    <script>
+        $(function() {
+            if (!Mosaico.isCompatible()) {
+                alert('Update your browser!');
+                return;
+            }
+            // var basePath = window.location.href.substr(0, window.location.href.lastIndexOf('/')).substr(window.location.href.indexOf('/','https://'.length));
+            var basePath = window.location.href.substr(0 ,window.location.href.lastIndexOf('/'));
+            console.log("----------", basePath)
+            // var plugins;
+            // A basic plugin that expose the "viewModel" object as a global variable.
+            // plugins = [function(vm) {window.viewModel = vm;}];
+            var plugins = [
+                function(vm) {console.log('PROCESS PLUGIN111111111111'); window.viewModel = vm;},
+                // plugin for integrating save button
+                function(viewModel) {
+                    console.log('PROCESS PLUGIN');
+                    var saveToServerCmd = {
+                        name: 'Save 123', // l10n happens in the template
+                        enabled: ko.observable(true)
+                    };
+
+                    saveToServerCmd.execute = function() {
+                        saveToServerCmd.enabled(false);
+                        viewModel.metadata.changed = Date.now();
+                        if (typeof viewModel.metadata.key == 'undefined') {
+                            alert(222222222);
+                            viewModel.metadata.key = 'generate your unique key here';
+                        }
+                        alert(33333);
+
+                        // This is the simplest for sending it as POST
+                        // append postData with csrfToken
+                        var meta_data = viewModel.exportMetadata();
+                        var template_data = viewModel.exportJSON();
+                        var postData = {
+                            csrf_token: '{{ csrf_token }}', // this is only required if your back-end requires csrf token
+                            meta_data: meta_data,
+                            template_data: template_data,
+                            html: viewModel.exportHTML(),
+                            key: viewModel.metadata.key
+                        };
+
+                        $.post( "{% url "mosaico_template" %}", postData)
+                                .done(function() {
+                                    localStorage.setItem("metadata-" + viewModel.metadata.key, JSON.stringify(meta_data));
+                                    localStorage.setItem("template-" + viewModel.metadata.key, JSON.stringify(template_data));
+                                    viewModel.notifier.success(viewModel.t('Successfully saved.'));
+                                })
+                                .fail(function(jqXHR, textStatus, error) {
+                                    console.log(textStatus);
+                                    console.log(error);
+                                    console.log(jqXHR);
+                                    viewModel.notifier.error(viewModel.t('Saving failed. Please try again in a few moment or contact us.'));
+                                })
+                                .always(function() {
+                                    saveToServerCmd.enabled(true);
+                                }
+                        );
+                    };
+
+                    // and this is the alternative by sending it as POST but the html content as blob.
+                    // you can ignore and remove this part.
+
+                    viewModel.saveToServer = saveToServerCmd;
+                },
+            ];
+
+            var strings = $.ajax('{% static 'mosaico/dist/lang/mosaico-zh.json' %}', {type: "GET", async: false}).responseText;
+            strings = $.parseJSON(strings);
+
+
+            var ok = Mosaico.init({
+                strings: strings,
+                imgProcessorBackend: basePath+'/img/',
+                emailProcessorBackend: basePath+'/dl/',
+                saveProcessorBackend: basePath+'/template/',
+                titleToken: "MOSAICO Responsive Email Designer",
+                fileuploadConfig: {
+                    url: basePath+'/upload/',
+                    // messages??
+                },
+                onSave: function(saveObject) {
+                    // saveObject could contain metadata, json configuration, and html
+
+                    // My sample callback
+                    alert(1111111);
+                }
+            }, plugins);
+
+
+            /*
+             var ok = Mosaico.start({
+             strings: strings,
+             imgProcessorBackend: basePath+'/img/',
+             emailProcessorBackend: basePath+'/dl/',
+             saveProcessorBackend: basePath+'/template/',
+             titleToken: "MOSAICO Responsive Email Designer",
+             fileuploadConfig: {
+             url: basePath+'/upload/',
+             // messages??
+             }
+             }, "/static/mosaico/templates/versafix-1/template-versafix-1.html", undefined, undefined, plugins);
+             */
+
+            if (!ok) {
+                console.log("Missing initialization hash, redirecting to main entrypoint");
+                document.location = ".";
+            }
+        });
+    </script>
+
+    <link rel="stylesheet" href="{% static 'mosaico/dist/mosaico-material.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'mosaico/dist/vendor/notoregular/stylesheet.css' %}" />
+    <link rel="stylesheet" href="{% static 'mosaico/dist/vendor/evol.colorpicker.min.css' %}" /> <!-- 2k -->
+</head>
+<body class="mo-standalone">
+
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+{% block header %}批量添加网关隔离报告收件人黑名单{% endblock %}
+{% block css-block %}
+<!--<link href="/static/ajax_select/css/ajax_select.css" type="text/css" media="all" rel="stylesheet" />-->
+<!--<script type="text/javascript" src="/static/ajax_select/js/bootstrap.js"></script>-->
+<!--<script type="text/javascript" src="/static/ajax_select/js/ajax_select.js"></script>-->
+
+<link href="/static/ajax_select/css/ajax_select.css" type="text/css" media="all" rel="stylesheet" />
+<script type="text/javascript" src="/static/ajax_select/js/bootstrap.js"></script>
+<script type="text/javascript" src="/static/ajax_select/js/ajax_select.js"></script>
+<!--<script type="text/javascript" src="/admin/jsi18n/"></script>-->
+<script type="text/javascript" src="/static/admin/js/jsi18n.js"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+<script type="text/javascript" src="/static/admin/js/actions.js"></script>
+<script type="text/javascript" src="/static/admin/js/related-widget-wrapper.js"></script>
+{% endblock %}
+
+
+{% block content %}
+<div class="row" id="d_smtp_add">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                黑名单信息
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label></label>
+                            <form role="form" action="" method="post">
+                                {% csrf_token %}
+                                {{ form|bootstrap }}
+                                <button type="submit" class="btn btn-primary">确认</button>
+                                <a href="{% url 'subject_keyword_whitelist_list' %}" class="btn">取消</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row (nested) -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+
+
+        {% block js-block %}
+    <script>
+        $(function(){
+        init();
+
+        $("#id_is_global").change( function() {
+            init();
+            });
+        });
+        function init(){
+            var checked = $("#id_is_global").is(':checked');
+            if(checked){
+               $(".form-group:eq(1)").hide();
+            }else{
+               $(".form-group:eq(1)").show();
+
+            }
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        (function($) {
+            $(document).ready(function() {
+                $('.add-another').click(function(e) {
+                    e.preventDefault();
+                    showAddAnotherPopup(this);
+                });
+                $('.related-lookup').click(function(e) {
+                    e.preventDefault();
+                    showRelatedObjectLookupPopup(this);
+                });
+
+                $('form#enderwhitelist_form:input:visible:enabled:first').focus()
+
+            });
+        })(django.jQuery);
+    </script>
+
+
+
+
+<script type="text/javascript">
+(function($) {
+    var field;
+
+
+})(django.jQuery);
+</script>
+
+{% endblock %}

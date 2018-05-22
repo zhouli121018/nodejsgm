@@ -1,0 +1,17 @@
+{% load i18n %}
+{% load core_tags %}
+
+<td>{{ number }}</td>
+<td><span style="color: #FF6600;">{{ d.get_action_display }}</span></td>
+<td>
+    <span style="white-space: nowrap;">
+        {{ d.datetime|date:"Y-m-d H:i:s" }}
+    </span>
+</td>
+<td>
+    {% autoescape off %}<strong>{{ d.desc|default_if_none:"" }}</strong>{% endautoescape %}
+</td>
+<td>
+    {{ d.customer }}
+</td>
+<td>{{ d.ip|default_if_none:"" }}{% if d.ip %}<br/>{{ d.ip|get_ip_area }}{% endif %}</td>

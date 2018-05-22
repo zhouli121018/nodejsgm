@@ -1,0 +1,141 @@
+{% extends 'base_site.html' %}
+{% load static %}
+{% load mail_tags %}
+{% block title %}通知列表{% endblock %}
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'assets/css/jquery-ui.min.css' %}" />
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="active">通知列表</li>
+{% endblock %}
+
+{% block page-content %}
+<div class="row">
+    <div class="space-6"></div>
+    <div class="col-xs-6">
+
+        <div class="page-header">
+            <h1>
+                通知列表
+            </h1>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-block alert-success">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="ace-icon fa fa-times"></i>
+        </button>
+
+        <i class="ace-icon fa fa-check green"></i>
+
+        <strong class="green">
+            {{ message }}
+        </strong>,
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div class="col-xs-12">
+        <form id="id_form" action="" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="id" name="id" />
+            <input id="action" name="action" type="hidden" />
+
+            <table id="ajax-table" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>主题</th>
+                    <th>内容</th>
+                    <th>短信通知</th>
+                    <th>邮件通知</th>
+                    <th>已读</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </form>
+    </div><!-- /.span -->
+</div><!-- /.row -->
+
+<!-- Modal -->
+
+
+{% endblock %}
+{% block my_jsblock %}
+<script src="{% static 'assets/js/jquery-ui.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'assets/js/dataTables.tableTools.min.js' %}"></script>
+<script src="{% static 'assets/js/dataTables.colVis.min.js' %}"></script>
+<script>
+        $(function () {
+
+            var ajax_url = "{% url 'ajax_get_notices' %}" + window.location.search;
+
+
+            ip_table = $('#ajax-table').dataTable({
+                //"columnDefs": [ { "targets": [ 0 ], "visible": false, "searchable": false }],
+                "iDisplayLength": {% if request.GET.check == 'spam' %}200{% else %}100{% endif %},
+                "processing": true,
+                "serverSide": true,
+                "lengthMenu": [[20, 50, 100, 200, 500], [20, 50, 100, 200, 500]],
+                "ajax": ajax_url,
+                "fnInitComplete": function(oSettings, json) {
+                    $('#ajax-table tr').click( function() {
+                    if ( $(this).hasClass('bold') )
+                         $(this).removeClass('bold');
+                         var id = $('td:eq(0)', this).html();
+                         $('td:eq(5)', this).html('True');
+                         $.getJSON("{% url 'notice_list' %}?id=" + id + "&ajax=1",  function(data){
+                         });
+                    } );
+
+                },
+                "rowCallback": function( row, data ) {
+                    var is_read = data[5];
+                    if(is_read=="False"){
+                         $(row).addClass('bold');
+                     }
+                },
+
+
+                "aaSorting": [
+                        [ 0, "desc" ]
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "显示 _MENU_ 每页",
+                    "sZeroRecords": "对不起! 信息筛选结果为空!",
+                    "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                    "sInfoEmpty": "总计: 0 条记录",
+                    "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                    "sSearch": "搜索: ",
+
+                    "oPaginate": {
+                        "sFirst":    "第一页",
+                        "sPrevious": " 上一页 ",
+                        "sNext":     " 下一页 ",
+                        "sLast":     " 最后一页 "
+                    }
+                }
+            });
+
+
+        });
+        function Delete(id){
+            var str = '是否要删除该通知记录？';
+            if(confirm(str)) {
+                $('#id').val(id);
+                $('#action').val('delete');
+                $('#id_form').submit();
+            }
+            return;
+        }
+    </script>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% load i18n %}
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+<td>{{ d.orderno }}</td>
+<td>{{ d.product_desc }}{% trans '充值' %}</td>
+<td>{{ d.fee }}</td>
+<td>{{ d.qty_buy }}</td>
+<td>{{ d.created|date:"Y-m-d H:i:s" }}</td>
+<td>{{ d.dt_pay|date:"Y-m-d H:i:s" }}</td>
+<td> <img src="/static/img/{{ d.payway}}.png" style="width:127px;height:42px;"></td>
+<td>
+    <span class="
+    {% if d.status == 'waiting' %} badge bg-color-greenLight
+    {% elif d.status == 'paied' %} badge bg-color-orange
+    {% elif d.status == 'lapsed' %} badge
+    {% elif d.status == 'cancel' %} badge
+    {% elif d.status == 'yesapply' %} badge bg-color-orange
+    {% else %} badge bg-color-greenLight
+    {% endif %}">{{ d.get_status_display }}</span>
+</td>
+<td>
+    {% if d.status == 'waiting' %}
+        <a type="button" target="_blank" class="btn btn-outline btn-primary btn-sm" href="{{ d.pre_pay_url }}">{% trans '支付' %}</a>
+        <a type="button" class="btn btn-outline btn-danger btn-sm" href="Javascript: SetStatus({{ d.id }}, 'cancel', '{% trans '取消订单' %}({{ d.orderno }})')">{% trans '取消' %}</a>
+    {% endif %}
+</td>

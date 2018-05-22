@@ -1,0 +1,145 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load mail_tags %}
+{% block header %}{% trans "发送日志" %}{% endblock %}
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'assets/css/jquery-ui.min.css' %}" />
+{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "中继管理" %}</a> </li>
+    <li> <a href="{% url 'mail_list' %}">{% trans "邮件列表" %}</a> </li>
+    <li class="active">{% trans "发送记录" %}</li>
+{% endblock %}
+
+{% block page-content %}
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {% trans "发送日志" %}
+                    <div class="pull-right">
+                        <b>{% trans "总共" %}:</b>
+                        {{ logs.count }}
+                    </div>
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="dataTable_wrapper">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th>{% trans "发件人" %}--{% trans "收件人" %}</th>
+                                <th>{% trans "主题" %}</th>
+                                <th>{% trans "大小" %}</th>
+                                <th>{% trans "入站时间" %}</th>
+                                <th>{% trans "发送通道" %}</th>
+                                <th>{% trans "发送IP" %}</th>
+                                <!--<th>{% trans "接收IP" %}</th>-->
+                                <!--<th>{% trans "MX记录" %}</th>-->
+                                <th>{% trans "代码" %}</th>
+                                <th>{% trans "发送时间" %}</th>
+                                <th>{% trans "发送详情" %}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for l in logs %}
+                                <tr>
+                                    {% if forloop.first %}
+                                        <td>{{ m.mail_from }}<br/>{{ m.mail_to }}</td>
+                                        <td>
+                                            <a data-toggle="modal" href="{% url 'mail_read' %}?id={{ m.date_id }}&modal=1" data-target="#myModal" data-whatever="{{ m.date_id }}">{{ m.subject|truncatechars:50|default:"--" }}</a>
+                                        </td>
+                                        <td>{{ m.size|filesizeformat }}</td>
+                                        <td>{{ m.created|date:"Y-m-d H:i:s" }}</td>
+                                    {% else %}
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    {% endif %}
+                                    <td>{{ l.deliver_ip|get_cluster_from_ip }}</td>
+                                    <td>{{ l.deliver_ip|default_if_none:"" }}</td>
+                                    <!--<td>{{ l.receive_ip|default_if_none:"" }}</td>-->
+                                    <!--<td>{{ l.mx_record|default_if_none:"" }}</td>-->
+                                    <td>{{ l.return_code|default_if_none:"" }}</td>
+                                    <td>{{ l.deliver_time|date:"Y-m-d H:i:s" }}</td>
+                                    <td>{{ l.return_message }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 --> </div> </div>
+
+    <!-- Modal -->
+    <input type="hidden" id="modal_id" name="modal_id" />
+    <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-llg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans "加载中" %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% trans "页面加载中" %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block my_jsblock %}
+    <script src="{% static 'assets/js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/dataTables.tableTools.min.js' %}"></script>
+    <script src="{% static 'assets/js/dataTables.colVis.min.js' %}"></script>
+
+    <script>
+        $(function () {
+            $('#myModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var recipient = button.data('whatever') // Extract info from data-* attributes
+                $('#modal_id').val(recipient);
+                $(this).removeData('bs.modal');
+            })
+
+            $('#dataTables-example').dataTable({
+                "iDisplayLength": 100,
+                "processing": true,
+
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "{% blocktrans %}显示 _MENU_ 每页{% endblocktrans %}",
+                    "sZeroRecords": "{% blocktrans %}对不起! 信息筛选结果为空!{% endblocktrans %}",
+                    "sInfo": "{% blocktrans %}从 _START_ 到 _END_ 总计: _TOTAL_ 条记录{% endblocktrans %}",
+                    "sInfoEmpty": "{% blocktrans %}总计: 0 条记录{% endblocktrans %}",
+                    "sInfoFiltered": "{% blocktrans %}(从 _MAX_ 条记录筛选出){% endblocktrans %}",
+                    "sSearch": "{% blocktrans %}搜索: {% endblocktrans %}",
+                    "oPaginate": {
+                        "sFirst":    "{% blocktrans %}第一页{% endblocktrans %}",
+                        "sPrevious": " {% blocktrans %}上一页 {% endblocktrans %}",
+                        "sNext":     " {% blocktrans %}下一页 {% endblocktrans %}",
+                        "sLast":     " {% blocktrans %}最后一页 {% endblocktrans %}"
+                    }
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

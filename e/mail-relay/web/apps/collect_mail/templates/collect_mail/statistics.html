@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}邮件发送状态统计{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                统计列表
+                <div class="pull-right">
+                        <label class="radio-inline">
+                        统计类型:
+                        </label>
+
+                        <label class="radio-inline">
+                            <input class="radioItem" type="radio" {% if request.GET.type == 'all' %}checked=""{% endif %}  value="all" name="optionsRadios">默认
+                        </label>
+                        <label class="radio-inline">
+                            <input class="radioItem" type="radio" {% if request.GET.type == 'customer' %}checked=""{% endif %} value="customer" name="optionsRadios">用户
+                        </label>
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th>日期</th>
+                                {% if request.GET.type == 'customer' %}<th>客户</th>{% endif %}
+                                <th>总发</th>
+                                <th>成功</th>
+                                <th>失败</th>
+                                <th>超大/满</th>
+                                <th>连接失败</th>
+                                <th>发送超时</th>
+                                <th>不存在</th>
+                                <th>垃圾</th>
+                                <th>不重试</th>
+                                <th>SPF错误</th>
+                                <th>其他失败</th>
+                                <th>成功率</th>
+                                <th>邮件总数</th>
+                                <th>垃圾邮件数</th>
+                                <th>过滤率</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for s in statistics %}
+                            <tr>
+                                <td><a href="{% url 'collect_mail_list' %}?show=sendlog&date={{s.date|date:'Y-m-d'}}">{{ s.date|date:"Y-m-d" }}</a></td>
+                                {% if request.GET.type == 'customer' %}<td><a href="?customer={{s.customer.id}}&type=customer">{{ s.customer }}</a></td>{% endif %}
+                                <td><a href="{% url 'collect_mail_list' %}?show=sendlog&date={{s.date|date:'Y-m-d'}}&ip={{s.ip|default_if_none:''}}&ip_pool={{s.ip_pool.id}}&cluster={{s.cluster.id}}&customer={{s.customer.id}}">{{ s.count }}</a></td>
+                                <td><a href="{% url 'collect_mail_list' %}?show=sendlog&date={{s.date|date:'Y-m-d'}}&send=success&ip={{s.ip|default_if_none:''}}&ip_pool={{s.ip_pool.id}}&cluster={{s.cluster.id}}&customer={{s.customer.id}}">{{ s.success }}</a></td>
+                                <td><a href="{% url 'collect_mail_list' %}?show=sendlog&date={{s.date|date:'Y-m-d'}}&send=fail&ip={{s.ip|default_if_none:''}}&ip_pool={{s.ip_pool.id}}&cluster={{s.cluster.id}}&customer={{s.customer.id}}">{{ s.fail }}</a></td>
+                                <td><a href="{% url 'collect_mail_list' %}?show=sendlog&date={{s.date|date:'Y-m-d'}}&error_type=4&customer={{s.customer.id}}">{{ s.error_type_4 }}</a></td>
+                                <td><a href="{% url 'collect_mail_list' %}?show=sendlog&date={{s.date|date:'Y-m-d'}}&error_type=1&customer={{s.customer.id}}">{{ s.error_type_1 }}</a></td>
+                                <td><a href="{% url 'collect_mail_list' %}?show=sendlog&date={{s.date|date:'Y-m-d'}}&error_type=8&customer={{s.customer.id}}">{{ s.error_type_8 }}</a></td>
+                                <td><a href="{% url 'collect_mail_list' %}?show=sendlog&date={{s.date|date:'Y-m-d'}}&error_type=2&customer={{s.customer.id}}">{{ s.error_type_2 }}</a></td>
+                                <td><a href="{% url 'collect_mail_list' %}?show=sendlog&date={{s.date|date:'Y-m-d'}}&error_type=5&customer={{s.customer.id}}">{{ s.error_type_5 }}</a></td>
+                                <td><a href="{% url 'collect_mail_list' %}?show=sendlog&date={{s.date|date:'Y-m-d'}}&error_type=6&customer={{s.customer.id}}">{{ s.error_type_6 }}</a></td>
+                                <td><a href="{% url 'collect_mail_list' %}?show=sendlog&date={{s.date|date:'Y-m-d'}}&error_type=7&customer={{s.customer.id}}">{{ s.error_type_7 }}</a></td>
+                                <td><a href="{% url 'collect_mail_list' %}?show=sendlog&date={{s.date|date:'Y-m-d'}}&error_type=3&customer={{s.customer.id}}">{{ s.error_type_3 }}</a></td>
+                                <td><code>{{ s.rate|floatformat:2 }}</code></td>
+                                <td><a href="{% url 'collect_mail_list' %}?date={{s.date|date:'Y-m-d'}}&customer={{s.customer.id}}">{{ s.mail_count }}</a></td>
+                                <td><a href="{% url 'collect_mail_list' %}?date={{s.date|date:'Y-m-d'}}&state=reject&customer={{s.customer.id}}">{{ s.spam_count }}</a></td>
+                                <td><code>{{ s.spam_rate|floatformat:2 }}</code></td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> 图表
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body" id="area-month">
+                <div id="morris-area-chart"></div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+{% endblock %}
+{% block css-block %}
+<link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'morrisjs/morris.css' %}">
+{% endblock %}
+
+{% block js-block %}
+<script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'js/Jquery.Query.js' %}"></script>
+
+<script src="{% static 'raphael/raphael-min.js' %}"></script>
+<script src="{% static 'morrisjs/morris.min.js' %}"></script>
+
+<script>
+$(document).ready(function() {
+
+
+    ip_table = $('#dataTables-example').dataTable({
+        "iDisplayLength": 50,
+        "order": [[ 0, 'desc' ]],
+        "oLanguage": {
+            "sLengthMenu": "显示 _MENU_ 每页",
+            "sZeroRecords": "对不起! 信息筛选结果为空!",
+            "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+            "sInfoEmpty": "总计: 0 条记录",
+            "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+            "sSearch": "搜索: ",
+            "oPaginate": {
+                   "sFirst":    "第一页",
+                   "sPrevious": " 上一页 ",
+                   "sNext":     " 下一页 ",
+                   "sLast":     " 最后一页 "
+               }
+        }
+    });
+
+    $(".radioItem").change( function() {
+        var selectedvalue = $("input[name='optionsRadios']:checked").val();
+        //window.location.href = $.query.set('type', selectedvalue);
+        window.location.href = '?type=' + selectedvalue;
+    });
+
+    Morris.Area({
+        element: 'morris-area-chart',
+        data: [
+            {% for s in statistics %}
+            {
+            date: '{{ s.date|date:"Y-m-d" }}',
+            发送总数: {{ s.count }},
+            成功数: {{ s.success }},
+        },
+            {% endfor %}
+            ],
+        xkey: 'date',
+        ykeys: ['发送总数', '成功数'],
+        labels: ['发送总数', '成功数',] ,
+        pointSize: 1,
+        hideHover: 'auto',
+        resize: false,
+        behaveLikeLine: true
+    });
+
+});
+
+    function QuerySet(key, value){
+        window.location.href = jQuery.query.set(key, value);
+    }
+    </script>
+{% endblock %}

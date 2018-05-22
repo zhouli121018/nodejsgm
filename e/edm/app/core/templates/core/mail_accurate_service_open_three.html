@@ -1,0 +1,68 @@
+{% load i18n %}
+{% load tagging_tags %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel" style="font-weight: 600">{% trans '详细' %}</h4>
+</div>
+<input type="hidden" name="tag_type" value="{{ tag_type }}">
+<input type="hidden" name="parent_id" value="{{ parent_id }}">
+<div class="modal-body">
+    <div class="widget-body no-padding no-margin" style="border-color: #fff!important;">
+        <div class="form-horizontal">
+            <fieldset>
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"><strong>{{ tag_obj.name }}：</strong></label>
+                            <div class="col-md-9 input-group" id="id_three_lists">
+                                {% for d in tag_lists %}
+                                    <span style="display: inline;float: left;">
+                                        <span onclick="changeLists2('{{ tag_obj.category_id }}','{{ d.parent_id }}', '{{ d.id }}', '{{ d.parent.name }}', '{{ d.name }}')"
+                                              id="id_change2_{{ d.id }}" class="ac-tag_tag {% if d.id in select_ids %}is-active_tag{% endif %}">{{ d.name }}</span>
+                                        </span>
+                                    {% if d.id in select_ids %}
+                                        <input name="three_name[]" id="id_three_name_{{ d.id }}" value="{{ d.id }}" type="text" class="display-none">
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+        </div>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" onclick="saveTag2();">{% trans '保存' %}</button>
+    <button type="button" id="modal_close_bak_2" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+</div>
+<script>
+
+    function changeLists2(cat_id, parent_id, tag_id, parent_name, tag_name){
+        var obj = $("#id_change2_"+tag_id);
+        if ( obj.hasClass('is-active_tag') ){
+            obj.removeClass('is-active_tag');
+            $("#id_three_name_"+tag_id).remove();
+        } else {
+            obj.addClass('is-active_tag');
+            $("#id_three_lists").append('<input type="text" class="display-none" name="three_name[]" id="id_three_name_'+tag_id+'" value="'+tag_id+'"/>')
+        }
+    }
+
+    function saveTag2(){
+        var tag_vals = eval({{ tag_vals|safe }});
+        var id_array = $("input[name='three_name[]']");
+        $("#id_lists_children_{{ parent_id }}").html('')
+        for (var i = 0, j = id_array.length; i < j; i++){
+            var select_id = $.trim(id_array[i].value);
+            $("#id_lists_children_{{ parent_id }}").append('<input type="text" class="display-none" name="name{{ parent_id }}[]" id="id_name_tmp_' + select_id + '" value="' + select_id + '"/>');
+            $("#id_lists_children_{{ parent_id }}").append('<input type="text" class="display-none" name="name[]" id="id_name_' + select_id + '" value="' + select_id + '"/>');
+            $("#id_lists_children_{{ parent_id }}").append('<span class="self-show-share-log self-margin-left-5" id="id_tag_span_' + select_id + '">'+ tag_vals[select_id]['p_name'] + ' > '+ tag_vals[select_id]['name'] +'</span>');
+        }
+        $("#modal_close_bak_2").click();
+    }
+
+</script>

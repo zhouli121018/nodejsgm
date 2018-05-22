@@ -1,0 +1,1845 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap %}
+{% block page-content %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-block alert-success">
+    <button type="button" class="close" data-dismiss="alert">
+        <i class="ace-icon fa fa-times"></i>
+    </button>
+    <i class="ace-icon fa fa-check green"></i>
+    <strong class="green">
+        {{ message }}
+    </strong>,
+</div>
+{% endfor %}
+{% endif %}
+
+{% if request.user.is_relay and relay_statistic.all.0 %}
+<div class="row">
+{% if warning_msg %}
+    <div class="alert alert-block alert-warning">
+        <button type="button" class="close" data-dismiss="alert">
+            <i class="ace-icon fa fa-times"></i>
+        </button>
+
+        <i class="ace-icon fa fa-check warning"></i>
+        {% autoescape off %}
+    {{ warning_msg }}
+        {% endautoescape %}
+
+    </div>
+    {% endif %}
+<div class="space-6"></div>
+<div class="col-sm-6">
+    <div class="widget-box transparent">
+        <div class="widget-header widget-header-flat">
+            <h4 class="widget-title lighter">
+                <i class="ace-icon fa fa-star orange"></i>
+                {% trans "中继统计" %}
+            </h4>
+
+            <div class="widget-toolbar">
+                <a href="#" data-action="collapse">
+                    <i class="ace-icon fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <table class="table table-bordered table-striped">
+                    <thead class="thin-border-bottom">
+                    <tr>
+                        <th>
+                            <i class="ace-icon fa fa-caret-right blue"></i>{% trans "项目" %}
+                        </th>
+
+                        <th>
+                            <i class="ace-icon fa fa-caret-right blue"></i>{% trans "流量" %}
+                        </th>
+
+                        <th class="hidden-480">
+                            <i class="ace-icon fa fa-caret-right blue"></i>{% trans "数量" %}
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="relay-tb">
+                    <tr>
+                        <td><span class="green">{% trans "入站邮件" %}</span></td>
+
+                        <td>
+                            <b class="green">{{ relay_statistic.all.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'mail_list' %}">
+                                <b class="green">{{ relay_statistic.all.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% if relay_statistic.reject.0 %}
+
+                    <tr>
+                        <td><span class="col-xs-offset-1 red">{% trans "系统已过滤邮件" %}</span></td>
+
+                        <td>
+                            <b class="red col-xs-offset-1">{{ relay_statistic.reject.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'mail_list' %}?state=reject">
+                                <b class="red col-xs-offset-1">{{ relay_statistic.reject.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if relay_statistic.c_reject.0 %}
+
+                    <tr>
+                        <td><span class="col-xs-offset-1 red">{% trans "我的过滤邮件" %}</span></td>
+
+                        <td>
+                            <b class="red col-xs-offset-1">{{ relay_statistic.c_reject.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'mail_list' %}?state=c_reject">
+                                <b class="red col-xs-offset-1">{{ relay_statistic.c_reject.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+                    {% if relay_statistic.analysis.0 %}
+                    <tr>
+                        <td><span class="blue  col-xs-offset-1">{% trans "系统分析中邮件" %}</span></td>
+
+                        <td>
+                            <b class="blue col-xs-offset-1">{{ relay_statistic.analysis.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'mail_list' %}?state=analysis">
+                                <b class="blue col-xs-offset-1">{{ relay_statistic.analysis.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if relay_statistic.dispatch.0 %}
+                    <tr>
+                        <td><span class="blue  col-xs-offset-1">{% trans "发送通道传输中邮件" %}</span></td>
+
+                        <td>
+                            <b class="blue col-xs-offset-1">{{ relay_statistic.dispatch.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'mail_list' %}?state=analysis">
+                                <b class="blue col-xs-offset-1">{{ relay_statistic.dispatch.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+                    {% if relay_statistic.send.0 %}
+                    <tr>
+                        <td><span class="blue  col-xs-offset-1">{% trans "投递中邮件" %}</span></td>
+
+                        <td>
+                            <b class="blue col-xs-offset-1">{{ relay_statistic.send.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'mail_list' %}?state=send">
+                                <b class="blue col-xs-offset-1">{{ relay_statistic.send.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if relay_statistic.retry.0 %}
+                    <tr>
+                        <td><span class="blue col-xs-offset-1">{% trans "重试投递中邮件" %}</span></td>
+
+                        <td>
+                            <b class="blue col-xs-offset-1">{{ relay_statistic.retry.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'mail_list' %}?state=retry">
+                                <b class="blue col-xs-offset-1">{{ relay_statistic.retry.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if relay_statistic.out_all.0 %}
+
+                    <tr>
+                        <td><span class="green">{% trans "出站邮件" %}</span></td>
+
+                        <td>
+                            <b class="green">{{ relay_statistic.out_all.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'mail_list' %}?state=out_all">
+                                <b class="green">{{ relay_statistic.out_all.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if relay_statistic.finished.0 %}
+                    <tr>
+                        <td><span class="blue col-xs-offset-1">{% trans "出站成功邮件" %}</span></td>
+
+                        <td>
+                            <b class="blue col-xs-offset-1">{{ relay_statistic.finished.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'mail_list' %}?state=finished">
+                                <b class="blue col-xs-offset-1">{{ relay_statistic.finished.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if relay_statistic.fail_finished.0 %}
+                    <tr>
+                        <td><span class="red  col-xs-offset-1">{% trans "出站失败邮件" %}</span></td>
+
+                        <td>
+                            <b class="red col-xs-offset-1">{{ relay_statistic.fail_finished.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'mail_list' %}?state=fail_finished">
+                                <b class="red col-xs-offset-1">{{ relay_statistic.fail_finished.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    </tbody>
+                </table>
+            </div><!-- /.widget-main -->
+        </div><!-- /.widget-body -->
+    </div><!-- /.widget-box -->
+</div>
+
+
+<div class="vspace-12-sm"></div>
+
+<div class="col-sm-6">
+    <div class="widget-box">
+        <div class="widget-header widget-header-flat widget-header-small">
+            <h5 class="widget-title">
+                <i class="ace-icon fa fa-signal"></i>
+                {% trans "中继统计图示" %}
+            </h5>
+
+            <div class="widget-toolbar no-border" id="relay-box">
+                <div class="inline dropdown-hover">
+                                <!--<span class="btn btn-minier btn-primary">-->
+                                    <!--{% trans "今天" %}-->
+                                    <!--<i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>-->
+                                <!--</span>-->
+                    <button class="btn btn-minier btn-primary">
+                        <span>今天</span>
+                        <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
+                        <li class="active singledate">
+                            <a data-count="0" class="blue">
+                                <i class="ace-icon fa fa-caret-right bigger-110">&nbsp;</i>
+                                <span>今天</span>
+                            </a>
+                        </li>
+
+                        <li class="singledate">
+                            <a data-count="1">
+                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                <span>昨天</span>
+                            </a>
+                        </li>
+
+                        <li class="singledate">
+                            <a data-count="2">
+                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                <span>前天</span>
+                            </a>
+                        </li>
+                        <li class="weekdate">
+                            <a data-count="0">
+                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                <span>本周</span>
+                            </a>
+                        </li>
+                        <li class="weekdate">
+                            <a data-count="-1">
+                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                <span>上周</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-count="0">
+                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                <span>本月</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-count="-1">
+                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                <span>上月</span>
+                            </a>
+                        </li>
+
+                        <li style="position:relative;" class="other-date">
+                            <a>
+                                <!--<i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>-->
+                                <span class="other-box" id="input-box">
+                                    <!--<input data-fn="0" placeholder="Date" class="textbox-n" type="text" onfocus="(this.type='date')" style="display:none;position: absolute;top: 0;right: -1px;"  name="other">-->
+                                    <p style="margin:0;">起始日期：</p>
+                                    <input type="text" id="calendar1" placeholder="选择起始日期" class="form-control">
+                                    <!--<p style="text-align:center;margin:0;">——</p>-->
+                                    <p style="margin:6px 0 0;">截止日期：</p>
+                                    <input type="text" id="calendar3" placeholder="选择截止日期" class="form-control">
+                                    <button style="border-radius:5px;padding:2px 4px ;margin-top:6px;" type="button" class="btn btn-small btn-primary relay-btn">确定</button>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main">
+                <div style="width: 90%; min-height: 250px; padding: 0px; position: relative;" id="piechart-placeholder">
+                    <canvas height="150" width="568" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 568px; height: 150px;" class="flot-base"></canvas>
+                    <canvas height="150" width="568" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 568px; height: 150px;" class="flot-overlay"></canvas>
+                    <div class="legend">
+                        <div style="position: absolute; width: 93px; height: 110px; top: 15px; right: -30px; background-color: rgb(255, 255, 255); opacity: 0.85;"> </div>
+                        <table style="position:absolute;top:15px;right:-30px;;font-size:smaller;color:#545454">
+                            <tbody>
+                            <tr>
+                                <td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #68BC31;overflow:hidden"></div></div></td>
+                                <td class="legendLabel">{% trans "已过滤" %}</td>
+                            </tr>
+                            <tr>
+                                <td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #2091CF;overflow:hidden"></div></div></td>
+                                <td class="legendLabel">{% trans "分析中" %}</td>
+                            </tr>
+                            <tr>
+                                <td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #AF4E96;overflow:hidden"></div></div> </td>
+                                <td class="legendLabel">{% trans "投递中" %}</td>
+                            </tr>
+                            <tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #DA5430;overflow:hidden"></div></div></td>
+                                <td class="legendLabel">{% trans "重试投递中" %}</td>
+                            </tr>
+                            <tr>
+                                <td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #FEE074;overflow:hidden"></div></div></td>
+                                <td class="legendLabel">{% trans "出站成功" %}</td>
+                            </tr>
+                            <tr>
+                                <td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #FEE074;overflow:hidden"></div></div></td>
+                                <td class="legendLabel">{% trans "出站失败" %}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="hr hr8 hr-double"></div>
+
+                <div class="clearfix" id="relay-show">
+                    <div class="grid3">
+                                    <span class="grey">
+                                        <i class="ace-icon fa fa-linkedin-square fa-2x blue"></i>
+                                        &nbsp; {% trans "入站邮件" %}
+                                    </span>
+                        <h4 class="bigger pull-right">{{ relay_statistic.all.0 }}</h4>
+                    </div>
+                    <div class="grid3">
+                                    <span class="grey">
+                                        <i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+                                        &nbsp; {% trans "出站邮件" %}
+                                    </span>
+                        <h4 class="bigger pull-right">{{ relay_statistic.out_all.0 }}</h4>
+                    </div>
+                    <div class="grid3">
+                                    <span class="grey">
+                                        <i class="ace-icon fa fa-pinterest-square fa-2x red"></i>
+                                        &nbsp; {% trans "成功出站邮件" %}
+                                    </span>
+                        <h4 class="bigger pull-right">{{ relay_statistic.finished.0 }}</h4>
+                    </div>
+                </div>
+            </div><!-- /.widget-main -->
+        </div><!-- /.widget-body -->
+    </div><!-- /.widget-box -->
+</div><!-- /.col -->
+</div>
+<div class="hr hr32 hr-dotted"></div>
+{% endif %}
+
+
+{% if request.user.is_collect and collect_statistic.all.0 %}
+<div class="row">
+<div class="space-6"></div>
+<div class="col-sm-6">
+    <div class="widget-box transparent">
+        <div class="widget-header widget-header-flat">
+            <h4 class="widget-title lighter">
+                <i class="ace-icon fa fa-star orange"></i>
+                {% trans "网关统计" %}
+            </h4>
+
+            <div class="widget-toolbar">
+                <a href="#" data-action="collapse">
+                    <i class="ace-icon fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <table class="table table-bordered table-striped">
+                    <thead class="thin-border-bottom">
+                    <tr>
+                        <th>
+                            <i class="ace-icon fa fa-caret-right blue"></i>{% trans "项目" %}
+                        </th>
+
+                        <th>
+                            <i class="ace-icon fa fa-caret-right blue"></i>{% trans "流量" %}
+                        </th>
+
+                        <th class="hidden-480">
+                            <i class="ace-icon fa fa-caret-right blue"></i>{% trans "数量" %}
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="collect-tb">
+                    <tr>
+                        <td><span class="green">{% trans "入站邮件" %}</span></td>
+
+                        <td>
+                            <b class="green">{{ collect_statistic.all.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'c_mail_list' %}">
+                                <b class="green">{{ collect_statistic.all.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% if collect_statistic.reject.0 %}
+
+                    <tr>
+                        <td><span class="col-xs-offset-1 red">{% trans "系统已过滤邮件" %}</span></td>
+
+                        <td>
+                            <b class="red col-xs-offset-1">{{ collect_statistic.reject.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'c_mail_list' %}?state=reject">
+                                <b class="red col-xs-offset-1">{{ collect_statistic.reject.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if collect_statistic.c_reject.0 %}
+
+                    <tr>
+                        <td><span class="col-xs-offset-1 red">{% trans "我的过滤邮件" %}</span></td>
+
+                        <td>
+                            <b class="red col-xs-offset-1">{{ collect_statistic.c_reject.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'c_mail_list' %}?state=c_reject">
+                                <b class="red col-xs-offset-1">{{ collect_statistic.c_reject.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+
+                    {% if collect_statistic.analysis.0 %}
+                    <tr>
+                        <td><span class="blue  col-xs-offset-1">{% trans "系统分析中邮件" %}</span></td>
+
+                        <td>
+                            <b class="blue col-xs-offset-1">{{ collect_statistic.analysis.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'c_mail_list' %}?state=analysis">
+                                <b class="blue col-xs-offset-1">{{ collect_statistic.analysis.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    {% if collect_statistic.send.0 %}
+                    <tr>
+                        <td><span class="blue  col-xs-offset-1">{% trans "投递中邮件" %}</span></td>
+
+                        <td>
+                            <b class="blue col-xs-offset-1">{{ collect_statistic.send.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'c_mail_list' %}?state=send">
+                                <b class="blue col-xs-offset-1">{{ collect_statistic.send.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if collect_statistic.retry.0 %}
+                    <tr>
+                        <td><span class="blue col-xs-offset-1">{% trans "重试投递中邮件" %}</span></td>
+
+                        <td>
+                            <b class="blue col-xs-offset-1">{{ collect_statistic.retry.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'c_mail_list' %}?state=retry">
+                                <b class="blue col-xs-offset-1">{{ collect_statistic.retry.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if collect_statistic.out_all.0 %}
+
+                    <tr>
+                        <td><span class="green">{% trans "出站邮件" %}</span></td>
+
+                        <td>
+                            <b class="green">{{ collect_statistic.out_all.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'c_mail_list' %}?state=out_all">
+                                <b class="green">{{ collect_statistic.out_all.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if collect_statistic.finished.0 %}
+                    <tr>
+                        <td><span class="blue col-xs-offset-1">{% trans "出站成功邮件" %}</span></td>
+
+                        <td>
+                            <b class="blue col-xs-offset-1">{{ collect_statistic.finished.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'c_mail_list' %}?state=finished">
+                                <b class="blue col-xs-offset-1">{{ collect_statistic.finished.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% if collect_statistic.fail_finished.0 %}
+                    <tr>
+                        <td><span class="red  col-xs-offset-1">{% trans "出站失败邮件" %}</span></td>
+
+                        <td>
+                            <b class="red col-xs-offset-1">{{ collect_statistic.fail_finished.1|filesizeformat }}</b>
+                        </td>
+
+                        <td class="hidden-480">
+                            <a href="{% url 'c_mail_list' %}?state=fail_finished">
+                                <b class="red col-xs-offset-1">{{ collect_statistic.fail_finished.0 }}</b>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endif %}
+
+                    </tbody>
+                </table>
+            </div><!-- /.widget-main -->
+        </div><!-- /.widget-body -->
+    </div><!-- /.widget-box -->
+</div>
+
+
+<div class="vspace-12-sm"></div>
+
+<div class="col-sm-6">
+    <div class="widget-box">
+        <div class="widget-header widget-header-flat widget-header-small">
+            <h5 class="widget-title">
+                <i class="ace-icon fa fa-signal"></i>
+                {% trans "网关统计图示" %}
+            </h5>
+
+            <div class="widget-toolbar no-border" id="collect-box">
+                <div class="inline dropdown-hover">
+                    <!--<button class="btn btn-minier btn-primary">-->
+                        <!--{% trans "今天" %}-->
+                        <!--<i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>-->
+                    <!--</button>-->
+                    <button class="btn btn-minier btn-primary">
+                        <span>今天</span>
+                        <i class="ace-icon fa fa-angle-down icon-on-right bigger-110"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-125 dropdown-lighter dropdown-close dropdown-caret">
+                        <li class="active singledate">
+                            <a data-count="0" class="blue">
+                                <i class="ace-icon fa fa-caret-right bigger-110">&nbsp;</i>
+                                <span>今天</span>
+                            </a>
+                        </li>
+
+                        <li class="singledate">
+                            <a data-count="1">
+                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                <span>昨天</span>
+                            </a>
+                        </li>
+
+                        <li class="singledate">
+                            <a data-count="2">
+                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                <span>前天</span>
+                            </a>
+                        </li>
+                        <li class="weekdate">
+                            <a data-count="0">
+                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                <span>本周</span>
+                            </a>
+                        </li>
+                        <li class="weekdate">
+                            <a data-count="-1">
+                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                <span>上周</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-count="0">
+                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                <span>本月</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-count="-1">
+                                <i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>
+                                <span>上月</span>
+                            </a>
+                        </li>
+
+                        <li style="position:relative;" class="other-date">
+                            <a>
+                                <!--<i class="ace-icon fa fa-caret-right bigger-110 invisible">&nbsp;</i>-->
+                                <span class="other-box">
+                                    <!--<input data-fn="1" placeholder="点击选择日期" class="textbox-n" type="text" onfocus="(this.type='date')" style="display:none;position: absolute;top: 0;right: -1px;" name="other">-->
+                                    <p style="margin:0;">起始日期：</p>
+                                    <input type="text" id="calendar2" placeholder="选择起始日期" class="form-control">
+                                    <!--<p style="text-align:center;margin:0;">——</p>-->
+                                    <p style="margin:6px 0 0;">截止日期：</p>
+                                    <input type="text" id="calendar4" placeholder="选择截止日期" class="form-control">
+                                    <button style="border-radius:5px;padding:2px 4px ;margin-top:6px;" type="button" class="btn btn-small btn-primary collect-btn">确定</button>
+                                </span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main">
+                <div style="width: 90%; min-height: 250px; padding: 0px; position: relative;" id="piechart-placeholder2">
+                    <canvas height="150" width="568" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 568px; height: 150px;" class="flot-base"></canvas>
+                    <canvas height="150" width="568" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 568px; height: 150px;" class="flot-overlay"></canvas>
+                    <div class="legend">
+                        <div style="position: absolute; width: 93px; height: 110px; top: 15px; right: -30px; background-color: rgb(255, 255, 255); opacity: 0.85;"> </div>
+                        <table style="position:absolute;top:15px;right:-30px;;font-size:smaller;color:#545454">
+                            <tbody>
+                            <tr>
+                                <td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #68BC31;overflow:hidden"></div></div></td>
+                                <td class="legendLabel">{% trans "已过滤" %}</td>
+                            </tr>
+                            <tr>
+                                <td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #2091CF;overflow:hidden"></div></div></td>
+                                <td class="legendLabel">{% trans "分析中" %}</td>
+                            </tr>
+                            <tr>
+                                <td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #AF4E96;overflow:hidden"></div></div> </td>
+                                <td class="legendLabel">{% trans "投递中" %}</td>
+                            </tr>
+                            <tr><td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #DA5430;overflow:hidden"></div></div></td>
+                                <td class="legendLabel">{% trans "重试投递中" %}</td>
+                            </tr>
+                            <tr>
+                                <td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #FEE074;overflow:hidden"></div></div></td>
+                                <td class="legendLabel">{% trans "出站成功" %}</td>
+                            </tr>
+                            <tr>
+                                <td class="legendColorBox"><div style="border:1px solid null;padding:1px"><div style="width:4px;height:0;border:5px solid #FEE074;overflow:hidden"></div></div></td>
+                                <td class="legendLabel">{% trans "出站失败" %}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="hr hr8 hr-double"></div>
+
+                <div class="clearfix" id="collect-show">
+                    <div class="grid3">
+                                    <span class="grey">
+                                        <i class="ace-icon fa fa-linkedin-square fa-2x blue"></i>
+                                        &nbsp; {% trans "入站邮件" %}
+                                    </span>
+                        <h4 class="bigger pull-right">{{ collect_statistic.all.0 }}</h4>
+                    </div>
+                    <div class="grid3">
+                                    <span class="grey">
+                                        <i class="ace-icon fa fa-twitter-square fa-2x purple"></i>
+                                        &nbsp; {% trans "出站邮件" %}
+                                    </span>
+                        <h4 class="bigger pull-right">{{ collect_statistic.out_all.0 }}</h4>
+                    </div>
+
+                    <div class="grid3">
+                                    <span class="grey">
+                                        <i class="ace-icon fa fa-pinterest-square fa-2x red"></i>
+                                        &nbsp; {% trans "成功出站邮件" %}
+                                    </span>
+                        <h4 class="bigger pull-right">{{ collect_statistic.finished.0 }}</h4>
+                    </div>
+                </div>
+            </div><!-- /.widget-main -->
+        </div><!-- /.widget-body -->
+    </div><!-- /.widget-box -->
+</div><!-- /.col -->
+</div>
+
+<div class="hr hr32 hr-dotted"></div>
+{% endif %}
+<div class="row">
+<div class="col-xs-12">
+<!-- PAGE CONTENT BEGINS -->
+<div class="clearfix">
+    <h4 class="widget-title lighter" style="color:#4383B4">
+        <i class="ace-icon fa fa-star orange"></i>
+        {% trans "用户属性" %}
+    </h4>
+</div>
+
+<div class="hr dotted"></div>
+
+<div class="">
+<div id="user-profile-2" class="user-profile">
+<div class="tabbable">
+<ul class="nav nav-tabs padding-18">
+    <li class="active">
+        <a data-toggle="tab" href="#home">
+            <i class="green ace-icon fa fa-user bigger-120"></i>
+            {% trans "基础信息" %}
+        </a>
+    </li>
+
+    <li>
+        <a data-toggle="tab" href="#company">
+            <i class="green ace-icon fa fa-user bigger-120"></i>
+            {% trans "企业信息" %}
+        </a>
+    </li>
+
+    {% if request.user.is_relay %}
+    <li>
+        <a data-toggle="tab" href="#feed">
+            <i class="orange ace-icon fa fa-rss bigger-120"></i>
+            {% trans "中继" %}
+        </a>
+    </li>
+    {% endif %}
+
+    {% if request.user.is_collect %}
+    <li>
+        <a data-toggle="tab" href="#friends">
+            <i class="blue ace-icon fa fa-users bigger-120"></i>
+            {% trans "网关" %}
+        </a>
+    </li>
+    {% endif %}
+
+    {% comment %}
+    <li>
+        <a data-toggle="tab" href="#pictures">
+            <i class="pink ace-icon fa fa-picture-o bigger-120"></i>
+            {% trans "设置" %}
+        </a>
+    </li>
+    {% endcomment %}
+</ul>
+
+<div class="tab-content no-border padding-24">
+<div id="home" class="tab-pane in active">
+    <div class="row">
+        <!-- /.col -->
+
+        <div class="col-xs-12 col-sm-9">
+
+            <h4 class="blue">
+                <span class="middle">{% trans "基本信息" %}</span>
+            </h4>
+
+            <div class="profile-user-info">
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "登录帐号" %} </div>
+                    <div class="profile-info-value">
+                        <span>{{ request.user.username }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "公司名称" %} </div>
+                    <div class="profile-info-value">
+                        <span>{{ request.user.company }}</span>
+                    </div>
+                </div>
+                {% if request.user.is_relay %}
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "中继服务开始时间" %} </div>
+
+                    <div class="profile-info-value">
+                        <span>{{ request.user.service_start|date:"Y-m-d" }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "中继服务到期时间" %} </div>
+
+                    <div class="profile-info-value">
+                        <span>{{ request.user.service_end|date:"Y-m-d" }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "中继状态" %} </div>
+
+                    <div class="profile-info-value">
+                        <span>{{ request.user.get_status_display }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% if request.user.is_collect %}
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "网关服务开始时间" %} </div>
+
+                    <div class="profile-info-value">
+                        <span>{{ request.user.gateway_service_start|date:"Y-m-d" }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "网关服务到期时间" %} </div>
+
+                    <div class="profile-info-value">
+                        <span>{{ request.user.gateway_service_end|date:"Y-m-d" }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "网关状态" %} </div>
+
+                    <div class="profile-info-value">
+                        <span>{{ request.user.get_gateway_status_display }}</span>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "最后登录时间" %} </div>
+
+                    <div class="profile-info-value">
+                        <span>{{ request.user.last_login|date:"Y-m-d H:i" }}</span>
+                    </div>
+                </div>
+
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "创建时间" %} </div>
+
+                    <div class="profile-info-value">
+                        <span>{{ request.user.created|date:"Y-m-d" }}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /.col -->
+
+    </div><!-- /.row -->
+
+</div><!-- /#home -->
+
+
+<div id="company" class="tab-pane">
+    <div class="row">
+        <!-- /.col -->
+
+        <div class="col-xs-12 col-sm-9">
+
+            <h4 class="blue">
+                <span class="middle">{% trans "企业信息" %}</span>
+            </h4>
+
+            <div class="profile-user-info">
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "公司名称" %} </div>
+                    <div class="profile-info-value">
+                        <span>{{ request.user.company }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "邮箱" %} </div>
+                    <div class="profile-info-value">
+                        <span>{{ request.user.email|default_if_none:"" }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "联系人" %} </div>
+                    <div class="profile-info-value">
+                        <span>{{ request.user.contact|default_if_none:""  }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "联系人手机" %} </div>
+                    <div class="profile-info-value">
+                        <span>{{ request.user.mobile|default_if_none:""  }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "紧急联系人" %} </div>
+                    <div class="profile-info-value">
+                        <span>{{ request.user.emergency_contact|default_if_none:""  }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> {% trans "紧急联系人手机" %} </div>
+                    <div class="profile-info-value">
+                        <span>{{ request.user.emergency_mobile|default_if_none:""  }}</span>
+                    </div>
+                </div>
+                <a  class="btn btn-primary btn-sm" href="{% url 'customer_modify' %}">{% trans "修改" %}</a>
+
+            </div>
+
+
+        </div><!-- /.col -->
+    </div><!-- /.row -->
+
+</div><!-- /#home -->
+{% if request.user.is_relay %}
+<div id="feed" class="tab-pane">
+    <h4 class="pink">
+        <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+        <a href="#ip-table" role="button" class="green" data-toggle="modal"> {% trans "固定IP" %} </a>
+    </h4>
+    <div class="hr hr-18 dotted hr-double"></div>
+    <div class="row">
+        <div class="col-xs-6">
+            <table id="ip-table" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th width="40">ID</th>
+                    <th>{% trans "固定IP" %}</th>
+                    <th>{% trans "状态" %}</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for ip in request.user.ip.all %}
+                <tr>
+                    <td class="center">
+                        <label class="pos-rel">
+                            {{ forloop.counter }}
+                        </label>
+                    </td>
+                    <td>
+                        {{ ip.ip }}
+                    </td>
+                    <td>{% if ip.disabled %}<span class="text-danger">{% trans "禁用" %}</span>{% else %}<span class="text-info">{% trans "启用" %}</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div><!-- /.span -->
+    </div>
+
+    <h4 class="pink">
+        <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+        <a href="#domain-table" role="button" class="green" data-toggle="modal"> {% trans "信任域名" %} </a>
+    </h4>
+    <div class="hr hr-18 dotted hr-double"></div>
+    <div class="row">
+        <div class="col-xs-6">
+            <table id="domain-table" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th width="40">ID</th>
+                    <th>{% trans "信任域名" %}</th>
+                    <th>{% trans "状态" %}</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for d in request.user.domain.all %}
+                <tr>
+                    <td class="center">
+                        <label class="pos-rel">
+                            {{ forloop.counter }}
+                        </label>
+                    </td>
+                    <td>
+                        {{ d.domain }}
+                    </td>
+                    <td>{% if d.disabled %}<span class="text-danger">{% trans "禁用" %}</span>{% else %}<span class="text-info">{% trans "启用" %}</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div><!-- /.span -->
+    </div>
+    <h4 class="pink">
+        <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+        <a href="#mailbox-table" role="button" class="green" data-toggle="modal"> {% trans "帐号密码" %} </a>
+    </h4>
+    <div class="hr hr-18 dotted hr-double"></div>
+    <div class="row">
+        <div class="col-xs-6">
+            <table id="mailbox-table" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th width="40">ID</th>
+                    <th>{% trans "帐号" %}</th>
+                    <th>{% trans "密码" %}</th>
+                    <th>{% trans "状态" %}</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for m in request.user.mailbox.all %}
+                <tr>
+                    <td class="center">
+                        <label class="pos-rel">
+                            {{ forloop.counter }}
+                        </label>
+                    </td>
+                    <td>
+                        {{ m.mailbox }}
+                    </td>
+                    <td>
+                        {{ m.password }}
+                    </td>
+                    <td>{% if m.disabled %}<span class="text-danger">{% trans "禁用" %}</span>{% else %}<span class="text-info">{% trans "启用" %}</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div><!-- /.span -->
+    </div>
+
+</div><!-- /#feed -->
+
+{% endif %}
+{% if request.user.is_collect %}
+<div id="friends" class="tab-pane">
+    <h4 class="pink">
+        <i class="ace-icon fa fa-hand-o-right icon-animated-hand-pointer blue"></i>
+        <a href="#col-domain-table" role="button" class="green" data-toggle="modal"> {% trans "转发地址" %} </a>
+    </h4>
+    <div class="hr hr-18 dotted hr-double"></div>
+    <div class="row">
+        <div class="col-xs-6">
+            <table id="col-domain-table" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th width="40">ID</th>
+                    <th>{% trans "域名" %}</th>
+                    <th>{% trans "转发地址" %}</th>
+                    <th>{% trans "状态" %}</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for d in request.user.col_domain.all %}
+                <tr>
+                    <td class="center">
+                        <label class="pos-rel">
+                            {{ forloop.counter }}
+                        </label>
+                    </td>
+                    <td>
+                        {{ d.domain }}
+                    </td>
+                    <td>
+                        {{ d.forward_address }}
+                    </td>
+                    <td>{% if ip.disabled %}<span class="text-danger">{% trans "禁用" %}</span>{% else %}<span class="text-info">{% trans "启用" %}</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div><!-- /.span -->
+    </div>
+
+
+</div><!-- /#friends -->
+
+{% endif %}
+{% comment %}
+<div id="pictures" class="tab-pane">
+    {{ setting_form|bootstrap }}
+</div><!-- /#pictures -->
+{% endcomment %}
+</div>
+</div>
+</div>
+</div>
+
+
+<!-- PAGE CONTENT ENDS -->
+</div><!-- /.col -->
+</div>
+{% endblock %}
+{% block my_jsblock %}
+<!-- inline scripts related to this page -->
+<script src="{% static 'assets/js/jquery.flot.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.flot.pie.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery.flot.resize.min.js' %}"></script>
+
+<script type="text/javascript">
+        jQuery(function($) {
+
+            $("#calendar1").bootstrapDatepickr({language: "zh-CN",date_format: "Y-m-d"});
+            $("#calendar2").bootstrapDatepickr({language: "zh-CN",date_format: "Y-m-d"});
+            $("#calendar3").bootstrapDatepickr({language: "zh-CN",date_format: "Y-m-d"});
+            $("#calendar4").bootstrapDatepickr({language: "zh-CN",date_format: "Y-m-d"});
+
+            $.resize.throttleWindow = false;
+
+            $('.dropdown-hover').mouseenter(function(){
+                $(this).find(".other-box input").show();
+            })
+            $('.dropdown-hover').mouseleave(function(){
+                $(this).find(".other-box input").hide();
+            })
+
+            function bytesToSize(bytes) {
+                if (bytes === 0) return '0 B';
+                var k = 1024, // or 1024
+                        sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+                        i = Math.floor(Math.log(bytes) / Math.log(k));
+
+//                return (bytes / Math.pow(k, i)).toPrecision(4) + ' ' + sizes[i];
+                return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
+            }
+
+            //获取当前日期yy-mm-dd
+//date 为时间对象
+            function getDateStr3(date) {
+                var year = "";
+                var month = "";
+                var day = "";
+                var now = date;
+                year = ""+now.getFullYear();
+                if((now.getMonth()+1)<10){
+                    month = "0"+(now.getMonth()+1);
+                }else{
+                    month = ""+(now.getMonth()+1);
+                }
+                if((now.getDate())<10){
+                    day = "0"+(now.getDate());
+                }else{
+                    day = ""+(now.getDate());
+                }
+                return year+"-"+month+"-"+day;
+            }
+            /**
+             * 获得相对当前周AddWeekCount个周的起止日期
+             * AddWeekCount为0代表当前周   为-1代表上一个周   为1代表下一个周以此类推
+             * **/
+            function getWeekStartAndEnd(AddWeekCount) {
+                //起止日期数组
+                var startStop = new Array();
+                //一天的毫秒数
+                var millisecond = 1000 * 60 * 60 * 24;
+                //获取当前时间
+                var currentDate = new Date();
+                //相对于当前日期AddWeekCount个周的日期
+                currentDate = new Date(currentDate.getTime() + (millisecond * 7*AddWeekCount));
+                //返回date是一周中的某一天
+                var week = currentDate.getDay();
+                //返回date是一个月中的某一天
+                var month = currentDate.getDate();
+                //减去的天数
+                var minusDay = week != 0 ? week - 1 : 6;
+                //获得当前周的第一天
+                var currentWeekFirstDay = new Date(currentDate.getTime() - (millisecond * minusDay));
+                //获得当前周的最后一天
+                var currentWeekLastDay = new Date(currentWeekFirstDay.getTime() + (millisecond * 6));
+                //添加至数组
+                startStop.push(getDateStr3(currentWeekFirstDay));
+                startStop.push(getDateStr3(currentWeekLastDay));
+                return startStop;
+            }
+            /**
+             * 获得相对当月AddMonthCount个月的起止日期
+             * AddMonthCount为0 代表当月 为-1代表上一个月  为1代表下一个月 以此类推
+             * ***/
+            function getMonthStartAndEnd(AddMonthCount) {
+                //起止日期数组
+                var startStop = new Array();
+                //获取当前时间
+                var currentDate = new Date();
+                var month=currentDate.getMonth()+AddMonthCount;
+                if(month<0){
+                    var n = parseInt((-month)/12);
+                    month += n*12;
+                    currentDate.setFullYear(currentDate.getFullYear()-n);
+                }
+                currentDate = new Date(currentDate.setMonth(month));
+                //获得当前月份0-11
+                var currentMonth = currentDate.getMonth();
+                //获得当前年份4位年
+                var currentYear = currentDate.getFullYear();
+                //获得上一个月的第一天
+                var currentMonthFirstDay = new Date(currentYear, currentMonth,1);
+                //获得上一月的最后一天
+                var currentMonthLastDay = new Date(currentYear, currentMonth+1, 0);
+                //添加至数组
+                startStop.push(getDateStr3(currentMonthFirstDay));
+                startStop.push(getDateStr3(currentMonthLastDay));
+                //返回
+                console.log(startStop);
+                return startStop;
+            }
+            function drawPieChart(placeholder, data, position) {
+                $.plot(placeholder, data, {
+                    series: {
+                        pie: {
+                            show: true,
+                            tilt:0.8,
+                            highlight: {
+                                opacity: 0.25
+                            },
+                            stroke: {
+                                color: '#fff',
+                                width: 2
+                            },
+                            startAngle: 2
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        position: position || "ne",
+                        labelBoxBorderColor: null,
+                        margin:[-30,15]
+                    }
+                    ,
+                    grid: {
+                        hoverable: true,
+                        clickable: true
+                    }
+                })
+            }
+
+            {% if request.user.is_relay and relay_statistic.all.0 %}
+                var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'250px'});
+                var data = [
+                        {% if relay_statistic.reject.0 %}{ label: "{% trans "系统过滤" %}",  data: {{ relay_statistic.reject.0 }}, color: "#68BC31"},{% endif %}
+                        {% if relay_statistic.c_reject.0 %}{ label: "{% trans "我的过滤" %}",  data: {{ relay_statistic.c_reject.0 }}, color: "#68BC31"},{% endif %}
+                        {% if relay_statistic.analysis.0 %}{ label: "{% trans "分析中" %}",  data: {{ relay_statistic.analysis.0 }}, color: "#2091CF"},{% endif %}
+                        {% if relay_statistic.dispatch.0 %}{ label: "{% trans "通道传输中" %}",  data: {{ relay_statistic.dispatch.0 }}, color: "#2091CF"},{% endif %}
+                        {% if relay_statistic.send.0 %}{ label: "{% trans "投递中" %}",  data: {{ relay_statistic.send.0 }}, color: "#AF4E96"},{% endif %}
+                        {% if relay_statistic.retry.0 %}{ label: "{% trans "重试投递中" %}",  data: {{ relay_statistic.retry.0 }}, color: "#DA5430"},{% endif %}
+                        {% if relay_statistic.finished.0 %}{ label: "{% trans "出站成功" %}",  data: {{relay_statistic.finished.0}}, color: "green"},{% endif %}
+                        {% if relay_statistic.fail_finished.0 %}{ label: "{% trans "出站失败" %}",  data: {{ relay_statistic.fail_finished.0 }}, color: "red"},{% endif %}
+                ]
+                drawPieChart(placeholder, data);
+                placeholder.data('chart', data);
+                placeholder.data('draw', drawPieChart);
+
+
+                //pie chart tooltip example
+                var $tooltip = $("<div class='tooltip top in'><div class='tooltip-inner'></div></div>").hide().appendTo('body');
+                var previousPoint = null;
+
+                placeholder.on('plothover', function (event, pos, item) {
+                    if(item) {
+                        if (previousPoint != item.seriesIndex) {
+                            previousPoint = item.seriesIndex;
+                            var tip = item.series['label'] + " : " + (item.series['percent']).toFixed(2)+'%';
+                            $tooltip.show().children(0).text(tip);
+                        }
+                        $tooltip.css({top:pos.pageY + 10, left:pos.pageX + 10});
+                    } else {
+                        $tooltip.hide();
+                        previousPoint = null;
+                    }
+
+                });
+            {% endif %}
+
+            function newRelay(param){
+                $.ajax({
+                    url:'/ajax_get_statistic?type=relay&'+param,
+                    success:function(obj){
+                        if(obj.all[0]){
+                            var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'250px'});
+                            var data = [];
+                            if(obj.reject){
+                                data.push({label:"系统过滤",data:obj.reject[0],color:"#68BC31"})
+                            }
+                            if(obj.c_reject){
+                                data.push({label:"我的过滤",data:obj.c_reject[0],color:"#68BC31"})
+                            }
+                            if(obj.analysis){
+                                data.push({label:"分析中",data:obj.analysis[0],color:"#2091CF"})
+                            }
+                            if(obj.dispatch){
+                                data.push({label:"通道传输中",data:obj.dispatch[0],color:"#2091CF"})
+                            }
+                            if(obj.send){
+                                data.push({label:"投递中",data:obj.send[0],color:"#AF4E96"})
+                            }
+                            if(obj.retry){
+                                data.push({label:"重试投递中",data:obj.retry[0],color:"#DA5430"})
+                            }
+                            if(obj.finished){
+                                data.push({label:"出站成功",data:obj.finished[0],color:"green"})
+                            }
+                            if(obj.fail_finished){
+                                data.push({label:"出站失败",data:obj.fail_finished[0],color:"red"})
+                            }
+                            drawPieChart(placeholder, data);
+                            placeholder.data('chart', data);
+                            placeholder.data('draw', drawPieChart);
+
+                            $('#relay-show>div:eq(0) h4').html(obj.all[0]||0);
+                            $('#relay-show>div:eq(1) h4').html(obj.out_all?obj.out_all[0]:0||0);
+                            $('#relay-show>div:eq(2) h4').html(obj.finished?obj.finished[0]:0||0);
+
+                            var relay_statistic = obj ;
+                            var rhtml = '';
+                            rhtml +=   `<tr>
+                                <td><span class="green">{% trans "入站邮件" %}</span></td>
+
+                                <td>
+                                    <b class="green">${ bytesToSize(relay_statistic.all[1]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'mail_list' %}?${param}">
+                                        <b class="green">${ relay_statistic.all[0] }</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+
+                            if(relay_statistic.reject){
+                                rhtml+= `<tr>
+                                <td><span class="col-xs-offset-1 red">{% trans "系统已过滤邮件" %}</span></td>
+
+                                <td>
+                                    <b class="red col-xs-offset-1">${ bytesToSize(relay_statistic.reject[1]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'mail_list' %}?state=reject?&${param}">
+                                        <b class="red col-xs-offset-1">${ relay_statistic.reject[0] }</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            if(relay_statistic.c_reject){
+                                rhtml+= `<tr>
+                                <td><span class="col-xs-offset-1 red">{% trans "我的过滤邮件" %}</span></td>
+
+                                <td>
+                                    <b class="red col-xs-offset-1">${ bytesToSize(relay_statistic.c_reject[1]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'mail_list' %}?state=c_reject&${param}">
+                                        <b class="red col-xs-offset-1">${ relay_statistic.c_reject[0]}</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            if(relay_statistic.analysis){
+                                rhtml+= `<tr>
+                                <td><span class="blue  col-xs-offset-1">{% trans "系统分析中邮件" %}</span></td>
+
+                                <td>
+                                    <b class="blue col-xs-offset-1">${ bytesToSize(relay_statistic.analysis[1]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'mail_list' %}?state=analysis&${param}">
+                                        <b class="blue col-xs-offset-1">${ relay_statistic.analysis[0] }</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            if(relay_statistic.dispatch){
+                                rhtml+= `<tr>
+                                <td><span class="blue  col-xs-offset-1">{% trans "发送通道传输中邮件" %}</span></td>
+
+                                <td>
+                                    <b class="blue col-xs-offset-1">${bytesToSize( relay_statistic.dispatch[1]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'mail_list' %}?state=dispatch&${param}">
+                                        <b class="blue col-xs-offset-1">${ relay_statistic.dispatch[0] }</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            if(relay_statistic.send){
+                                rhtml+= `<tr>
+                                <td><span class="blue  col-xs-offset-1">{% trans "投递中邮件" %}</span></td>
+
+                                <td>
+                                    <b class="blue col-xs-offset-1">${ bytesToSize(relay_statistic.send[1]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'mail_list' %}?state=send&${param}">
+                                        <b class="blue col-xs-offset-1">${ relay_statistic.send[0] }</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            if(relay_statistic.retry){
+                                rhtml+= `<tr>
+                                <td><span class="blue col-xs-offset-1">{% trans "重试投递中邮件" %}</span></td>
+
+                                <td>
+                                    <b class="blue col-xs-offset-1">${ bytesToSize(relay_statistic.retry[1] )}</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'mail_list' %}?state=retry&${param}">
+                                        <b class="blue col-xs-offset-1">${ relay_statistic.retry[0] }</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            if(relay_statistic.out_all){
+                                rhtml+= `<tr>
+                                <td><span class="green">{% trans "出站邮件" %}</span></td>
+
+                                <td>
+                                    <b class="green">${ bytesToSize(relay_statistic.out_all[1]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'mail_list' %}?state=out_all&${param}">
+                                        <b class="green">${ relay_statistic.out_all[0] }</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            if(relay_statistic.finished){
+                                rhtml+= `<tr>
+                                <td><span class="blue col-xs-offset-1">{% trans "出站成功邮件" %}</span></td>
+
+                                <td>
+                                    <b class="blue col-xs-offset-1">${ bytesToSize(relay_statistic.finished[1]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'mail_list' %}?state=finished&${param}">
+                                        <b class="blue col-xs-offset-1">${ relay_statistic.finished[0] }</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            if(relay_statistic.fail_finished){
+                                rhtml+= `<tr>
+                                <td><span class="red  col-xs-offset-1">{% trans "出站失败邮件" %}</span></td>
+
+                                <td>
+                                    <b class="red col-xs-offset-1">${ bytesToSize(relay_statistic.fail_finished[1]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'mail_list' %}?state=fail_finished&${param}">
+                                        <b class="red col-xs-offset-1">${ relay_statistic.fail_finished[0]}</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+
+                            $('#relay-tb').html(rhtml);
+                            //pie chart tooltip example
+                            var $tooltip = $("<div class='tooltip top in'><div class='tooltip-inner'></div></div>").hide().appendTo('body');
+                            var previousPoint = null;
+
+                            placeholder.on('plothover', function (event, pos, item) {
+                                if(item) {
+                                    if (previousPoint != item.seriesIndex) {
+                                        previousPoint = item.seriesIndex;
+                                        var tip = item.series['label'] + " : " + (item.series['percent']).toFixed(2)+'%';
+                                        $tooltip.show().children(0).text(tip);
+                                    }
+                                    $tooltip.css({top:pos.pageY + 10, left:pos.pageX + 10});
+                                } else {
+                                    $tooltip.hide();
+                                    previousPoint = null;
+                                }
+
+                            });
+                        }
+                    }
+                })
+
+            }
+
+                {% if collect_statistic.all.0 %}
+                var placeholder2 = $('#piechart-placeholder2').css({'width':'90%' , 'min-height':'250px'});
+                var data2 = [
+                    {% if collect_statistic.reject.0 %}{ label: "{% trans "已过滤" %}",  data: {{ collect_statistic.reject.0 }}, color: "#68BC31"},{% endif %}
+                {% if collect_statistic.analysis.0 %}{ label: "{% trans "分析中" %}",  data: {{ collect_statistic.analysis.0 }}, color: "#2091CF"},{% endif %}
+                {% if collect_statistic.send.0 %}{ label: "{% trans "投递中" %}",  data: {{ collect_statistic.send.0 }}, color: "#AF4E96"},{% endif %}
+                {% if collect_statistic.retry.0 %}{ label: "{% trans "重试投递中" %}",  data: {{ collect_statistic.retry.0 }}, color: "#DA5430"},{% endif %}
+                {% if collect_statistic.finished.0 %}{ label: "{% trans "出站成功" %}",  data: {{ collect_statistic.finished.0 }}, color: "green"},{% endif %}
+                {% if collect_statistic.fail_finished.0 %}{ label: "{% trans "出站失败" %}",  data: {{ collect_statistic.fail_finished.0 }}, color: "red"},{% endif %}
+            ]
+                drawPieChart(placeholder2, data2);
+                placeholder2.data('chart', data2);
+                placeholder2.data('draw', drawPieChart);
+
+
+                //pie chart tooltip example
+                var $tooltip = $("<div class='tooltip top in'><div class='tooltip-inner'></div></div>").hide().appendTo('body');
+                var previousPoint = null;
+
+                placeholder2.on('plothover', function (event, pos, item) {
+                    if(item) {
+                        if (previousPoint != item.seriesIndex) {
+                            previousPoint = item.seriesIndex;
+                            var tip = item.series['label'] + " : " + (item.series['percent']).toFixed(2)+'%';
+                            $tooltip.show().children(0).text(tip);
+                        }
+                        $tooltip.css({top:pos.pageY + 10, left:pos.pageX + 10});
+                    } else {
+                        $tooltip.hide();
+                        previousPoint = null;
+                    }
+
+                });
+                {% endif %}
+
+
+            function newCollect(param){
+                $.ajax({
+                    url:'/ajax_get_statistic?type=collect&'+param,
+                    success:function(data){
+                        if(data.all[0]){
+                            var placeholder2 = $('#piechart-placeholder2').css({'width':'90%' , 'min-height':'250px'});
+                            var data2 = [];
+                            if(data.reject){
+                                data2.push({label:"已过滤",data:data.reject[0],color:"#68BC31"});
+                            }
+                            if(data.analysis){
+                                data2.push({label:"分析中",data:data.analysis[0],color:"#2091CF"});
+                            }
+                            if(data.send){
+                                data2.push({label:"投递中",data:data.send[0],color:"#AF4E96"});
+                            }
+                            if(data.retry){
+                                data2.push({label:"重试投递中",data:data.retry[0],color:"#DA5430"});
+                            }
+                            if(data.finished){
+                                data2.push({label:"出站成功",data:data.finished[0],color:"green"});
+                            }
+                            if(data.fail_finished){
+                                data2.push({label:"出站失败",data:data.fail_finished[0],color:"red"});
+                            }
+                            drawPieChart(placeholder2, data2);
+                            placeholder2.data('chart', data2);
+                            placeholder2.data('draw', drawPieChart);
+
+                            $('#collect-show>div:eq(0) h4').html(data.all?data.all[0]:0||0);
+                            $('#collect-show>div:eq(1) h4').html(data.out_all?data.out_all[0]:0||0);
+                            $('#collect-show>div:eq(2) h4').html(data.finished?data.finished[0]:0||0);
+
+                            var collect_statistic = data;
+                            var tbHtml = '';
+                            tbHtml +=  `<tr>
+                                            <td><span class="green">{% trans "入站邮件" %}</span></td>
+
+                                            <td>
+                                                <b class="green">${ bytesToSize(collect_statistic.all[1]) }</b>
+                                            </td>
+
+                                            <td class="hidden-480">
+                                                <a href="{% url 'c_mail_list' %}?${param}">
+                                                    <b class="green">${collect_statistic.all[0] }</b>
+                                                </a>
+                                            </td>
+                                        </tr>`;
+                            if(collect_statistic.reject){
+                                tbHtml+=`<tr>
+                                            <td><span class="col-xs-offset-1 red">{% trans "系统已过滤邮件" %}</span></td>
+
+                                            <td>
+                                                <b class="red col-xs-offset-1">${ bytesToSize(collect_statistic.reject[1]) }</b>
+                                            </td>
+
+                                            <td class="hidden-480">
+                                                <a href="{% url 'c_mail_list' %}?state=reject&${param}">
+                                                    <b class="red col-xs-offset-1">${ collect_statistic.reject[0] }</b>
+                                                </a>
+                                            </td>
+                                        </tr>`;
+                            }
+                            if(collect_statistic.c_reject){
+                                tbHtml+=`<tr>
+                                            <td><span class="col-xs-offset-1 red">{% trans "我的过滤邮件" %}</span></td>
+
+                                            <td>
+                                                <b class="red col-xs-offset-1">${bytesToSize( collect_statistic.c_reject[1]) }</b>
+                                            </td>
+
+                                            <td class="hidden-480">
+                                                <a href="{% url 'c_mail_list' %}?state=c_reject&${param}">
+                                                    <b class="red col-xs-offset-1">${ collect_statistic.c_reject[0] }</b>
+                                                </a>
+                                            </td>
+                                        </tr>`;
+                            }
+                            if(collect_statistic.analysis){
+                                tbHtml+=`<tr>
+                                            <td><span class="blue  col-xs-offset-1">{% trans "系统分析中邮件" %}</span></td>
+
+                                            <td>
+                                                <b class="blue col-xs-offset-1">${bytesToSize( collect_statistic.analysis[1])}</b>
+                                            </td>
+
+                                            <td class="hidden-480">
+                                                <a href="{% url 'c_mail_list' %}?state=analysis&${param}">
+                                                    <b class="blue col-xs-offset-1">${ collect_statistic.analysis[0] }</b>
+                                                </a>
+                                            </td>
+                                        </tr>`;
+                            }
+                            if(collect_statistic.send){
+                                tbHtml+=`<tr>
+                                <td><span class="blue  col-xs-offset-1">{% trans "投递中邮件" %}</span></td>
+
+                                <td>
+                                    <b class="blue col-xs-offset-1">${ bytesToSize(collect_statistic.send[1] )}</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'c_mail_list' %}?state=send&${param}">
+                                        <b class="blue col-xs-offset-1">${ collect_statistic.send[0] }</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            if(collect_statistic.retry){
+                                tbHtml+=`<tr>
+                                <td><span class="blue col-xs-offset-1">{% trans "重试投递中邮件" %}</span></td>
+
+                                <td>
+                                    <b class="blue col-xs-offset-1">${ bytesToSize(collect_statistic.retry[1]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'c_mail_list' %}?state=retry&${param}">
+                                        <b class="blue col-xs-offset-1">${ collect_statistic.retry[0] }</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            if(collect_statistic.out_all){
+                                tbHtml+=`<tr>
+                                <td><span class="green">{% trans "出站邮件" %}</span></td>
+
+                                <td>
+                                    <b class="green">${ bytesToSize(collect_statistic.out_all[1]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'c_mail_list' %}?state=out_all&${param}">
+                                        <b class="green">${ collect_statistic.out_all[0] }</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            if(collect_statistic.finished){
+                                tbHtml+=`<tr>
+                                <td><span class="blue col-xs-offset-1">{% trans "出站成功邮件" %}</span></td>
+
+                                <td>
+                                    <b class="blue col-xs-offset-1">${ bytesToSize(collect_statistic.finished[1]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'c_mail_list' %}?state=finished&${param}">
+                                        <b class="blue col-xs-offset-1">${ collect_statistic.finished[0] }</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            if(collect_statistic.fail_finished){
+                                tbHtml+=`<tr>
+                                <td><span class="red  col-xs-offset-1">{% trans "出站失败邮件" %}</span></td>
+
+                                <td>
+                                    <b class="red col-xs-offset-1">${ bytesToSize(collect_statistic.fail_finished[0]) }</b>
+                                </td>
+
+                                <td class="hidden-480">
+                                    <a href="{% url 'c_mail_list' %}?state=fail_finished&${param}">
+                                        <b class="red col-xs-offset-1">${ collect_statistic.fail_finished[0]}</b>
+                                    </a>
+                                </td>
+                            </tr>`;
+                            }
+                            $('#collect-tb').html(tbHtml);
+                            //pie chart tooltip example
+                            var $tooltip = $("<div class='tooltip top in'><div class='tooltip-inner'></div></div>").hide().appendTo('body');
+                            var previousPoint = null;
+
+                            placeholder2.on('plothover', function (event, pos, item) {
+                                if(item) {
+                                    if (previousPoint != item.seriesIndex) {
+                                        previousPoint = item.seriesIndex;
+                                        var tip = item.series['label'] + " : " + (item.series['percent']).toFixed(2)+'%';
+                                        $tooltip.show().children(0).text(tip);
+                                    }
+                                    $tooltip.css({top:pos.pageY + 10, left:pos.pageX + 10});
+                                } else {
+                                    $tooltip.hide();
+                                    previousPoint = null;
+                                }
+
+                            });
+                        }
+                    }
+                })
+
+            }
+
+//            setTimeout(function(){newCollect('2018-03-16')},3000);
+            function choice(el,fn){
+                $(el+' ul.dropdown-menu li').click(function(){
+                    var text = '';
+                    var param = '';
+
+                    $(el+" ul a").removeClass('blue');
+                    $(el+" ul i").addClass('invisible');
+
+                    if($(this).hasClass('other-date')){
+                        return;
+                    }else{
+                        text = $(this).find('span').html();
+                        $(this).parent().prev().find('span').html(text);
+                        param = parseInt($(this).find('a').attr('data-count'));
+                        console.log(typeof param);
+                        if($(this).hasClass('singledate')){
+                            var now = new Date();
+                            if(param == '0'){
+                            }
+                            now.setDate(now.getDate()-param);
+                            var overArr=now.toLocaleDateString().split('/');
+                            for(var i=0;i<overArr.length;i++){
+                                if(overArr[i]<10){
+                                    overArr[i]=0+overArr[i];
+                                }
+                            }
+                            param=overArr.join('-');
+                            param = 'date='+param;
+                        }else if($(this).hasClass('weekdate')){
+                            var paramArr = getWeekStartAndEnd(param);
+                            param = 'date_start='+paramArr[0]+'&date_end='+paramArr[1];
+                        }else{
+
+                            var paramArr = getMonthStartAndEnd(param);
+                            console.log(paramArr);
+                            param = 'date_start='+paramArr[0]+'&date_end='+paramArr[1];
+                        }
+
+                    }
+                    $(this).addClass('active').siblings().removeClass('active');
+                    $(this).find('a').addClass('blue');
+                    $(this).find('i').removeClass('invisible');
+                    fn(param);
+                })
+            }
+
+            $('ul.dropdown-menu').find('input').change(function(){
+                if($(this).val()){
+                    $(this).parents('li').parent().prev().find('span').html($(this).val());
+                    if($(this).attr('data-fn')==0){
+                        newRelay($(this).val());
+                    }else if($(this).attr('data-fn')==1){
+                        newCollect($(this).val())
+                    }
+                }
+            })
+
+            choice('#collect-box',newCollect);
+            choice('#relay-box',newRelay);
+            $('.other-date button').click(function(){
+                var starttime = $(this).parent().find('input:eq(0)').val();
+                var endtime = $(this).parent().find('input:eq(1)').val();
+                var stime = $(this).parent().find('input:eq(0)').attr('data-time');
+                var etime = $(this).parent().find('input:eq(1)').attr('data-time');
+                console.log('starttime:'+starttime,'endtime:'+endtime);
+                console.log('stime:'+$(this).parent().find('input:eq(0)').attr('data-time'),'endtime:'+endtime);
+                var param = 'date_start='+starttime+'&date_end='+endtime;
+                if(starttime&&endtime&&etime>stime){
+                    $(this).parents('ul').prev().find('span').html(starttime+' - '+endtime);
+                    if($(this).hasClass('relay-btn')){
+                        newRelay(param);
+                    }else if($(this).hasClass('collect-btn')){
+                        newCollect(param);
+                    }
+                }else{
+                    alert('请选择正确的日期！');
+                }
+            });
+
+
+            /**
+             we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
+             so that's not needed actually.
+             */
+
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,349 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap %}
+{% block header %}
+        邮件审核: <code>
+    {% if request.GET.all_day %}
+    所有{% else %}
+    {% if request.GET.date %}{{ request.GET.date }}{% else %}今日{% endif %}
+    {% endif %}
+    </code></h1>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-12" style="margin-bottom: 10px">
+        <div class="pull-right">
+            <form id="search_form" class="form-inline pull-right" role="form" action="" style="text-align: left">
+                {{ form|bootstrap_flag }}
+                <button type="submit" class="btn btn-primary">查询</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                邮件列表
+            </div>
+            <!-- /.panel-heading -->
+
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <form id="id_form" action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="ids" id="ids" />
+                        <input type="hidden" name="result" id="result" />
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>
+                                    <button type="button" class="btn btn-link" onclick="fnGetAll();">全选</button>/<button type="button" class="btn btn-link" onclick="fnGetReverse();">取消</button>
+                                    {% if request.GET.check not in not_all_pass %}
+                                    <button type="button" class="btn btn-success" onclick="ReviewAll('通过', 'pass');">全部通过</button>
+                                    <button type="button" class="btn btn-success" onclick="ReviewAll('通过', 'white_sender_pass');">客户白/全部通过</button>
+                                    {% endif %}
+                                    <button type="button" class="btn btn-danger" onclick="ReviewAll('拒绝', 'reject');">全部拒绝</button>
+                                    {% if request.GET.check == 'spam' %}
+                                    <button type="button" class="btn btn-success" onclick="Empty();">清空</button>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>公司名称</th>
+                                <th>发件人--收件人</th>
+                                <th>主题</th>
+                                <th>大小</th>
+                                <th>创建时间</th>
+                                <th>关键字</th>
+                                {% if request.GET.check != 'high_risk' %}
+                                <th>检测结果</th>
+                                {% endif %}
+                                <th>审核</th>
+                            </tr>
+                            </thead>
+                            <tbody> </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+
+<!-- Modal -->
+<input type="hidden" id="modal_id" name="modal_id" />
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-llg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">加载中</h4>
+            </div>
+            <div class="modal-body">
+                页面加载中
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onClick="ModalReview('pass');">通过</button>
+                <button type="button" class="btn btn-danger" onClick="ModalReview('reject');">拒绝</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+{% block css-block %}
+    <link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+    <link href="{% static "datetimepicker/css/bootstrap-datetimepicker.min.css" %}" rel="stylesheet">
+    <link href="{% static 'qtip/jquery.qtip.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block js-block %}
+    <script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static "datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
+    <script src="{% static "datetimepicker/js/bootstrap-datetimepicker.zh-CN.js" %}"></script>
+    <script src="{% static 'js/Jquery.Query.js' %}"></script>
+    <script src="{% static 'qtip/jquery.qtip.js' %}"></script>
+
+    <script>
+        var ip_table;
+        var iframeWidth = '600';
+        var iframeHeight = '600';
+        $(function () {
+            $('#myModal').on('show.bs.modal', function (event) {
+                  var button = $(event.relatedTarget) // Button that triggered the modal
+                  var recipient = button.data('whatever') // Extract info from data-* attributes
+                  $('#modal_id').val(recipient);
+                  $(this).removeData('bs.modal');
+            })
+
+
+
+
+            //var query_url = $.query.set('state', 'review');
+            var ajax_url = "{% url 'ajax_get_collect_mails' %}" + window.location.search + '&state=review';
+
+
+            ip_table = $('#dataTables-example').dataTable({
+                "columnDefs": [ { "targets": [ 0 ], "visible": false, "searchable": false }],
+                "iDisplayLength": {% if request.GET.check == 'spam' %}200{% else %}{% if request.GET.check == 'cyber_spam' %}500{% else %}100{% endif %}{% endif %},
+                "processing": true,
+                "serverSide": true,
+                "lengthMenu": [[-1, 50, 100, 200, 500], ['ALL', 50, 100, 200, 500]],
+                "drawCallback": function( settings ) {
+                    $('#dataTables-example tr').click( function() {
+                    if ( $(this).hasClass('row_selected') )
+                     $(this).removeClass('row_selected');
+                        else
+                    $(this).addClass('row_selected');
+                    } );
+                    $('.tooltip-demo').tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+    })
+
+        $('.review_qtip').each(function() {
+                    $(this).qtip({
+                       content: {
+                           text: function(event, api) {
+                               url = api.elements.target.attr('qtip_href');
+                               return $('<iframe src="' + url + '" width=' + '"' + iframeWidth + '"' + 'height=' + '"' + iframeHeight + '" />');
+                           }
+                       },
+                       hide:{
+                           when: {event:'mouseout unfocus'}, fixed: true, delay: 500
+                       },
+                       show: {
+                            event: 'mouseenter click'
+                        },
+                    events: {
+                        show: function(event, api) {
+                            var $el = $(api.elements.target[0]);
+                            $el.qtip('option', 'position.my', $el.data('tooltip-my-position') || 'right center');
+                            $el.qtip('option', 'position.at', $el.data('tooltip-at-position') || 'left center');
+                        }
+                    },
+                    });
+                    });
+
+
+                },
+                "ajax": ajax_url,
+                "aaSorting": [
+                        [ 4, "desc" ]
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "显示 _MENU_ 每页",
+                    "sZeroRecords": "对不起! 信息筛选结果为空!",
+                    "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                    "sInfoEmpty": "总计: 0 条记录",
+                    "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                    "sSearch": "搜索: ",
+                    "oPaginate": {
+                        "sFirst":    "第一页",
+                        "sPrevious": " 上一页 ",
+                        "sNext":     " 下一页 ",
+                        "sLast":     " 最后一页 "
+                    }
+                }
+            });
+
+            $('.dateinput').datetimepicker({
+                format: "yyyy-mm-dd",
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                minView: 2,
+                pickerPosition: "bottom-left"
+
+            });
+        });
+
+        function Review(id, result){
+            var loading_img = "{% static 'img/loading.gif' %}";
+            $('#review_'+id).html('<img src="' + loading_img + '"></img>');
+            $.getJSON("{% url 'collect_mail_review' %}?id=" + id + "&result=" + result + "&date={{date}}",  function(data){
+                $('#review_'+id).html(data.msg);
+            });
+            return;
+        }
+        function ModalReview(result){
+            var id = $('#modal_id').val();
+            Review(id, result);
+            $('#modal_close').click();
+        }
+        function ModalReviewUndo(id){
+          if(confirm('你确定要进行审核误判操作?')){
+            var loading_img = "{% static 'img/loading.gif' %}";
+            $('#review_undo_'+id).html('<img src="' + loading_img + '"></img>');
+            $.getJSON("{% url 'collect_mail_review_undo' %}?id=" + id,  function(data){
+                $('#review_undo_'+id).html(data.msg);
+            });
+
+            }
+
+        }
+
+
+    function ReviewAll(word, result) {
+        var id_array = fnGetSelected();
+
+        if (id_array.length == 0){
+            $.notify("你还没有选中要操作的邮件！ 请点击需要操作的行", {globalPosition: 'top center', className: 'warn'});
+            return false;
+        }
+
+        if (!confirm("你确定要 " + word + " " + id_array.length + ' 个邮件 ?')) {
+            return false;
+        } else {
+            $('#result').val(result);
+            $('#ids').val(id_array);
+            $('#id_form').submit();
+        }
+    }
+    function Empty() {
+         if (confirm("你确定要清空拒绝所有dspam垃圾邮件 ?")) {
+            $('#result').val('empty');
+            $('#id_form').submit();
+        }
+    }
+
+    $.fn.dataTableExt.oApi.fnGetFilteredNodes = function ( oSettings )
+    {
+        var anRows = [];
+        //var length = oSettings._iDisplayLength > 0 ? oSettings._iDisplayLength: oSettings.aiDisplay.length;
+        var length = oSettings.aiDisplay.length;
+        for ( var i=0, iLen=length ; i<iLen ; i++ )
+        {
+            var nRow = oSettings.aoData[ oSettings.aiDisplay[i] ].nTr;
+            anRows.push( nRow );
+        }
+        return anRows;
+    };
+
+    function fnGetAll()
+    {
+        var aTrs = ip_table.fnGetFilteredNodes();
+
+        for ( var i=0 ; i<aTrs.length ; i++ )
+        {
+            if ( !$(aTrs[i]).hasClass('row_selected') )
+                $(aTrs[i]).addClass('row_selected');
+        }
+    }
+
+    function fnGetReverse()
+    {
+        var aTrs = ip_table.fnGetFilteredNodes();
+
+        for (var i=0 ; i<aTrs.length ; i++ )
+        {
+            if ( $(aTrs[i]).hasClass('row_selected') )
+            {
+                $(aTrs[i]).removeClass('row_selected');
+            }
+        }
+    }
+
+    function fnGetSelected()
+    {
+        var aReturn = new Array();
+        var aTrs = ip_table.fnGetFilteredNodes();
+        for ( var i=0 ; i<aTrs.length ; i++ )
+        {
+            if ( $(aTrs[i]).hasClass('row_selected') )
+            {
+                var aData = ip_table.fnGetData( aTrs[i]);
+                var iId = aData[0];
+                aReturn.push( iId );
+            }
+        }
+        return aReturn;
+    }
+    function ModalSender(is_global, is_domain){
+            var id = $('#modal_id').val();
+            var loading_img = "{% static 'img/loading.gif' %}";
+            $('#modal_sender_'+id).html('<img src="' + loading_img + '"></img>');
+            $.getJSON("{% url 'ajax_add_sender_whitelist' %}?id=" + id + "&is_global=" + is_global + "&is_domain=" + is_domain,  function(data){
+                $('#modal_sender_'+id).html(data.msg);
+            });
+
+            //Report(id, result);
+            //$('#modal_close').click();
+        }
+
+
+
+        function ModalStudy(result){
+            var id = $('#modal_id').val();
+            var loading_img = "{% static 'img/loading.gif' %}";
+            $('#study_'+id).html('<img src="' + loading_img + '"></img>');
+            $.getJSON("{% url 'collect_report_spam' %}?id=" + id + "&result=" + result,  function(data){
+                $('#study_'+id).html(data.msg);
+            });
+
+            //Report(id, result);
+            //$('#modal_close').click();
+        }
+
+
+
+
+    </script>
+{% endblock %}

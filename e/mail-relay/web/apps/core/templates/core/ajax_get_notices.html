@@ -1,0 +1,14 @@
+<td>{{ n.id }}</td>
+<td>{% if n.type == 'bulk' %}<a href="{% url 'mail_list' %}?customer={{ n.customer.id }}&state=reject&date={{ n.created|date:'Y-m-d' }}">{{ n.subject }}</a>{% else %}{{ n.subject }}{% endif %}</td>
+<td>{% autoescape off %}{{ n.content }}{% endautoescape %}</td>
+<td>{% if n.is_notice_display %}{{ n.is_sms }}{% endif %}</td>
+<td>{% if n.is_notice_display %}{{ n.is_email }}{% endif %}</td>
+<td>{{ n.is_read }}</td>
+{% if not request.GET.is_mynotice %}
+<td>{% if n.customer %}<a title="{{n.customer}}" href="{% url 'customer_list' %}?customer_id={{ n.customer.id }}">{{ n.customer|truncatechars:13 }}</a>{% endif %}</td>
+<td>{% if n.manager %}<a href="{% url 'user_modify' n.manager.id %}">{{ n.manager }}({{ n.manager.first_name }}{{ n.manager.last_name }})</a>{% endif %}</td>
+
+{% endif %}
+<td>{{ n.created|date:'Y-m-d H:i' }}</td>
+<td> <button type="button" class="btn btn-outline btn-danger btn-xs" onclick="Delete('{{ n.id }}')">删除</button> </td>
+

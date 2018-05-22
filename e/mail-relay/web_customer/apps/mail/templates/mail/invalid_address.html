@@ -1,0 +1,175 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap %}
+{% block title %}{% trans "无效地址库" %}{% endblock %}
+{% block breadcrumb %}
+<li> <a href="#">{% trans "中继管理" %}</a> </li>
+<li class="active">{% trans "无效地址管理" %}</li>
+{% endblock %}
+
+
+{% block page-content %}
+<div class="row">
+
+    <div class="space-6"></div>
+    <div class="col-xs-6">
+
+        <div class="page-header">
+            <h1>
+                {% trans "无效地址管理" %}
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    {% trans '当前无效地址库中共有 ' %}<strong class="text-danger">{{ total }}</strong> {% trans '个无效地址！' %}
+                </small>
+            </h1>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-block alert-{{ message.tags }}">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
+                    <i class="ace-icon fa fa-check green"></i>
+                    <strong class="green">
+                        {{ message }}
+                    </strong>,
+                </div>
+            {% endfor %}
+        {% endif %}
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {% trans "无效地址查询" %}
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form role="form" action="" method="post">
+                            {% csrf_token %}
+                            <textarea class="form-control" rows="5" name="addresses" id="id_addresses" onfocus="onfocusAddr();">{{ addresses }}</textarea>
+                            <div class="col-md-12">
+                                <span class="text-danger display-none" id="id_addresses_error"></span>
+                            </div>
+                            <button type="button" class="btn btn-primary margin-right-5" onclick="checkForm()">{% trans '查询' %}</button>
+                            <strong class="txt-color-red">{% trans '注：' %}</strong>{% trans '一行一条, 每次最多只能查询5 个地址！ ' %}
+                        </form>
+                    </div>
+                </div>
+                <!-- /.row (nested) -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+    {% if request.GET.addresses %}
+
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {% trans "查询结果" %}
+            </div>
+            <div class="panel-body">
+                <table id="ajax-table" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr >
+                        <th width="8%" class="txt-color-white bg-color-magenta">{% trans '序号' %}</th>
+                        <th class="txt-color-white bg-color-magenta" width="490px">{% trans '邮箱地址' %}</th>
+                        <th width="12%" class="txt-color-white bg-color-magenta">{% trans '操作' %}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if lists %}
+                    {% for d in lists %}
+                    <tr id="id_{{ d.id }}">
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ d.mail }}</td>
+                        <td>
+                            <a href="javascript: void(0);" onclick="deleteAddress('{{ d.id }}', '{{ d.mail }}');" title="{% trans '从无效地址库中删除此地址' %}">{% trans '删除' %}</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="3">{% trans '找不到要查询的地址!' %}</td>
+                    </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+
+                <!-- /.row (nested) -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block css_block %}
+<style>
+    .myself-min-width{min-width: 608px;}
+</style>
+{% endblock %}
+
+{% block my_jsblock %}
+<script>
+
+        // ajax post 设置
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        function onfocusAddr(){
+            $('#id_addresses_error').addClass('display-none');
+        }
+
+        function checkForm(){
+            var obj = $('#id_addresses_error');
+            var addresses = $('#id_addresses').val();
+            var arryL = addresses.split("\n"); //以换行符为分隔符将内容分割成数组
+            var count = 0;
+            for (var i = 0; i < arryL.length; i++){
+                var email = $.trim(arryL[i]);
+                if (email != ''){
+                    if ( email != '' && !checkEmail(email) ){
+                        obj.removeClass('display-none').html('{% trans '邮箱地址' %}<strong class="margin-right-5 margin-left-5">' + email + '</strong>{% trans '格式错误！' %}');
+                        return false;
+                    } else {
+                        count += 1;
+                    }
+                }
+            }
+            if ( count==0 ){
+                obj.removeClass('display-none').html('{% trans '请填写要查询的内容！' %}');
+                return false;
+            }
+            if ( count>5 ){
+                obj.removeClass('display-none').html('{% blocktrans %}每次最多只能查询<strong class="margin-right-5 margin-left-5">5</strong>个地址！{% endblocktrans %}');
+                return false;
+            }
+            var addresses = addresses.replace(/[ ]/g,""); //去掉空格;
+            var addresses = addresses.replace(/[\r\n]/g,","); //去掉回车换行
+            window.location.href = "{% url 'invalid_address' %}?addresses="+addresses;
+        }
+
+        function checkEmail(field){
+            var expression = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            var obj = new RegExp(expression);
+            if(obj.test(field)==true){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        function deleteAddress(id, addr){
+            $("#id_"+id).remove();
+            $.post("{% url 'ajax_delete_invalid_address' %}", {'addr': addr});
+        }
+    </script>
+{% endblock %}

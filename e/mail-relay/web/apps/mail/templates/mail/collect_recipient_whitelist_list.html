@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}网关收件人白名单{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <a href="{% url 'auditlog' %}?content_type=mail.collectrecipientwhitelist" style="margin-left: 10px;margin-bottom: 10px;" class="btn btn-primary pull-right">操作日志</a>
+        <a href="{% url 'collect_recipient_whitelist_batch_add' %}" style="margin-bottom: 10px; margin-left: 10px;" class="btn btn-primary pull-right">批量添加白名单</a>
+        <a href="{% url 'collect_recipient_whitelist_add' %}" style="margin-bottom: 10px;" class="btn btn-primary pull-right">添加白名单</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                收件人白名单
+                <div class="pull-right">
+                    <b>总共:</b>
+                    {{ collect_recipient_whitelists.count }}
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <form id="id_form" action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="ids" id="ids" />
+                        <input type="hidden" name="status" id="status" />
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>
+                                    <button type="button" class="btn btn-link" onclick="fnGetAll();">全选</button>/<button type="button" class="btn btn-link" onclick="fnGetReverse();">取消</button>
+                                    <button type="button" class="btn btn-success" onclick="set_status('启用', 0);">启用</button>
+                                    <button type="button" class="btn btn-warning" onclick="set_status('禁用', 1);">禁用</button>
+                                    <button type="button" class="btn btn-danger" onclick="set_status('删除', -1);">删除</button>
+                                </p>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th width="6%">ID</th>
+                                <th>收件人</th>
+                                <th>状态</th>
+                                <th>客户</th>
+                                <th>添加人</th>
+                                <th>添加日期</th>
+                                <th>最后操作人</th>
+                                <th>最后操作日期</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 --> </div> </div>
+{% endblock %}
+{% block css-block %}
+<link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block js-block %}
+<script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+
+<script>
+
+    $(function () {
+        var ajax_url = "{% url 'ajax_get_collect_recipient_whitelist' %}" + window.location.search;
+
+        ip_table = $('#dataTables-example').dataTable({
+            //"columnDefs": [ { "targets": [ 0 ], "visible": false, "searchable": false }],
+            "iDisplayLength": 500,
+            "processing": true,
+            "serverSide": true,
+            "lengthMenu": [[25, 50, 100, 500], [25, 50, 100, 500]],
+            "ajax": ajax_url,
+            "drawCallback": function(oSettings, json) {
+                $('#dataTables-example tr').click( function() {
+                    if ( $(this).hasClass('row_selected') )
+                        $(this).removeClass('row_selected');
+                    else
+                        $(this).addClass('row_selected');
+                } );
+            },
+            "aaSorting": [
+                [ 0, "desc" ]
+            ],
+            "oLanguage": {
+                "sLengthMenu": "显示 _MENU_ 每页",
+                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                "sInfoEmpty": "总计: 0 条记录",
+                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                "sSearch": "搜索: ",
+                "oPaginate": {
+                    "sFirst":    "第一页",
+                    "sPrevious": " 上一页 ",
+                    "sNext":     " 下一页 ",
+                    "sLast":     " 最后一页 "
+                }
+            }
+        });
+
+
+    });
+
+    $.fn.dataTableExt.oApi.fnGetFilteredNodes = function ( oSettings )
+    {
+        var anRows = [];
+        //var length = oSettings._iDisplayLength > 0 ? oSettings._iDisplayLength: oSettings.aiDisplay.length;
+        var length = oSettings.aiDisplay.length;
+        for ( var i=0, iLen=length ; i<iLen ; i++ )
+        {
+            var nRow = oSettings.aoData[ oSettings.aiDisplay[i] ].nTr;
+            anRows.push( nRow );
+        }
+        return anRows;
+    };
+
+    function fnGetAll()
+    {
+        var aTrs = ip_table.fnGetFilteredNodes();
+
+        for ( var i=0 ; i<aTrs.length ; i++ )
+        {
+            if ( !$(aTrs[i]).hasClass('row_selected') )
+                $(aTrs[i]).addClass('row_selected');
+        }
+    }
+
+    function fnGetReverse()
+    {
+        var aTrs = ip_table.fnGetFilteredNodes();
+
+        for (var i=0 ; i<aTrs.length ; i++ )
+        {
+            if ( $(aTrs[i]).hasClass('row_selected') )
+            {
+                $(aTrs[i]).removeClass('row_selected');
+            }
+        }
+    }
+
+    function fnGetSelected()
+    {
+        var aReturn = new Array();
+        var aTrs = ip_table.fnGetFilteredNodes();
+        for ( var i=0 ; i<aTrs.length ; i++ )
+        {
+            if ( $(aTrs[i]).hasClass('row_selected') )
+            {
+                var aData = ip_table.fnGetData( aTrs[i]);
+                var iId = aData[0];
+                aReturn.push( iId );
+            }
+        }
+        return aReturn;
+    }
+
+
+
+
+
+    function set_status(word, status) {
+        var id_array = fnGetSelected();
+
+        if (id_array.length == 0){
+            $.notify("你还没有选中要操作的IP！ 请点击需要操作的行", {globalPosition: 'top center', className: 'warn'});
+            return false;
+        }
+
+        if (!confirm("你确定要 " + word + " " + id_array.length + ' 个域名 ?')) {
+            return false;
+        } else {
+            $('#action').val('change_status');
+            $('#status').val(status);
+            $('#ids').val(id_array);
+            $('#id_form').submit();
+            //location.href = '/manager/server/' + {{ c_id }} + '/ip/?action=change&status=' + status + '&ids=' + id_array;
+        }
+    }
+
+    function DeleteRecipientWhitelist(id, collect_recipient_whitelist){
+        var str = '是否要删除关键字 "%s"？';
+        str = str.replace(/%s/, collect_recipient_whitelist);
+        if(confirm(str)) {
+            $('#ids').val(id);
+            $('#status').val('-1');
+            $('#id_form').submit();
+        }
+        return;
+    }
+
+    function QuerySet(key, value){
+        window.location.href = jQuery.query.set(key, value);
+    }
+
+
+</script>
+{% endblock %}
+

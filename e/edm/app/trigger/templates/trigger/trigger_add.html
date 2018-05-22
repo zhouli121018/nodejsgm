@@ -1,0 +1,911 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap %}
+{% block title %}{% trans "触发器设置" %}--{{ trig_title }}{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="{% url 'trigger_task' %}">{% trans "触发任务列表" %}</a></li>
+    <li><a href="{% url 'trigger' %}">{% trans "触发器设置" %}</a></li>
+    <li>{{ trig_title }}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-list margin-right-5"></i>{{ trig_title }}
+            </h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <div id="model">
+        <button id="close-model-btn" type="button" class="btn btn-danger pull-right btn-lg" style="margin-top:10px;margin-right:10px;" >返回</button>
+
+        <div id="model-content">
+
+        </div>
+    </div>
+
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-sortable jarviswidget-color-teal" id="wid-id-1"
+                     data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-hand-o-right"></i></span>
+                        <h2>{{ trig_title }}</h2>
+                    </header>
+                    <div role="content">
+                        <div class="jarviswidget-editbox"></div>
+                        <div class="widget-body">
+                            <div class="row">
+                                <article class="col-xs-12 col-sm-12 col-md-1 col-lg-1 hidden-xs hidden-sm"></article>
+                                <article class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                                    <div>
+                                        <form name="CLD" class="content" id="testwidth">
+                                            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="datetable">
+                                                <thead>
+                                                <tr>
+                                                    <td colSpan=7><span>公历</span>
+                                                        <select name="SY" onchange="changeCld();" style="font-SIZE: 9pt;color:#000;">
+                                                            <script>
+                                                                for(i=1900;i<2050;i++) document.write('<option>'+i);
+                                                            </script>
+                                                        </select><span>年</span>
+                                                        <select name="SM" onchange="changeCld();" style="font-SIZE: 9pt;color:#000;">
+                                                            <script>
+                                                                for(i=1;i<13;i++) document.write('<option>'+i);
+                                                            </script>
+                                                        </select><span>月</span>
+                                                        </font><span class="GZ"></span>
+                                                        <a  class="btn btn-danger pull-right" id="close-cld-btn" style="padding:2px 6px;">&times;</a>
+                                                    </td>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr style="background:#eee;">
+                                                    <td width="54">日</td>
+                                                    <td width="54">一</td>
+                                                    <td width="54">二</td>
+                                                    <td width="54">三</td>
+                                                    <td width="54">四</td>
+                                                    <td width="54">五</td>
+                                                    <td width="54">六</td>
+                                                </tr>
+                                                <script>
+                                                    var gNum;
+                                                    for(i=0;i<6;i++) {
+                                                        document.write('<tr align="center">');
+                                                        for(j=0;j<7;j++) {
+                                                            gNum = i*7+j;
+                                                            document.write('<td id="GD' + gNum +'"><font id="SD' + gNum +'" size=2 face="Arial Black"');
+                                                            if(j == 0) document.write('color="red"');
+                                                            if(j == 6) document.write('color="#000080"');
+                                                            document.write('></font><br/><font id="LD' + gNum + '" size=2 style="font-size:9pt"></font></td>');
+                                                        }
+                                                        document.write('</tr>');
+                                                    }
+                                                </script>
+                                                </tbody>
+                                            </table>
+                                        </form>
+                                    </div>
+                                    <form id="id_form" novalidate="novalidate" action="" method="post" role="form">
+                                        <input type="hidden" name="next" id="id_next" />
+                                        <div id="bootstrap-wizard-1" class="col-sm-12">
+                                            <div class="tab-content">
+                                                <!-- 步骤1 设置触发器 -->
+                                                {% include 'trigger/include/step1.html' %}
+
+                                                <div class="tab-pane active action-list" id="tab1">
+                                                    <br>
+                                                    <h3><strong>{% trans '设置触发动作' %} </strong></h3>
+                                                    {% for f in action_forms %}
+                                                        {% include 'trigger/include/step2.html' %}
+                                                    {%  endfor %}
+                                                </div>
+
+                                                <div class="form-actions">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <ul class="pager wizard no-margin">
+                                                                <!--<li class="previous first disabled">
+                                                                <a href="javascript:void(0);" class="btn btn-lg btn-default"> First </a>
+                                                                </li>-->
+                                                                <!--<li class="next last">
+                                                                <a href="javascript:void(0);" class="btn btn-lg btn-primary"> Last </a>
+                                                                </li>-->
+                                                                <li class="next">
+                                                                    <button type="button" onclick="Cancel()" style="color: #fff; background-color: #a90329; border-color: #900323;" class="btn btn-lg btn-danger">{% trans "放弃修改返回" %}</button>
+                                                                    <button type="button" onclick="Submit()" class="btn btn-lg " style="margin-right:10px">{% trans "保存返回" %}</button>
+                                                                    <button type="button" class="btn btn-lg btn-primary" data-count="{{ action_forms|length }}" id="add-action-btn">增加动作</button> &nbsp;
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </article>
+                                <article class="col-xs-12 col-sm-12 col-md-3 col-lg-3 hidden-xs hidden-sm"></article>
+                            </div>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block css_block %}
+    <link href="{% static 'sa/js/plugin/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+
+    <!--<link href="{% static '/sa/img/all.css' %}" rel="stylesheet" type="text/css"/>-->
+    <!--<link href="{% static '/sa/img/skin.css' %}" rel="stylesheet" type="text/css"/>-->
+    <!--<link href="{% static '/sa/img/fontSize12.css' %}" rel="stylesheet" type="text/css"/>-->
+    <!--<link href="{% static '/sa/img/calendar.css' %}" rel="stylesheet" type="text/css"/>-->
+    <style>
+        .myself-width-small{width: 100px!important;}
+        .myself-template-width{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .no-padding-right{padding-right: 0px!important;}
+        .pager .previous>button {
+            display: inline-block;
+            padding: 5px 14px;
+            border: 1px solid #ddd;
+            color: #999;
+            background-color: #fff;
+            cursor: not-allowed;
+            border-radius: 15px;
+            float: left;
+        }
+
+        .pager .next>button {
+            display: inline-block;
+            padding: 5px 14px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            color: #fff;
+            background-color: #3276b1;
+            border-color: #2c699d;
+            border-radius: 15px;
+            float: right;
+        }
+        .action-item-head{
+            background:#eee;
+            cursor:pointer;
+        }
+        .action-item>div{
+            display:none;
+        }
+        .action-item>div.active{
+            display:block;
+        }
+        .condition select,.holiday,.time-count,.action-time-type .advance-action,.action-time-type .dalay-action,.click-url{
+            display:none;
+        }
+        .condition select.active,.holiday.active,.time-count.active,.action-time-type .advance-action.active,.click-url.active,.action-time-type .dalay-action.active{
+            display:block;
+        }
+        .action-item{
+            margin-bottom:10px;
+        }
+        .form-style{
+            height: 32px;
+        }
+        .hide{
+            display:none;
+        }
+        .select2.select2-container{
+            width:100% !important;
+        }
+        .select2-search__field{
+            width:100% !important;
+        }
+        #testwidth{
+            position:absolute;
+            display:none;
+            z-index: 120;
+            right:26px;
+        }
+        #testwidth tr[align='center'] td:hover{
+            background:#3276B1;
+            color:#fff;
+        }
+        #add-action-btn{
+            margin-right:10px;
+        }
+        .tips{
+            margin: 4px 0 0;
+            color:#aaa;
+            padding-left:13px;
+            padding-right:13px;
+        }
+        .select-block>select{
+            width:100%;
+            height:32px;
+        }
+        .content{border:3px solid #ddd;width:405px;margin:100px auto;}
+        .datetable{border-top:1px solid #ccc;border-left:1px solid #ccc;background:#fff;}
+        .datetable td{border-bottom:1px solid #ccc;border-right:1px solid #ccc;text-align:center;}
+        .datetable thead{background:#006600;}
+        .datetable thead td{padding:10px 5px;font:normal 12px/normal 'microsoft yahei';color:#fff;text-align:center;}
+        .datetable thead td span{padding:0 5px;}
+        .datetable tbody td{padding:5px 3px;font-size:12px;}
+        #model{
+            position:absolute;
+
+            max-height:80%;
+            width:80%;
+            background:rgba(255,255,255,.8);
+            box-shadow: 0 0 26px #041A36;
+            left:10%;
+            top:10%;
+
+            z-index:100;
+            overflow: auto;
+            display:none;
+            border:2px solid #ddd;
+            box-sizing:border-box;
+         }
+        #model #close-model-btn{
+            /*position:absolute;*/
+            /*top:10px ;*/
+            /*right:10px;*/
+        }
+        #model-content{
+            border:1px solid #ddd;
+            background:#fff;
+        }
+        .time-count>input{
+            width:80px;
+        }
+        .time-count>select{
+            height:32px;
+        }
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'sa/js/plugin/select2/select2.min.js' %}"></script>
+    <script src="{% static 'sa/js/plugin/zzsc.js' %}"></script>
+    <!--<script type="text/javascript" src="{% static '/sa/js/calendar.js' %}"></script>-->
+    <script src="{% static 'sa/js/plugin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static 'sa/js/plugin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+
+    <script>
+
+        $(function(){
+
+            // 初始化触发器类型
+            // onchangeTriggerType();
+
+            // 初始化分类设置
+             onchangeMailType();
+
+            // 初始化生效设置
+             onchangePermanent();
+
+            // onchangeSchedule();
+            // SendTemplate();
+
+            //onchangeDomain();
+
+            $(".dateinput").datetimepicker({
+                format: 'yyyy-mm-dd',
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                minView: 2,
+                pickerPosition: "top-right",
+            });
+
+            $('.js-example-basic-multiple').select2();
+            initial();
+
+        });
+
+        function getPoint(obj) { //获取某元素以浏览器左上角为原点的坐标
+            var t = obj.offsetTop; //获取该元素对应父容器的上边距
+            var l = obj.offsetLeft; //对应父容器的上边距
+            //判断是否有父容器，如果存在则累加其边距
+            while (obj = obj.offsetParent) {//等效 obj = obj.offsetParent;while (obj != undefined)
+                t += obj.offsetTop; //叠加父容器的上边距
+                l += obj.offsetLeft; //叠加父容器的左边距
+            }
+            //console.log(document.getElementById('widget-grid').clientWidth)
+
+            return {"top":t-666,"left":l};
+        }
+
+        $('body').on('click',"#testwidth",function(e){
+            e.stopPropagation();
+        })
+        $('body').click(function(e){
+            if($('#testwidth').css('display')=='block' && e.target.nodeName!='TD'){
+                $('#testwidth').hide();
+            }
+        })
+        var res = false;
+        $('body').on('click','.holiday-date',function(e){
+            e.stopPropagation();
+            res = false;
+            var cha = $(this).width();
+            var cha = (cha-26)/5-268;
+            var obj = getPoint(this);
+            $('#testwidth').show();
+            $('.holiday-date').removeClass('current-date');
+            $(this).addClass('current-date');
+            var leftcount = cha+parseInt(obj.left);
+            $('#testwidth').css({"top":obj.top+'px'});
+        });
+        $('body').on('blur','.holiday-date',function(e){
+//            var obj = getPoint(this);
+//            $('#testwidth').hide();
+//            $('#testwidth').css({"top":obj.top+'px',"left":obj.left+'px'});
+//              setTimeout(function(){
+//                  if(res){
+//                      return;
+//                  }else{
+//                      $('#testwidth').hide();
+//                  }
+//              },200)
+        })
+        $('body').on('click','#close-cld-btn',function(){
+            $('#testwidth').hide();
+        })
+
+        function pickDate(){
+
+            $('body').on('click',"#testwidth tr[align='center'] td",function(e){
+
+                var yearstr = $("#testwidth [name='SY']").val();
+                var monthstr = $("#testwidth [name='SM']").val();
+                var daystr = $(this).find('font:eq(0)').html();
+                if(!daystr){
+                    return;
+                }
+                $('.holiday-date.current-date').find('input').val(yearstr+'-'+monthstr+'-'+daystr);
+                $('.holiday-date.current-date').prev().find('select').val('');
+                $('#testwidth').hide();
+//                res = true;
+            })
+        }
+        pickDate()
+
+
+
+        function initCanadar(){
+            $(".dateinput").datetimepicker({
+                format: 'yyyy-mm-dd',
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                minView: 2,
+                pickerPosition: "top-right",
+            });
+        }
+        function getHtml(i){
+            var html = `
+            <div class="action-item" data-order="${i+1}">
+            <button type="button" class="btn btn-danger pull-right action-delete-btn">X</button>
+                <h2 class="action-item-head">动作${i+1}</h2>
+                <div class="active">
+                <div class="form-group row chufa-condition">
+                    <label for="" class="col-xs-2  text-right">触发条件</label>
+                    <div class="col-xs-10 condition">
+                        <select name="condition" class="form-control open active">
+                            <option value="open" selected>打开任务时</option>
+                            <option value="click">点击任务时</option>
+                            <option value="unsubscribe">点击任务中退订链接时</option>
+                        </select>
+                        <select name="condition" class="form-control birthday">
+                            <option value="birthday">到生日日期时</option>
+                        </select>
+                        <select name="condition" class="form-control holiday">
+                            <option value="holiday">到指定节假日日期时</option>
+                        </select>
+                        <select name="condition" class="form-control subscribe">
+                            <option value="subscribe">加入到订阅列表时</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row click-url">
+                    <label class="col-xs-2 text-right">点击的URL</label>
+                    <div class="col-xs-10">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {{ action_form.con_url|reg_add_input_classes  }}
+                        </div>
+                        <div class="col-xs-6">
+                            {{ action_form.con_url_template|reg_add_input_classes  }}
+                        </div>
+                        <p class="tips">
+                            可以为空，空表示所有点击的动作都会触发，如果有值，表示只有点击的链接包含了该值才会触发<br>
+                            您可以手动输入链接，也可以点击后面的输入框从模板中指定链接
+                        </p>
+                    </div>
+                </div>
+
+                </div>
+                <div class="form-group row holiday">
+                    <label for="" class="col-xs-2 text-right">节假日日期</label>
+                    <div class="col-xs-10">
+                    <div class="row">
+                            <div class="col-xs-7">
+                                {{ action_form.con_holiday|reg_add_input_classes  }}
+                            </div>
+                            <div class="col-xs-5 holiday-date">
+                                {{ action_form.con_holiday_date|reg_add_input_classes  }}
+                            </div>
+                            <p class="tips">您可以快速选择节假日，还可以点击后面的输入框自定义指定日期</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row action-time-type">
+                <label class="col-xs-2 text-right">触发时间</label>
+                <div class="col-xs-4">
+                    <select class="form-control advance-action active time-choice" name="action_schedule">
+                        <option value="immediately" selected>立即触发</option>
+                        <option value="delay">延迟触发</option>
+                        <option value="advance">提前触发</option>
+                    </select>
+                    <select class="form-control dalay-action time-choice" name="action_schedule">
+                        <option value="immediately" selected>立即触发</option>
+                        <option value="delay">延迟触发</option>
+                    </select>
+                </div>
+                <div class="col-xs-6 time-count">
+                    <input type="text" class="form-style" value="16" name="action_time">
+                    <select name="time_type" class="form-style">
+                        <option value="min">分钟</option>
+                        <option value="hou" selected>小时</option>
+                        <option value="day">天</option>
+                    </select>
+                    调用触发动作
+                </div>
+            </div>
+                <div class="mail-content">
+                    <div class="form-group row">
+                        <label for="" class="col-xs-2 text-right">选择模板</label>
+                        <div class=" col-xs-10 select-block">
+                        {{ action_form.template }}
+                        <p class="tips">还没有模板？ 立即<a  href="Javascript: add_CK_template()">创建一个新模板</a></p>
+                    </div>
+                    </div>
+                    <div class="form-group row set-more-ele hide">
+                        <label class="col-xs-2 text-right">选择发件人</label>
+                        <div class="col-xs-4">
+                        {{ action_form.send_acct_domain|reg_add_input_classes }}
+                        </div>
+                        <div class="col-xs-4">
+                            {{ action_form.send_acct_address|reg_add_input_classes }}
+                        </div>
+                    </div>
+                    <div class="form-group row set-more-ele hide">
+                        <label class="col-xs-2 text-right">发送人名称</label>
+                        <div class="col-xs-10">
+                            {{ action_form.sendname|reg_add_input_classes }}
+                        </div>
+                    </div>
+                    <div class="form-group row set-more-ele hide">
+                        <label class="col-xs-2 text-right">指定回复地址</label>
+                        <div class="col-xs-10">
+                            {{ action_form.replyto|reg_add_input_classes }}
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+            `;
+            return html;
+        }
+        $('#action-count').change(function(){
+            var num = $(this).val();
+            $('.action-list').html('');
+            for(var i=0 ;i<num;i++){
+                $('.action-list').append(getHtml(i));
+            }
+            $('#add-action-btn').attr('data-count',i);
+//            initCanadar();
+        })
+        $('#add-action-btn').click(function(){
+            var c = parseInt($(this).attr('data-count'));
+            $('.action-list').append(getHtml(c));
+            $(this).attr('data-count',c+1);
+//            initCanadar();
+            $(".js-example-basic-multiple").select2();
+            initial();
+            var type0=$('.chufa-type').val();
+            $('.action-item .chufa-condition').find('select.'+type0).addClass('active').siblings().removeClass('active');
+            if(type0=='holiday'){
+                $('.holiday').addClass('active');
+                $('.holiday-date').addClass('active');
+                $(".action-item[data-order="+(c+1)+"] .action-time-type .advance-action").val('advance');
+                $(".action-item[data-order="+(c+1)+"] .time-count").addClass('active');
+
+            }else{
+                $('.holiday').removeClass('active');
+                $('.holiday-date').removeClass('active');
+                $(".action-item[data-order="+(c+1)+"] .action-time-type .advance-action").val('immediately');
+                $(".action-item[data-order="+(c+1)+"] .time-count").removeClass('active');
+            }
+            if(type0=='holiday'||type0=='birthday'){
+                $('.action-time-type .advance-action').addClass('active').siblings().removeClass('active');
+            }else{
+                $('.action-time-type .dalay-action').addClass('active').siblings().removeClass('active');
+            }
+            //console.log($('#set-more').attr('data-show1')==1)
+            if($('#set-more').attr('data-show1')==0){
+                $('.set-more-ele').removeClass('hide');
+            }else if($('#set-more').attr('data-show1')==1){
+                $('.set-more-ele').addClass('hide');
+            }
+
+        })
+        $('body').on('click','.action-item-head',function(){
+            $(this).next().toggle('active');
+        })
+        $('body').on('change','.chufa-type',function(){
+            var type0 = $(this).val();
+            $('.action-item .chufa-condition').find('select.'+type0).addClass('active').siblings().removeClass('active');
+            if(type0=='holiday'){
+                $('.holiday').addClass('active');
+                $(".action-item .action-time-type .advance-action").val('advance');
+                $(".action-item .time-count").addClass('active');
+            }else{
+                $('.holiday').removeClass('active');
+            }
+            if(type0=='holiday'||type0=='birthday'){
+                $('.action-time-type .advance-action').addClass('active').siblings().removeClass('active');
+            }else{
+                $('.action-time-type .dalay-action').addClass('active').siblings().removeClass('active');
+            }
+            if(type0!='open'){
+                $('.click-url').removeClass('active');
+            }else{
+                $(".action-item [name='condition'].active").each(function(){
+                    if($(this).val()=='click'){
+                        $(this).parents('.action-item').find('.click-url').addClass('active');
+                    }
+                })
+            }
+            $(".action-item .time-choice.active").each(function(){
+                if($(this).val()=='immediately'){
+                    $(this).parents('.action-item').find('.time-count').removeClass('active');
+                }else{
+                    $(this).parents('.action-item').find('.time-count').addClass('active');
+                }
+            })
+        })
+        $('body').on('change',"[name='con_holiday']",function(){
+            var holiday = $(this).find("option:selected").text();
+            $(this).parent().next().find("[name='con_holiday_date']").val(holiday.match(/\d+-\d+-\d+/g)[0]);
+        })
+        $('body').on('click','.send-mail input',function(){
+            if($(this).prop('checked')){
+                $(this).parents('.form-group').next().addClass('active');
+            }else{
+                $(this).parents('.form-group').next().removeClass('active');
+            }
+        })
+
+        $('body').on('change','.time-choice',function(){
+            if($(this).val()=='immediately'){
+                $(this).parent().next().removeClass('active');
+            }else{
+                $(this).parent().next().addClass('active');
+            }
+        })
+        $('#set-more').click(function(){
+            if($(this).attr('data-show1')==1){
+                $('.set-more-ele').removeClass('hide');
+                $(this).html('隐藏更多设置');
+                $(this).attr('data-show1',0);
+            }else{
+                $('.set-more-ele').addClass('hide');
+                $(this).html('显示更多设置');
+                $(this).attr('data-show1',1);
+            }
+        })
+
+        $('body').on('change','.chufa-condition .open',function(){
+            if($(this).val()=='click'){
+                $(this).parents('.form-group').next().addClass('active');
+            }else{
+                $(this).parents('.form-group').next().removeClass('active');
+            }
+        })
+        $('body').on('click','.action-delete-btn',function(){
+            $(this).parent().remove();
+            $('.action-item-head').each(function(i,dom){
+                $(dom).html('动作'+(i+1));
+                $(dom).parent().attr('data-order',i+1);
+            })
+            var c = parseInt($('#add-action-btn').attr('data-count'));
+            c--;
+            $('#add-action-btn').attr('data-count',c);
+        })
+
+
+        function onchangeTriggerType(){
+
+            var value = jQuery("#id_type  option:selected").val();
+            $("#id_condition option").hide();
+            $("#id_condition option").attr("selected", false);
+            if ( value == "open" ){
+                $("#id_condition option[value='open']").show();
+                $("#id_condition option[value='click']").show();
+                $("#id_condition option[value='unsubscribe']").show();
+                $("#id_condition option[value='open']").attr("selected", true);
+                onchangeCondition('open');
+            } else if ( value == "birthday" ){
+                $("#id_condition option[value='birthday']").show();
+                $("#id_condition option[value='birthday']").attr("selected", true);
+                onchangeCondition('birthday');
+            } else if ( value == 'holiday' ) {
+                $("#id_condition option[value='holiday']").show();
+                $("#id_condition option[value='holiday']").attr("selected", true);
+                onchangeCondition('holiday');
+            }else{
+                $("#id_condition option[value='subscribe']").show();
+                $("#id_condition option[value='subscribe']").attr("selected", true);
+                onchangeCondition('subscribe');
+            }
+        }
+
+        function onchangeMailType(){
+            var value = jQuery("#id_maillist_type  option:selected").val();
+            if (value == 'part'){
+                $('#div_id_trigger_maillists').show();
+            } else {
+                $('#div_id_trigger_maillists').hide();
+            }
+        }
+
+        function onchangePermanent(){
+            var value = jQuery("#id_expire_type  option:selected").val();
+            if (value == 'custom'){
+                $('#div_id_expire_time').show();
+            } else {
+                $('#div_id_expire_time').hide();
+            }
+        }
+        function onchangeCondition(value){
+            if (value == undefined){
+                var value = jQuery("#id_condition  option:selected").val();
+            }
+            $('#id_con_url').parent().parent().hide();
+            $('#id_con_holiday').parent().parent().hide();
+            if (value == 'click'){
+                $('#id_con_url').parent().parent().show();
+            }else if (value == 'holiday'){
+                $('#id_con_holiday').parent().parent().show();
+            }
+        }
+        function onchangeSchedule(){
+            var value = jQuery("#id_action_schedule  option:selected").val();
+            if(value == 'immediately'){
+                $('#div_id_action_time').hide();
+            }else{
+                $('#div_id_action_time').show();
+            }
+        }
+        function SendTemplate(){
+            if($('#id_action_template').is(':checked')) {
+                $('#div_send_template').show();
+            }else{
+                $('#div_send_template').hide();
+            }
+        }
+
+        // 选择域名
+        function onchangeDomain(domain){
+
+        }
+
+        $('body').on('click',"[name='send_acct_domain']",function(){
+            var domain = $(this).val();
+            var objAcc = $(this).parent().next().find("[name='send_acct_address']");
+//            var objNote = $('#id_send_acct_address').next('.tips').first();
+            var ajax_url = "{% url 'ajax_get_mailbox' %}?domain=" + domain;
+
+            if(domain == 'all') {
+//                objNote.html('<small class="text-success">{% trans "本次任务将使用所有发件人轮流发送。" %}</small>');
+                objAcc.html('<option value="all" selected="selected">{% trans "所有发件人" %}</option>');
+                return;
+            } else {
+//                objNote.html('<small class="text-success">{% trans "本次任务将使用域名" %} <strong class="myself-txt-color-blue">' + domain + '</strong> {% trans "下所有发件人轮流发送。" %}</small>');
+                $.post(ajax_url, {}, function(data){
+                    if (data.json_list.length > 0){
+                        var select_html = '<option value="all" selected="selected">{% trans "所有发件人" %}</option>'
+                        for(var i=0;i<data.json_list.length;i++) {
+                            if (  data.json_list[i] == '{{ form.send_acct_address.value }}' ){
+                                select_html += '<option value="' + data.json_list[i] + '" selected>' + data.json_list[i] + '</option>'
+                                onchangeAddress('{{ form.send_acct_address.value }}');
+                            } else {
+                                select_html += '<option value="' + data.json_list[i] + '">' + data.json_list[i] + '</option>'
+                            }
+                        };
+                        objAcc.html(select_html);
+                    } else {
+                        objAcc.html('<option value="all" selected="selected">{% trans "所有发件人" %}</option>');
+                    };
+                });
+                return false;
+            };
+        })
+
+        // onChange 发件人
+        function onchangeAddress(value){
+            var objNote = $('#id_send_acct_address').next('.tips').first()
+            if(value == 'all') {
+                var domain = $("#id_send_acct_domain").val();
+                if (domain != 'all'){
+                    objNote.html('<small class="text-success">{% trans "本次任务将使用域名" %}<strong class="myself-txt-color-blue">' + domain + '</strong> {% trans "下所有发件人轮流发送。" %}</small>');
+                } else {
+                    objNote.html('<small class="text-success">{% trans "本次任务将使用所有发件人轮流发送。" %}</small>');
+                }
+            } else {
+                objNote.html('');
+            }
+        }
+        function Submit(o){
+            $("#id_type").attr("disabled", false);
+
+            var name = $(".c-content [name='name']").val();
+
+            if(!name){
+                //alert('请输入触发器名称！');
+                layer.tips('请输入触发器名称！' , ".c-content [name='name']");
+                $(".c-content [name='name']").focus();
+                return;
+            }
+
+            var type = $(".c-content [name='type']").val();
+            var expire_type = $(".c-content [name='expire_type']").val();
+            var status = $(".c-content [name='status']").val();
+            var maillist_type = $(".c-content [name='maillist_type']").val();
+            var start_time = $(".c-content [name='start_time']").val();
+            var end_time = $(".c-content [name='end_time']").val();
+            var condition = $(".action-list [name='condition']").val();
+            if(maillist_type=='part' && $('#div_id_trigger_maillists  option:selected').length<1){
+                layer.tips('请选择地址分类！' , "#div_id_trigger_maillists .select2.select2-container");
+                return;
+            }
+            if(expire_type=='custom' && (!start_time)){
+                layer.tips('请选择自定义的时间！' , "#div_id_expire_time [name='start_time']");
+                return;
+            }
+            if(expire_type=='custom' && (!end_time)){
+                layer.tips('请选择自定义的时间！' , "#div_id_expire_time [name='end_time']");
+                return;
+            }
+            var trigger_maillists = $("#div_id_trigger_maillists .select2").val();
+
+//            for(var k=0;k<$('#div_id_trigger_maillists  .select2-selection__choice').length;k++){
+//                trigger_maillists.push($("#div_id_trigger_maillists option:selected:eq("+k+")").val());
+//            }
+            var data2=[];
+            for(var i =0;i<$('.action-list .action-item').length;i++){
+                var obj = {};
+
+                if(type=='holiday'&& (!$(".action-list .action-item:eq("+i+") [name='con_holiday_date']").val())){
+//                    alert('请选择动作'+(i+1)+'的节假日日期！');
+                    layer.tips('请选择动作'+(i+1)+'的节假日日期！' , ".action-list .action-item:eq("+i+") [name='con_holiday_date']");
+                    return;
+                }
+                if($(".action-list .action-item:eq("+i+") .time-count").hasClass('active')&&(!$(".action-list .action-item:eq("+i+") [name='action_time']").val())){
+//                    alert('请选择动作'+(i+1)+'的节假日日期！');
+                    layer.tips('请输入动作'+(i+1)+'的时间！' , ".action-list .action-item:eq("+i+") [name='action_time']");
+                    return;
+                }
+                if(!$(".action-list .action-item:eq("+i+") [name='template']").val()){
+//                    alert('请选择动作'+(i+1)+'的模板名称！');
+                    if($(".action-list .action-item:eq("+i+") .action-item-head").next().css('display')=='block'){
+
+                            layer.tips('请选择动作'+(i+1)+'的模板名称！' , ".action-list .action-item:eq("+i+") .mail-content");
+
+                    }else{
+                        alert('请选择动作'+(i+1)+'的模板名称！');
+                    }
+                    $(".action-list .action-item:eq("+i+") [name='template']").next().find('.select2-selection.select2-selection--single').css('border-color','red');
+                    return;
+                }else{
+                    $(".action-list .action-item:eq("+i+") [name='template']").next().find('.select2-selection.select2-selection--single').css('border-color','#ccc');
+                }
+                obj['condition']= $(".action-list .action-item:eq("+i+") .active[name='condition']").val();
+                obj['action_schedule']= $(".action-list .action-item:eq("+i+") .active[name='action_schedule']").val();
+                obj['action_time']= $(".action-list .action-item:eq("+i+") [name='action_time']").val();
+                obj['sendname']= $(".action-list .action-item:eq("+i+") [name='sendname']").val();
+                obj['replyto']= $(".action-list .action-item:eq("+i+") [name='replyto']").val();
+                obj['template_id']= $(".action-list .action-item:eq("+i+") [name='template']").val();
+                obj['send_acct_domain']= $(".action-list .action-item:eq("+i+") [name='send_acct_domain']").val();
+                obj['send_acct_address']= $(".action-list .action-item:eq("+i+") [name='send_acct_address']").val();
+                obj['con_holiday_id']= $(".action-list .action-item:eq("+i+") [name='con_holiday']").val();
+                obj['con_holiday_date']= $(".action-list .action-item:eq("+i+") [name='con_holiday_date']").val();
+                obj['con_url']= $(".action-list .action-item:eq("+i+") [name='con_url']").val();
+                obj['time_type']= $(".action-list .action-item:eq("+i+") [name='time_type']").val();
+                obj['con_url_template_id']= $(".action-list .action-item:eq("+i+") [name='con_url_template']").val();
+                data2.push(obj);
+            }
+            var data1 = {"name":name,"type":type,"expire_type":expire_type,"status":status,"maillist_type":maillist_type,"start_time":start_time,"end_time":end_time,"action":data2,"trigger_maillists":trigger_maillists};
+            var url = location.href;
+            $.ajax({
+                url:url,
+                type:"POST",
+                data:{'data' : JSON.stringify(data1)},
+                success:function(data){
+//                    alert(data.msg);
+                    location.href = "/trigger/set";
+                }
+            })
+            $(o).prop('disabled',true);
+            var selt = o;
+            setTimeout(function(){$(selt).prop('disabled',false)},3000);
+
+//        $('#id_form').submit();
+        }
+        function SubmitAndAdd(){
+            $("#id_type").attr("disabled", false);
+            $("#id_next").val('add');
+            $('#id_form').submit();
+        }
+        function add_CK_template(){
+            $.post("{% url 'ajax_template_id' %}", {}, function(data){
+                var template_id = data.template_id;
+                var url = "/template/ck/template_id/".replace("template_id", template_id);
+                location.href = url;
+            });
+        }
+
+//        $('body').on('select2:select','.choose-url',function(e){
+        //            console.log(e.params.data.id);
+        //            var str = e.params.data.id;
+        //            return;
+        //            if(str){
+        //                $('#model').show();
+        //                $("#model-content").load(location.origin+"/trigger/template_preview/"+str+"/");
+        //                $('body').find('#model-content a').css({'border':'2px solid red'});
+        //                var action_order = $(this).parents('.action-item').attr('data-order');
+        //                sessionStorage['action_order'] = action_order-1;
+        //            }
+        //        })
+
+        $('body').on('change',".action-item .choose-url",function(){
+            var str = $(this).val();
+            if(str){
+                $('#model').fadeIn();
+                $("#model-content").load(location.origin+"/trigger/template_preview/"+str+"/");
+                var action_order = $(this).parents('.action-item').attr('data-order');
+                sessionStorage['action_order'] = action_order-1;
+            }
+        })
+
+        $('body').on('click','#close-model-btn',function(){
+            $('#model').hide();
+            $('#model-content').html('');
+        })
+    function Cancel() {
+        if (!confirm("{% trans "你确定要放弃修改并返回？" %}")) {
+            return false;
+        } else {
+            location.href = "{% url 'trigger' %}";
+        }
+
+    }
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,7 @@
+    <td>{{ d.id }}</td>
+    <td><a href="{% url 'csender_credit_log' %}?sender={{ d.sender|default_if_none:'' }}">{{ d.sender|default_if_none:"" }}</a></td>
+    <td>{{ d.credit|default_if_none:"1000" }}</td>
+    <td>{{ d.update_time|date:"Y-m-d H:i" }}</td>
+    <td>
+        <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'csender_credit_modify' d.id %}">修改</a>
+    </td>

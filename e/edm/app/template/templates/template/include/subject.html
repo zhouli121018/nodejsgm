@@ -1,0 +1,47 @@
+{% load i18n %}
+
+<div class="form-group {% if form.subject.errors %} has-error {% endif %}">
+
+    <label class="control-label" for="id_name">{% trans "邮件主题" %}</label>
+
+    <div id="id_subject_html">
+        {% for subid, subname in form.subjectlists %}
+            <div class="input-group {% if forloop.counter != 1 %}margin-top-5{% endif %}" id="id_subject_div_{{ subid }}">
+                <div class="">
+                    <input class="form-control" id="id_subject_{{ subid }}" name="subject_list" onblur="onblurSubjectAction();" value="{{ subname|default_if_none:'' }}" maxlength="100" type="text">
+                </div>
+                <span class="input-group-btn">
+                    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">
+                        <span class="margin-right-5">{% trans "插入变量" %}</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu no-margin">
+                        {% for k, v in subject_vars %}
+                            <li><a href="#" onclick="InsertSubjectVarString('id_subject_{{ subid }}', '{{ k }}');">{{ v }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    {% if forloop.counter != 1 %}
+                        <input value="{% trans "删除" %}" onclick="deleteSubject('{{ subid }}')" type="button" class="btn btn-outline btn-danger margin-left-negative4">
+                    {% endif %}
+                </span>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class=" ">
+        <div class="input-group margin-top-5">
+            <input value="{% trans "新增邮件主题" %}" onclick="addSubject()" type="button" class="btn btn-outline btn-primary btn-xs">
+            <span><strong class="txt-color-red">{% trans "提示：" %}</strong>{% trans "一个模板允许有多个邮件主题" %}</span>
+        </div>
+    </div>
+
+    {% if form.subject.errors %}
+        <div class=" ">
+            <div class="input-group margin-top-5">
+                {% for error in form.subject.errors %}
+                    <span class="help-block ">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
+</div>

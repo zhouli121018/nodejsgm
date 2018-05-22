@@ -1,0 +1,184 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load bootstrap %}
+{% load static %}
+{% block title %}{% trans "触发器设置" %}--{{ trig_title }}{% endblock %}
+
+{% block breadcrumb %}
+<li><a href="{% url 'trigger_task' %}">{% trans "触发任务列表" %}</a></li>
+<li><a href="{% url 'trigger' %}">{% trans "触发器设置" %}</a></li>
+<li>{{ trig_title }}</li>
+{% endblock %}
+
+{% block page-title %}
+<div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="page-title txt-color-blueDark">
+            <i class="fa fa-list margin-right-5"></i>{{ trig_title }}
+        </h1>
+    </div>
+</div>
+{% endblock %}
+
+{% block page-content %}
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget jarviswidget-sortable jarviswidget-color-teal" id="wid-id-1"
+                 data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-hand-o-right"></i></span>
+                    <h2>{{ trig_title }}</h2>
+                </header>
+                <div role="content">
+                    <div class="jarviswidget-editbox"></div>
+                    <div class="widget-body">
+                        <div class="row">
+                            <article class="col-xs-12 col-sm-12 col-md-1 col-lg-1 hidden-xs hidden-sm"></article>
+                            <article class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                                    <input type="hidden" name="next" id="id_next" />
+                                    <div id="bootstrap-wizard-1" class="col-sm-12">
+                                        <div class="tab-content">
+                                            <div class="tab-pane active" id="tab1">
+
+                                                <h3><strong>{% trans '触发器' %}</strong></h3>
+                                                <div class="form-horizontal">
+                                                    {{ form.name|bootstrap_horizontal }}
+                                                    {{ form.type|bootstrap_horizontal }}
+
+                                                    <div class="form-group {% if form.trigger_maillists.errors %}has-error{% endif %}">
+                                                        <label class="control-label col-sm-2 col-lg-2 " for="id_maillist_type">作用的地址分类</label>
+                                                        <div class=" col-sm-10 col-lg-3 ">
+                                                            {{ form.maillist_type|reg_add_input_classes }}
+                                                            {% for error in form.trigger_maillists.errors %}
+                                                            <span class="help-block {{ form.error_css_class }}">{{ error }}</span>
+                                                            {% endfor %}
+                                                        </div>
+                                                        {% if form.instance.maillist_type == 'part' %}
+                                                        <div id="div_id_trigger_maillists" class="col-sm-10 col-lg-7">
+                                                            {{ form.trigger_maillists|reg_add_input_classes }}
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+
+                                                    <div class="form-group {% if form.start_time.errors or form.end_time.errors %}has-error{% endif %}">
+                                                        <label class="control-label col-sm-2 col-lg-2 " for="id_is_permanent">有效期</label>
+                                                        <div class=" col-sm-10 col-lg-3 ">
+                                                            {{ form.expire_type|reg_add_input_classes }}
+                                                        </div>
+                                                        {% if form.instance.expire_type == 'custom' %}
+                                                        <div id="div_id_expire_time" class="col-sm-10 col-lg-7">
+                                                            {{ form.start_time }} 至 {{ form.end_time }}
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    {{ form.status|bootstrap_horizontal }}
+                                                </div>
+                                            </div>
+                                            {% for action_form in action_forms %}
+                                            <div class="tab-pane active" id="action_{{ action_form.instance.id }}">
+                                                <h3><strong>{% trans '触发动作' %}: {{ forloop.counter }} </strong></h3>
+                                                <div class="form-horizontal">
+                                                    {{ action_form.action_name|bootstrap_horizontal }}
+                                                    {{ action_form.condition|bootstrap_horizontal }}
+                                                    {% if action_form.condition.value == 'click' %}
+                                                    {{ action_form.con_url|bootstrap_horizontal }}
+                                                    {% endif %}
+                                                    {% if action_form.condition.value == 'holiday' %}
+                                                    {{ action_form.con_holiday|bootstrap_horizontal }}
+                                                    {% endif %}
+
+                                                    <div  class="form-group">
+                                                        <label class="control-label col-sm-2 col-lg-2 " for="{{ action_form.action_time.auto_id }}">{{ action_form.action_time.label }}</label>
+                                                        <div class=" col-sm-10 col-lg-3 ">
+                                                            {{ action_form.action_schedule|reg_add_input_classes }}
+                                                        </div>
+                                                        {% if action_form.instance.action_schedule == 'delay' %}
+                                                        <div id="div_id_action_time" class="col-sm-10 col-lg-7">
+                                                            触发条件 {{ action_form.action_time }} 分钟后, 调用触发动作
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-2 col-lg-2 ">触发动作</label>
+                                                        <div class=" col-sm-10 col-lg-10 ">
+                                                            <input name="action_template" id="id_action_template" onclick="return SendTemplate();" checked="checked" disabled="disabled" type="checkbox" />
+                                                            发送一封邮件
+                                                        </div>
+                                                    </div>
+                                                    <div id="div_send_template">
+                                                        {{ action_form.template|bootstrap_horizontal }}
+                                                        <div class="form-group">
+                                                            <label class="control-label col-sm-2 col-lg-2 ">选择发件人</label>
+                                                            <div class=" col-sm-10 col-lg-4 ">
+                                                                {{ action_form.send_acct_domain|reg_add_input_classes }}
+                                                            </div>
+                                                            <div class=" col-sm-10 col-lg-4 ">
+                                                                <select class=" form-control" disabled="disabled" id="id_send_acct_address" name="send_acct_address" onchange="onchangeDomain(this.value)">
+                                                                    <option value="{{ action_form.instance.send_acct_address}}" selected="selected">
+                                                                        {% if action_form.instance.send_acct_address == 'all' %}{% trans '所有帐号' %}{% else %}{{ action_form.instance.send_acct_address}}{% endif %}
+                                                                    </option>
+                                                                </select>
+
+                                                            </div>
+                                                        </div>
+                                                        {{ action_form.sendname|bootstrap_horizontal }}
+                                                        {{ action_form.replyto|bootstrap_horizontal }}
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                            </article>
+                            <article class="col-xs-12 col-sm-12 col-md-3 col-lg-3 hidden-xs hidden-sm"></article>
+                        </div>
+                    </div>
+                    <!-- end widget content -->
+                </div>
+                <!-- end widget div -->
+            </div>
+            <!-- end widget -->
+        </article>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block css_block %}
+<link href="{% static 'sa/js/plugin/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+<style>
+    .myself-width-small{width: 100px!important;}
+    .myself-template-width{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .no-padding-right{padding-right: 0px!important;}
+    .pager .previous>button {
+    display: inline-block;
+    padding: 5px 14px;
+    border: 1px solid #ddd;
+    color: #999;
+    background-color: #fff;
+    cursor: not-allowed;
+    border-radius: 15px;
+    float: left;
+    }
+    .pager .next>button {
+    display: inline-block;
+    padding: 5px 14px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    color: #fff;
+    background-color: #3276b1;
+    border-color: #2c699d;
+    border-radius: 15px;
+    float: right;
+    }
+</style>
+{% endblock %}
+
+{% block my_jsblock %}
+<script src="{% static 'sa/js/plugin/select2/select2.min.js' %}"></script>
+<script src="{% static 'sa/js/plugin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script src="{% static 'sa/js/plugin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+{% endblock %}

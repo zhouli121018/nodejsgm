@@ -1,0 +1,93 @@
+/*
+ * It is advised not to edit the smartadmin_production.css
+ * as this will override any changes you make in the 
+ * later versions of this theme. 
+ * 
+ * We advise that you use use this CSS to override 
+ * SmartAdmin styles. 
+ * 
+ * Rename the stylesheet to whatever your liking so it will stay
+ * unique to you with each update of SmartAdmin.
+ */
+
+/*
+ * INDEX
+ * 
+ * - HTML
+ * - BODY
+ * - CUSTOM STYLES
+ */
+
+.no-padding-left{padding-left:0px!important;}
+.margin-left-0{margin-left:0px!important;}
+.margin-left-5{margin-left: 5px !important;}
+.margin-right-10{margin-right:10px!important;}
+.margin-left-negative13{margin-left: -13px !important;}
+.margin-right-negative13{margin-right: -13px !important;}
+.margin-left-negative3{margin-left:-3px!important;}
+.padding-left-50{padding-left:50px !important;}
+.padding-left-20{padding-left:20px !important;}
+.margin-left-20{margin-left: 20px !important;}
+.margin-top-25{margin-top:25px!important;}
+.vertical-align-middle{vertical-align: middle!important;}
+
+.myself-dt-toolbar{display:block;position:relative;padding:6px 7px 1px;width:100%;float:left;border-bottom:1px solid #ccc;background: #fafafa;  }
+.myself-text-success{color: #06c290;  font-size: 14px;}
+.myself-text-normal{color:#e61c00;font-size:14px}
+.myself-seperate-icon{border-right:1px solid #ccc;display:inline-block;height:12px;margin-left:5px;margin-right:5px;vertical-align:middle}
+.myself-bg-color-lighten{background:#D2E7F7;padding:0 5px;font-weight:400; margin:0 5px;white-space:nowrap !important;}
+.myself-text-color-ccc{color: #ccc!important;}
+
+.myself-txt-color-red{color:red!important;}
+.myself-txt-color-blue{color:blue!important;}
+.myself-txt-color-green{color:green!important;}
+.myself-txt-color-err{color:#b94a48!important;}
+.page-title {
+    margin: 12px 0 17px;
+}
+.modal-lg-self{width: 1200px;}
+
+/*
+.txt-color-blue{color:#57889c!important}
+.txt-color-blueLight{color:#92a2a8!important}
+.txt-color-blueDark{color:#4c4f53!important}
+.txt-color-green{color:#356e35!important}
+.txt-color-greenLight{color:#71843f!important}
+.txt-color-greenDark{color:#496949!important}
+.txt-color-red{color:#a90329!important}
+.txt-color-yellow{color:#b09b5b!important}
+.txt-color-orange{color:#b19a6b!important}
+.txt-color-orangeDark{color:#a57225!important}
+.txt-color-pink{color:#ac5287!important}
+.txt-color-pinkDark{color:#a8829f!important}
+.txt-color-purple{color:#6e587a!important}
+.txt-color-darken{color:#404040!important}
+.txt-color-lighten{color:#d5e7ec!important}
+.txt-color-white{color:#fff!important}
+.txt-color-grayDark{color:#525252!important}
+.txt-color-magenta{color:#6e3671!important}
+.txt-color-teal{color:#568a89!important}
+.txt-color-redLight{color:#a65858!important}
+
+
+.bg-color-blue{background-color:#57889c!important}
+.bg-color-blueLight{background-color:#92a2a8!important}
+.bg-color-blueDark{background-color:#4c4f53!important}
+.bg-color-green{background-color:#356e35!important}
+.bg-color-greenLight{background-color:#71843f!important}
+.bg-color-greenDark{background-color:#496949!important}
+.bg-color-red{background-color:#a90329!important}
+.bg-color-yellow{background-color:#b09b5b!important}
+.bg-color-orange{background-color:#c79121!important}
+.bg-color-orangeDark{background-color:#a57225!important}
+.bg-color-pink{background-color:#ac5287!important}
+.bg-color-pinkDark{background-color:#a8829f!important}
+.bg-color-purple{background-color:#6e587a!important}
+.bg-color-darken{background-color:#404040!important}
+.bg-color-lighten{background-color:#d5e7ec!important}
+.bg-color-white{background-color:#fff!important}
+.bg-color-grayDark{background-color:#525252!important}
+.bg-color-magenta{background-color:#6e3671!important}
+.bg-color-teal{background-color:#568a89!important}
+.bg-color-redLight{background-color:#a65858!important}
+*/

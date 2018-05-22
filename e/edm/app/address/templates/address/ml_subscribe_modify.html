@@ -1,0 +1,186 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans "修改邮箱信息" %}</h4>
+</div>
+
+<form action="/address/subscribe/modify/{{ list_id }}/{{ address_id }}/" method="post" id="id_addressForm" role="form">
+    {% csrf_token %}
+    <div class="modal-body padding-10">
+        <div class="form-horizontal">
+            <fieldset>
+                <legend>{% trans "基础信息" %}</legend>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "邮箱地址" %}</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="id_address" maxlength="50" name="address" type="text" value="{{ address|default_if_none:'' }}" readonly="readonly">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "姓名" %}</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="id_fullname" maxlength="50" name="fullname" type="text" value="{{ fullname|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "性别" %}</label>
+                            <div class="col-md-8">
+                                <select class=" form-control" id="id_sex" name="sex">
+                                    <option value="" {% if sex != 'M' or sex != 'F' %} selected="selected" {% endif %}>--</option>
+                                    <option value="M" {% if sex == 'M' %} selected="selected" {% endif %}>{% trans "男" %}</option>
+                                    <option value="F" {% if sex == 'F' %} selected="selected" {% endif %}>{% trans "女" %}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "生日" %}</label>
+                            <div class="col-md-8">
+                                <input class="dateinput form-control form-control-flag"  id="id_birthday" name="birthday" readonly="" size="10" type="text" value="{{ birthday|date:'Y-m-d' }}">
+                                <script>
+                                    $(function () {
+                                        $('#id_birthday').datetimepicker({
+                                            format: "yyyy-mm-dd",
+                                            language: 'zh-CN',
+                                            weekStart: 1,
+                                            todayBtn: 1,
+                                            autoclose: 1,
+                                            minView: 2,
+                                            pickerPosition: "bottom-right"
+
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "手机" %}</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="id_phone" maxlength="100" name="phone" type="text" value="{{ phone|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "所在地域" %}</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="id_area" maxlength="200" name="area" type="text" value="{{ area|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <legend>{% trans "变量信息" %}</legend>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "变量1" %}</label>
+                            <div class="col-md-8">
+                                <input class="form-control" id="id_var1" maxlength="100" name="var1" type="text" value="{{ var1|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "变量2" %}</label>
+                            <div class="col-md-8">
+                                <input class=" form-control" id="id_var2" maxlength="100" name="var2" type="text" value="{{ var2|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "变量3" %}</label>
+                            <div class="col-md-8">
+                                <input class=" form-control" id="id_var3" maxlength="100" name="var3" type="text" value="{{ var3|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "变量4" %}</label>
+                            <div class="col-md-8">
+                                <input class=" form-control" id="id_var4" maxlength="100" name="var4" type="text" value="{{ var4|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "变量5" %}</label>
+                            <div class="col-md-8">
+                                <input class=" form-control" id="id_var5" maxlength="100" name="var5" type="text" value="{{ var5|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "变量6" %}</label>
+                            <div class="col-md-8">
+                                <input class=" form-control" id="id_var6" maxlength="100" name="var6" type="text" value="{{ var6|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "变量7" %}</label>
+                            <div class="col-md-8">
+                                <input class=" form-control" id="id_var7" maxlength="100" name="var7" type="text" value="{{ var7|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "变量8" %}</label>
+                            <div class="col-md-8">
+                                <input class=" form-control" id="id_var8" maxlength="100" name="var8" type="text" value="{{ var8|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "变量9" %}</label>
+                            <div class="col-md-8">
+                                <input class=" form-control" id="id_var9" maxlength="100" name="var9" type="text" value="{{ var9|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">{% trans "变量10" %}</label>
+                            <div class="col-md-8">
+                                <input class=" form-control" id="id_var10" maxlength="100" name="var10" type="text" value="{{ var10|default_if_none:'' }}">
+                            </div>
+                        </div>
+                    </div>
+                    {% for lp, k, v in var_vals %}
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">变量{{ lp }}</label>
+                                <div class="col-md-8">
+                                    <input class=" form-control" id="id_var{{ lp }}" maxlength="100" name="var{{ lp }}" type="text" value="{{ v|default_if_none:'' }}">
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input value="{% trans "确定" %}" onclick="checkForm()" type="button" class="btn btn-primary">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "关闭" %}</button>
+    </div>
+</form>

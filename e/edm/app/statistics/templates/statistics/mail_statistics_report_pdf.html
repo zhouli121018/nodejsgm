@@ -1,0 +1,1263 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% load i18n %}
+{% load task_tags %}
+{% load track_tags %}
+<html class="smart-style-0" lang="en-us"><head>
+    <meta charset="utf-8">
+    <title>U-Mail邮件营销平台-统计报告</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <base href="https://www.bestedm.org/">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <style>
+        .myself-width-small{width: 120px;}
+        .myself-width-big{width: 220px;}
+        .myself-width-small-1{width: 400px !important;}
+        .myself-width-big-1{width: 600px; min-height: 240px;}
+        .myself-width-small-2{width: 200px !important;}
+        .error_desc {  float: left;  width: 130px;  height: 20px;  line-height: 20px;  text-align: right;  }
+        .error_img {  float: left;  width: 150px;  height: 10px;  border: 1px solid #aaa;  margin: 5px 0px;  position: relative;  }
+        .error_percent_img {  height: 9px;  background: #058AFF;  }
+        .error_percent {  height: 10px;  line-height: 10px;  text-align: center;  width: 100%;  font-weight: 700;  z-index: 2;  position: absolute;  top: 0px;  }
+    </style>
+
+    <style type="text/css">
+        .jqstooltip { position: absolute;left: 0px;top: 0px;visibility: hidden;background: rgb(0, 0, 0) transparent;background-color: rgba(0,0,0,0.6);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";color: white;font: 10px arial, san serif;text-align: left;white-space: nowrap;padding: 5px;border: 1px solid white;z-index: 10000;}.jqsfield { color: white;font: 10px arial, san serif;text-align: left;}
+    </style>
+    <script data-pace-options="{ &quot;restartOnRequestAfter&quot;: true }" src="/static/sa/js/plugin/pace/pace.min.js"></script>
+    <script src="/static/sa/js/libs/jquery-2.1.1.min.js"></script>
+    <script src="/static/sa/js/libs/jquery-ui-1.10.3.min.js"></script>
+    <script src="/static/sa/js/app.config.js"></script>
+    <script src="/static/sa/js/plugin/jquery-touch/jquery.ui.touch-punch.min.js"></script>
+    <script src="/static/sa/js/bootstrap/bootstrap.min.js"></script>
+    <script src="/static/sa/js/notification/SmartNotification.min.js"></script>
+    <script src="/static/sa/js/smartwidgets/jarvis.widget.min.js"></script>
+    <script src="/static/sa/js/plugin/easy-pie-chart/jquery.easy-pie-chart.min.js"></script>
+    <script src="/static/sa/js/plugin/sparkline/jquery.sparkline.min.js"></script>
+    <script src="/static/sa/js/plugin/jquery-validate/jquery.validate.min.js"></script>
+    <script src="/static/sa/js/plugin/masked-input/jquery.maskedinput.min.js"></script>
+    <script src="/static/sa/js/plugin/select2/select2.min.js"></script>
+    <script src="/static/sa/js/plugin/bootstrap-slider/bootstrap-slider.min.js"></script>
+    <script src="/static/sa/js/plugin/msie-fix/jquery.mb.browser.min.js"></script>
+    <script src="/static/sa/js/plugin/fastclick/fastclick.min.js"></script>
+    <script src="/static/sa/js/app.min.js"></script>
+    <script src="/static/sa/js/speech/voicecommand.min.js"></script>
+    <script src="/static/sa/js/smart-chat-ui/smart.chat.ui.min.js"></script>
+    <script src="/static/sa/js/smart-chat-ui/smart.chat.manager.min.js"></script>
+    <script charset="utf-8" src="/static/editor/kindeditor.js"></script>
+    <script charset="utf-8" src="/static/editor/lang/zh_CN.js"></script>
+    <script src="/static/sa/js/plugin/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.colVis.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.tableTools.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="/static/sa/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+    <script src="/static/sa/js/smart-chat-ui/smart.chat.ui.min.js"></script>
+    <script src="/static/sa/js/smart-chat-ui/smart.chat.manager.min.js"></script>
+    <script src="/static/sa/js/plugin/moment/moment.min.js"></script>
+    <script src="/static/sa/js/plugin/chartjs/chart.min.js"></script>
+
+    <script src="/static/file_upload/js/vendor/jquery.ui.widget.js"></script>
+    <script src="/static/file_upload/js/jquery.iframe-transport.js"></script>
+    <script src="/static/sa/js/plugin/vectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="/static/sa/js/plugin/vectormap/jquery-jvectormap-world-mill-zh.js"></script>
+    <script src="/static/sa/js/plugin/vectormap/jquery-jvectormap-cn-mill.js"></script>
+
+
+    <style type="text/css">
+        @page {
+            size: {{ pagesize }};
+            margin: 1cm;
+        }
+        body {
+            direction: ltr;
+        }
+        body {
+            font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+            font-size: 13px;
+            line-height: 1.42857143;
+            color: #333;
+        }
+        #main {
+            margin:0 auto;
+            padding: 0;
+            padding-bottom: 0px;
+            padding-bottom: 52px;
+            min-height: 500px;
+            position: relative;
+            width: 1366px;
+        }
+        #content {
+            padding: 5px 5px;
+            position: relative;
+        }
+
+        .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+            font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+            font-weight: 500;
+            line-height: 1.1;
+            color: inherit;
+        }
+
+        h1, h2, h3, h4 {
+            margin: 0;
+            font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+            font-weight: 300;
+        }
+        h1 {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .h4, h4 {
+            font-size: 18px;
+        }
+        h4 {
+            line-height: normal;
+        }
+
+        .txt-color-blueDark {
+            color: #4c4f53 !important;
+        }
+        .page-title {
+            margin: 12px 0px 17px;
+        }
+        .fa {
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: 14px;
+            font-size: inherit;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .margin-right-5 {
+            margin-right: 5px !important;
+        }
+        .h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, .h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
+            font-weight: 400;
+            line-height: 1;
+            color: #999;
+        }
+        h1 small {
+            font-size: 18px;
+            font-weight: 300;
+            /*letter-spacing: -1px;*/
+        }
+        code, kbd, pre, samp {
+            font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+        }
+        code {
+            padding: 2px 4px;
+            font-size: 90%;
+            color: #c7254e;
+            background-color: #f9f2f4;
+            border-radius: 2px;
+        }
+        article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {
+            display: block;
+        }
+
+        .row {
+            margin-left: -13px;
+            margin-right: -13px;
+        }
+        .col-xs-12 {
+            float: left;
+            width: 100%;
+        }
+        .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+            position: relative;
+            min-height: 1px;
+            padding-left: 13px;
+            padding-right: 13px;
+        }
+        .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+            float: left;
+        }
+        .col-xs-12 {
+            width: 100%;
+        }
+        .col-lg-12 {
+            width: 100%;
+        }
+        .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9 {
+            float: left;
+        }
+        .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9 {
+            float: left;
+        }
+        .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
+            float: left;
+        }
+        .col-md-12 {
+            width: 100%;
+        }
+        .col-sm-12 {
+            width: 100%;
+        }
+        .col-lg-7 {
+            width: 58.33333333%;
+        }
+        .col-lg-5 {
+            width: 40%;
+        }
+        .col-lg-2 {
+            width: 14%;
+        }
+        .col-lg-6 {
+            width: 48%;
+        }
+
+        .margin-bottom-0 {
+            margin-bottom: 0 !important;
+        }
+        article.sortable-grid {
+            min-height: 30px;
+        }
+        .jarviswidget {
+            margin: 0 0 30px;
+            position: relative;
+            -moz-border-radius: 0;
+            -khtml-border-radius: 0;
+            -webkit-border-radius: 0;
+            border-radius: 0;
+            padding: 0;
+        }
+        .clearfix, .inner-spacer::after, .jarviswidget, .jarviswidget-editbox, .jarviswidget > div {
+            zoom: 1;
+        }
+        .jarviswidget > header {
+            height: 34px;
+            padding: 0;
+            line-height: 40px;
+        }
+        .jarviswidget > header {
+            color: #333;
+            border: 1px solid #C2C2C2;
+            border-top-color: rgb(194, 194, 194);
+            border-right-color: rgb(194, 194, 194);
+            border-bottom-color: rgb(194, 194, 194);
+            border-left-color: rgb(194, 194, 194);
+            background: #fafafa;
+        }
+        .jarviswidget-color-darken > header {
+            border-color: #383838 !important;
+            background: #404040;
+            color: #fff;
+            width: 102%;
+        }
+        .jarviswidget > header > .widget-icon {
+            display: block;
+            width: 30px;
+            height: 32px;
+            position: relative;
+            float: left;
+            font-size: 111%;
+            line-height: 32px;
+            text-align: center;
+            margin-right: -10px;
+        }
+        .jarviswidget > header h2 {
+            height: 100%;
+            width: auto;
+            display: inline-block;
+            font-size: 14px;
+            position: relative;
+            margin: 0;
+            margin-left: 0px;
+            line-height: 34px;
+            font-weight: 400;
+            letter-spacing: 0;
+        }
+        .jarviswidget > header > h2 {
+            margin-left: 10px;
+            float: left;
+        }
+        .jarviswidget > div {
+            float: left;
+            width: 100%;
+            position: relative;
+            font-size: 13px;
+            -moz-border-radius: 0;
+            -khtml-border-radius: 0;
+            -webkit-border-radius: 0;
+            border-radius: 0;
+            margin: 0;
+            border-width: 1px 1px 2px;
+            border-top-width: 1px;
+            border-style: solid;
+            border-top-style: solid;
+            border-top: none;
+            border-right-color: #CCC !important;
+            border-bottom-color: #CCC !important;
+            border-left-color: #CCC !important;
+            padding: 13px 13px 0;
+            overflow: visible;
+        }
+        .jarviswidget > div {
+            background-color: #fff !important;
+        }
+        .clearfix, .inner-spacer::after, .jarviswidget, .jarviswidget-editbox, .jarviswidget > div {
+            zoom: 1;
+        }
+        .jarviswidget .widget-body {
+            min-height: 100px;
+            position: relative;
+            padding-bottom: 13px;
+        }
+        .widget-body.no-padding {
+            margin: -13px -13px 0;
+        }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        table {
+            background-color: transparent;
+        }
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 18px;
+        }
+        .table-bordered, .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+            border: 1px solid #ddd;
+        }
+        .widget-body > table {
+            margin-bottom: 0;
+        }
+
+        table.dataTable {
+            clear: both;
+            margin-bottom: 6px !important;
+            max-width: none !important;
+        }
+        table.dataTable, table.dataTable td, table.dataTable th {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+        table.dataTable {
+            clear: both;
+            margin-bottom: 6px !important;
+            max-width: none !important;
+        }
+        table.table-bordered.dataTable {
+            border-collapse: separate !important;
+        }
+
+        .no-padding .dataTables_wrapper table, .no-padding > table {
+            border: none !important;
+            margin-bottom: 0 !important;
+            border-bottom-width: 0 !important;
+        }
+        .no-padding > .table-bordered, .no-padding > .table-responsive > .table-bordered {
+            border: none !important;
+        }
+        .table-striped > tbody > tr:nth-of-type(2n+1) {
+            background-color: #f9f9f9;
+        }
+        [class*=" bg-"], [class^="bg-"] {
+            filter: none !important;
+        }
+        .bg-color-white {
+            background-color: #fff !important;
+        }
+        .text-align-right, .text-right {
+            text-align: right !important;
+        }
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            padding: 8px;
+            line-height: 1.42857143;
+            vertical-align: top;
+            border-top: 1px solid #ddd;
+        }
+        .table-bordered, .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+            border: 1px solid #ddd;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            border-left-style: solid;
+            border-left-color: rgb(221, 221, 221);
+
+            border-right-width: 1px;
+            border-right-style: solid;
+            border-right-color: rgb(221, 221, 221);
+        }
+        table.table-bordered tbody td, table.table-bordered tbody th {
+            border-left-width: 0;
+            border-bottom-width: 0;
+        }
+        .jarviswidget td:first-child, .jarviswidget th:first-child {
+            border-left: none;
+        }
+        .no-padding .dataTables_wrapper table tr td:first-child, .no-padding .dataTables_wrapper table tr th:first-child, .no-padding > table tr td:first-child, .no-padding > table tr th:first-child {
+            border-left: none !important;
+            border-left-width: medium;
+        }
+        .no-padding > .table-bordered tbody tr td:first-child, .no-padding > .table-bordered thead tr td:first-child, .no-padding > .table-bordered thead tr th:first-child, .no-padding > .table-responsive > .table-bordered tbody tr td:first-child, .no-padding > .table-responsive > .table-bordered thead tr td:first-child, .no-padding > .table-responsive > .table-bordered thead tr th:first-child {
+            border-left-width: 0 !important;
+        }
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            padding: 8px 10px;
+        }
+
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            padding: 8px;
+            line-height: 1.42857143;
+            vertical-align: top;
+            border-top: 1px solid #ddd;
+            border-top-width: 1px;
+        }
+        .table-condensed.table > tbody > tr > td, .table-condensed.table > tbody > tr > th, .table-condensed.table > tfoot > tr > td, .table-condensed.table > tfoot > tr > th, .table-condensed.table > thead > tr > td, .table-condensed.table > thead > tr > th {
+            padding: 5px 10px !important;
+        }
+
+        th {
+            text-align: left;
+        }
+        .dt-toolbar-footer {
+            background: #fafafa;
+            font-size: 11px;
+            overflow: hidden;
+            padding: 5px 10px;
+            border-top: 1px solid #ccc;
+            -webkit-box-shadow: inset 0 1px #fff;
+            -moz-box-shadow: inset 0 1px #fff;
+            -ms-box-shadow: inset 0 1px #fff;
+            box-shadow: inset 0 1px #fff;
+        }
+        div.dataTables_info {
+            padding-top: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            font-style: italic;
+            color: #969696;
+        }
+        .no-padding {
+            padding: 0 !important;
+        }
+        .text-align-center, .text-center {
+            text-align: center !important;
+        }
+        .txt-color-blue {
+            color: #57889c !important;
+        }
+        .txt-color-red {
+            color: #a90329 !important;
+        }
+
+        .vertical-align-middle {
+            vertical-align: middle !important;
+        }
+        .no-border, .well.no-border[class*=" bg-"] {
+            border-width: 0 !important;
+        }
+
+
+        .vector-map {
+            height: 300px;
+            width: 100%;
+            padding: 10px;
+        }
+        .jvectormap-zoomin, .jvectormap-zoomout {
+            position: absolute;
+            background: #292929;
+            background-color: rgb(41, 41, 41);
+            padding: 4px;
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            line-height: 10px;
+            text-align: center;
+            font-size: 14px;
+            border-radius: 2px;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            box-shadow: inset 0 -2px 0 rgba(0,0,0,.05);
+            -moz-box-shadow: inset 0 -2px 0 rgba(0,0,0,.05);
+            -webkit-box-shadow: inset 0 -2px 0 rgba(0,0,0,.05);
+            background-color: #fff;
+            border: 1px solid #bfbfbf;
+        }
+        .jvectormap-zoomin, .jvectormap-zoomout {
+            position: absolute;
+            background: #292929;
+            background-color: rgb(41, 41, 41);
+            padding: 4px;
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            line-height: 10px;
+            text-align: center;
+            font-size: 14px;
+            border-radius: 2px;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            box-shadow: inset 0 -2px 0 rgba(0,0,0,.05);
+            -moz-box-shadow: inset 0 -2px 0 rgba(0,0,0,.05);
+            -webkit-box-shadow: inset 0 -2px 0 rgba(0,0,0,.05);
+            background-color: #fff;
+            border: 1px solid #bfbfbf;
+        }
+        #heat-fill {
+            display: block;
+            position: relative;
+            margin-bottom: 20px;
+            background: #333;
+            background-image: none;
+            height: 7px;
+            width: 200px;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAABCAIAAAAU3Xa1AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChXaW5kb3dzKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowMDE4MkZGMzMzOTgxMUUzODZBQUNFQUNFOTk0NEUxRiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowMDE4MkZGNDMzOTgxMUUzODZBQUNFQUNFOTk0NEUxRiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjAwMTgyRkYxMzM5ODExRTM4NkFBQ0VBQ0U5OTQ0RTFGIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjAwMTgyRkYyMzM5ODExRTM4NkFBQ0VBQ0U5OTQ0RTFGIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+rG8MDAAAAM5JREFUeNpUUtESwyAIg8ft9v8/W4ElBPWKV1AIiKEeEWVuVlWjINSVONBnirQDxukNgcuyTQsBzLHMDsLIQQw+nIL71JqNJ5GZJXApFNpmtlagQjfS2xGbkFA4Iwu+hu0sK3Wl3nOwNv7TvPrWk3X0eW9dK1pU9hK2eTuWb2ySJmlziutA3iBxmblPNvA5PNsuUpoDY80+Z0SW1IRpDEqwC58C14tsr1f8le8si0aojdADr/1UjaclsFashX8GGkL9wDxtRsV6ft/PX4ABADRzhOVIOJaAAAAAAElFTkSuQmCC);
+        }
+
+        .fill-a, .fill-b {
+            width: 20px;
+            text-align: right;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+            background: #fff;
+            padding-right: 4px;
+            position: absolute;
+            left: 0;
+            margin-top: -7px;
+            font-weight: 700;
+        }
+        .fill-b {
+            text-align: left;
+            position: absolute;
+            right: 0;
+            left: auto;
+            top: 0;
+            width: 60px;
+            padding-left: 4px;
+            padding-right: 0;
+        }
+
+    </style>
+
+    <script>
+
+        $(function(){
+            var PieConfig = {
+                type: 'pie',
+                data: {
+                    datasets: [{
+                        data: [{{ count_succes }}, {{ count_error }}],
+                        backgroundColor: [ "#80ff80", "#ff8080"],
+                    }],
+                    labels: ["{% trans "成功" %} ({{ count_succes_rate }})", "{% trans "失败" %} ({{ count_error_rate }})"]
+                },
+                options: { responsive: true }
+            };
+
+            var PieConfig2 = {
+                type: 'pie',
+                data: {
+                    datasets: [{
+                        data: [{{ count_invalid.value }}, {{ count_err_1.value }}, {{ count_err_2.value }}, {{ count_err_3.value }}, {{ count_err_5.value }}],
+                        backgroundColor: [ "#f00", "#0f0", '#00f', '#f90', '#f0f'],
+                    }],
+                    labels: [
+                        "{% trans "格式错误、无效" %}（{{ count_invalid.rate }}）", "{% trans "邮箱不存在" %}（{{ count_err_1.rate }}）",
+                        "{% trans "空间不足" %}（{{ count_err_2.rate }}）", "{% trans "用户拒收" %}（{{ count_err_3.rate }}）", "{% trans "垃圾拒绝发送" %}（{{ count_err_5.rate }}）"
+                    ]
+                },
+                options: { responsive: true }
+            };
+            {% if stat_obj %}
+                var PieConfig3 = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: [{{ open_unique }}, {{ no_open }}],
+                            backgroundColor: [ "#80ff80", "#ff8080"],
+                        }],
+                        labels: ["{% trans "打开" %}（{{ open_unique_rate }}）", "{% trans "未打开" %}（{{ no_open_rate }}）"]
+                    },
+                    options: { responsive: true }
+                };
+
+                var PieConfig4 = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: [{{ click_unique }}, {{ no_click }}],
+                            backgroundColor: [ "#80ff80", "#ff8080"],
+                        }],
+                        labels: ["{% trans "点击" %}（{{ show_link_rate_suc }}）", "{% trans "未点击" %}（{{ no_click_rate }}）"]
+                    },
+                    options: { responsive: true }
+                };
+            {% endif %}
+
+            {% if domain_data_all %}
+                var PieConfig5 = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: {{ domain_data_all.datalist|safe }},
+                            backgroundColor: {{ domain_data_all.bgcolor|safe }},
+                        }],
+                        labels: {{ domain_data_all.labels|safe }},
+                    },
+                    options: { responsive: true }
+                };
+            {% endif %}
+
+            {% if domain_data_click %}
+                var PieConfig6 = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: {{ domain_data_click.datalist|safe }},
+                            backgroundColor: {{ domain_data_click.bgcolor|safe }},
+                        }],
+                        labels: {{ domain_data_click.labels|safe }},
+                    },
+                    options: { responsive: true }
+                };
+            {% endif %}
+
+            window.onload = function() {
+                window.myPie1 = new Chart(document.getElementById("pieChart"), PieConfig);
+                window.myPie2 = new Chart(document.getElementById("pieChart2"), PieConfig2);
+                {% if stat_obj %}
+                    window.myPie3 = new Chart(document.getElementById("pieChart3"), PieConfig3);
+                    window.myPie4 = new Chart(document.getElementById("pieChart4"), PieConfig4);
+                {% endif %}
+                {% if domain_data_all %}
+                    window.myPie5 = new Chart(document.getElementById("pieChart5"), PieConfig5);
+                {% endif %}
+                {% if domain_data_click %}
+                    window.myPie6 = new Chart(document.getElementById("pieChart6"), PieConfig6);
+                {% endif %}
+            };
+        })
+
+    </script>
+
+    {% if stat_obj and country_data %}
+        <script>
+
+            $(function(){
+                var data_array = {{ country_data|safe }};
+                $('#vector-map').vectorMap({
+                    map : 'world_mill_en',
+                    backgroundColor : '#fff',
+                    regionStyle : {
+                        initial : {
+                            fill : '#c4c4c4'
+                        },
+                        hover : {
+                            "fill-opacity" : 1
+                        }
+                    },
+                    series : {
+                        regions : [{
+                            values : data_array,
+                            scale : ['#85a8b6', '#4d7686'],
+                            normalizeFunction : 'polynomial'
+                        }]
+                    },
+                    onRegionLabelShow : function(e, el, code) {
+                        if ( typeof data_array[code] == 'undefined') {
+                            e.preventDefault();
+                        } else {
+                            var countrylbl = data_array[code];
+                            el.html(el.html() + ': ' + countrylbl + ' {% trans "次打开" %}');
+                        }
+                    }
+                });
+            });
+        </script>
+
+        {% if area_data %}
+            <script>
+                $(function(){
+                    {% if area_data %}
+                        var data_array_ch = {{ area_data|safe }};
+                        $('#vector-map-cn').vectorMap({
+                            map: 'cn_mill',
+                            backgroundColor : '#fff',
+                            regionStyle : {
+                                initial : {
+                                    fill : '#c4c4c4'
+                                },
+                                hover : {
+                                    "fill-opacity" : 1
+                                }
+                            },
+                            series : {
+                                regions : [{
+                                    values : data_array_ch,
+                                    scale : ['#85a8b6', '#4d7686'],
+                                    normalizeFunction : 'polynomial'
+                                }]
+                            },
+                            onRegionLabelShow : function(e, el, code) {
+                                if ( typeof data_array_ch[code] == 'undefined') {
+                                    e.preventDefault();
+                                } else {
+                                    var countrylbl = data_array_ch[code];
+                                    el.html(el.html() + ': ' + countrylbl + ' {% trans "次打开" %}');
+                                }
+                            }
+                        });
+                    {% endif %}
+                });
+            </script>
+        {% endif %}
+    {% endif %}
+
+</head>
+
+<body class="desktop-detected  smart-style-0  pace-done">
+
+<div id="main" role="main">
+    <div id="content">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <h1 class="page-title txt-color-blueDark">
+                    <i class="fa fa-bar-chart-o margin-right-5"></i><span>{% trans "统计报告" %}: </span><small><code>{{ task_obj.send_name }}</code></small>
+                </h1>
+            </div>
+        </div>
+
+        <section id="widget-grid" class="" style=" margin-left: -25px;margin-right: 25px;">
+            <div class="row">
+                <article class="col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+
+                    <div class="jarviswidget jarviswidget-color-darken" role="widget">
+                        <header role="heading">
+                            <h2>{% trans "任务信息" %}</h2>
+                        </header>
+                        <div role="content">
+                            <div class="widget-body no-padding">
+                                <form class="form-horizontal">
+                                    <table class="table table-condensed margin-bottom-0" width="100%" cellspacing="0" cellpadding="5" border="0">
+                                        <tbody>
+                                        <tr>
+                                            <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "创建日期" %}</td>
+                                            <td class="no-border myself-width-big">
+                                                <div class="col-md-12 form-inline">
+                                                    <span>{{ task_obj.created|date:'Y-m-d H:i:s' }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "开始执行时间" %}</td>
+                                            <td class="no-border">
+                                                <div class="col-md-12 form-inline">
+                                                    <span>{{ task_obj.time_start|date:'Y-m-d H:i:s' }}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "任务名称" %}</td>
+                                            <td class="no-border myself-width-big">
+                                                <div class="col-md-12 form-inline">
+                                                    <span>{{ task_obj.send_name|default_if_none:'' }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "完成执行时间" %}</td>
+                                            <td class="no-border">
+                                                <div class="col-md-12 form-inline">
+                                                    <span>{{ task_obj.time_end|date:'Y-m-d H:i:s' }}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "邮件列表" %}</td>
+                                            <td class="no-border myself-width-big">
+                                                <div class="col-md-12 form-inline">
+                                                    <span>{% if task_obj.send_maillist %}{{ task_obj.send_maillist }}{% else %}{% trans "未分类地址" %}{% endif %}</span>
+                                                </div>
+                                            </td>
+                                            <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "任务发送数" %}</td>
+                                            <td class="no-border">
+                                                <div class="col-md-12 form-inline">
+                                                    <span>{{ task_send_total }}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "发件人" %}</td>
+                                            <td class="no-border myself-width-big">
+                                                <div class="col-md-12 form-inline">
+                                                    <span>{{ task_obj|show_sender_type }}</span>
+                                                </div>
+                                            </td>
+                                            <td class="no-border text-right myself-width-small vertical-align-middle"></td>
+                                            <td class="no-border">
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="clear: both; height: 20px;"></div>
+
+                    <div class="jarviswidget jarviswidget-color-darken" role="widget">
+                        <header role="heading">
+                            <h2>{% trans "发送情况" %}</h2>
+                        </header>
+                        <div role="content">
+                            <div class="widget-body no-padding">
+                                <form class="form-horizontal">
+                                    <table class="table table-condensed margin-bottom-0" width="100%" cellspacing="0" cellpadding="5" border="0">
+                                        <tbody>
+                                        <tr style="">
+                                            <td class="no-border myself-width-small-1">
+                                                <div style="padding-left:50px;margin-top: 20px;">
+                                                    <p>{% trans "一共发送" %} {{ send_total }} {% trans "封" %}</p>
+                                                    <p>{% trans "实际发送" %} {{ count_send }} {% trans "封" %}</p>
+                                                    <p>{% trans "无效地址" %} {{ count_invalid.value }} {% trans "封" %}</p>
+                                                    <p>{% trans "其中发送成功" %} {{ count_succes }} {% trans "封，发送失败" %} {{ count_error }} {% trans "封" %}</p>
+                                                    <p style="color:green;font-weight:700;">{% trans "成功率" %}: {{ count_succes_rate }}</p>
+                                                </div>
+                                            </td>
+                                            <td class="no-border myself-width-big-1">
+                                                <iframe class="chartjs-hidden-iframe" style="width: 100%; display: block; border: 0px none; height: 0px; margin: 0px; position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px;"></iframe>
+                                                <canvas id="pieChart" height="232" width="580"></canvas>
+                                            </td>
+                                            <td class="no-border vertical-align-middle"></td>
+                                            <td class="no-border"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="clear: both; height: 20px;"></div>
+
+                    <div class="jarviswidget jarviswidget-color-darken" role="widget">
+                        <header role="heading">
+                            <h2>{% trans "投递失败统计" %}</h2>
+                        </header>
+                        <div role="content">
+                            <div class="widget-body no-padding">
+                                <form class="form-horizontal">
+                                    <table class="table table-condensed margin-bottom-0" width="100%" cellspacing="0" cellpadding="5" border="0">
+                                        <tbody>
+                                        <tr>
+                                            <td class="no-border myself-width-small-1">
+                                                <div style="padding-left:50px;margin-top: 20px;">
+                                                    <div class="display-inline margin-top-5">
+                                                        <div class="error_desc" style="">{% trans "格式错误、无效" %}</div>
+                                                        <div class="error_img" style="">
+                                                            <div class="error_percent_img" style="width:{{ count_invalid.width }};"></div>
+                                                            <div class="error_percent" style="">{{ count_invalid.rate }}</div>
+                                                        </div>
+                                                    <span style="color:green;">
+                                                        <a>{{ count_invalid.value }}</a>
+                                                    </span>
+                                                    </div>
+                                                    <div style="clear:both;"></div>
+                                                    <div class="display-inline margin-top-5">
+                                                        <div class="error_desc" style="">{% trans "邮箱不存在" %}</div>
+                                                        <div class="error_img" style="">
+                                                            <div class="error_percent_img" style="width:{{ count_err_1.width }};"></div>
+                                                            <div class="error_percent">{{ count_err_1.rate }}</div>
+                                                        </div>
+                                                    <span style="color:green;">
+                                                        <a>{{ count_err_1.value }}</a>
+                                                    </span>
+                                                    </div>
+                                                    <div style="clear:both;"></div>
+                                                    <div class="display-inline margin-top-5">
+                                                        <div class="error_desc" style="">{% trans "空间不足" %}</div>
+                                                        <div class="error_img" style="">
+                                                            <div class="error_percent_img" style="width:{{ count_err_2.width }};"></div>
+                                                            <div class="error_percent" style="">{{ count_err_2.rate }}</div>
+                                                        </div>
+                                                        <span style="color:green;">
+                                                            <a>{{ count_err_2.value }}</a>
+                                                        </span>
+                                                    </div>
+                                                    <div style="clear:both;"></div>
+                                                    <div class="display-inline margin-top-5">
+                                                        <div class="error_desc" style="">{% trans "用户拒收" %}</div>
+                                                        <div class="error_img" style="">
+                                                            <div class="error_percent_img" style="width:{{ count_err_3.width }};"></div>
+                                                            <div class="error_percent" style="">{{ count_err_3.rate }}</div>
+                                                        </div>
+                                                        <span style="color:green;">
+                                                            <a>{{ count_err_3.value }}</a>
+                                                        </span>
+                                                    </div>
+                                                    <div style="clear:both;"></div>
+                                                    <div class="display-inline margin-top-5">
+                                                        <div class="error_desc" style="">{% trans "垃圾拒绝发送" %}</div>
+                                                        <div class="error_img" style="">
+                                                            <div class="error_percent_img" style="width:{{ count_err_5.width }};"></div>
+                                                            <div class="error_percent" style="">{{ count_err_5.rate }}</div>
+                                                        </div>
+                                                        <span style="color:green;">
+                                                            <a>{{ count_err_5.value }}</a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="no-border myself-width-big-1">
+                                                <canvas id="pieChart2"></canvas>
+                                            </td>
+                                            <td class="no-border vertical-align-middle"></td>
+                                            <td class="no-border"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if stat_obj %}
+                        <div style="clear: both; height: 20px;"></div>
+
+                        <div class="jarviswidget jarviswidget-color-darken" role="widget">
+                            <header role="heading">
+                                <h2>{% trans "邮件打开统计" %}</h2>
+                            </header>
+                            <div role="content">
+                                <div class="widget-body no-padding">
+                                    <form class="form-horizontal">
+                                        <div class="col-lg-2" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                            <table class="table table-condensed margin-bottom-0" width="100%" cellspacing="0" cellpadding="5" border="0">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="no-border ">
+                                                        <div style="margin-top: 20px;">
+                                                        <span>
+                                                            {% if stat_obj %}
+                                                                <a class="" >{% trans "有打开邮件" %} {{ stat_obj.open_unique }} {% trans "封" %}</a>
+                                                            {% else %}
+                                                                {% trans "有打开邮件 0 封" %}
+                                                            {% endif %}
+                                                        </span><br>
+                                                            <span style="color:green;font-weight:700;" title="{% trans "打开率" %}">{% trans "打开率" %}: {{ show_stat_rate }}</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-lg-5" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                            <table class="table table-condensed margin-bottom-0" width="100%" cellspacing="0" cellpadding="5" border="0">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="no-border ">
+                                                        <canvas id="pieChart3"></canvas>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-lg-5" style="border-left: 1px solid #ddd;">
+                                            <table class="table table-condensed margin-bottom-0" width="100%" cellspacing="0" cellpadding="5" border="0">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="no-border" colspan="2" >
+                                                        <canvas id="pieChart5"></canvas>
+                                                        <h2 class="text-center no-padding">{% trans "各域打开情况(只显示前20位)" %}</h2>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="clear: both; height: 20px;"></div>
+
+                        <div class="jarviswidget jarviswidget-color-darken" role="widget">
+                            <header role="heading">
+                                <h2>{% trans "邮件点击统计" %}</h2>
+                            </header>
+                            <div role="content">
+                                <div class="widget-body no-padding">
+                                    <form class="form-horizontal">
+
+                                        <div class="col-lg-2" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                            <table class="table table-condensed margin-bottom-0" width="100%" cellspacing="0" cellpadding="5" border="0">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="no-border ">
+                                                        <div style="margin-top: 20px;">
+                                                        <span>
+                                                            {% if stat_obj %}
+                                                                <a class="" >{% trans "有点击链接" %} {{ click_unique }} {% trans "封" %}</a>
+                                                            {% else %}
+                                                                {% trans "有点击链接 0 封" %}
+                                                            {% endif %}
+                                                        </span><br>
+                                                            <span>{% trans "与打开数比例" %}: {{ show_link_rate }}</span><br>
+                                                            <span>{% trans "与成功数比例" %}: {{ show_link_rate_suc }}</span><br>
+                                                            <span>{% trans "总点击数" %}: {% if stat_obj %}{{ stat_obj.click_total }}{% else %}0{% endif %}</span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-lg-5" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                            <table class="table table-condensed margin-bottom-0" width="100%" cellspacing="0" cellpadding="5" border="0">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="no-border ">
+                                                        <canvas id="pieChart4"></canvas>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-lg-5" style="border-left: 1px solid #ddd;">
+                                            <table class="table table-condensed margin-bottom-0" width="100%" cellspacing="0" cellpadding="5" border="0">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="no-border" colspan="2" >
+                                                        <canvas id="pieChart6"></canvas>
+                                                        <h2 class="text-center no-padding">{% trans "各域点击情况(只显示前20位)" %}</h2>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if country_data %}
+                            <div style="clear: both; height: 20px;"></div>
+
+                            <div class="jarviswidget jarviswidget-color-darken" role="widget">
+                                <header role="heading">
+                                    <h2>{% trans "设备报告" %}</h2>
+                                </header>
+                                <div role="content">
+                                    <div class="widget-body no-padding" >
+                                        <form class="form-horizontal">
+                                            <div class="col-sm-12 col-md-12 col-lg-6" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                                <table class="table table-condensed margin-bottom-0" width="100%" cellspacing="0" cellpadding="5" border="0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td class="no-border myself-width-small-1 vertical-align-middle">
+                                                            <div style="padding-left:50px;">
+                                                                <h2 class="no-margin no-padding">{% trans "浏览器" %}</h2>
+                                                                <div style="float:left;">
+                                                                    <img src="/static/img/ie.png" style="vertical-align:middle;" width="50px" height="50px">
+                                                                    <p style="text-align:center;">{{ browser_count.ie }}</p>
+                                                                </div>
+                                                                <div style="float:left;">
+                                                                    <img src="/static/img/chrome.png" style="vertical-align:middle;" width="50px" height="50px">
+                                                                    <p style="text-align:center;">{{ browser_count.chrome }}</p>
+                                                                </div>
+                                                                <div style="float:left;">
+                                                                    <img src="/static/img/firefox.png" style="vertical-align:middle;" width="50px" height="50px">
+                                                                    <p style="text-align:center;">{{ browser_count.firefox }}</p>
+                                                                </div>
+                                                                <div style="float:left;">
+                                                                    <img src="/static/img/other.png" style="vertical-align:middle;" width="50px" height="50px">
+                                                                    <p style="text-align:center;">{{ browser_count.other }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-6" style="border-left: 1px solid #ddd;">
+                                                <table class="table table-condensed margin-bottom-0" width="100%" cellspacing="0" cellpadding="5" border="0">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td class="no-border myself-width-small-1 vertical-align-middle">
+                                                            <div style="padding-left:50px;">
+                                                                <h2 class="no-margin no-padding">{% trans "操作系统" %}</h2>
+                                                                <div style="float:left;">
+                                                                    <img src="/static/img/win.png" style="width:50px;height:50px;">
+                                                                    <p style="text-align:center;">{{ os_count.windows }}</p>
+                                                                </div>
+                                                                <div style="float:left;">
+                                                                    <img src="/static/img/mac.png" style="width:50px;height:50px;">
+                                                                    <p style="text-align:center;">{{ os_count.macintosh }}</p>
+                                                                </div>
+                                                                <div style="float:left;">
+                                                                    <img src="/static/img/linux.png" style="width:50px;height:50px;">
+                                                                    <p style="text-align:center;">{{ os_count.linux }}</p>
+                                                                </div>
+                                                                <div style="float:left;">
+                                                                    <img src="/static/img/other.png" style="width:50px;height:50px;">
+                                                                    <p style="text-align:center;">{{ os_count.other }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="clear: both; height: 20px;"></div>
+
+                            <div class="jarviswidget jarviswidget-color-darken" role="widget">
+                                <header role="heading">
+                                    <h2>{% trans "邮箱打开地域分布" %}</h2>
+                                </header>
+
+                                <div role="content">
+                                    <div class="widget-body no-padding">
+                                        {% if area_data %}
+                                            <div class="col-sm-12 col-md-12 col-lg-6" style="border-left: 1px solid #ddd;">
+
+                                                <div class="container" style="float:left;background: #fff; min-width: 500px;">
+                                                    <h4>{% trans "国内统计" %}</h4>
+                                                    <div id="vector-map-cn" class="vector-map"></div>
+                                                    <div id="heat-fill">
+                                                        <span class="fill-a">0</span>
+                                                        <span class="fill-b">{{ area_max }}</span>
+                                                    </div>
+                                                </div>
+
+                                                <table class="table table-striped table-hover table-condensed">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>{% trans "地区" %}</th>
+                                                        <th>{% trans "总打开次数" %}</th>
+                                                        <th>{% trans "唯一打开次数" %}</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% if area_sort  %}
+                                                        {% for k, v, z in area_sort %}
+                                                            <tr>
+                                                                <td><a href="javascript:void(0);">{{ k }}</a></td>
+                                                                <td>{{ v }}</td>
+                                                                <td>{{ z }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    </tbody>
+                                                    <tfoot>
+                                                    <tr>
+                                                        <td colspan="3">
+                                                        </td>
+                                                    </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="col-sm-12 col-md-12 col-lg-6" style="border-left: 1px solid #ddd;">
+                                            <div class="container" style="float:left;background: #fff; min-width: 500px;">
+                                                <h4>{% trans "全球统计" %}</h4>
+                                                <div id="vector-map" class="vector-map"></div>
+                                                <div id="heat-fill">
+                                                    <span class="fill-a">0</span>
+                                                    <span class="fill-b">{{ country_max }}</span>
+                                                </div>
+                                            </div>
+                                            <table class="table table-striped table-hover table-condensed">
+                                                <thead>
+                                                <tr>
+                                                    <th>{% trans "国家" %}</th>
+                                                    <th>{% trans "总打开次数" %}</th>
+                                                    <th>{% trans "唯一打开次数" %}</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if country_sort %}
+                                                    {% for k, v, z in country_sort %}
+                                                        <tr>
+                                                            <td><a href="javascript:void(0);">{{ k }}</a></td>
+                                                            <td>{{ v }}</td>
+                                                            <td>{{ z }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <td colspan="3">
+                                                    </td>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if link_objs %}
+                            <div style="clear: both; height: 20px;"></div>
+                            <div class="jarviswidget jarviswidget-color-darken" role="widget">
+                                <header role="heading">
+                                    <h2>{% trans "点击链接" %}</h2>
+                                </header>
+                                <div role="content">
+                                    <div class="widget-body no-padding">
+                                        <form class="form-horizontal">
+                                            <div id="dt_basic_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                                <table id="dt_basic" class="table table-striped table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="dt_basic_info" style="width: 100%;" width="100%">
+                                                    <thead>
+                                                    <tr role="row">
+                                                        <th style="width: 6%">{% trans "序号" %}</th>
+                                                        <th style="width:48%;">{% trans "链接" %}</th>
+                                                        <th style="width: 8%">{% trans "唯一点击数" %}</th>
+                                                        <th style="width: 8%">{% trans "总点击数" %}</th>
+                                                        <th style="width: 16%">{% trans "首次点击时间" %}</th>
+                                                        <th style="width: 16%">{% trans "最后点击时间" %}</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for obj in link_objs %}
+                                                        <tr role="row" class="{% cycle 'odd' 'even' %}">
+                                                            <td style="width: 6%">{{ forloop.counter }}</td>
+                                                            <td style="width:48%;">{{ obj.link }}</td>
+                                                            <td style="width: 8%">{{ obj.click_unique }}</td>
+                                                            <td style="width: 8%">{{ obj.click_total }}</td>
+                                                            <td style="width: 16%">{{ obj.click_first|show_click_datetime }}</td>
+                                                            <td style="width: 16%">{{ obj.click_last|show_click_datetime }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                <div class="dt-toolbar-footer">
+                                                    <div class="col-sm-12 col-xs-12">
+                                                        <div class="dataTables_info" id="dt_basic2_info" role="status" aria-live="polite">{% trans "从" %} 1 {% trans "到" %} {{ link_objs.count }} {% trans "总计" %}: {{ link_objs.count }} {% trans "条记录" %}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                </article>
+            </div>
+        </section>
+
+    </div>
+
+</div>
+
+</body>
+</html>

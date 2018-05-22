@@ -1,0 +1,12 @@
+<b>用户状态:</b>
+                        {% for s in customer_status %}
+                        {% if s.status == 'disabled' %}已禁用{% else %}{% if s.status == 'normal' %}正常{% else %}{% if s.status == 'expiring' %}即将过期{% else %}已过期{% endif %}{% endif %}{% endif %}
+                        :<a href="Javascript: QuerySet('status', '{{ s.status }}')">{{ s.id__count }}</a>
+                        {% endfor %}
+                        <b>用户类型:</b>
+                        中继:<a href="Javascript: QuerySet('type', 'relay')">{{ relay_count }}</a>
+                        网关:<a href="Javascript: QuerySet('type', 'collect')">{{ collect_count }}</a>
+                        全部:<a href="Javascript: QuerySet('type', 'all')">{{ all_count }}</a>
+                        <b> </b>
+                        总共用户:
+                        {{ customers.count }}

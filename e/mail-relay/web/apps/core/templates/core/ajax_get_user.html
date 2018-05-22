@@ -1,0 +1,16 @@
+                            <td>{{ g.id }}</td>
+                            <td class="sorting_1"><a href="{% url 'user_modify' g.id %}">{{ g.username }}</a></td>
+                            <td>{{ g.email }}</td>
+                            <td>{{ g.first_name }}</td>
+                            <td>{{ g.last_name }}</td>
+                            <td>{{ g.groups.all }}</td>
+<td>{{ g.is_active }}</td>
+<td>{{ g.is_superuser }}</td>
+<td>{{ g.date_joined|date:'Y-m-d H:i' }}</td>
+<td>{{ g.last_login|date:'Y-m-d H:i' }}</td>
+                            <td>
+                                <a type="button" class="btn btn-outline btn-default btn-xs" href="{% url 'user_modify' g.id %}">修改</a>
+                                <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'grant_permission' %}?u_id={{g.id}}">授权</a>
+                                <button type="button" class="btn btn-outline btn-danger btn-xs" onclick="Delete('{{ g.id }}', '{{ g.username }}')">删除</button>
+                            </td>
+

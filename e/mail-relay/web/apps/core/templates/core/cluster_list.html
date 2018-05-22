@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mail_tags %}
+{% block header %}SMTP服务器列表{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <a href="{% url 'cluster_add' %}" style="margin-bottom: 10px;" class="btn btn-primary pull-right">添加SMTP服务器</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                SMTP服务器列表
+                <div class="pull-right">
+                    <b>总共:</b>
+                    {{ clusters.count }}
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <form id="id_form" action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" id="cluster_id" name="cluster_id" />
+                        <input id="action" name="action" type="hidden" />
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>主机名</th>
+                                <th>IP</th>
+                                <th>密码</th>
+                                <th>IP数</th>
+                                <th width="18%">当天发送详情</th>
+                                <th>传输状态</th>
+                                <th width="15%">发送状态</th>
+                                <th>状态</th>
+                                <th>最后部署时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            {% for e in clusters %}
+                            <tr class="{% cycle 'odd' 'even' %}" id="server_{{ e.id }}">
+                                <td>{{ e.id }}</td>
+                                <td class="sorting_1"><a href="{% url 'cluster_modify' e.id %}">{{ e.name }}</a><br/>{{ e.description }}</td>
+                                <td class=" ">{{ e.ip }}</td>
+                                <td class=" ">{{ e.password }}</td>
+                                <td class=" ">{{ e.cluster.count }}</td>
+                                {% autoescape off %}
+                                <td>{{ e|get_send_info:"cluster" }}</td>
+                                <td>{{ e|get_dispatch_status }}</td>
+                                <td><span id="smtp_status_{{ e.id }}"><img src="{% static 'img/loading.gif' %}" /></span></td>
+                                {% endautoescape %}
+                                <td class="{% if e.deploy_status == 'fail' %}danger{% elif e.deploy_status == 'success' %}success{% else %}warning{% endif %}">
+                                    {{ e.get_deploy_status_display }}
+                                </td>
+                                <td class=" ">{{ e.deploy_dtm|date:'Y-m-d H:i' }}</td>
+                                <td class="center ">
+                                    <a class="btn btn-outline btn-default btn-xs" href="{% url 'cluster_modify' e.id %}">修改</a>
+                                    <a class="btn btn-outline btn-default btn-xs" href="{% url 'ip_list' e.id %}">IP管理</a>
+                                    {% if e.deploy_status == 'fail' or e.deploy_status == 'waiting' or e.deploy_status == 'helo_waiting' %}
+                                    <button type="button" class="btn btn-outline btn-primary btn-xs"
+                                            onclick="javascript:deploy({{ e.id }});">部署
+                                    </button>
+                                    {% endif %}
+                                    {% ifnotequal e.deploy_status 'normal'  %}
+                                    <a class="btn btn-outline btn-primary btn-xs" target="_blank" href="/admin/django_logtail/log/?log={{ e.id }}">部署日志</a>
+                                    {% endifnotequal %}
+
+                                    <button type="button" class="btn btn-outline btn-danger btn-xs"
+                                            onclick="Delete('{{ e.id }}', '{{ e.name }}')">删除</button>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+{% endblock %}
+{% block css-block %}
+<link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block js-block %}
+<script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+
+<script>
+            $(function () {
+
+                $('#dataTables-example').dataTable({
+                    "iDisplayLength": 25,
+                    "aaSorting": [
+                        [ 0, "desc" ]
+                    ],
+                    "oLanguage": {
+                    "sLengthMenu": "显示 _MENU_ 每页",
+                    "sZeroRecords": "对不起! 信息筛选结果为空!",
+                    "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                    "sInfoEmpty": "总计: 0 条记录",
+                    "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                    "sSearch": "搜索: ",
+                    "oPaginate": {
+                           "sFirst":    "第一页",
+                           "sPrevious": " 上一页 ",
+                           "sNext":     " 下一页 ",
+                           "sLast":     " 最后一页 "
+                       }
+                }
+                });
+
+            {% for c in clusters %}
+                $.getJSON("{% url 'ajax_get_smtp_status' %}?id={{ c.id }}",  function(data){
+                    $('#smtp_status_{{ c.id }}').html(data.msg);
+                });
+            {%  endfor %}
+            });
+
+        function Delete(id, cluster){
+            var str = '是否要删除客户 "%s"？';
+            str = str.replace(/%s/, cluster);
+            if(confirm(str)) {
+                $('#cluster_id').val(id);
+                $('#action').val('delete');
+                $('#id_form').submit();
+            }
+            return;
+        }
+
+        function deploy(id)
+        {
+            $('#cluster_id').val(id);
+            $('#action').val('deploy');
+            $('#id_form').submit();
+        }
+
+    </script>
+{% endblock %}

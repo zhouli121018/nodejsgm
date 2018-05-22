@@ -1,0 +1,125 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap %}
+{% block title %}{% trans "联系人分类" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "联系人管理" %}</li><li>
+    {% if ml_maillist_flag == 1 %}
+        {% trans "添加联系人分类" %}
+    {% else %}
+        {% trans "修改联系人分类" %}
+    {% endif %}
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-pencil-square-o fa-fw "></i>
+                {% if ml_maillist_flag == 1 %}
+                    {% trans "添加联系人分类" %}
+                {% else %}
+                    {% trans "修改联系人分类" %}
+                {% endif %}
+            </h1>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6">
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <section id="widget-grid" class="">
+
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-hand-o-right"></i></span>
+                        <h2>{% trans "分类信息" %}</h2>
+                    </header>
+                    <div>
+                        <div class="jarviswidget-editbox"></div>
+                        <div class="widget-body">
+                            <form role="form" action="" method="post" class="form-horizontal">
+                                {% csrf_token %}
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-6">
+                                            <div class="margin-left-20">
+                                                {{ form|bootstrap }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-6">
+                                            <div class="margin-left-20">
+                                                <input class=" form-control" id="id_status" name="status" value="{% if is_allow_export %}allow{% else %}notallow{% endif %}" type="hidden">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="margin-left-20">
+                                                {% if is_allow_export %}
+                                                    <button type="submit" class="btn btn-primary pull-left margin-right-5">{% trans "下一步：添加地址" %}</button>
+                                                {% else %}
+                                                    <button type="submit" class="btn btn-primary pull-left margin-right-5">{% trans "保存" %}</button>
+                                                {% endif %}
+                                                <button type="button" class="btn btn-default pull-left" onclick="location.href='{% url "ml_maillist" %}?isvalid=1'">{% trans "取消" %}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        {% if list_id %}
+            <div class="row">
+                <article class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa fa-hand-o-right"></i> </span>
+                            <h2>{% trans "订阅插件代码" %}</h2>
+                        </header>
+                        <div>
+                            <div class="jarviswidget-editbox"></div>
+                            <div class="widget-body">
+                                <form role="form" action="" method="post" class="form-horizontal">
+                                    <fieldset>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-12 col-md-6">
+                                                <div class="margin-left-20">
+                                                    <div class="form-group">
+                                                        <div class=" ">
+                                                            <textarea class=" form-control" cols="40" id="id_description" name="description" rows="7"><iframe allowtransparency="true" frameborder="0" width="320" height="107" scrolling="no" src="{{ edm_web_url }}/address/subscribe/add/?id={{request.user.id}},{{ list_id }}"></iframe>
+
+英文订阅页面:
+<iframe allowtransparency="true" frameborder="0" width="320" height="107" scrolling="no" src="{{ edm_web_url }}/address/subscribe/add/?id={{request.user.id}},{{ list_id }}&language=en"></iframe>
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        {% endif %}
+
+    </section>
+{% endblock %}

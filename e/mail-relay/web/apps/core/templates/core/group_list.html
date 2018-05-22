@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mail_tags %}
+{% block header %}用户组{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <a href="{% url 'group_add' %}" style="margin-bottom: 10px;" class="btn btn-primary pull-right">添加用户组</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                用户组列表
+                <div class="pull-right">
+                    <b>总共:</b>
+                    {{ groups.count }}
+                </div>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                    <form id="id_form" action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" id="group_id" name="id" />
+                        <input id="action" name="action" type="hidden" />
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>组名</th>
+                                <th>用户数</th>
+                                <th>权限数</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            {% for g in groups %}
+                            <tr class="{% cycle 'odd' 'even' %}">
+                                <td>{{ g.id }}</td>
+                                <td class="sorting_1"><a href="{% url 'group_modify' g.id %}">{{ g.name }}</a></td>
+                                <td><a href="{%url 'user_list' %}?group_id={{g.id}}">{{ g.user_set.count }}</a></td>
+                                <td>{{ g.permissions.count }}</td>
+                                <td>
+                                    <a type="button" class="btn btn-outline btn-default btn-xs" href="{% url 'group_modify' g.id %}">修改</a>
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'grant_permission' %}?g_id={{g.id}}">授权</a>
+                                    <button type="button" class="btn btn-outline btn-danger btn-xs" onclick="Delete('{{ g.id }}', '{{ g.name }}')">删除</button>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+{% endblock %}
+{% block css-block %}
+<link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block js-block %}
+<script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+
+<script>
+            $(function () {
+
+                $('#dataTables-example').dataTable({
+                    "iDisplayLength": 25,
+                    "aaSorting": [
+                        [ 0, "desc" ]
+                    ],
+                    "oLanguage": {
+                    "sLengthMenu": "显示 _MENU_ 每页",
+                    "sZeroRecords": "对不起! 信息筛选结果为空!",
+                    "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                    "sInfoEmpty": "总计: 0 条记录",
+                    "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                    "sSearch": "搜索: ",
+                    "oPaginate": {
+                           "sFirst":    "第一页",
+                           "sPrevious": " 上一页 ",
+                           "sNext":     " 下一页 ",
+                           "sLast":     " 最后一页 "
+                       }
+                }
+                });
+            });
+
+        function Delete(id, group){
+            var str = '是否要删除用户组 "%s"？';
+            str = str.replace(/%s/, group);
+            if(confirm(str)) {
+                $('#group_id').val(id);
+                $('#action').val('delete');
+                $('#id_form').submit();
+            }
+            return;
+        }
+
+        function deploy(id)
+        {
+            $('#group_id').val(id);
+            $('#action').val('deploy');
+            $('#id_form').submit();
+        }
+
+    </script>
+{% endblock %}

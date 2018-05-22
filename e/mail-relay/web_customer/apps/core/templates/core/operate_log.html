@@ -1,0 +1,116 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "操作日志" %}{% endblock %}
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'assets/css/jquery-ui.min.css' %}" />
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="active">{% trans "操作日志" %}</li>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-6">
+
+            <div class="page-header">
+                <h1>
+                    {% trans "操作日志列表" %}
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-12">
+            <div class="pull-right" style="margin-right:30px;">
+                <form method="get" action="">
+                    {{ form }}
+                    <button type="submit" class="btn btn-primary">{% trans "查询" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="hr hr-18 dotted hr-double"></div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <table id="ajax-table" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th width="4%">{% trans '序号' %}</th>
+                    <th width="8%">{% trans '操作类型' %}</th>
+                    <th width="10%">{% trans '日期' %}</th>
+                    <th width="40%">{% trans '操作对象/说明' %}</th>
+                    <th width="10%">{% trans '操作人' %}</th>
+                    <th width="18%">IP</th>
+                </tr>
+                </thead>
+            </table>
+        </div><!-- /.span -->
+    </div><!-- /.row -->
+{% endblock %}
+{% block my_jsblock %}
+    <script src="{% static 'assets/js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/dataTables.tableTools.min.js' %}"></script>
+    <script src="{% static 'assets/js/dataTables.colVis.min.js' %}"></script>
+    <script src="{% static 'js/Jquery.Query.js' %}"></script>
+    <script>
+        $(function () {
+
+            $('.dateinput').datepicker({
+                dateFormat: "yy-mm-dd",
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                minView: 2,
+                pickerPosition: "bottom-left"
+
+            });
+
+            var ajax_url = "{% url 'ajax_operate_log' %}" + window.location.search;
+
+
+            ip_table = $('#ajax-table').dataTable({
+                //"columnDefs": [ { "targets": [ 0 ], "visible": false, "searchable": false }],
+                "iDisplayLength": 100,
+                "processing": true,
+                "serverSide": true,
+                "lengthMenu": [[20, 50, 100, 200, 500], [20, 50, 100, 200, 500]],
+                "ajax": ajax_url,
+
+                "aaSorting": [
+                    [ 2, "desc" ]
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "{% blocktrans %}显示 _MENU_ 每页{% endblocktrans %}",
+                    "sZeroRecords": "{% blocktrans %}对不起! 信息筛选结果为空!{% endblocktrans %}",
+                    "sInfo": "{% blocktrans %}从 _START_ 到 _END_ 总计: _TOTAL_ 条记录{% endblocktrans %}",
+                    "sInfoEmpty": "{% blocktrans %}总计: 0 条记录{% endblocktrans %}",
+                    "sInfoFiltered": "{% blocktrans %}(从 _MAX_ 条记录筛选出){% endblocktrans %}",
+                    "sSearch": "{% blocktrans %}搜索: {% endblocktrans %}",
+                    "oPaginate": {
+                        "sFirst":    "{% blocktrans %}第一页{% endblocktrans %}",
+                        "sPrevious": " {% blocktrans %}上一页 {% endblocktrans %}",
+                        "sNext":     " {% blocktrans %}下一页 {% endblocktrans %}",
+                        "sLast":     " {% blocktrans %}最后一页 {% endblocktrans %}"
+                    }
+                }
+            });
+
+
+        });
+        function QuerySet(key, value){
+            window.location.href = jQuery.query.set(key, value);
+        }
+
+    </script>
+
+{% endblock %}

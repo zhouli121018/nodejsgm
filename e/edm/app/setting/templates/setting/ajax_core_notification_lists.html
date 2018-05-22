@@ -1,0 +1,11 @@
+{% load i18n %}
+<td>{{ number }}</td>
+<td>{{ d.get_type_display }}</td>
+<td>{{ d.subject|default_if_none:"" }}</td>
+{% autoescape off %}
+<td>{{ d.content|default_if_none:"" }}</td>
+{% endautoescape %}
+<td>{{ d.created|date:"Y-m-d H:i:s" }}</td>
+<td>
+    <a href="{% url 'core_notification_log' d.id %}" class="btn btn-outline btn-primary btn-sm">{% trans '查看详情' %}</a>
+</td>

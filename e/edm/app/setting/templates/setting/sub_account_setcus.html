@@ -1,0 +1,121 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans '专属客服设置' %} ({% trans '子账户' %}：{{ user_obj.username }})</h4>
+</div>
+
+<form role="form" action="{% url 'sub_account_setcus' user_id %}" method="post" id="id_AccountSetForm">
+    {% csrf_token %}
+    <div class="modal-body padding-10 margin-bottom-10">
+        <div class="form-horizontal">
+            <fieldset>
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{% trans '联系人' %}</label>
+                            <div class="col-md-6 input-group">
+                                <input class="form-control" id="id_fullname" name="fullname" type="text" maxlength="50" value="{{ user_obj.sub_accout_manager.fullname|default_if_none:'' }}">
+                            </div>
+                            <div id="id_fullname_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{% trans '手机号码' %}</label>
+                            <div class="col-md-6 input-group">
+                                <input class="form-control" id="id_mobile" name="mobile" type="text" maxlength="20" value="{{ user_obj.sub_accout_manager.mobile|default_if_none:'' }}">
+                            </div>
+                            <div id="id_mobile_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{% trans 'QQ' %}</label>
+                            <div class="col-md-6 input-group">
+                                <input class="form-control" id="id_im" name="im" type="text" maxlength="50" value="{{ user_obj.sub_accout_manager.im|default_if_none:'' }}">
+                            </div>
+                            <div id="id_im_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </fieldset>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input value="{% trans '确定' %}" onclick="checkAccountForm()" type="button" class="btn btn-primary" id="id_save_button">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+
+    $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+    function checkAccountForm(){
+        $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+
+        var fullname = $("#id_fullname").val();
+        var mobile = $("#id_mobile").val();
+        var qq = $("#id_im").val();
+
+        if ( fullname.replace(/^ +| +$/g, '')=='' ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_fullname_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        }
+
+        if ( mobile.replace(/^ +| +$/g, '')=='' ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_mobile_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        }
+
+        if ( !checkMobile(mobile) ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_mobile_error").removeClass('display-none').html('{% trans '请输入正确的手机号' %}');
+            return false;
+        }
+
+        if ( qq.replace(/^ +| +$/g, '')=='' ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_im_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        }
+
+        $('#id_AccountSetForm').submit();
+    }
+
+    function checkEmail(field){
+        var expression = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        var obj = new RegExp(expression);
+        if(obj.test(field)==true){
+            return true;
+        }else{
+            return false;
+        }
+    };
+
+    function checkMobile(text){
+        var _emp=/^\s*|\s*$/g;
+        text=text.replace(_emp,"");
+        var _d=/^1[3578][01379]\d{8}$/g;
+        var _l=/^1[34578][01256]\d{8}$/g;
+        var _y=/^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/g;
+        if(_d.test(text)){
+            return true;
+        } else if(_l.test(text)){
+            return true;
+        }else if(_y.test(text)){
+            return true;
+        }
+        return false;
+    }
+
+</script>

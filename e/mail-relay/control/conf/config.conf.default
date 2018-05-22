@@ -1,0 +1,41 @@
+## 邮件接收程序相关配置
+[esmtpd]
+listen_ip = 0.0.0.0
+listen_port = 2525
+log_level = info
+user = umail
+timeout = 3
+
+[redis]
+host                = localhost
+port                = 6379
+db                  = 0
+
+[log]
+server_address = 0.0.0.0
+server_port = 10000
+
+#全局变量
+[global]
+#运行程序的用户名
+user = comingchina
+
+[daily_cron]
+#运行程序的用户名
+user = root
+
+[postfix_esmtpd]
+listen_ip = 127.0.0.1
+listen_port = 10027
+log_level = info
+user = umail
+timeout = 600
+
+[clamav]
+sock = /var/run/clamav/clamd.sock
+
+[review_help]
+mode = server
+token = xxxxxxxxx
+server_ip = 127.0.0.1
+server_port = 10000

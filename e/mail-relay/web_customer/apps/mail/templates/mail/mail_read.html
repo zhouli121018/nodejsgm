@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load i18n %}
+{% load static %}
+{% load mail_tags %}
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{{ m.subject }}</title>
+    <link href="{% static 'css/mod_mail.css' %}" rel="stylesheet">
+</head>
+<body style="overflow: auto;" scroll="yes">
+
+<div id="mailReadHeader" class="mail-read-header" style="overflow-x:hidden;{% if mail_obj.check_result == 'auto_reject' %}{% if mail_obj.review_result == 'pass_undo' %}background-color:#C0D9D9;{% endif %}{% if mail_obj.dspam_study %}background-color:#A8A8A8;{% endif %}{% endif %}">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    {% if request.user|can_view_msg  %}
+        <a href="{% url 'mail_read' %}?id={{mail_obj.date_id}}&view_source=1" target="_blank" class="btn btn-primary">{% trans "查看邮件头" %}</a>
+        <a href="{% url 'mail_read' %}?id={{mail_obj.date_id}}&export=1" class="btn btn-primary">{% trans "下载邮件" %}</a>
+    {% endif %}
+    <div id="header-subject"><h1><b>
+        {% autoescape off %}
+        {{ subject }}
+        {% endautoescape %}
+    </b></h1></div>
+    <div id="mail-more-info" class="mail-more-info" style="display:;">
+        <div id="customer">
+            <span>{% trans "公司名称" %}:</span> &nbsp;
+            <span> <strong>{{ mail_obj.customer }}</strong> </span>
+        </div>
+        <div>
+            <span>{% trans "入站时间" %}:</span> &nbsp;
+            <span> <strong>{{ mail_obj.created|date:"Y-m-d H:i:s" }}</strong> </span>
+        </div>
+        <div>
+            <span>{% trans "客户端IP" %}:</span> &nbsp;
+            <span> <strong>{{ mail_obj.client_ip }}</strong> </span>
+        </div>
+        <div>
+            <span>{% trans "服务器地址" %}:</span> &nbsp;
+            <span> <strong>{{ mail_obj.get_server_id_display }}</strong> </span>
+        </div>
+        <div>
+            <span>{% trans "邮件状态" %}:</span> &nbsp;
+            <span> <strong>{{ mail_obj.get_state_display }}</strong>
+                <span id="review" style="margin-left:10px;">
+                    {% if mail_obj.state == 'finished' or mail_obj.state == 'fail_finished' %}
+                    <span id="resend_{{ mail_obj.date_id }}">
+                    <button type="button" class="btn btn-primary btn-xs" onClick="ReSend('{{ mail_obj.date_id }}');">{% trans "再次投递邮件" %}</button>
+                    </span>
+                    {% endif %}
+
+                {% if mail_obj.state == 'review' %}
+                    <button type="button" class="btn btn-mini btn-primary" onClick="Review('{{ mail_obj.date_id }}', 'c_pass');">{% trans "放行" %}</button>
+                    <button type="button" class="btn btn-mini btn-danger" onClick="Review('{{ mail_obj.date_id }}', 'c_reject');">{% trans "拒绝" %}</button>
+                {% endif %}
+                    {% if mail_obj.state == 'reject' or mail_obj.state == 'c_reject' %}
+                        {% if mail_obj.is_exists and mail_obj.can_undo %}
+                            <button type="button" class="btn btn-mini btn-primary" onClick="Review('{{ mail_obj.date_id }}', 'c_pass_undo');">{% trans "误判放行" %}</button>
+                        {% endif %}
+                    {% endif %}
+                </span>
+                </span>
+        </div>
+        <div>
+            <span>{% trans "系统分析结果" %}:</span> &nbsp;
+            <span> <strong>{{ mail_obj.get_check_result_display|default_if_none:"" }}</strong></span>
+        </div>
+        <div>
+            <span>From:</span> &nbsp;
+            <span> <strong>{% autoescape off %}{{ mail_obj.mail_from }}{% endautoescape %}</strong> </span>
+        </div>
+
+        <div>
+            <span>To:</span> &nbsp;
+            <span> <strong>{{ mail_obj.mail_to }}</strong> </span>
+        </div>
+        <div id="header-from">
+            <span>{% trans "发件人" %}:</span>
+            &nbsp;
+            <span class="grayTxt" id="mailAddress">
+                <strong id="mailName"> {% autoescape off %} {{ m.from }} {% endautoescape %}</strong>
+            </span>
+        </div>
+        <div id="header-date">
+            <span>{% trans "邮件时间" %}:</span>
+            &nbsp;
+            <span style="margin-left:-6px;">{{ m.date|date:"Y-m-d H:i:s" }}</span>
+        </div>
+        <div id="header-to">
+            <span>{% trans "收件人" %}:</span> &nbsp;
+            <span class="grayTxt">{{ m.to }}</span>
+        </div>
+        {% if mail_obj.return_code %}
+            <div>
+                <span>{% trans "发送IP" %}:</span> &nbsp;
+                <span>{{ mail_obj.deliver_ip }}</span>
+            </div>
+            <div>
+                <span>{% trans "发送代码" %}:</span> &nbsp;
+                <span>{{ mail_obj.return_code }}</span>
+            </div>
+            <div>
+                <span>{% trans "发送时间" %}:</span> &nbsp;
+                <span>{{ mail_obj.deliver_time }}</span>
+            </div>
+            <div>
+                <span>{% trans "发送详情" %}:</span> &nbsp;
+                <span>{{ mail_obj.return_message_display }}</span>
+            </div>
+            <div>
+                <span>{% trans "垃圾举报" %}:</span> &nbsp;
+                {% if mail_obj.customer_report %}<span class="text-danger">{% trans "已举报垃圾邮件" %}</span>{% else %}
+                    <span id="report" class="text-danger">
+                    <button class="btn btn-danger btn-mini" onclick="Report('{{mail_obj.date_id}}');">{% trans "这是一封垃圾邮件" %}</button>
+                </span>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if request.user|can_view_msg %}
+            {% if m.real_attachments  %}
+                <div id="header-attach">
+                    <span>{% trans "附&nbsp;&nbsp;&nbsp;件" %}:</span>
+                    &nbsp;
+            <span style="margin-left: -8px;">
+                {{ m.real_attachments|length }}{% trans "个" %}(<span class="grayTxt"> {{ m.real_attachments|list_sum:"size"|filesizeformat }} </span> )
+                {% for attach in m.real_attachments %}
+                    <b class="icon"></b>
+                    ({{ attach.decode_name }}
+                    <span class="grayTxt" style="margin-left: 20px">
+                      {{ attach.size|filesizeformat }}
+                    </span>)
+                {% endfor %}
+                <a hidefocus="hidefocus" id="view-attachs" title="{% trans "查看全部附件" %}" class="link-2" href="#mail-attach-box">{% trans "查看全部附件" %}</a>
+            </span>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<div class="header-split"></div>
+{% if request.user|can_view_msg %}
+    <div id="mailReadBody" class="mail-read-body">
+        <iframe width="100%" id="mail-iframe" onload="bodyS(this);autoH(this);" height="600px" frameborder="0" src="{% url 'mail_read' %}?id={{mail_obj.date_id}}&view_body=1"></iframe>
+    </div>
+
+    {% if m.real_attachments %}
+        <div id="mail-attach-box" class="mail-attach-box">
+            <div style="" id="mail-attach-head" class="mail-attach-head">
+                <strong>{% trans "附&nbsp;&nbsp;&nbsp;件" %}({{ m.real_attachments|length }}{% trans "个" %})({{ m.real_attachments|list_sum:"size"|filesizeformat }})</strong>
+            </div>
+            <div class="mail-attach-body">
+                <div class="mail-attach-title">
+                    <h3>{% trans "普通附件" %}</h3>
+                </div>
+                <table>
+                    <tbody>
+                    {% for attach in m.real_attachments %}
+                        <tr class="linkStyle04">
+                            <td style="padding:0.5em 1em;" width="210">
+                                <div class="attach-img" style="float:left;">
+                                    <b class="icon icon-large icon-large-jpg"></b>
+                                </div>
+                                <div style="width:150px;margin-right: 15px;overflow-x: hidden;text-overflow: ellipsis;white-space:nowrap;float:left;">
+                                    <a href="{% url 'mail_read' %}?id={{mail_obj.date_id}}&aid={{forloop.counter0}}&download=1" target="_blank" title="{{attach.decode_name}}" style="color:black;">{{attach.decode_name}}</a>
+                                </div>
+                            </td>
+                            <td style="padding:0.5em 1em;">
+                                <span class="grayTxt" style="margin-left: 20px"> {{ attach.size|filesizeformat }} </span>
+                            </td>
+                            <td style="padding:0.5em 1em;">
+                                <a href="{% url 'mail_read' %}?id={{mail_obj.date_id}}&aid={{forloop.counter0}}&download=1" target="_blank">{% trans "下载附件" %}</a>
+                                {% if attach.decode_name|preview_check %}
+                                    - <a href="{% url 'mail_read' %}?id={{mail_obj.date_id}}&aid={{forloop.counter0}}" target="_blank">{% trans "预览" %}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}
+<div class="modal-footer" id="modal-footer">
+    <button type="button" id="modal_close" class="btn btn-default" data-dismiss="modal">Close</button>
+</div>
+<script>
+    function Review(id, result){
+        var loading_img = "{% static 'img/loading.gif' %}";
+        $('#review').html('<img src="' + loading_img + '"></img>');
+        $.getJSON("{% url 'mail_review' %}?id=" + id + "&result=" + result + "&date={{date}}",  function(data){
+            $('#review').html("<span class='text-danger'>" + data.msg + "</span>");
+        });
+        return;
+    }
+    function Report(id){
+        var loading_img = "{% static 'img/loading.gif' %}";
+        $('#report').html('<img src="' + loading_img + '"></img>');
+        $.getJSON("{% url 'mail_customer_report' %}?id=" + id,  function(data){
+            $('#report').html("<span class='text-danger'>" + data.msg + "</span>");
+        });
+        return;
+    }
+</script>
+
+</body></html>

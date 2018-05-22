@@ -1,0 +1,116 @@
+{% load i18n %}
+{% load tagging_tags %}
+{% load address_tags %}
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+<td>{{ d.subject|default_if_none:"" }}
+    {% if is_not_share %} {% else %}
+        <br/><strong class="text-danger">（{% trans "共享地址池" %}）</strong>
+    {% endif %}
+</td>
+<td>
+    {% if d.is_allow_export %}
+        {{ d.description|default_if_none:"" }}
+    {% else %}
+        <span class="badge self-bg-color-greenLight">{% trans "租用数据" %}</span>
+        <br> <span class="margin-top-10">{{ d.description|default_if_none:"" }}</span>
+    {% endif %}
+</td>
+{% if request.user.trigger_set.count %}
+    <td>{% for t in d|get_trigger_for_list:request.user %}
+        <a class="badge self-bg-color-greenLight" href="{% url 'trigger_modify' t.id %}">{{ t }}</a>
+    {% endfor %}
+    </td>
+{% endif %}
+<td>
+    {{ d.created|date:"Y-m-d H:i" }}
+</td>
+<td>
+    <a type="button" href="/address/subscribe/{{ d.id }}/" target="_blank" title="{% trans "查看联系人分类邮箱列表" %}">{{ d.count_real }}</a>
+</td>
+<td>
+    <a type="button" href="/address/subscribe/{{ d.id }}/?is_subscribe=2" target="_blank" title="{% trans "查看订阅用户列表" %}">{{ d.count_subscriber }}</a>
+</td>
+<td>
+    <div id="id_unsubscriber_count_{{ d.id }}">
+        <img src="/static/img/loading.gif" />
+    </div>
+    <script>
+        $(function(){
+            $.getJSON("{% url 'ajax_maillist_count' d.id %}?status=3",  function(data){
+                $('#id_unsubscriber_count_{{ d.id }}').html(data.info);
+            });
+        })
+    </script>
+</td>
+<td>
+    <a type="button" href="/address/subscribe/{{ d.id }}/?is_subscribe=3" target="_blank" title="{% trans "查看投诉数量" %}">{{ d.count_complaint }}</a>
+</td>
+<td>{{ d.get_invalid_rate }}</td>
+<td>
+    {% if d.used_count %}
+        （<span title="{% trans '使用次数' %}">{{ d.used_count }}</span>，
+        <span title="{% trans '最后使用时间' %}">{{ d.last_used|date:"Y-m-d H:i" }}</span>）
+    {% endif %}
+</td>
+<td>
+    {% if d.is_importing %} <span class="badge bg-color-orange">{% trans "是" %}</span> {% else %} <span class="badge">{% trans "否" %}</span> {% endif %}
+</td>
+<td>
+    {% if is_not_share %}
+        <a type="button" href="{% url 'ml_subscribe_list' d.id %}" target="_blank">{% trans "查看地址" %}</a>
+        {% if d.isvalid and d.is_allow_export %}
+            -
+            <a type="button" href="{% url 'ml_maillist_maintain_address' d.id %}">{% trans "添加地址" %}</a>
+        {% endif %}
+        <!--
+    <a type="button" href="Javascript: SetStatus({{ d.id }}, '-1')">{% trans "清空地址" %}</a>-->
+    {% else %}
+        <a type="button" href="{% url 'ml_subscribe_list' d.id %}" target="_blank">{% trans "查看地址" %}</a>
+    {% endif %}
+</td>
+<td>
+    {% if is_not_share %}
+        {% if d.isvalid %}
+            <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'ml_maillist_modify' d.id %}">{% trans "修改" %}</a>
+            {% if d.is_allow_export %}
+                <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: SetStatus({{ d.id }}, '-2')">{% trans "删除" %}</a>
+            {% endif %}
+        {% else %}
+            <a type="button" class="btn btn-outline btn-success btn-xs" href="Javascript: SetStatus({{ d.id }}, '-3')">{% trans "恢复地址池" %}</a>
+        {% endif %}
+    {% else %}
+        <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: SetStatus({{ d.id }}, '-99')">{% trans "删除共享" %}</a>
+    {% endif %}
+</td>
+{% if request.session.is_admin %}
+    <td>
+        {% if is_not_share %}
+            {% if d.is_allow_export %}
+                <a data-toggle="modal" data-target="#tagTemplateModal" data-whatever="" class="btn btn-primary pull-left" href="{% url 'tag_customer' %}?tag_type=address&obj_id={{ d.id }}">标签</a>
+                <span id="id_tag_info_address{{ d.id }}" class="pull-right margin-top-10 margin-right-10">
+            {% tags_for_object d as tag_list %}
+                    {% for t in tag_list %}
+                        <a title="删除标签{{ t }}" href="Javascript:DeleteTemplateTag('{{ t }}', '{{ t.id }}', 'address', '{{ d.id }}')" class="badge bg-color-purple">{{ t.get_name }}</a>
+                    {% endfor %}
+            </span>
+            {% endif %}
+        {% endif %}
+    </td>
+    <td>
+        {% if is_not_share %}
+            {% if d.is_allow_export %}
+                {% if d.status == '1' %}
+                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="Javascript: SetStatus({{ d.id }}, '20')">预入库</a>
+                {% elif d.status == '2' %}
+                    <a type="button" class="btn btn-outline btn-primary btn-xs disabled" href="#">预入库</a>
+                {% elif d.status == '3' %}
+                    <span class="text-primary">正在入库</span>
+                {% elif d.status == '4' %}
+                    <span class="text-success" title="上次入库量：{{ d.get_log_count }}">已入库({{ d.get_log_time|date:"Ymd" }})</span>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </td>
+{% endif %}
+

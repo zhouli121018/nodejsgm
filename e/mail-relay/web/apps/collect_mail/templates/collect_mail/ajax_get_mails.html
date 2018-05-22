@@ -1,0 +1,98 @@
+{% load collect_mail_tags %}
+{% load mail_tags %}
+
+<td>{{ m.date_id }}</td>
+        {% if request.GET.show == 'reject' %}
+
+<td>{{ m.sender_name }}</td>
+<td><a data-toggle="modal" href="{% url 'collect_mail_read' %}?id={{ m.date_id }}&modal=1" data-target="#myModal" data-whatever="{{ m.date_id }}">{{ m.subject|truncatechars:60|default:"无" }}</a></td>
+{% with m.attach_name|split_tag:"----" as res %}
+    <td>{{ res.0 }}</td>
+    <td>{{ res.1 }}</td>
+{% endwith %}
+<td>{{ m.get_check_result_display }}</td>
+
+{% else %}
+
+<td><a title="{{m.customer}}" href="{% url 'customer_list' %}?customer_id={{ m.customer.id }}">{{ m.customer|truncatechars:13 }}</a></td>
+<td><div class="tooltip-demo"><span data-original-title="{{ m.mail_from }} {{ m.mail_to }}" data-toggle="tooltip" data-placement="top" title="">{{ m.mail_from|truncatechars:30 }}{% if request.GET.show == 'review' and m.sender_name %}({{ m.sender_name|truncatechars:30 }}){% endif %}<br/>{{ m.mail_to|truncatechars:20 }}</span></div></td>
+
+<td><a data-toggle="modal" class="review_qtip" qtip_href="{% url 'collect_mail_read' %}?id={{ m.date_id }}&view_body=1"  href="{% url 'collect_mail_read' %}?id={{ m.date_id }}&modal=1" data-target="#myModal" data-whatever="{{ m.date_id }}">{{ m.subject|truncatechars:60|default:"无" }}</a></td>
+
+<td>{{ m.size|filesizeformat }}</td>
+
+{% if request.GET.show != 'review' %}
+<td><a href="{% url 'collect_mail_list' %}?date={{date}}&mail_id={{ m.get_mail_id }}">{{ m|get_cmail_count:date }}</a></td>
+{% endif %}
+<td>{{ m.created|date:"H:i:s" }}</td>
+
+{% if request.GET.show == 'review' %}
+<td>
+{% if m.check_result == 'subject_blacklist' or m.check_result == 'keyword_blacklist' or m.check_result == 'sender_blacklist' or m.check_result == 'custom_blacklist' or m.check_result == 'high_risk'  or m.check_result == 'cyber_spam'  %}
+    {% if m.check_result == 'high_risk' %}
+         {% autoescape off %}
+            {{ m.check_message|default_if_none:""|get_check_result_display }}
+         {% endautoescape %}
+    {% else %}
+       <span class="text-danger"> {{ m.check_message|default_if_none:"" }}</span>
+    {% endif %}
+{% endif %}
+</td>
+{% endif %}
+
+{% if request.GET.show == 'review' %}
+        {% if request.GET.check != 'high_risk' %}
+    <td><span {% if m.check_result %}class="{% if m.check_result == 'innocent' %}text-success{% else %}text-danger{% endif %}"{% endif %}>{{ m.get_check_result_display|default_if_none:"" }}</span></td>
+        {% endif %}
+
+    <td>
+        <span id ="review_{{ m.date_id }}">
+            <span onclick="Review('{{m.date_id}}', 'pass');" class="glyphicon glyphicon-ok" aria-hidden="true" style="cursor:pointer;margin-right:10px;padding:0 10px;"></span>
+            <span onclick="Review('{{m.date_id}}', 'reject');" class="glyphicon glyphicon-remove" aria-hidden="true" style="cursor:pointer;padding:0 10px"></span>
+        </span>
+    </td>
+
+{% elif request.GET.show == 'sendlog' %}
+
+    <td><a href="{% url 'collect_deliver_logs' m.date_id %}">{{ m.get_retry_count }}</a></td>
+    <td>{{ m.return_code|default_if_none:"" }}</td>
+    <td>{{ m.deliver_time|date:"Y-m-d H:i:s" }}</td>
+    <td>{{ m.return_message }}</td>
+    <td>
+        {% if m.dspam_study %}
+        <span style="background-color:#A8A8A8;">{{ m.get_dspam_study_display }}</span>
+        {% else %}
+        <span id ="report_{{ m.date_id }}">
+            <span onclick="Report('{{m.date_id}}', 'innocent');" class="glyphicon glyphicon-ok" aria-hidden="true" style="cursor:pointer;margin-right:10px;padding:0 10px;"></span>
+            <span onclick="Report('{{m.date_id}}', 'spam');" class="glyphicon glyphicon-remove" aria-hidden="true" style="cursor:pointer;padding:0 10px"></span>
+        </span>
+        {% endif %}
+    </td>
+
+
+{% else %}
+    <td><a href="{% url 'collect_state_logs' m.date_id %}">{{ m.get_state_display }}</a></td>
+    <td><span {% if m.check_result %}class="{% if m.check_result == 'innocent' %}text-success{% else %}text-danger{% endif %}"{% endif %}>{{ m.get_check_result_display|default_if_none:"" }}</span></td>
+    <td><span {% if request.GET.check == 'auto_reject' and m.review_result == 'pass_undo' %}style="background-color:#C0D9D9;"{% endif %}>{{ m.get_review_result_display|default_if_none:"" }}</span></td>
+    <td><a href="{% url 'collect_deliver_logs' m.date_id %}">{{ m.get_retry_count }}</a></td>
+    <td>{{ m.return_code|default_if_none:"" }}</td>
+    <td>{{ m.deliver_time|date:"Y-m-d H:i:s" }}</td>
+    <td>{{ m.return_message }}</td>
+    <td>{{ m.reviewer|default_if_none:"" }}</td>
+    <td>{{ m.review_time|date:"Y-m-d H:i:s" }}</td>
+    <td>
+        {% if m.dspam_study %}
+        <span style="background-color:#A8A8A8;">{{ m.get_dspam_study_display }}</span>
+        {% else %}
+        <span id ="report_{{ m.date_id }}">
+            <span onclick="Report('{{m.date_id}}', 'innocent');" class="glyphicon glyphicon-ok" aria-hidden="true" style="cursor:pointer;margin-right:10px;padding:0 10px;"></span>
+            <span onclick="Report('{{m.date_id}}', 'spam');" class="glyphicon glyphicon-remove" aria-hidden="true" style="cursor:pointer;padding:0 10px"></span>
+        </span>
+        {% endif %}
+    </td>
+
+
+{% endif %}
+{% endif %}
+
+

@@ -1,0 +1,15 @@
+{% load collect_mail_tags %}
+                                <td>{{ c.id }}</td>
+                                <td>{{ c.username }}<br/>{{ c.company }}</td>
+                                <td><a href="{% url 'col_customer_domain' c.id %}">{{ c.domain.count }}</a></td>
+                                <td>{{ c.service_start|date:'Y-m-d' }}<br/>{{ c.service_end|date:'Y-m-d' }}</td>
+                                <td>{{ c.created|date:'Y-m-d H:i'}}</td>
+                                {% autoescape off %}
+                                <td>{{ c|get_send_info:"customer" }}</td>
+                                {% endautoescape %}
+                                <td>{{ c.get_status_display }}</td>
+                                <td>
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'col_customer_modify' c.id %}">修改</a>
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'col_customer_setting' c.id %}">设置</a>
+                                    <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: DeleteCustomer({{ c.id }}, '{{ c.username }}')">删除</a>
+                                </td>

@@ -1,0 +1,12 @@
+<td>{{ d.id }}</td>
+                                <td>{{ d.domain }}</td>
+<td><span class="dblclick" id="content-direct_reject-{{d.id}}"><span class="glyphicon {% if d.direct_reject %} glyphicon-ok {% else %} glyphicon-remove {% endif %}"><span class="hidden">{{ d.direct_reject }}</span></span></span></td>
+                                <td>{% if d.disabled %}禁用{% else %}启用{% endif %}</td>
+                                <td>{{ d.creater|default_if_none:"" }}</td>
+                                <td>{{ d.created|date:"Y-m-d H:i" }}</td>
+                                <td>{{ d.operater|default_if_none:"" }}</td>
+                                <td>{{ d.operate_time|date:"Y-m-d H:i"  }}</td>
+                                <td>
+                                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'spf_checklist_modify' d.id %}">修改</a>
+                                    <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: Delete({{ d.id }}, '{{ d.domain }}')">删除</a>
+                                </td>

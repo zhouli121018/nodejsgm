@@ -1,0 +1,619 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% load i18n %}
+{% load track_tags %}
+<html class="smart-style-0">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% trans 'U-Mail邮件营销平台' %}-{% trans "任务跟踪统计" %}</title>
+    <style type="text/css">
+        @page {
+            size: {{ pagesize }};
+            margin: 1cm;
+        }
+        body {
+            direction: ltr;
+        }
+        body {
+            font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+            font-size: 13px;
+            line-height: 1.42857143;
+            color: #333;
+        }
+        #main {
+            /*margin-left: 220px;*/
+            margin:0 auto;
+            /*text-align:center;*/
+            /*margin-left: 10px;*/
+            padding: 0;
+            padding-bottom: 0px;
+            padding-bottom: 52px;
+            min-height: 500px;
+            position: relative;
+            width: 1366px;
+        }
+        #content {
+            padding: 5px 5px;
+            position: relative;
+        }
+        .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+            font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+            font-weight: 500;
+            line-height: 1.1;
+            color: inherit;
+        }
+
+        h1, h2, h3, h4 {
+            margin: 0;
+            font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+            font-weight: 300;
+        }
+        h1 {
+            /*letter-spacing: -1px;*/
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .txt-color-blueDark {
+            color: #4c4f53 !important;
+        }
+        .page-title {
+            margin: 12px 0px 17px;
+            /*text-align: center;*/
+        }
+        .fa {
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: 14px;
+            font-size: inherit;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .margin-right-5 {
+            margin-right: 5px !important;
+        }
+        .h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, .h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
+            font-weight: 400;
+            line-height: 1;
+            color: #999;
+        }
+        h1 small {
+            font-size: 18px;
+            font-weight: 300;
+            /*letter-spacing: -1px;*/
+        }
+        code, kbd, pre, samp {
+            font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+        }
+        code {
+            padding: 2px 4px;
+            font-size: 90%;
+            color: #c7254e;
+            background-color: #f9f2f4;
+            border-radius: 2px;
+        }
+        article, aside, details, figcaption, figure, footer, header, main, menu, nav, section, summary {
+            display: block;
+        }
+
+        .row {
+            margin-left: -13px;
+            margin-right: -13px;
+        }
+        .col-xs-12 {
+            float: left;
+            width: 100%;
+        }
+        .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+            position: relative;
+            min-height: 1px;
+            padding-left: 13px;
+            padding-right: 13px;
+        }
+        .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+            float: left;
+        }
+        .col-xs-12 {
+            width: 100%;
+        }
+        .col-lg-12 {
+            width: 100%;
+        }
+        .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9 {
+            float: left;
+        }
+        .col-md-12 {
+            width: 100%;
+        }
+        .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9 {
+            float: left;
+        }
+        .col-sm-12 {
+            width: 100%;
+        }
+        .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9 {
+            float: left;
+        }
+        article.sortable-grid {
+            min-height: 30px;
+        }
+        .jarviswidget {
+            margin: 0 0 30px;
+            position: relative;
+            -moz-border-radius: 0;
+            -khtml-border-radius: 0;
+            -webkit-border-radius: 0;
+            border-radius: 0;
+            padding: 0;
+        }
+        .clearfix, .inner-spacer::after, .jarviswidget, .jarviswidget-editbox, .jarviswidget > div {
+            zoom: 1;
+        }
+        .jarviswidget > header {
+            height: 34px;
+            padding: 0;
+            line-height: 40px;
+        }
+        .jarviswidget > header {
+            color: #333;
+            border: 1px solid #C2C2C2;
+            border-top-color: rgb(194, 194, 194);
+            border-right-color: rgb(194, 194, 194);
+            border-bottom-color: rgb(194, 194, 194);
+            border-left-color: rgb(194, 194, 194);
+            background: #fafafa;
+        }
+        .jarviswidget-color-darken > header {
+            border-color: #383838 !important;
+            background: #404040;
+            color: #fff;
+            width: 102%;
+        }
+        .jarviswidget > header > .widget-icon {
+            display: block;
+            width: 30px;
+            height: 32px;
+            position: relative;
+            float: left;
+            font-size: 111%;
+            line-height: 32px;
+            text-align: center;
+            margin-right: -10px;
+        }
+        .jarviswidget > header h2 {
+            height: 100%;
+            width: auto;
+            display: inline-block;
+            font-size: 14px;
+            position: relative;
+            margin: 0;
+            margin-left: 0px;
+            line-height: 34px;
+            font-weight: 400;
+            letter-spacing: 0;
+        }
+        .jarviswidget > header > h2 {
+            margin-left: 10px;
+            float: left;
+        }
+        .jarviswidget > div {
+            float: left;
+            width: 100%;
+            position: relative;
+            font-size: 13px;
+            -moz-border-radius: 0;
+            -khtml-border-radius: 0;
+            -webkit-border-radius: 0;
+            border-radius: 0;
+            margin: 0;
+            border-width: 1px 1px 2px;
+            border-top-width: 1px;
+            border-style: solid;
+            border-top-style: solid;
+            border-top: none;
+            border-right-color: #CCC !important;
+            border-bottom-color: #CCC !important;
+            border-left-color: #CCC !important;
+            padding: 13px 13px 0;
+            overflow: visible;
+        }
+        .jarviswidget > div {
+            background-color: #fff !important;
+        }
+        .clearfix, .inner-spacer::after, .jarviswidget, .jarviswidget-editbox, .jarviswidget > div {
+            zoom: 1;
+        }
+        .no-padding {
+            padding: 0 !important;
+        }
+        .jarviswidget .widget-body {
+            min-height: 100px;
+            position: relative;
+            padding-bottom: 13px;
+        }
+        .widget-body.no-padding {
+            margin: -13px -13px 0;
+        }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        table {
+            background-color: transparent;
+        }
+        .table {
+            width: 100%;
+            max-width: 100%;
+            margin-bottom: 18px;
+        }
+        .table-bordered, .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+            border: 1px solid #ddd;
+        }
+        .widget-body > table {
+            margin-bottom: 0;
+        }
+
+        table.dataTable {
+            clear: both;
+            margin-bottom: 6px !important;
+            max-width: none !important;
+        }
+        table.dataTable, table.dataTable td, table.dataTable th {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+        }
+        table.dataTable {
+            clear: both;
+            margin-bottom: 6px !important;
+            max-width: none !important;
+        }
+        table.table-bordered.dataTable {
+            border-collapse: separate !important;
+        }
+
+        .no-padding .dataTables_wrapper table, .no-padding > table {
+            border: none !important;
+            margin-bottom: 0 !important;
+            border-bottom-width: 0 !important;
+        }
+        .no-padding > .table-bordered, .no-padding > .table-responsive > .table-bordered {
+            border: none !important;
+        }
+        .table-striped > tbody > tr:nth-of-type(2n+1) {
+            background-color: #f9f9f9;
+        }
+        [class*=" bg-"], [class^="bg-"] {
+            filter: none !important;
+        }
+        .bg-color-white {
+            background-color: #fff !important;
+        }
+        .text-align-right, .text-right {
+            text-align: right !important;
+        }
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            padding: 8px;
+            line-height: 1.42857143;
+            vertical-align: top;
+            border-top: 1px solid #ddd;
+        }
+        .table-bordered, .table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+            border: 1px solid #ddd;
+            border-bottom-width: 1px;
+            border-left-width: 1px;
+            border-left-style: solid;
+            border-left-color: rgb(221, 221, 221);
+        }
+        table.table-bordered tbody td, table.table-bordered tbody th {
+            border-left-width: 0;
+            border-bottom-width: 0;
+        }
+        .jarviswidget td:first-child, .jarviswidget th:first-child {
+            border-left: none;
+        }
+        .no-padding .dataTables_wrapper table tr td:first-child, .no-padding .dataTables_wrapper table tr th:first-child, .no-padding > table tr td:first-child, .no-padding > table tr th:first-child {
+            border-left: none !important;
+            border-left-width: medium;
+        }
+        .no-padding > .table-bordered tbody tr td:first-child, .no-padding > .table-bordered thead tr td:first-child, .no-padding > .table-bordered thead tr th:first-child, .no-padding > .table-responsive > .table-bordered tbody tr td:first-child, .no-padding > .table-responsive > .table-bordered thead tr td:first-child, .no-padding > .table-responsive > .table-bordered thead tr th:first-child {
+            border-left-width: 0 !important;
+        }
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            padding: 8px 10px;
+        }
+        th {
+            text-align: left;
+        }
+        .dt-toolbar-footer {
+            background: #fafafa;
+            font-size: 11px;
+            overflow: hidden;
+            padding: 5px 10px;
+            border-top: 1px solid #ccc;
+            -webkit-box-shadow: inset 0 1px #fff;
+            -moz-box-shadow: inset 0 1px #fff;
+            -ms-box-shadow: inset 0 1px #fff;
+            box-shadow: inset 0 1px #fff;
+        }
+        div.dataTables_info {
+            padding-top: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            font-style: italic;
+            color: #969696;
+        }
+
+        .txt-color-blue {
+            color: #57889c !important;
+        }
+        .txt-color-red {
+            color: #a90329 !important;
+        }
+
+        .c_grey {color: #909090;}
+        .f_small {font-size: 11px;}
+        .c_margin_left {margin-left: 12px;}
+        .c_span {color: #004F99;display:-moz-inline-box;display:inline-block;width: 52px;}
+
+        body{margin:0;padding:0;}
+        ul,li,dl,dd,dt,p{margin:0;padding:0;}
+        ul,li{list-style:none;}
+        /*柱状图样式*/
+        .histogram-container{position:relative;margin-left:50px;margin-top:10px;margin-bottom:25px;}
+        .histogram-bg-line{border:#999 solid;border-width:0 1px 1px 1px;border-right-color:#eee;overflow:hidden;width:99%;}
+        .histogram-bg-line ul{overflow:hidden;border:#eee solid;border-width:1px 0 0 0;}
+        .histogram-bg-line li{float:left;width:20%;/*根据.histogram-bg-line下的ul里面li标签的个数来控制比例*/overflow:hidden;}
+        .histogram-bg-line li div{border-right:1px #eee solid;}
+        .histogram-content{position:absolute;left:0px;top:0;width:99%;height:100%;}
+        .histogram-content ul{height:100%;}
+        .histogram-content li{float:left;height:100%;width:20%;/*根据直方图的个数来控制这个width比例*/text-align:center;position:relative;}
+        .histogram-box{position:relative;display:inline-block;height:100%;width:20px;}
+        .histogram-box .num{display: block;width: 100%;font-size: 10px;position: absolute;}
+        .histogram-content li a{position:absolute;bottom:0;right:0;display:block;width:20px;box-shadow: -1px 0px 1px 0px #8f8d8d;}
+        .histogram-content li .plan{position:absolute;bottom:-2px;right:-2px;display:block;width:20px;box-shadow: -1px -1px 0px 0px #2f87d9;z-index: 99;display: block;}
+        .histogram-content li .name{position:absolute;bottom:-20px;left:0px;white-space:nowrap;display:inline-block;width:100%;font-size:12px;}
+        .histogram-y{position:absolute;left:-50px;top:-10px;font:12px/1.8 verdana,arial;}
+        .histogram-y li{text-align:right;width:40px;padding-right:5px;color:#333;}
+        .histogram-bg-line li div,.histogram-y li{height:40px;}
+    </style>
+</head>
+<body class="desktop-detected  smart-style-0  pace-done">
+
+<div id="main" role="main">
+    <div id="content">
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="page-title txt-color-blueDark">
+                    <i class="fa fa-bar-chart-o margin-right-5"></i><span>{% trans "任务跟踪统计" %}：</span><small><code>{{ ident }}</code></small>
+                </h1>
+            </div>
+        </div>
+
+        <section id="widget-grid" class="" style=" margin-left: -25px;margin-right: 25px;">
+            <div class="row">
+                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable">
+                    <div class="jarviswidget jarviswidget-color-darken" role="widget">
+                        <header role="heading">
+                            <h2>{% trans "跟踪统计总表" %}</h2>
+                        </header>
+
+                        <div role="content">
+                            <div class="widget-body no-padding">
+                                <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
+                                    <tbody>
+                                    <tr>
+                                        <td class="text-right" colspan="1">{% trans "任务ID:" %}</td>
+                                        <td colspan="2"><strong>{{ ident }}</strong></td>
+                                        <td class="text-right" colspan="1">{% trans "发送数量:" %}</td>
+                                        <td colspan="3">{{ count_succes }}&nbsp;<span class="c_grey">（{% trans "共" %} {{ count_send }}{% trans "，失败" %} {{ count_error }}）</span></td>
+                                        <td class="text-right" colspan="1">{% trans "发送时间:" %}</td>
+                                        <td colspan="3">
+                                            <span class="txt-color-blue">{{ task_date_first|show_trak_date }}</span>
+                                            -
+                                            <span class="txt-color-red">{{ task_date_last|show_trak_date }}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right" colspan="1">{% trans "打开率:" %}</td>
+                                        <td colspan="2">{{ show_stat_rate }}</td>
+                                        <td class="text-right" colspan="1">{% trans "唯一打开数:" %}</td>
+                                        <td colspan="1">
+                                            {% if open_unique != 0 %}{{ open_unique }}{% else %}-{% endif %}
+                                        </td>
+                                        <td class="text-right" colspan="1">{% trans "总打开数:" %}</td>
+                                        <td colspan="1">
+                                            {% if open_total != 0 %}{{ open_total }}{% else %}-{% endif %}
+                                        </td>
+                                        <td class="text-right" colspan="1">{% trans "首次打开时间:" %}</td>
+                                        <td class="t_center f_small txt-color-blue" colspan="1">{{ open_first|show_trak_datetime }}</td>
+                                        <td class="text-right" colspan="1">{% trans "最后打开时间:" %}</td>
+                                        <td class="t_center f_small txt-color-red" colspan="1">{{ open_last|show_trak_datetime }}</td>
+                                    </tr>
+
+                                    {% if track_status == 2 %}
+                                        <tr>
+                                            <td class="text-right" colspan="1">{% trans "点击率:" %}</td>
+                                            <td colspan="2">{{ show_link_rate }}</td>
+                                            <td class="text-right">{% trans "唯一点击数:" %}</td>
+                                            <td colspan="1">
+                                                {% if click_unique != 0 %}{{ click_unique }}{% else %}-{% endif %}
+                                            </td>
+                                            <td class="text-right" colspan="1">{% trans "总点击数:" %}</td>
+                                            <td colspan="1">
+                                                {% if click_total != 0 %}{{ click_total }}{% else %}-{% endif %}
+                                            </td>
+                                            <td class="text-right" colspan="1">{% trans "首次点击时间:" %}</td>
+                                            <td class="t_center f_small txt-color-blue" colspan="1">{{ click_first|show_trak_datetime }}</td>
+                                            <td class="text-right" colspan="1">{% trans "最后点击时间:" %}</td>
+                                            <td class="t_center f_small txt-color-red" colspan="1">{{ click_last|show_trak_datetime }}</td>
+                                        </tr>
+                                    {% endif %}
+
+                                    <tr class="bg-color-white row_selected">
+                                        <td class="text-right" colspan="1">{% trans "柱状图:" %}</td>
+                                        <td colspan="10">
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-12">
+                                                    <div id="ID_container">
+                                                        <div class="histogram-container" id="histogram-container">
+                                                            <div class="histogram-bg-line">
+                                                                {% for i in histogram_x_list %}
+                                                                    <ul>
+                                                                        <li style="width: {{ histogram_x_width }};"><div></div></li>
+                                                                        <li style="width: {{ histogram_x_width }};"><div></div></li>
+                                                                        <li style="width: {{ histogram_x_width }};"><div></div></li>
+                                                                        <li style="width: {{ histogram_x_width }};"><div></div></li>
+                                                                        <li style="width: {{ histogram_x_width }};"><div></div></li>
+                                                                        <li style="width: {{ histogram_x_width }};"><div></div></li>
+                                                                        <li style="width: {{ histogram_x_width }};"><div></div></li>
+                                                                    </ul>
+                                                                {% endfor %}
+                                                            </div>
+                                                            <div class="histogram-content">
+                                                                <ul>
+                                                                    <li style="width: {{ histogram_x_width }};">
+                                                                        <span class="histogram-box">
+                                                                            <span class="num" style="bottom:{{ count_send_height_rate }};">{{ count_send }}</span>
+                                                                            <a style="height:{{ count_send_height_rate }};background:#48573E;" title="{{ count_send_height_rate }}"></a>
+                                                                            <a class="plan" style="height:{{ count_send_height_rate }};background:#48573E;box-shadow: -1px -1px 0px 0px #48573E;"></a>
+                                                                        </span>
+                                                                        <span class="name">{% trans "总发送数" %}</span>
+                                                                    </li>
+                                                                    <li style="width: {{ histogram_x_width }};">
+                                                                        <span class="histogram-box">
+                                                                            <span class="num" style="bottom:{{ count_succes_height_rate }};">{{ count_succes }}</span>
+                                                                            <a style="height:{{ count_succes_height_rate }};background:#B2175E;" title="{{ count_succes_height_rate }}"></a>
+                                                                            <a class="plan" style="height:{{ count_succes_height_rate }};background:#B2175E;box-shadow: -1px -1px 0px 0px #B2175E;"></a>
+                                                                        </span>
+                                                                        <span class="name">{% trans "发送成功数" %}</span>
+                                                                    </li>
+                                                                    <li style="width: {{ histogram_x_width }};">
+                                                                        <span class="histogram-box">
+                                                                            <span class="num" style="bottom:{{ count_error_height_rate }};">{{ count_error }}</span>
+                                                                            <a style="height:{{ count_error_height_rate }};background:#257626;" title="{{ count_error_height_rate }}"></a>
+                                                                            <a class="plan" style="height:{{ count_error_height_rate }};background:#257626;box-shadow: -1px -1px 0px 0px #257626;"></a>
+                                                                        </span>
+                                                                        <span class="name">{% trans "发送失败数" %}</span>
+                                                                    </li>
+                                                                    <li style="width: {{ histogram_x_width }};">
+                                                                        <span class="histogram-box">
+                                                                            <span class="num" style="bottom:{{ open_unique_height_rate }};">{{ open_unique }}</span>
+                                                                            <a style="height:{{ open_unique_height_rate }};background:#CE13FC;" title="{{ open_unique_height_rate }}"></a>
+                                                                            <a class="plan" style="height:{{ open_unique_height_rate }};background:#CE13FC;box-shadow: -1px -1px 0px 0px #CE13FC;"></a>
+                                                                        </span>
+                                                                        <span class="name">{% trans "唯一打开数" %}</span>
+                                                                    </li>
+                                                                    <li style="width: {{ histogram_x_width }};">
+                                                                        <span class="histogram-box">
+                                                                            <span class="num" style="bottom:{{ open_total_height_rate }};">{{ open_total }}</span>
+                                                                            <a style="height:{{ open_total_height_rate }};background:#6379EC;" title="{{ open_total_height_rate }}"></a>
+                                                                            <a class="plan" style="height:{{ open_total_height_rate }};background:#6379EC;box-shadow: -1px -1px 0px 0px #6379EC;"></a>
+                                                                        </span>
+                                                                        <span class="name">{% trans "总打开数" %}</span>
+                                                                    </li>
+
+                                                                    {% if track_status == 2 %}
+                                                                        <li style="width: {{ histogram_x_width }};">
+                                                                        <span class="histogram-box">
+                                                                            <span class="num" style="bottom:{{ click_unique_height_rate }};">{{ click_unique }}</span>
+                                                                            <a style="height:{{ click_unique_height_rate }};background:#EDBDEE;" title="{{ click_unique_height_rate }}"></a>
+                                                                            <a class="plan" style="height:{{ click_unique_height_rate }};background:#EDBDEE;box-shadow: -1px -1px 0px 0px #EDBDEE;"></a>
+                                                                        </span>
+                                                                            <span class="name">{% trans "唯一点击数" %}</span>
+                                                                        </li>
+                                                                        <li style="width: {{ histogram_x_width }};">
+                                                                        <span class="histogram-box">
+                                                                            <span class="num" style="bottom:{{ click_total_height_rate }};">{{ click_total }}</span>
+                                                                            <a style="height:{{ click_total_height_rate }};background:#8DBBF1;" title="{{ click_total_height_rate }}"></a>
+                                                                            <a class="plan" style="height:{{ click_total_height_rate }};background:#8DBBF1;box-shadow: -1px -1px 0px 0px #8DBBF1;"></a>
+                                                                        </span>
+                                                                            <span class="name">{% trans "总点击数" %}</span>
+                                                                        </li>
+                                                                    {% endif %}
+                                                                </ul>
+                                                            </div>
+                                                            <div class="histogram-y">
+                                                                <ul>
+                                                                    {% for y_num in histogram_y_list %}
+                                                                        <li>{{ y_num }}</li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 margin-top-10" style="margin-left: 23px;">
+                                                    <span class="txt-color-red"><strong>{% trans "说明:" %}</strong></span>
+                                                    <br>
+                                                    <span class="c_margin_left">{% trans "打开率:" %}<span class="c_span">&nbsp;{{ show_stat_rate }}</span>{% trans "（唯一打开数 / 发送成功数）" %}</span>
+                                                    {% if track_status == 2 %}
+                                                        <br>
+                                                        <span class="c_margin_left">{% trans "点击率:" %}<span class="c_span">&nbsp;{{ show_link_rate }}</span>{% trans "（唯一点击数 / 唯一打开数）" %}</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                {% if track_status == 2 and link_objs %}
+                    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12 sortable-grid ui-sortable" style="margin-top: 25px;">
+                        <div class="jarviswidget jarviswidget-color-darken jarviswidget-sortable" id="wid-id-0" role="widget">
+                            <header role="heading">
+                                <h2>{% trans "链接点击情况统计表" %}</h2>
+                            </header>
+                            <div role="content">
+                                <div class="widget-body no-padding">
+                                    <div id="dt_basic2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                        <table id="dt_basic2" class="table table-striped table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="dt_basic2_info" style="width: 100%;" width="100%">
+                                            <thead>
+                                            <tr role="row">
+                                                <th style="width: 50px!important;">{% trans "序号" %}</th>
+                                                <th style="width: 600px!important;">{% trans "链接" %}</th>
+                                                <th style="width: 160px!important;">{% trans "唯一点击数" %}</th>
+                                                <th style="width: 160px!important;">{% trans "总点击数" %}</th>
+                                                <th style="width: 190px!important;">{% trans "首次点击时间" %}</th>
+                                                <th style="width: 190px!important;">{% trans "最后点击时间" %}</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for obj in link_objs %}
+                                                <tr role="row" class="{% cycle 'odd' 'even' %}">
+                                                    <td style="width: 50px!important;">{{ forloop.counter }}</td>
+                                                    <td style="width: 160px!important;">{{ obj.link }}</td>
+                                                    <td style="width: 160px!important;">{{ obj.click_unique }}</td>
+                                                    <td style="width: 160px!important;">{{ obj.click_total }}</td>
+                                                    <td style="width: 190px!important;">{{ obj.click_first|show_click_datetime }}</td>
+                                                    <td style="width: 190px!important;">{{ obj.click_last|show_click_datetime }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        <div class="dt-toolbar-footer">
+                                            <div class="col-sm-12 col-xs-12">
+                                                <div class="dataTables_info" id="dt_basic2_info" role="status" aria-live="polite">{% trans "从" %} 1 {% trans "到" %} {{ link_objs.count }} {% trans "总计" %}: {{ link_objs.count }} {% trans "条记录" %}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </article>
+                {% endif %}
+
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>

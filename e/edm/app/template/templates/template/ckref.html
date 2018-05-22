@@ -1,0 +1,48 @@
+{% load i18n %}
+{% load static %}
+
+
+<div class="row">
+    <!-- SuperBox -->
+    <div class="superbox col-sm-12">
+        {% if lists %}
+            {% for d in lists %}
+                <div class="superbox-list">
+                    <img src="{{ img_url }}{{ d.thumb_path }}" data-img="{{ img_url }}{{ d.thumb_path }}" alt="{{ d.name }}" title="{{ d.name }}" class="superbox-img"  onclick="coverHtmlContent('{{ d.id }}')">
+                </div><!--
+            -->
+            {% endfor %}
+        {% endif %}
+        <div class="superbox-float"></div>
+    </div>
+    <!-- /SuperBox -->
+    <div class="superbox-show" style="height:300px; display: none"></div>
+    <div class="dt-toolbar-footer">
+        <div class="col-md-6">
+            <div class="dataTables_paginate paging_simple_numbers" id="dt_basic_paginate">
+                <ul class="pagination">
+                    {% if lists.has_previous %}
+                        <li class="paginate_button previous" id="dt_basic_previous">
+                            <a href="Javascript: changeRefImgPage('{{ lists.previous_page_number }}')"> 上一页 </a>
+                        </li>
+                    {% else %}
+                        <li class="paginate_button previous disabled" id="dt_basic_previous"><a href="#"> 上一页 </a></li>
+                    {% endif %}
+
+                    <li class="paginate_button active">
+                        <a href="#" aria-controls="dt_basic" data-dt-idx="1" tabindex="0">
+                            {{ lists.number }}&nbsp;&nbsp;({% trans "共" %}{{ lists.paginator.num_pages }}{% trans "页" %})
+                        </a>
+                    </li>
+
+                    {% if lists.has_next %}
+                        <li class="paginate_button next" id="dt_basic_next"><a href="Javascript: changeRefImgPage('{{ lists.next_page_number }}')"> 下一页 </a></li>
+                    {% else %}
+                        <li class="paginate_button next disabled" id="dt_basic_next"><a href="#"> 下一页 </a></li>
+                    {% endif %}
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap %}
+
+{% block header %}中继邮件检测设置{% endblock %}
+
+{% block content %}
+<div class="row">
+<div class="col-lg-12">
+<div class="panel panel-default">
+<div class="panel-heading">
+    设置信息
+</div>
+<div class="panel-body">
+<div class="row">
+<div class="col-lg-12">
+<form role="form" action="" method="post">
+{% csrf_token %}
+<div class="form-group">
+    <label class="control-label" for="id_bulk_max">1.发件人格式检测:</label>
+    <div>正则:'^(\w|[&+\-./=])+@\w+([-.]\w+)*\.(\w+)$'</div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_bulk_max">2.发件人白名单:</label>
+    <div><a href="{% url 'relay_sender_whitelist_list' %}">发件人白名单</a></div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_credit">3.收件人白名单:</label>
+    <div>
+        收件人在<a href="{%url 'recipient_whitelist_list' %}">收件人白名单</a>中, 且发件人信誉度高于
+        <input style="width:100px" id="id_credit" name="credit" value="{{ form.credit.value }}" type="number">
+        ,只做格式检测和DSPAM过滤，然后就直接发送。
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label" for="id_collect_attachment_min_size">4.小危附件检测:</label>
+    <div>
+        主题为非中文,且附件只有一个,附件类型在<a href="{% url 'attachment_type_blacklist_list' %}">小危附件类型黑名单</a>中,且大小小于
+        <input style="width:100px" id="id_collect_attachment_min_size" name="collect_attachment_min_size" value="25" type="number">
+        KB的邮件，直接拒绝，不审核，不学习。默认0KB, 表示不检测
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_bulk_max">5.发件人域名黑名单</label>
+    <div><a href="{% url 'domain_blacklist_list' %}">发件人域名黑名单</a></div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_max_size">6.邮件大小检测:</label>
+    <div>
+        最大能够接收 <input style="width:100px" id="id_max_size" name="max_size" value="{{ form.max_size.value }}" type="number">M的邮件, 默认50M
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_bulk_max">7.群发邮件检测:</label>
+    <div class="">
+        1.单个发件人群发检测: 单个发件人在
+        <input style="width:100px" id="id_bulk_sender_time" name="bulk_sender_time" value="{{ form.bulk_sender_time.value }}" type="number">
+        分钟内允许发送
+        <input style="width:100px" id="id_bulk_sender_max" name="bulk_sender_max" value="{{ form.bulk_sender_max.value }}" type="number">
+        封邮件，超过的接收并丢弃，将邮件数计入群发
+        <p class="help-block">
+            注: 该设置受发件人信誉度影响
+        </p>
+    </div>
+    <div>
+        2.群发主题检测:24小时内,相同主题的邮件超过<input style="width:100px" id="id_bulk_max" name="bulk_max" value="{{ form.bulk_max.value }}" type="number">封,则被认为是群发邮件,
+        且在相应的<input style="width:100px" id="id_bulk_expire" name="bulk_expire" value="{{ form.bulk_expire.value }}" type="number">天内,相同主题将被检测
+    </div>
+    <p class="help-block">
+        注: 如果邮件主题在<a href="{% url 'subject_keyword_whitelist_list' %}">主题白名单</a>中,不进行主题群封检测
+    </p>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_bulk_max">8.免审关键字过滤:</label>
+    <p class="help-block">
+        (发件人, 主题, 内容, 附件)免审关键字黑名单,直接拒绝
+    </p>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_dspam_max_size">9.Dspam检测:</label>
+    <div>
+        检测大小阀值:邮件如果超过
+        <input style="width:100px" id="id_dspam_max_size" name="dspam_max_size" value="{{ form.dspam_max_size.value }}" type="number">
+        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_dspam_max_size">10.ClamAV病毒检测:</label>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_sender_max_size">11.发件人黑名单检测:</label>
+    <div>
+        检测大小阀值(<a href="{% url 'sender_blacklist_list' %}">发件人黑名单</a>):邮件如果超过
+        <input style="width:100px" id="id_sender_max_size" name="sender_max_size" value="{{ form.sender_max_size.value }}" type="number">
+        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_custom_max_size">12.自动回复检测</label>
+    <div>
+        检测大小阀值(<a href="{% url 'custom_keyword_blacklist_list' %}">自动回复黑名单</a>):邮件如果超过
+        <input style="width:100px" id="id_custom_max_size" name="custom_max_size" value="{{ form.custom_max_size.value }}" type="number">
+        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_hrisk_sender_check_time">13.高危发件人检测:</label>
+    <div>
+        在
+        <input style="width:100px" id="id_hrisk_sender_check_time" name="hrisk_sender_check_time" value="{{ form.hrisk_sender_check_time.value }}" type="number">
+        分钟内,邮件总数超过
+        <input style="width:100px" id="id_hrisk_sender_total_num_min" name="hrisk_sender_total_num_min" value="{{ form.hrisk_sender_total_num_min.value }}" type="number">
+        封,且拒绝+发送失败的邮件占邮件总数的比例达到
+        <input style="width:100px" id="id_hrisk_sender_scale" name="hrisk_sender_scale" value="{{ form.hrisk_sender_scale.value }}" type="number">
+        %,则在
+        <input style="width:100px" id="id_hrisk_sender_time" name="hrisk_sender_time" value="{{ form.hrisk_sender_time.value }}" type="number">
+        分钟内,拦截其所有邮件，并放入“高危发件人”进行人工审核
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_subject_max_size">14.主题黑名单检测:</label>
+    <div>
+        检测大小阀值(<a href="{% url 'subject_keyword_blacklist_list' %}">主题黑名单</a>):邮件如果超过
+        <input style="width:100px" id="id_subject_max_size" name="subject_max_size" value="{{ form.subject_max_size.value }}" type="number">
+        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_content_max_size">15.内容黑名单检测:</label>
+    <div>
+        检测大小阀值(<a href="{% url 'keyword_blacklist_list' %}">内容黑名单</a>):邮件如果超过
+        <input style="width:100px" id="id_content_max_size" name="content_max_size" value="{{ form.content_max_size.value }}" type="number">
+        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_spam_score_max">16.Spamassassin检测:</label>
+    <div>
+        检测大小阀值:邮件如果超过
+        <input style="width:100px" id="id_spam_max_size" name="spam_max_size" value="{{ form.spam_max_size.value }}" type="number">
+        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+        </br>
+        白天(07:00--19:00)spam检测分数超过
+        <input id="id_spam_score_max" style="width:100px" name="spam_score_max" step="any" value="{{ form.spam_score_max.value }}" type="number">
+        阀值, 则被认为是垃圾邮件, 默认为5.0
+        </br>
+        晚上(19:00--07:00)spam检测分数超过
+        <input style="width:100px" id="id_night_spam_score_max" name="night_spam_score_max" step="any" value="{{ form.night_spam_score_max.value }}" type="number"> 阀值, 则被认为是垃圾邮件, 默认为5.0
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_active_spam_monitor_time">17.动态SPAM邮件检测:</label>
+    <div>
+        某个发件人在
+        <input style="width:100px" id="id_active_spam_monitor_time" name="active_spam_monitor_time" value="{{ form.active_spam_monitor_time.value }}" type="number">
+        分钟内,发送
+        <input style="width:100px" id="id_active_spam_max" name="active_spam_max" value="{{ form.active_spam_max.value }}" type="number">
+        次垃圾邮件,则该发件人为动态SPAM发件人,在以后的
+        <input style="width:100px" id="id_active_spam_check_time" name="active_spam_check_time" value="{{ form.active_spam_check_time.value }}" type="number">
+        小时内的该发件人的所有邮件都需进行审核
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_attachment_min_size">18.高危邮件检测:</label>
+    <div>
+        1.高危附件检测: 附件只有一个,且类型为'rar', 'zip', 'jar', 且大小小于
+        <input style="width:100px" id="id_attachment_min_size" name="attachment_min_size" value="{{ form.attachment_min_size.value }}" type="number">
+        KB, 为高危邮件
+    </div>
+    <div>
+        2.附件黑名单检测: 附件名称在<a href="{%url 'attachment_blacklist_list' %}">附件关键字黑名单</a>中的,为高危邮件
+    </div>
+    <div>
+        3.发件人不相同(实际发件人和邮件里的发件人不相同), 或发件人为空的,为高危邮件
+    </div>
+    <div>
+        4.名称改变多次的发件人检测: 一天内 同一发件人名称不同值大于或等于
+        <input style="width:100px" id="id_hrisk_diff_sender_count" name="hrisk_diff_sender_count" value="{{ form.hrisk_diff_sender_count.value }}" type="number">
+        次， 则在以后的
+        <input style="width:100px" id="id_hrisk_diff_sender_time" name="hrisk_diff_sender_time" value="{{ form.hrisk_diff_sender_time.value }}" type="number">
+        分钟内拦截其所有邮件，并放入“高危邮件”, 进行人工审核
+    </div>
+
+</div>
+
+<div class="form-group">
+    <label class="control-label" for="id_ctasd_max_size">19.Ctasd检测</label>
+    <div>
+        检测大小阀值:邮件如果超过
+        <input style="width:100px" id="id_ctasd_max_size" name="ctasd_max_size" value="{{ form.ctasd_max_size.value }}" type="number">
+        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label" for="id_auto_review_time">20.自动审核设置</label>
+    <div>
+        在
+        <input style="width:100px" id="id_auto_review_time" name="auto_review_time" value="{{ form.auto_review_time.value }}" type="number">
+        天内, 监测发件人-收件人对应关系, 如果发件人-收件人连续
+        <input style="width:100px" id="id_auto_review_num" name="auto_review_num" value="{{ form.auto_review_num.value }}" type="number">
+        次通过/拒绝,则记录相应关系,且在以后的
+        <input style="width:100px" id="id_auto_review_expire" name="auto_review_expire" value="{{ form.auto_review_expire.value }}" type="number">
+        天,对该发件人-收件人进行自动审核
+        </br>
+        有效时间:只有在早上
+        <input style="width:100px" id="id_auto_review_time_start" name="auto_review_time_start" value="{{ form.auto_review_time_start.value }}" type="number">
+        点到晚
+        <input style="width:100px" id="id_auto_review_time_end" name="auto_review_time_end" value="{{ form.auto_review_time_end.value }}" type="number">
+        点 自动审核才工作
+        <p class="help-block">
+            注:自动审核只对动态SPAM, 高危邮件生效
+        </p>
+    </div>
+</div>
+<button type="submit" class="btn btn-primary">确认</button>
+</form>
+</div>
+</div>
+<!-- /.row (nested) -->
+</div>
+<!-- /.panel-body -->
+</div>
+</div>
+<!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+

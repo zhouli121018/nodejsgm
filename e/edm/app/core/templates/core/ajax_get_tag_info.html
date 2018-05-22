@@ -1,0 +1,11 @@
+{% load tagging_tags %}
+{% tags_for_object tag_obj as tag_list %}
+{% if tag_type == 'customer' %}
+    {% for t in tag_list %}
+        <a title="删除标签（{{ t }}）" href="Javascript:DeleteTag('{{ t }}', '{{ t.id }}', '{{ tag_type }}', '{{ tag_obj.id }}')" class="badge bg-color-purple">{{ t.get_name }}</a>
+    {% endfor %}
+{% else %}
+    {% for t in tag_list %}
+        <a title="删除标签（{{ t }}）" href="Javascript:DeleteTemplateTag('{{ t }}', '{{ t.id }}', '{{ tag_type }}', '{{ tag_obj.id }}')" class="badge bg-color-purple">{{ t.get_name }}</a>
+    {% endfor %}
+{% endif %}

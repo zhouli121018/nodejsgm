@@ -1,0 +1,6 @@
+    <td>{{ d.id }}</td>
+    <td>{{ d.sender|default_if_none:"" }}</a></td>
+    <td>{{ d.customer|default_if_none:"" }}</td>
+    <td>{{ d.blocked_days|default_if_none:"" }}</td>
+    <td>{{ d.opter|default_if_none:"" }}</td>
+    <td>{{ d.opt_time|date:"Y-m-d H:i" }}</td>

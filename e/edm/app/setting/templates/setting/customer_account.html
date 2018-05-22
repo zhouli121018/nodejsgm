@@ -1,0 +1,533 @@
+{% extends 'base_site.html' %}
+{% load static %}
+{% load core_tags %}
+{% load i18n %}
+{% block title %}{% trans '账户信息' %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans '设置中心' %}</li><li>{% trans '账户信息' %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-list margin-right-5" style="color: #fb8009;"></i>{% trans '账户信息' %}
+            </h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget well" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>{% trans '账户信息' %}</h2>
+                    </header>
+
+                    <div>
+                        <div class="widget-body no-padding no-margin">
+                            <legend class="pull-left padding-gutter padding-top-0 padding-bottom-0 jcrop-api-tabs-options">
+                                <h2 class="no-margin no-padding">{% trans '账户信息' %}</h2>
+                            </legend>
+
+                            <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed" width="100%">
+                                <tbody>
+                                <tbody>
+                                <tr>
+                                    <td class="no-border text-right text-muted myself-width-120">
+                                        {% if request.user.weixin_customer.staticimgurl %}
+                                            <img class="userhead" src="{{ request.user.weixin_customer.staticimgurl }}" />
+                                        {% elif request.user.ali_customer.avatar %}
+                                            <img class="userhead" src="{{ request.user.ali_customer.avatar }}" />
+                                        {% else %}
+                                            <img class="userhead" src="/static/img/a_users.png" />
+                                        {% endif %}
+                                    </td>
+                                    <td class="no-border text-right text-muted myself-width-250">
+                                        <span class="username">{{ request.user.username }}</span>
+                                        {% if request.user.service.is_share_flag == '3' %}
+                                            <span class="left-label">{% trans '共享群发量' %}<span class="myself-text-success">{{ request.user.service.limit_qty }}</span>{% trans '点' %}</span>
+                                            {% elif request.user.service.is_share_flag == '4' %}
+                                            <span class="left-label">{% trans '共享群发量' %}<span class="myself-text-success">{{ request.user.parent.service.qty_valid }}</span>{% trans '点' %}</span>
+                                        {% else %}
+                                            <span class="left-label">{% trans '剩余群发量' %}<span class="myself-text-success">{{ request.user.service.qty_valid }}</span>{% trans '点' %}</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td class="no-border">
+                                        {% if request.user.service.is_share_flag == '1' or request.user.service.is_share_flag == '2' %}
+                                            <span class="usersubmit">
+                                                <a href="/setting/pricing/">{% trans '立即充值' %}</a>
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                </tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="widget-body no-padding no-margin">
+                            <legend class="pull-left padding-gutter padding-top-0 padding-bottom-0 jcrop-api-tabs-options">
+                                <h2 class="no-margin no-padding">{% trans '基本信息' %}</h2>
+                            </legend>
+
+                            <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed table-content table-tr-dashed" width="100%">
+                                <tbody>
+                                <tr>
+                                    <td class="no-border text-right text-muted myself-width-120 text-label">{% trans '公司名称' %}</td>
+                                    <td class="no-border text-value">
+                                        <a href="#" id="id_company" data-type="text" data-pk="1" data-placeholder="" data-original-title="">{{ request.user.company }}</a>
+                                    </td>
+                                    <td class="no-border text-right text-muted myself-width-120 text-label">{% trans '微信绑定' %}</td>
+                                    <td class="no-border text-value">
+                                        {% if request.user.service.is_umail %}
+                                            <span class="text-danger">{% trans '测试帐号不允许此类操作!' %}</span>
+                                        {% else %}
+                                            {% if request.user.weixin_customer %}
+                                                <span>{% trans '已绑定' %} {{ request.user.weixin_customer.nickname }}</span>
+                                                <i class="myself-seperate-icon"></i>
+                                                <a href="#" onclick="unbindCustomer()">{% trans '解除绑定' %}</a>
+                                                <span class="text-muted">{% trans '已绑定，可直接使用微信登录U-Mail，并通过微信接受相关告警提醒消息' %}</span>
+                                            {% else %}
+                                                <span>{% trans '未绑定' %}</span>
+                                                <i class="myself-seperate-icon"></i>
+                                                <a data-toggle="modal" href="{% url 'bind_wechat' %}" data-target="#myModal" data-whatever="">{% trans '立即绑定' %}</a>
+                                                <span class="text-muted">{% trans '绑定后，可直接使用微信登录U-Mail，并通过微信接受相关告警提醒消息' %}</span>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="no-border text-right text-muted myself-width-120 text-label">{% trans '联系人' %}&nbsp;</td>
+                                    <td class="no-border text-value">
+                                        <a href="#" id="id_linkman" data-type="text" data-pk="1" data-placeholder="" data-original-title="">{{ request.user.linkman }}</a>
+                                    </td>
+                                    <td class="no-border text-right text-muted myself-width-120 text-label">{% trans 'QQ 号码' %}</td>
+                                    <td class="no-border text-value">
+                                        <a href="#" id="id_im" data-type="text" data-pk="1" data-placeholder="" data-original-title="">{{ request.user.im }}</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td class="no-border text-right text-muted myself-width-120 text-label">{% trans '手机号码' %}</td>
+                                    <td class="no-border text-value">
+                                        <a href="#" id="id_mobile" data-type="text" data-pk="1" data-placeholder="" data-original-title="">{{ request.user.mobile }}</a>
+                                    </td>
+                                    <td class="no-border text-right text-muted myself-width-120 text-label">{% trans '邮箱地址' %}</td>
+                                    <td class="no-border text-value">
+                                        <a href="#" id="id_email" data-type="text" data-pk="1" data-placeholder="" data-original-title="">{{ request.user.email }}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="no-border text-right text-muted myself-width-120 text-label">{% trans '支付宝绑定' %}</td>
+                                    <td class="no-border text-value" colspan="3">
+                                        {% if request.user.service.is_umail %}
+                                            <span class="text-danger">{% trans '测试帐号不允许此类操作!' %}</span>
+                                        {% else %}
+                                            {% if request.user.ali_customer %}
+                                                <span>{% trans '已绑定' %} {{ request.user.ali_customer.user_id }}</span>
+                                                <i class="myself-seperate-icon"></i>
+                                                <a href="#" onclick="unbindAliCustomer()">{% trans '解除绑定' %}</a>
+                                                <span class="text-muted">{% trans '已绑定，可直接使用支付宝登录U-Mail' %}</span>
+                                            {% else %}
+                                                <span>{% trans '未绑定' %}</span>
+                                                <i class="myself-seperate-icon"></i>
+                                                <a href="{% url 'ali_login' %}?key=bind">{% trans '立即绑定' %}</a>
+                                                <span class="text-muted">{% blocktrans %}绑定后，可直接使用支付宝登录U-Mail，如果您是首次绑定且您的芝麻信用超过{{ register_credit }}，绑定后，可获得邮件发送测试点数{% endblocktrans %}</span>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="widget-body no-padding no-margin">
+                            <form role="form" action="" method="post" id="id_Form" class="form-horizontal">
+                                <legend class="pull-left padding-gutter padding-top-0 padding-bottom-0 jcrop-api-tabs-options">
+                                    <h2 class="no-margin no-padding">{% trans '详细信息' %}</h2>
+                                </legend>
+                                {% csrf_token %}
+                                <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed table-content table-tr-dashed" width="100%">
+                                    <tbody>
+                                    <tr>
+                                        <td class="no-border text-right text-muted myself-width-120 text-label">
+                                            <label class="control-label">{% trans '网站主页' %}</label>
+                                        </td>
+                                        <td class="no-border">
+                                            <input id="id_homepage" name="homepage" maxlength="200" type="text" placeholder="www.example.com" value="{{request.user.homepage|default_if_none:''}}" class="form-control" style="width: 37%;">
+                                            <br><small id="id_homepage_error" class="myself-txt-color-err display-none"></small>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-border text-right text-muted myself-width-120 text-label">
+                                            <label class="control-label">{% trans '月均发信量' %}</label>
+                                        </td>
+                                        <td class="no-border">
+                                            <input type="hidden" name="estimate" id="id_estimate" value="{{ request.user.estimate|default_if_none:'' }}"/>
+                                            <div style="width: 70%;">
+                                                {% for k, v in estimate_selects %}
+                                                    <span onclick="changeEstimate('{{ k }}')" style="" id="id_changeEstimate_{{ k }}" class="ac-tag {% if k == request.user.estimate %}is-active{% endif %}">{{ v }}</span>
+                                                {% endfor %}
+                                                <br><small id="id_estimate_error" class="myself-txt-color-err display-none">{% trans '请选择月均发信量范围。' %}</small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-border text-right text-muted myself-width-120 text-label">
+                                            <label class="control-label">{% trans '内容偏向' %}</label>
+                                        </td>
+                                        <td class="no-border">
+                                            <div class="display-none" id="id_content_lists">
+                                                {% for content_type in content_lists %}
+                                                    <input type="hidden" name="content_type" id="id_content_type_{{ content_type }}" value="{{ content_type }}"/>
+                                                {% endfor %}
+                                            </div>
+                                            <div style="width: 70%;">
+                                                {% for k, v in content_selects %}
+                                                    <span onclick="changeContent('{{ k }}')" style="" id="id_changeContent_{{ k }}" class="ac-tag  {% if k in content_lists %}is-active{% endif %}">{{ v }}</span>
+                                                {% endfor %}
+                                                <br><small id="id_content_type_error" class="myself-txt-color-err display-none">{% trans '请选择内容偏向，可多选。' %}</small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-border text-right text-muted myself-width-120 text-label">
+                                            <label class="control-label">{% trans '所属行业' %}</label>
+                                        </td>
+                                        <td class="no-border">
+                                            <input type="hidden" name="industry" id="id_industry" value="{{ request.user.industry|default_if_none:'' }}"/>
+                                            <div style="width: 70%;">
+                                                {% for k, v in industry_selects %}
+                                                    <span onclick="changeIndustry('{{ k }}')" style="" id="id_changeIndustry_{{ k }}" class="ac-tag {% if k == request.user.industry %}is-active{% endif %}">{{ v }}</span>
+                                                {% endfor %}
+                                                <br><small id="id_industry_error" class="myself-txt-color-err display-none">{% trans '请选择所属行业。' %}</small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-border text-right text-muted myself-width-120 text-label">
+                                            <label class="control-label">{% trans '获知渠道' %}</label>
+                                        </td>
+                                        <td class="no-border">
+                                            <div class="display-none" id="id_way_lists">
+                                                {% for way_type in way_lists %}
+                                                    <input type="hidden" name="way_type" id="id_way_type_{{ way_type }}" value="{{ way_type }}"/>
+                                                {% endfor %}
+                                            </div>
+                                            <div style="width: 70%;">
+                                                {% for k, v in way_selects %}
+                                                    <span onclick="changeWay('{{ k }}')" style="" id="id_changeWay_{{ k }}" class="ac-tag  {% if k in way_lists %}is-active{% endif %}">{{ v }}</span>
+                                                {% endfor %}
+                                                <br><small id="id_way_type_error" class="myself-txt-color-err display-none">{% trans '请选择获知渠道，可多选。' %}</small>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-border text-right text-muted myself-width-120 text-label">
+                                        </td>
+                                        <td class="no-border">
+                                            <button class="btn btn-primary" type="button" style="width: 37%!important;" onclick="updateContactInfo()" id="id_save_button">{% trans '保存' %}</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="margin:150px auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans '加载中' %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% trans '页面加载中' %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">{% trans '关闭' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="/static/css/addcss.css"/>
+    <style>
+        .myself-width-120{width:120px;}
+        .ac-tag {  cursor: pointer;  display: inline-block;  padding: 6px 12px;  margin-right: 15px;  margin-bottom: 15px;  border: 1px solid #ddd;  border-radius: 3px;  }
+        .ac-tag.is-active { border-color: #2DA280; color: #2DA280; }
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="/static/sa/js/plugin/x-editable/x-editable.min.bak.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var post_url = '/setting/ajax_alter_customer_field/'
+            //editables
+            $('#id_linkman').editable({
+                url: post_url,
+                type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                title: "{% trans '修改联系人' %}",         //编辑框的标题
+                disabled: false,             //是否禁用编辑
+                emptytext: "{% trans '未填写' %}",         //空值的默认文本
+                mode: "popup",               //编辑框的模式：支持 popup 和 inline 两种模式，默认是 popup
+                placement: 'right',         // 右边弹出 top|right|bottom|left 默认 top
+                pk: 1,
+                name: 'linkman',
+                validate: function (value) {
+                    if ($.trim(value) == ''){
+                        return '{% trans '请填写联系人' %}';
+                    }
+                },
+            });
+
+            $('#id_company').editable({
+                url: post_url,
+                type: "text",                //编辑框的类型。支持text|textarea|select|date|checklist等
+                title: "{% trans '修改公司名称' %}",         //编辑框的标题
+                disabled: false,             //是否禁用编辑
+                emptytext: "{% trans '未填写' %}",         //空值的默认文本
+                mode: "popup",               //编辑框的模式：支持 popup 和 inline 两种模式，默认是 popup
+                placement: 'right',         // 右边弹出 top|right|bottom|left 默认 top
+                pk: 1,
+                name: 'company',
+                validate: function (value) {
+                    if ($.trim(value) == ''){
+                        return '{% trans '请填写公司名称' %}';
+                    }
+                },
+            });
+
+            $('#id_mobile').editable({
+                placement: 'right',
+                url: post_url,
+                type: 'text',
+                pk: 1,
+                name: 'mobile',
+                title: '{% trans '修改手机号码' %}',
+                emptytext: '未填写',
+                validate: function (value) {
+                    var data = $.trim(value)
+                    if ( data == '') {
+                        return '{% trans '请填写手机号码' %}';
+                    } else if ( !checkMobile(data) ){
+                        return '{% trans '手机号码格式不正确' %}';
+                    }
+                }
+            });
+
+            $('#id_im').editable({
+                placement: 'right',
+                url: post_url,
+                type: 'text',
+                pk: 1,
+                name: 'im',
+                title: '{% trans '修改QQ' %}',
+                emptytext: '{% trans '未填写' %}',
+            });
+
+            $('#id_email').editable({
+                placement: 'right',
+                url: post_url,
+                type: 'text',
+                pk: 1,
+                name: 'email',
+                title: '{% trans '修改邮箱地址' %}',
+                emptytext: '{% trans '未填写' %}',
+                validate: function (value) {
+                    var data = $.trim(value)
+                    if ( data == '') {
+                        return '{% trans '请填写邮箱地址' %}';
+                    } else if ( !checkEmail(data) ){
+                        return '{% trans '邮箱格式不正确' %}';
+                    }
+                }
+            });
+
+        })
+
+
+        $.ajaxSetup({ data: {csrfmiddlewaretoken: '{{ csrf_token }}' }, });
+
+        function unbindCustomer(){
+            {% if request.user.service.is_umail %}
+                $("#id_mailbox_error").removeClass('display-none').html('<span style="color:#e1504a; font-weight:400;">{% trans "测试帐号不允许此类操作!" %}</span>');
+                return;
+            {% endif %}
+            var ajax_url = '/setting/ajax_alter_customer_field/';
+            $.post(ajax_url, {'name': 'weixin_customer', 'value': ''}, function(data){
+                window.location.href="{% url 'customer_unbind_success' %}";
+            });
+        }
+        function unbindAliCustomer(){
+            {% if request.user.service.is_umail %}
+                $("#id_mailbox_error").removeClass('display-none').html('<span style="color:#e1504a; font-weight:400;">{% trans "测试帐号不允许此类操作!" %}</span>');
+                return;
+            {% endif %}
+            var ajax_url = '/setting/ajax_alter_customer_field/';
+            $.post(ajax_url, {'name': 'ali_customer', 'value': ''}, function(data){
+                window.location.href="{% url 'customer_unbind_success' %}";
+            });
+        }
+
+
+        function checkMobile(text){
+            var _emp=/^\s*|\s*$/g;
+            text=text.replace(_emp,"");
+            var _d=/^1[3578][01379]\d{8}$/g;
+            var _l=/^1[34578][01256]\d{8}$/g;
+            var _y=/^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/g;
+            if(_d.test(text)){
+                return true;
+            } else if(_l.test(text)){
+                return true;
+            }else if(_y.test(text)){
+                return true;
+            }
+            return false;
+        }
+
+        function checkPhone(str){
+            var re = /^0\d{2,3}-?\d{7,8}$/;
+            if(re.test(str)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        function checkEmail(field){
+            var expression = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            var obj = new RegExp(expression);
+            if(obj.test(field)==true){
+                return true;
+            }else{
+                return false;
+            }
+        };
+
+        function changeEstimate(value){
+            $("#id_changeEstimate_"+value).addClass('is-active');
+            $("#id_estimate").val(value);
+            var value_list = {{ estimate_value_list|safe }};
+            for(var i=0; i<value_list.length; i++){
+                if (value_list[i] != value){
+                    $("#id_changeEstimate_"+value_list[i]).removeClass('is-active');
+                }
+            }
+        }
+
+        function changeIndustry(value){
+            $("#id_changeIndustry_"+value).addClass('is-active');
+            $("#id_industry").val(value);
+            var value_list = {{ industry_value_list|safe }};
+            for(var i=0; i<value_list.length; i++){
+                if (value_list[i] != value){
+                    $("#id_changeIndustry_"+value_list[i]).removeClass('is-active');
+                }
+            }
+        }
+
+        function changeContent(value){
+            var obj = $("#id_changeContent_"+value);
+            if ( obj.hasClass('is-active') ){
+                obj.removeClass('is-active');
+                $("#id_content_type_"+value).remove();
+            } else {
+                obj.addClass('is-active');
+                $("#id_content_lists").append('<input type="hidden" name="content_type" id="id_content_type_'+value+'" value="'+value+'"/>')
+            }
+        }
+
+        function changeWay(value){
+            var obj = $("#id_changeWay_"+value);
+            if ( obj.hasClass('is-active') ){
+                obj.removeClass('is-active');
+                $("#id_way_type_"+value).remove();
+            } else {
+                obj.addClass('is-active');
+                $("#id_way_lists").append('<input type="hidden" name="way_type" id="id_way_type_'+value+'" value="'+value+'"/>')
+            }
+        }
+
+        $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+        function updateContactInfo(){
+            $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+            var homepage = $.trim($("#id_homepage").val());
+            var estimate = $.trim($("#id_estimate").val());
+            var content_type = $("input[name='content_type']");
+            var industry = $.trim($("#id_industry").val());
+            var way_type = $("input[name='way_type']");
+            if ( homepage=='' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_homepage_error").removeClass('display-none').html('{% trans '请输入网站主页！' %}');
+                return false;
+            }
+            if ( !checkeurl(homepage) ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_homepage_error").removeClass('display-none').html('{% trans '请输入正确的网站主页！' %}');
+                return false;
+            }
+            if ( estimate=='' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_estimate_error").removeClass('display-none');
+                return false;
+            }
+            if ( industry=='' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_industry_error").removeClass('display-none');
+                return false;
+            }
+            if ( content_type.length==0 ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_content_type_error").removeClass('display-none');
+                return false;
+            }
+            if ( way_type.length==0 ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_way_type_error").removeClass('display-none');
+                return false;
+            }
+            $('#id_Form').submit();
+        }
+
+        function checkeurl(url){
+            var expression=strRegex = "^((https|http|ftp|rtsp|mms)?://)"
+                    + "?(([0-9A-Za-z_!~*'().&=+$%-]+: )?[0-9A-Za-z_!~*'().&=+$%-]+@)?" //ftp的user@
+                    + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+                    + "|" // 允许IP和DOMAIN（域名）
+                    + "([0-9A-Za-z_!~*'()-]+\.)*" // 域名- www.
+                    + "([0-9A-Za-z][0-9a-z-]{0,61})?[0-9A-Za-z]\." // 二级域名
+                    + "[A-Za-z]{2,6})" // first level domain- .com or .museum
+                    + "(:[0-9]{1,4})?" // 端口- :80
+                    + "((/?)|" // a slash isn't required if there is no file name
+                    + "(/[0-9A-Za-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+            var objexp=new RegExp(expression);
+            if ( objexp.test(url)==true ) { return true; } else { return false; }
+        };
+
+    </script>
+{% endblock %}

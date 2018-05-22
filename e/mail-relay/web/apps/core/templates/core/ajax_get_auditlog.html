@@ -1,0 +1,34 @@
+<td>{{ n.id }}</td>
+<td>
+    <span class="text-info">{{ n.model_class }}</span>
+    </br>
+    {{ n.relate_obj }}
+</td>
+<td>{% for k, v in n.changes_display_dict.iteritems %}
+    <span class="text-info">{{ k }}</span> (
+    {% for i in v %}
+    {% if forloop.last %}<span class="text-warning"> {{ i }}</span>{% else %}{{ i }} ---->{% endif %}
+    {% endfor %})</br>
+{% endfor %}</td>
+<td>
+    {% if n.action == 2 %}
+    <span class="text-danger">删除</span>
+    {% elif n.action == 1 %}
+    <span class="text-warning">更新</span>
+    {% else %}
+    <span class="text-success">添加</span>
+    {% endif %}
+</td>
+<td>{% if n.c_actor_id %}
+    <span class="text-danger">{{ n.c_actor }}</span>
+    {% else %}
+    {{ n.actor }}
+{% endif %}</td>
+<td>{{ n.remote_addr }}
+    {% if n.remote_addr == '202.103.191.13' %}
+    </br>
+    <span class="text-danger">客服系统同步</span>
+    {% endif %}
+</td>
+<td>{{ n.timestamp|date:"Y-m-d H:i:s" }}</td>
+

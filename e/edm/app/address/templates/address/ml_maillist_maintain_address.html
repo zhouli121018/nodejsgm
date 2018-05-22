@@ -1,0 +1,281 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "添加地址" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "联系人管理" %}</li><li>{% trans "添加地址" %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-pencil-square-o fa-fw "></i>{% trans "添加地址" %}
+            </h1>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6">
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <section id="widget-grid" class="">
+
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"><i class="fa fa-hand-o-right"></i></span>
+                        <h2>{% trans "导入地址到分类" %}<span style="color:#c7254e;background-color:#f9f2f4; margin-left: 5px;">{{ subject }}</span></h2>
+                    </header>
+                    <div>
+                        <div class="jarviswidget-editbox"></div>
+                        <div class="widget-body">
+                            <div class="margin-left-20">
+                                <dl>
+                                    <dt>{% trans "文件格式说明" %}</dt>
+                                    <dd style="width: 850px;">
+<pre>{% blocktrans %}user1@domain.com	姓名	性别	生日	手机	地区	变量1	变量2
+user2@domain.com	姓名	性别	生日	手机	地区	变量1	变量2	变量3	变量4	变量5	...
+user3@domain.com	姓名	性别	生日	手机	地区	变量3{% endblocktrans %}</pre>
+                                        <span style="color: red">{% blocktrans %}注：{% endblocktrans %}</span>
+                                        {% blocktrans %}
+                                            文件中一个地址占一行，每个邮件可以另外有10个变量；每个变量支持最长100个字符。
+                                            格式如上，变量之间用“TAB”或“；”或“，”符隔开。
+                                        {% endblocktrans %}
+                                        <br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {% blocktrans %}要导入的文件大小不能超过 20MB，大于 20MB 的文件请切割后分批导入。
+                                            地址导入时会进行地址合法性检测、有效性检测和重复性检测。{% endblocktrans %}<br>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        {% blocktrans %}下面有xls,xlsx,csv,txt模板格式导出。{% endblocktrans %}
+                                    </dd>
+                                    <dt class="margin-top-10">{% blocktrans %}模板格式导出{% endblocktrans %}</dt>
+                                    <dd>
+                                        <a type="button" class="btn btn-primary" href="{% url 'export_template_format' %}?file_ext=csv">{% trans "导出csv模板" %}</a>
+                                        <a type="button" class="btn btn-primary" href="{% url 'export_template_format' %}?file_ext=xls">{% trans "导出xls模板" %}</a>
+                                        <a type="button" class="btn btn-primary" href="{% url 'export_template_format' %}?file_ext=txt">{% trans "导出txt模板" %}</a>
+                                        <a type="button" class="btn btn-primary" href="{% url 'export_template_format' %}?file_ext=xlsx">{% trans "导出xlsx模板" %}</a>
+                                    </dd>
+                                    <dt class="margin-top-10">{% trans "导入文件" %}</dt>
+                                    <dd style="width: 850px!important;height: auto!important;min-height: 150px;">
+
+                                        <div id="import_file_area" class="margin-left-20">
+                                            <!--{% blocktrans %}地址打散上传：{% endblocktrans %}<input type="checkbox" id="is_disorder" name="is_disorder" checked="checked" autocomplete="off">&nbsp;&nbsp;&nbsp;&nbsp;-->
+                                            {% blocktrans %}是否忽略文件第一行：{% endblocktrans %}<input type="checkbox" id="is_ignore" name="is_ignore" autocomplete="off">
+                                            <div class="row" style="margin:2px;">
+                                                <div class="col-md-12 form-inline">
+                                                    <input type="file" name="uploadify" id="uploadify" style="margin-bottom: 2px!important;"/>&nbsp;&nbsp;
+                                                    <small>{% trans "支持文件格式" %}(*.txt;*.xls;*.xlsx;*.docx;*.csv;*.zip;*.rar),{% trans "其中rar,zip为其它四种格式文件组成的压缩文件" %};</small><br>&nbsp;&nbsp;
+                                                    <small>{% trans "支持多文件自动上传(最多5个)，单个文件最大允许20M。" %}</small>
+                                                    <div id="fileQueue"></div>
+                                                </div>
+                                                <div class="col-md-12 form-inline" style="margin-top:13px;">
+                                                    <span>{% blocktrans %}点击{% endblocktrans %} <a target="_blank" href="{% url 'ml_import_log' %}">{% blocktrans %}查看地址导入记录{% endblocktrans %}</a> {% blocktrans %}查看地址导入情况{% endblocktrans %}</span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-default pull-left margin-left-20" onclick="location.href='{% url "ml_maillist" %}?isvalid=1'">{% trans "返回" %}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-hand-o-right"></i> </span>
+                        <h2>{% trans "添加地址到分类" %}<span style="color:#c7254e;background-color:#f9f2f4;margin-left:5px;">{{ subject }}</span></h2>
+                    </header>
+                    <div>
+                        <div class="jarviswidget-editbox"></div>
+                        <div class="widget-body">
+                            <div class="margin-left-20">
+                                <dl>
+                                    <dt>{% trans "数据格式说明" %}</dt>
+                                    <dd style="width: 850px;">
+<pre>{% blocktrans %}user1@domain.com; 姓名1; 性别; 生日; 手机; 地区; 变量1; 变量2
+user2@domain.com; 姓名2; 性别; 生日; 手机; 地区; 变量1; 变量2; 变量3; 变量4; 变量5; ...
+user3@domain.com; 姓名3; 性别; 生日; 手机; 地区; 变量1{% endblocktrans %}</pre>
+                                        <span style="color: red">{% blocktrans %}注：{% endblocktrans %}</span>
+                                        {% blocktrans %}一个地址占一行，格式如上，之间用分号“；”隔开。<br>
+                                            姓名, 性别, 生日, 手机, 地区, 变量1至10, 每个变量支持最长100个字符。{% endblocktrans %}
+                                    </dd>
+                                    <dd>
+                                        <textarea id="id_post_data" style="width:850px;height:100px;overflow:auto;"></textarea>
+                                    </dd>
+                                    <dd class="button" style="padding:5px 0px;">
+                                        <button type="button" class="btn btn-primary disabled" onclick="postAddress();" id="id_submit">{% trans "提交" %}</button>
+                                    </dd>
+                                    <dd class="margin-top-5">
+                                        <div id="id_post_data_prompt" class="display-none" style="padding:5px;background:#4b981d;width:850px;color:#fff;"></div>
+                                    </dd>
+                                </dl>
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button type="button" class="btn btn-default pull-left margin-left-20" onclick="location.href='{% url "ml_maillist" %}?isvalid=1'">{% trans "返回" %}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+        {% if request.user.service.addr_export == '1' and not request.session.is_admin  %}
+
+            <div class="row display-none" id="id_export_limit">
+                <article class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                        <header>
+                            <span class="widget-icon"> <i class="fa fa-hand-o-right"></i> </span>
+                            <h2>{% trans "导出联系人分类地址" %}<span style="color:#c7254e;background-color:#f9f2f4;margin-left:5px;">{{ subject }}</span></h2>
+                        </header>
+                        <div>
+                            <div class="jarviswidget-editbox"></div>
+                            <div class="widget-body">
+                                <div class="margin-left-20">
+                                    <dl>
+                                        <dt>{% blocktrans %}请输入导出后的文件名称：{% endblocktrans %}</dt>
+                                        <dd><input name="export_name" id="export_name" value="{{ subject }}" maxlength="20" style="width: 120px;text-align: center;" type="text"> .xls</dd>
+                                        <dd class="button" style="padding:5px 0px;">
+                                            <button type="button" class="btn btn-primary btn-mini" style="border-radius: 1px;" onclick="exportAddr();" id="id_save_button">{% trans "导出" %}</button>&nbsp;
+                                            <button type="button" class="btn btn-link ui-button-btn-link" onclick="location.href='{% url "ml_maillist" %}?isvalid=1'">{% trans "返回" %}</button>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        {% endif %}
+
+    </section>
+
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'uploadifive-master/uploadifive.css' %}" />
+    <style>
+        .self-font-md {font-size:115%!important}
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script charset="utf-8" src="{% static 'uploadifive-master/jquery.uploadifive.js' %}"></script>
+    <script>
+
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(function () {
+            $("#id_export_limit").addClass('display-none');
+            $.post('{% url "ajax_export_limit" request.user.id list_id %}', {}, function(data){
+                if (data.msg=='Y'){
+                    $("#id_export_limit").removeClass('display-none');
+                }
+            })
+        })
+
+
+        /********** 上传附件 **********/
+        $(function() {
+            $('#uploadify').uploadifive({
+                'auto' : true,
+                'multi': true,
+                'width': 200,
+                'removeCompleted' : false,
+                'uploadScript' : "{% url 'ml_addr_multi_upload' list_id %}",
+                'fileObjName': 'filedata',
+                'buttonText' : '<div><span>{% blocktrans %}上传地址文件{% endblocktrans %}</span></div>',
+                'queueID' : 'fileQueue',
+                'fileSizeLimit'   : '20MB',
+                // 'uploadLimit' : 20,
+                'queueSizeLimit'  : 5,
+                // 'formData' :{'csrfmiddlewaretoken':"{{ csrf_token }}", 'is_disorder': is_disorder, 'is_ignore': is_ignore,},
+
+                'onUpload': function (file) {
+                    var element={};
+                    element.user_id = "{{ request.user.id }}";
+                    element.csrfmiddlewaretoken = "{{ csrf_token }}";
+                    // element.is_disorder = $('#is_disorder').is(':checked');
+                    element.is_ignore = $('#is_ignore').is(':checked');
+                    $('#uploadify').data('uploadifive').settings.formData = element;
+                },
+
+
+                'onUploadComplete' : function(file, data) {
+                    var jsondata = JSON.parse(data);
+                    if (jsondata.status=='M'){
+                        file.queueItem.addClass('error').find('.fileinfo').addClass('text-danger self-font-md').html(' - {% trans "上传异常，请重新上传。" %}');
+                    } else if(jsondata.status=='S'){
+                        file.queueItem.addClass('error').find('.fileinfo').addClass('text-danger self-font-md').html(' - {% trans "上传失败，只能上传txt, csv, xls, xlsx, docx, zip, rar文件。" %}');
+                    } else if (jsondata.status=='Y') {
+                        file.queueItem.find('.fileinfo').addClass('text-success').html(' - {% trans "上传成功。" %}');
+                    } else {
+                        console.log('pass...')
+                    }
+                },
+            });
+        });
+
+        $(function () {
+            $("#id_post_data").val('');
+            $("#id_submit").removeClass('disabled').removeAttr("disabled");
+        });
+
+        function postAddress(){
+            var post_data = $('#id_post_data').val();
+            var obj = $("#id_post_data_prompt");
+            var ajax_url = '/address/ajax_add_address/{{ list_id }}/';
+            var subObj = $("#id_submit");
+            subObj.addClass('disabled').attr("disabled","disabled");
+            if (post_data==''){
+                obj.removeClass('display-none').html("{% trans "请输入邮件地址" %}");
+                subObj.removeClass('disabled').removeAttr("disabled");
+                return false;
+            }
+            obj.removeClass('display-none').html("<span><img src='/static/img/loading.gif' style='width:14px;height:14px;color:#fff;'>&nbsp;&nbsp;{% trans "正在提交中..." %}</span>");
+            $.post(ajax_url, {'post_data': post_data,}, function(data){
+                obj.removeClass('display-none').html(data.msg);
+                subObj.removeClass('disabled').removeAttr("disabled");
+            });
+        };
+
+        $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+        function exportAddr(){
+            $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+            var file_name = $("#export_name").val();
+            if ( file_name == '' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                alert('{% trans "文件名称不能为空！" %}');
+                return false;
+            } else {
+                window.location.href = "/address/export_address/{{ list_id }}/?file_name=" + file_name;
+            }
+            // $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+            setTimeout( function(){$("#id_save_button").removeAttr("disabled").removeClass('disabled');}, 60000);
+        };
+
+    </script>
+
+{% endblock %}

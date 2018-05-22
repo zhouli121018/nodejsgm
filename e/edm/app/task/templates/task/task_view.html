@@ -1,0 +1,208 @@
+{% load i18n %}
+{% load task_tags %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans "查看任务：" %}<code>{{ task_obj.send_name }}</code></h4>
+</div>
+
+<div class="modal-body padding-10 margin-bottom-10">
+    <div class="form-horizontal">
+        <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed" width="100%">
+            <tbody>
+            <!--选择模板-->
+            <tr>
+                <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "选择模板" %}</td>
+                <td class="no-border" colspan="3">
+                    {% if template_objs %}
+                        {% for obj in template_objs %}
+                            <label class="margin-top-0 col-md-12 no-padding-left">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 inline-group">
+                                    <input type="checkbox" class="checkbox style-0" id="id_template_{{ obj.template.id }}" name="template" value="{{ obj.template.id }}" checked="checked" disabled="disabled">
+                                    <span class="margin-right-5">{{ obj.template.name }}</span>
+                                    (<a href="/template/preview/{{ obj.template.id }}/" target="_blank" class="margin-right-5">{% trans "查看模板" %}</a>
+                                    {% trans "该模板约扣" %}<span class="myself-txt-color-blue margin-right-5 margin-left-5">{{ obj.template.get_template_point }}</span>{% trans "个点数" %})
+                                </div>
+                            </label>
+                        {% endfor %}
+                    {% else %}
+                        <label class="margin-top-0 col-md-12 no-padding-left">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 inline-group">
+                                <span>{% trans "无模板" %}</span>
+                            </div>
+                        </label>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr><td class="no-border" colspan="4"><legend class="no-padding no-margin"></legend></td></tr>
+            <!--地址类型-->
+            {% get_maillist_subject task_obj as maillists %}
+            <tr>
+                <td class="no-border text-right myself-width-small">{% trans "地址类型" %}</td>
+                <td class="no-border" colspan="3">
+                    <div class="col-md-12 form-inline">
+                        {% for subj in maillists %}
+                            <span style="margin-right:5px;" class="label bg-color-greenLight">{{ subj }}</span>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            <!--发送数量-->
+            <tr>
+                <td class="no-border text-right myself-width-small">{% trans "发送数量" %}</td>
+                <td class="no-border" colspan="3">
+                    <div class="col-md-12 form-inline">
+                            <span>
+                                {% if maillists.count < 2 %}
+                                    {% if task_obj.send_qty %}
+                                        {% if task_obj.send_qty_start %} {% trans "从" %} {{ task_obj.send_qty_start }} {% trans "至" %} {% endif %}{{ task_obj.send_qty }}
+                                    {% else %}
+                                        {% trans "所有地址" %}
+                                    {% endif %}({{ task_obj.get_real_send_qty }})
+                                {% else %}
+                                    {% trans "所有地址" %}({{ task_obj.get_real_send_qty }})
+                                {% endif %}
+                            </span>
+                    </div>
+                </td>
+            </tr>
+            <!--发件人-->
+            <tr>
+                <td class="no-border text-right myself-width-small">{% trans "发件人" %}</td>
+                <td class="no-border" colspan="3">
+                    <div class="col-md-12 form-inline">
+                        <span>{{ task_obj|show_sender_type }}</span>
+                    </div>
+                </td>
+            </tr>
+            <!--发送人名称-->
+            {% if task_obj.send_fullname %}
+                <tr>
+                    <td class="no-border text-right myself-width-small">{% trans "发送人名称" %}</td>
+                    <td class="no-border" colspan="3">
+                        <div class="col-md-12 form-inline">
+                            <span>{{ task_obj.send_fullname|default_if_none:"" }}</span>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+            <!--回复地址-->
+            {% if task_obj.send_replyto %}
+                <tr>
+                    <td class="no-border text-right myself-width-small">{% trans "回复地址" %}</td>
+                    <td class="no-border" colspan="3">
+                        <div class="col-md-12 form-inline">
+                            <span>{{ task_obj.send_replyto|default_if_none:"" }}</span>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+            {% if task_obj.is_need_receipt %}
+                <tr>
+                    <td class="no-border text-right myself-width-small">{% trans "邮件阅读回执" %}</td>
+                    <td class="no-border" colspan="3">
+                        <fieldset>
+                            <label class="margin-top-0 col-md-12 no-padding-left">
+                                <div class="col-xs-12 col-sm-12 inline-group">
+                                    <input class="checkbox style-0" type="checkbox" disabled="disabled" checked="checked">
+                                    <span><small><strong class="txt-color-red">{% trans "注：" %}</strong>{% trans "勾选，则邮件可以阅读回执" %}</small></span>
+                                </div>
+                            </label>
+                        </fieldset>
+                    </td>
+                </tr>
+            {% endif %}
+
+            <!--任务状态-->
+            <tr>
+                <td class="no-border text-right myself-width-small">{% trans "任务状态" %}</td>
+                <td class="no-border" colspan="3">
+                    <div class="col-md-12 form-inline">
+                        <span>{{ task_obj.get_send_status_display }}</span>
+                    </div>
+                </td>
+            </tr>
+            <!--邮件跟踪-->
+            <tr>
+                <td class="no-border text-right myself-width-small">{% trans "邮件跟踪" %}</td>
+                <td class="no-border" colspan="3">
+                    <div class="col-md-12 form-inline">
+                        <span>{{ task_obj.get_track_status_display }}</span>
+                    </div>
+                </td>
+            </tr>
+
+            {% if task_obj.track_domain %}
+                <tr>
+                    <td class="no-border text-right myself-width-small">{% trans "跟踪域名" %}</td>
+                    <td class="no-border" colspan="3">
+                        <div class="col-md-12 form-inline">
+                            <span>{{ task_obj.track_domain|default_if_none:"" }}</span>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+
+
+            {% if task_obj.hour_speed %}
+                <tr>
+                    <td class="no-border text-right myself-width-small">{% trans "发送速度" %}</td>
+                    <td class="no-border" colspan="3">
+                        <div class="col-md-12 form-inline">
+                            <span>{{ task_obj.hour_speed }} {% trans "封" %}/{% trans "小时" %}</span>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+
+
+            <tr><td class="no-border" colspan="4"><legend class="no-padding no-margin"></legend></td></tr>
+            <tr>
+                <td class="no-border text-right myself-width-small">{% trans "任务创建时间" %}</td>
+                <td class="no-border myself-width-big">
+                    <div class="col-md-12 form-inline">
+                        <span class="txt-color-red">{{ task_obj.created|date:"Y-m-d H:i" }}</span>
+                    </div>
+                </td>
+                <td class="no-border text-right myself-width-small">{% trans "预定发送时间" %}</td>
+                <td class="no-border">
+                    <div class="col-md-12 form-inline">
+                        <span class="txt-color-blue">{{ task_obj.send_time|date:"Y-m-d H:i" }}</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="no-border text-right myself-width-small">{% trans "发送开始时间" %}</td>
+                <td class="no-border myself-width-big">
+                    <div class="col-md-12 form-inline">
+                        <span class="txt-color-red">{{ task_obj.time_start|date:"Y-m-d H:i:s" }}</span>
+                    </div>
+                </td>
+                <td class="no-border text-right myself-width-small">{% trans "发送结束时间" %}</td>
+                <td class="no-border">
+                    <div class="col-md-12 form-inline">
+                        <span class="txt-color-blue">{{ task_obj.time_end|date:"Y-m-d H:i:s" }}</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="no-border text-right myself-width-small">{% trans "成功发送数" %}</td>
+                <td class="no-border myself-width-big">
+                    <div class="col-md-12 form-inline">
+                        <span class="txt-color-red">{{ task_obj.send_count }}</span>
+                    </div>
+                </td>
+                <td class="no-border text-right myself-width-small">{% trans "发送失败数" %}</td>
+                <td class="no-border">
+                    <div class="col-md-12 form-inline">
+                        <span class="txt-color-blue">{{ task_obj.error_count }}</span>
+                    </div>
+                </td>
+            </tr>
+            <tr><td class="no-border" colspan="4"><legend class="no-padding no-margin"></legend></td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "关闭" %}</button>
+</div>

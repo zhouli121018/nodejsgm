@@ -1,0 +1,30 @@
+<li class="dropdown">
+    <a aria-expanded="false" class="dropdown-toggle" data-toggle="dropdown" href="#">
+        <i class="fa fa-envelope fa-fw"></i> {% if count %}{{ count }}{% endif %}  <i class="fa fa-caret-down"></i>
+    </a>
+    <ul class="dropdown-menu dropdown-messages">
+        {% for n in notices %}
+        <li>
+            <a href="{% url 'notice_list' %}?id={{n.id}}">
+                <div>
+                    <strong>{{ n.subject }}</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>{{ n.created|date:'Y-m-d H:i' }}</em>
+                                    </span>
+                </div>
+                <div>{{ n.content }}</div>
+            </a>
+        </li>
+        <li class="divider"></li>
+        {% endfor %}
+        <li>
+            <a class="text-center" href="{% url 'notice_list' %}">
+                <strong>读取所有通知</strong>
+                <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+    </ul>
+    <!-- /.dropdown-messages -->
+</li>
+
+

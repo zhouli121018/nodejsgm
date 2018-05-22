@@ -1,0 +1,44 @@
+{% load i18n %}
+<li class="green">
+    <a aria-expanded="false" data-toggle="dropdown" class="dropdown-toggle" href="#">
+        <i class="ace-icon fa fa-envelope"></i>
+        <span class="badge badge-success"> {{ count }}</span>
+    </a>
+
+    <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+        <li class="dropdown-header">
+            <i class="ace-icon fa fa-envelope-o"></i>
+            {{ count }} {% trans "条未读通知" %}
+        </li>
+
+        <li style="position: relative;" class="dropdown-content ace-scroll"><div style="display: block; height: 200px;" class="scroll-track"><div style="height: 111px; top: 0px;" class="scroll-bar"></div></div><div style="max-height: 200px;" class="scroll-content">
+            <ul class="dropdown-menu dropdown-navbar">
+                {% for n in notices %}
+                    <li>
+                        <a href="{% url 'notice_list' %}?id={{ n.id }}" class="clearfix">
+                            <span class="msg-body">
+                                <span class="msg-title">
+                                    <span class="blue">{{ n.subject }}</span>
+                                    {{ n.content|truncatechars:20 }}
+                                </span>
+
+                                <span class="msg-time">
+                                    <i class="ace-icon fa fa-clock-o"></i>
+                                    <span>{{ n.created|date:"Y-m-d H:i" }}</span>
+                                </span>
+                            </span>
+                        </a>
+                    </li>
+                {% endfor %}
+
+            </ul>
+        </div></li>
+
+        <li class="dropdown-footer">
+            <a href="{% url 'notice_list' %}">
+                {% trans "查看所有通知" %}
+                <i class="ace-icon fa fa-arrow-right"></i>
+            </a>
+        </li>
+    </ul>
+</li>

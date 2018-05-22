@@ -1,0 +1,44 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 class="modal-title" id="myModalLabel" style="font-weight: 600">{% trans "绑定微信后可扫码登录及安全提醒" %}</h4>
+</div>
+<div class="modal-body">
+    <div class="widget-body no-padding no-margin" style="border-color: #fff!important;">
+        <div class="qr-image" style="height:233px;" align="center">
+            <img width="230" height="230" src="{% url 'bind_img' %}" alt='{% trans "微信图片" %}' />
+        </div>
+        <div class="tip">
+            <span class="dec dec-left"></span>
+            <span class="dec dec-right"></span>
+            <div class="ico-scan"></div>
+            <div class="tip-text text-center">
+                <p>{% trans "请使用微信扫一扫" %}</p>
+                <p>{% trans "扫描二维码绑定账号并关注微信公众号“UMail邮件营销平台”" %}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button id="modal_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "关闭" %}</button>
+</div>
+
+<script>
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        function CheckBind(){
+            $.post("{% url 'ajax_check_bind' %}", {}, function(data){
+                if(data.res != '0'){
+                    window.location.href="{% url 'account' %}";
+                }
+            });
+        }
+        var iCount = window.setInterval("CheckBind()", 2000);
+
+        $('#myModal').bind('hidden.bs.modal', function () {
+               window.clearInterval(iCount);
+        });
+</script>
+

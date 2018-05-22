@@ -1,0 +1,474 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap %}
+{% block title %}{% trans "模板" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "邮件模板管理" %}</li>
+    <li>{% if form.add_or_modify %}{% trans "修改邮件模板" %}{% else %}{% trans "添加邮件模板" %}{% endif %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-pencil-square-o fa-fw "></i>
+                {% if form.add_or_modify %}{% trans "修改邮件模板" %}{% else %}{% trans "添加邮件模板" %}{% endif %}
+            </h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-sortable jarviswidget-color-teal" id="wid-id-1"
+                     data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-hand-o-right"></i></span>
+                        <h2>{{ trig_title }}</h2>
+                    </header>
+
+                    <div role="content">
+                        <div class="jarviswidget-editbox"></div>
+                        <form id="wizard-1" novalidate="novalidate" action="" method="post" role="form">
+                            {% csrf_token %}
+                            {{ form.user }}
+                            {{ form.subject }}
+                            {{ form.issync }}
+                            {{ form.result }}
+                            {{ form.size }}
+                            {{ form.text_content }}
+                            {{ form.content_type }}
+                            <div class="row">
+                                <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                                    <div class="form-horizontal padding-gutter" style="margin-left: 30px;margin-right: 30px;">
+
+                                        {{ form.name|bootstrap }}
+
+                                        {% include 'template/include/subject.html' %}
+                                        {% include 'template/include/upload.html' %}
+
+                                        <!-- Demo -->
+                                        <div id="tabs" style="margin-left: -13px;margin-right: -13px; margin-top: 25px;">
+                                            <ul>
+                                                <li>
+                                                    <a href="#tabs-a">{% trans "邮件模板编辑" %}</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#tabs-b">{% trans "参考模板" %}</a>
+                                                </li>
+                                                <li >
+                                                    <a href="#tabs-c">{% trans "高级设置" %}</a>
+                                                </li>
+                                            </ul>
+                                            <div id="tabs-a">
+                                                <div style="margin-left: 13px;margin-right: 13px;">
+                                                    {% include 'template/include/content.html' %}
+                                                </div>
+                                            </div>
+                                            <div id="tabs-b">
+                                                <div style="margin-left: 13px;margin-right: 13px;">
+                                                    {% include 'template/include/pic.html' %}
+                                                </div>
+                                            </div>
+                                            <div id="tabs-c">
+                                                <div style="margin-left: 13px;margin-right: 13px;">
+                                                    {{ form.encoding|bootstrap }}
+                                                    {{ form.character|bootstrap }}
+                                                    {{ form.image_encode|bootstrap }}
+                                                    {{ form.attachtype|bootstrap }}
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-2"></div>
+                                            <div class="col-md-10">
+                                                <div class="margin-left-20">
+                                                    <button type="submit" class="btn btn-primary pull-left margin-right-5" >{% trans "保存并返回" %}</button>
+                                                    <button type="button" class="btn btn-link pull-left" onclick="location.href='{% url "template_list" %}?isvalid=1'">{% trans "取消" %}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </article>
+                                <article class="col-xs-12 col-sm-12 col-md-2 col-lg-2 hidden-xs hidden-sm"></article>
+                            </div>
+                        </form>
+                        <div class="widget-body">
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </article>
+        </div>
+    </section>
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'uploadifive-master/uploadifive.css' %}" />
+    <style>
+        .myself-bgcolor-4b981d{background:#4b981d;}
+        .self-font-md {font-size:115%!important}
+        #cke_id_content{margin-top: -19px!important;}
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script charset="utf-8" src="{% static 'ckeditor/ckeditor.js' %}"></script>
+    <script src="{% static 'ckeditor/config.js' %}" type="text/javascript"></script>
+    <script charset="utf-8" src="{% static 'medias/js/ajaxfileupload.js' %}"></script>
+    <script charset="utf-8" src="{% static 'uploadifive-master/jquery.uploadifive.js' %}"></script>
+    <script type="text/javascript">
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(document).ready(function() {
+            $('#tabs').tabs();
+            // 是否内嵌照片 增加onchange事件
+            $("#id_image_encode").attr("onchange", "onchange_image_encode('{{ template_id }}', this.value, 'image_encode')");
+            // 附件设置  增加onchange事件
+            $("#id_attachtype").attr("onchange", "onchange_image_encode('{{ template_id }}', this.value, 'attachtype')");
+        });
+
+        /********** 高级设置 **********/
+        function onchange_image_encode(template_id, value, field){ $.post('{% url 'ajax_onchange_image_encode' %}', {'template_id': template_id, 'value': value, 'field': field}); };
+
+        /********** 主题列表 **********/
+        // js主题鼠标位置插入变量
+        var lastFocusSubject;
+        function onblurSubjectAction() { lastFocusSubject = event.srcElement; }
+        // 插入变量
+        function InsertSubjectVarString(tbid, str) {
+            var tb = document.getElementById(tbid);
+            tb.focus();
+            if (document.all) {
+                var r = document.selection.createRange();
+                document.selection.empty();
+                r.text = str;
+                r.collapse();
+                r.select();
+            } else {
+                var newstart = tb.selectionStart+str.length;
+                tb.value=tb.value.substr(0,tb.selectionStart)+str+tb.value.substring(tb.selectionEnd);
+                tb.selectionStart = newstart;
+                tb.selectionEnd = newstart;
+            }
+        }
+        function S4(){ return (((1+Math.random())*0x10000)|0).toString(16).substring(1); }
+        function GenerateGuid(){ return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4()); }
+        // 新增主题
+        function addSubject() {
+            var subject_id = GenerateGuid();
+            var subject_html = '<div class="input-group margin-top-5" id="id_subject_div_' + subject_id +'">'+
+                    '<div class="">' +
+                    '<input class="form-control" id="id_subject_' + subject_id +'" name="subject_list" onblur="onblurSubjectAction();" value="" maxlength="100" type="text">'+
+                    '</div>'+
+                    '<span class="input-group-btn">' +
+                    '<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">' +
+                    '<span class="margin-right-5">{% trans "插入变量" %}</span> <span class="caret"></span>' +
+                    '</button>' +
+                    '<ul class="dropdown-menu no-margin">' +
+                    {% for k, v in subject_vars %}
+                        '<li><a href="#" onclick="InsertSubjectVarString(\'id_subject_' + subject_id + '\', \'{{ k }}\');">{{ v }}</a></li>' +
+                    {% endfor %}
+                    '</ul>' +
+                    '<input value="{% trans "删除" %}" onclick="deleteSubject(\'' + subject_id +'\')" type="button" class="btn btn-outline btn-danger margin-left-negative4">' +
+                    '</span> </div>';
+            $("#id_subject_html").append(subject_html);
+        };
+        // 删除主题
+        function deleteSubject(subject_id) { $("#id_subject_div_" + subject_id).remove(); };
+
+
+        // CK
+        // 插入内容
+        //CKEDITOR.instances.id_content.insertHtml(str);//调用CKEditor的JS接口将图片插入
+        // 获取内容
+        // alert(CKEDITOR.instances.id_content.getData());
+        //  设置内容
+        //  CKEDITOR.instances.id_content.setData("<h1>这是我们要设置的CKEditor的html内容</h1>")
+        CKEDITOR.replace('id_content', {
+            height: 600,
+            filebrowserImageUploadUrl: '{% url 'ck_upload' template_id %}',
+
+            // 自定义变量设置
+            customerCommonVars: {{ content_vals|safe }},
+            // 公共变量库
+            customerCommons: {{ conmmon_vals|safe }},
+            // 公共变量库
+            customerUmailLinks: {{ umail_vals|safe }},
+            // 共享
+            customerShareLink: {{ share_link|safe }},
+            // customConfig: '/static/ckeditor/config.js'
+
+            // Just tell the on change event as option to update the underlying element.
+            // 只需将on change事件作为选项更新基础元素即可。
+            // Sync ckeditor to textarea
+            on: {
+                change: function() {
+                    this.updateElement();
+                }
+                /*,
+                 instanceReady: function( ev ) {
+                 with (ev.editor.dataProcessor.writer) {
+                 setRules("p",  {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("h1", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("h2", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("h3", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("h4", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("h5", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("div", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("table", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("tr", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("td", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("iframe", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("li", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("ul", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 setRules("ol", {indent : false, breakBeforeOpen : false, breakAfterOpen : false, breakBeforeClose : false, breakAfterClose : false} );
+                 }
+
+                 indent (是否加入空白 TAB)
+                 breakBeforeOpen (插入起始代码标签之前是否断行)
+                 breakAfterOpen (插入起始代码标签之后是否断行)
+                 breakBeforeClose (插入结尾代码标签之前是否断行)
+                 breakAfterClose (插入结尾代码标签之后是否断行)
+                 这里，breakBeforeOpen和breakAfterClose不能用，如果添上会致使phpcms的分页函数无效。
+
+                 this.dataProcessor.writer.setRules( 'p', {
+                 indent: false,
+                 breakBeforeOpen: false,   //<p>之前不加换行
+                 breakAfterOpen: false,    //<p>之后不加换行
+                 breakBeforeClose: false,  //</p>之前不加换行
+                 breakAfterClose: false    //</p>之后不加换行7
+                 });
+
+                 }
+                 */
+            }
+        });
+
+        // 保存模板
+        function ajaxSaveTemplate(){
+            $("#id_ajaxSaveTemplate").attr("disabled","disabled");
+            $("#id_ajaxSaveTemplateSpan").removeClass("display-none").html("<img src='/static/img/loading.gif'>{% trans '保存中...' %}");
+            var content = CKEDITOR.instances.id_content.getData();
+            $.post("{% url 'ajax_save_template' template_id %}", { 'content': content }, function(data){
+                $("#id_ajaxSaveTemplate").removeAttr("disabled");
+                $("#id_ajaxSaveTemplateSpan").html(data);
+            })
+        };
+
+        // 预览
+        function ajaxPreTemplate(){
+            CKEDITOR.instances.id_content.execCommand('preview');
+        }
+        /*
+         window.setInterval("ajaxSaveTemplate()", 300000);
+         */
+
+        /********** 上传附件 **********/
+        $(function() {
+            $('#uploadify').uploadifive({
+                'auto' : true,
+                'multi': true,
+                'removeCompleted' : true,
+                'uploadScript' : '{% url 'ajax_multi_upload' template_id %}?user_id={{ request.user.id }}',
+                'fileObjName': 'filedata',
+                'buttonText' : '<div>{% trans "上传附件" %}</div>',
+                'queueID' : 'fileQueue',
+                'fileSizeLimit'   : '15MB',
+                'queueSizeLimit'  : 10,
+                'formData' :{'csrfmiddlewaretoken':"{{ csrf_token }}"},
+
+                'onUploadComplete' : function(file, data) {
+                    var jsondata = JSON.parse(data);
+                    if (jsondata.status=='M'){
+                        file.queueItem.addClass('error').find('.fileinfo').addClass('text-danger self-font-md').html(' - {% trans "图片超过大小限制 (1MB)。" %}');
+                    } else if(jsondata.status=='S'){
+                        file.queueItem.addClass('error').find('.fileinfo').addClass('text-danger self-font-md').html(' - {% trans "上传失败，出于安全性考虑，请上传本平台支持的文件。" %}');
+                    } else if(jsondata.status=='F') {
+                        file.queueItem.addClass('error').find('.fileinfo').addClass('text-danger self-font-md').html(' - {% trans "上传异常，请重新上传。" %}');
+                    } else if(jsondata.status=='H') {
+                        // var value = CKEDITOR.instances.id_content.getData()
+                        // CKEDITOR.instances.id_content.setData(value+jsondata.appendto_content)
+                        CKEDITOR.instances.id_content.insertHtml(jsondata.appendto_content);
+                    } else if(jsondata.status=='C') {
+                        $("#id_attachlist_ul").append(jsondata.appendto_attchlist);
+                    } else {
+                        console.log('pass...')
+                    }
+                }
+            });
+        });
+
+        // 删除附件
+        function delAttachment(attach_id, template_id){
+            if(confirm("{% trans "是否确定要删除此文件？\n注意：此操作无法恢复！" %}")) {
+                $("#id_attach_li_" + attach_id).remove();
+                $.post("/template/ajax_delete_attach_id/", {'attach_id': attach_id, 'template_id': template_id});}
+        };
+
+        /********** 高级设置 **********/
+        // 更改是否内嵌照片设置，用于KindEditor处理保存数据
+        function onchange_image_encode(template_id, value, field){ $.post('/template/ajax_onchange_image_encode/', {'template_id': template_id, 'value': value, 'field': field}); };
+
+        /********** 参考模板 **********/
+        $(function(){ changeRefImg( $("#id_category").val() ); });
+        // 改变参考模板类型
+        function changeRefImg(cate_id) {
+            var ajax_url = "{% url 'ck_reftemplate' %}?cate_id=" + cate_id + "&page=1";
+            $.post(ajax_url, {}, function(data){ $('#id_ref_page').html(data); });
+        };
+        // 改变参考模板页数
+        function changeRefImgPage(page){
+            var ajax_url = "{% url 'ck_reftemplate' %}?cate_id=" + $("#id_category").val() + "&page=" + page;
+            $.post(ajax_url, {}, function(data){ $('#id_ref_page').html(data); });
+        };
+        // 点击模板图片
+        function coverHtmlContent(template_id){
+            var ajax_url = "{% url 'ajax_reftemplate_cover_htmlcontent' %}?template_id=" + template_id;
+            if ( template_id == '0' ){ showHtmlContentLabel(); return false; }
+            $.post(ajax_url, {}, function(data){
+                //  设置内容
+                CKEDITOR.instances.id_content.setData(data);
+                setTimeout("showHtmlContentLabel()", 50);
+            });
+        };
+        function showHtmlContentLabel(){
+            $("#tabs ul li a").first().click();
+            //$("#ui-id-1").click();
+        };
+
+
+        // 从网址导入
+        function ajax_get_content_from_url(){
+            var ajax_url = '{% url 'ajax_get_content_from_url' template_id %}';
+            var html_url = $('#id_from_url').val();
+            if(html_url == '' || html_url == 'http://'){
+                alert("{% trans "请输入网页地址" %}"); return; } else {
+                if (!(checkeurl(html_url))) {
+                    alert("{% trans "您输入的网址不合法！" %}"); return; } else {
+                    if(!confirm("{% trans "确定要替换当前内容？" %}")){ return; } else {
+                        $("#id_from_url_button").attr("disabled","disabled");
+                        setTimeoutShow($("#id_edit_type_show1"), 0, "<img src='/static/img/loading.gif'><span class='myself-color-fff'>{% trans '正在解析url...' %}</span>");
+                        $.post(ajax_url, {'html_url': html_url,}, function(data){
+                            if(data.status == 'N'){
+                                $("#id_from_url_button").removeAttr("disabled");
+                                //alert(data.msg);
+                                setTimeoutShow($("#id_edit_type_show1"), 10000, "<span class='myself-color-fff'>" + data.msg + "</span>");
+                            } else {
+                                $("#id_from_url_button").removeAttr("disabled");
+                                CKEDITOR.instances.id_content.setData(data.content);
+                                setTimeoutShow($("#id_edit_type_show1"), 5000, "<span class='myself-color-fff'>{% trans "解析url成功" %}</span>");
+                            }
+                        });
+                    }
+                }
+            }
+        };
+        // url 验证
+        function checkeurl(url){
+            var expression=strRegex = "^((https|http|ftp|rtsp|mms)?://)"
+                    + "?(([0-9A-Za-z_!~*'().&=+$%-]+: )?[0-9A-Za-z_!~*'().&=+$%-]+@)?" //ftp的user@
+                    + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+                    + "|" // 允许IP和DOMAIN（域名）
+                    + "([0-9A-Za-z_!~*'()-]+\.)*" // 域名- www.
+                    + "([0-9A-Za-z][0-9a-z-]{0,61})?[0-9A-Za-z]\." // 二级域名
+                    + "[A-Za-z]{2,6})" // first level domain- .com or .museum
+                    + "(:[0-9]{1,4})?" // 端口- :80
+                    + "((/?)|" // a slash isn't required if there is no file name
+                    + "(/[0-9A-Za-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+            var objexp=new RegExp(expression);
+            if ( objexp.test(url)==true ) { return true; } else { return false; }
+        };
+        function setTimeoutShow(obj, time, html) {
+            obj.html(html);
+            obj.removeClass('display-none');
+            if ( time > 0 ) {
+                setTimeout(EditTypeShow, time, obj);
+            }
+        };
+        function EditTypeShow(obj) {
+            obj.addClass('display-none');
+        };
+
+
+        // 从html、eml、zip导入获取内容
+        function ajax_get_content(){
+            var attachtype = $("#id_attachtype").val();
+            var type_obj = $("#id_from_html")
+            if (type_obj.val()==""){
+                alert("{% trans "请选择您要上传的文件" %}"); return ;
+            } else {
+                var edit_type = checkfiletype(type_obj);
+                if (edit_type == '6'){
+                    alert("{% trans "您上传的文件类型错误！" %}");
+                    return;
+                } else {
+                    if (!confirm("{% trans "确定要替换当前内容？" %}")){
+                        return;
+                    } else {
+                        var ajax_url = "{% url 'ajax_get_html_content' %}?template_id={{ template_id }}&&edit_type=" + edit_type + "&&type_name=htmlfile&attachtype=" + attachtype;
+                        $("#id_from_html_button").attr("disabled","disabled");
+                        setTimeoutShow($("#id_edit_type_show2"), 0, "<img src='/static/img/loading.gif'><span class='myself-color-fff'>{% trans "文件正在解析中..." %}</span>");
+                        $.ajaxFileUpload({
+                            url: ajax_url,
+                            secureuri: false,
+                            fileElementId: "id_from_html",
+                            dataType: 'json',
+                            success: function (data, status){
+                                var jsondata = eval(data);
+                                if(jsondata.status == 'N'){
+                                    $("#id_from_html_button").removeAttr("disabled");
+                                    //alert(jsondata.msg);
+                                    setTimeoutShow($("#id_edit_type_show2"), 10000, "<span class='myself-color-fff'>" + jsondata.msg + "</span>");
+                                } else {
+                                    CKEDITOR.instances.id_content.setData(jsondata.content);
+                                    $("#id_attachlist_ul").html(jsondata.attach);
+                                    $("#id_from_html").val("");
+                                    $("#id_from_html_button").removeAttr("disabled");
+                                    //alert('{% trans "文件解析成功" %}')
+                                    setTimeoutShow($("#id_edit_type_show2"), 5000, "<span class='myself-color-fff'>{% trans "文件解析成功" %}</span>");
+                                }
+                            },
+                            error: function (data, status, e){
+                                $("#id_from_html_button").removeAttr("disabled");
+                                //alert('{% trans "文件解析失败" %}')
+                                setTimeoutShow($("#id_edit_type_show2"), 10000, "<span class='myself-color-fff'>{% trans "文件解析失败" %}</span>");
+                            }
+                        });
+                        return false;
+                    }
+                }
+            }
+        };
+        // 文件类型检测
+        function checkfiletype(type_obj){
+            var ext = /\.[^\.]+$/.exec(type_obj.val());
+            if ( ext == ".html" || ext == ".htm" || ext == ".txt" ){
+                return '3';
+            } else if ( ext == ".eml" ){
+                return '4';
+            } else if ( ext == ".zip" || ext == ".rar" ) {
+                return '5';
+            } else {
+                return '6';
+            }
+        };
+
+    </script>
+{% endblock %}

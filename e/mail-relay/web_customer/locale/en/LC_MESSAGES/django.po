@@ -1,0 +1,1735 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-05-18 22:57+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: apps/collect_mail/forms.py:10 apps/collect_mail/models.py:30
+#: apps/collect_mail/models.py:43 apps/collect_mail/models.py:92
+#: apps/core/models.py:32 apps/mail/forms.py:6 apps/mail/models.py:43
+#: apps/mail/models.py:64
+msgid "--"
+msgstr "--"
+
+#: apps/collect_mail/forms.py:11 apps/mail/forms.py:7
+msgid "系统分析中"
+msgstr "analyzing"
+
+#: apps/collect_mail/forms.py:12 apps/collect_mail/models.py:34
+#: apps/mail/forms.py:8 apps/mail/models.py:48
+msgid "系统已过滤"
+msgstr "filtered"
+
+#: apps/collect_mail/forms.py:13 apps/collect_mail/models.py:35
+#: apps/mail/forms.py:9 apps/mail/models.py:49
+msgid "我已过滤"
+msgstr "my filter"
+
+#: apps/collect_mail/forms.py:14 apps/mail/forms.py:10
+msgid "所有已过滤"
+msgstr "all filter"
+
+#: apps/collect_mail/forms.py:15 apps/collect_mail/models.py:33
+#: apps/mail/forms.py:11 apps/mail/models.py:47
+msgid "正在出站"
+msgstr "sending"
+
+#: apps/collect_mail/forms.py:16 apps/collect_mail/models.py:36
+#: apps/mail/forms.py:12 apps/mail/models.py:50
+msgid "重试出站"
+msgstr "retry sending"
+
+#: apps/collect_mail/forms.py:17
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:50
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:50
+#: apps/mail/forms.py:13 apps/mail/templates/mail/active_sender_list.html:50
+#: apps/mail/templates/mail/mail_summary.html:50 templates/home.html:170
+#: templates/home.html.py:292 templates/home.html:447
+#: templates/home.html.py:569
+msgid "出站邮件"
+msgstr "Outbound email "
+
+#: apps/collect_mail/forms.py:18 apps/collect_mail/models.py:37
+#: apps/collect_mail/models.py:38 apps/mail/forms.py:14 apps/mail/models.py:51
+#: apps/mail/models.py:52 templates/home.html:272 templates/home.html.py:549
+#: templates/home.html:1038 templates/home.html.py:1073
+msgid "出站失败"
+msgstr "outbound failure"
+
+#: apps/collect_mail/forms.py:19 apps/collect_mail/models.py:39
+#: apps/mail/forms.py:15 apps/mail/models.py:53 templates/home.html:268
+#: templates/home.html.py:545 templates/home.html:1037
+#: templates/home.html.py:1072
+msgid "出站成功"
+msgstr "outbound success"
+
+#: apps/collect_mail/forms.py:24
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:24
+#: apps/collect_mail/templates/collect_mail/mail_list.html:25
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:24
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:46
+#: apps/collect_mail/templates/collect_mail/statistics.html:24
+#: apps/collect_mail/templates/collect_mail/statistics.html:46
+#: apps/mail/forms.py:20 apps/mail/forms.py:30
+#: apps/mail/templates/mail/active_sender_list.html:24
+#: apps/mail/templates/mail/mail_list.html:25
+#: apps/mail/templates/mail/mail_summary.html:24
+#: apps/mail/templates/mail/mail_summary.html:46
+#: apps/mail/templates/mail/statistics.html:24
+#: apps/mail/templates/mail/statistics.html:46
+msgid "日期"
+msgstr "Date"
+
+#: apps/collect_mail/forms.py:26
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:35
+#: apps/collect_mail/templates/collect_mail/mail_list.html:58
+#: apps/collect_mail/templates/collect_mail/mail_read.html:81
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:65
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:65
+#: apps/collect_mail/views.py:41 apps/mail/forms.py:22 apps/mail/models.py:670
+#: apps/mail/models.py:683 apps/mail/templates/mail/active_sender_list.html:46
+#: apps/mail/templates/mail/deliver_logs.html:35
+#: apps/mail/templates/mail/mail_list.html:57
+#: apps/mail/templates/mail/mail_read.html:70 apps/mail/views.py:45
+msgid "发件人"
+msgstr "Sender"
+
+#: apps/collect_mail/forms.py:27
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:46
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:35
+#: apps/collect_mail/templates/collect_mail/mail_list.html:58
+#: apps/collect_mail/templates/collect_mail/mail_read.html:93
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:65
+#: apps/collect_mail/views.py:41 apps/mail/forms.py:23 apps/mail/models.py:706
+#: apps/mail/templates/mail/deliver_logs.html:35
+#: apps/mail/templates/mail/mail_list.html:57
+#: apps/mail/templates/mail/mail_read.html:82 apps/mail/views.py:45
+msgid "收件人"
+msgstr "Recipient"
+
+#: apps/collect_mail/forms.py:28
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:36
+#: apps/collect_mail/templates/collect_mail/mail_list.html:64
+#: apps/collect_mail/views.py:41 apps/mail/forms.py:24
+#: apps/mail/templates/mail/deliver_logs.html:36
+#: apps/mail/templates/mail/mail_list.html:63 apps/mail/views.py:45
+msgid "主题"
+msgstr "Subject"
+
+#: apps/collect_mail/forms.py:29
+#: apps/collect_mail/templates/collect_mail/mail_list.html:62
+#: apps/collect_mail/templates/collect_mail/mail_read.html:33
+#: apps/collect_mail/views.py:41 apps/mail/forms.py:25
+#: apps/mail/templates/mail/mail_list.html:61
+#: apps/mail/templates/mail/mail_read.html:33 apps/mail/views.py:45
+msgid "客户端IP"
+msgstr "Client IP"
+
+#: apps/collect_mail/forms.py:30
+#: apps/collect_mail/templates/collect_mail/mail_list.html:65
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:66
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:67
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:67
+#: apps/collect_mail/views.py:41 apps/mail/forms.py:26
+#: apps/mail/templates/mail/mail_list.html:64 apps/mail/views.py:45
+#: templates/home.html:828 templates/home.html.py:863 templates/home.html:898
+#: templates/home.html.py:942
+msgid "状态"
+msgstr "Status"
+
+#: apps/collect_mail/forms.py:34 apps/collect_mail/forms.py:65
+#: apps/collect_mail/forms.py:95
+msgid "客户"
+msgstr "Customer"
+
+#: apps/collect_mail/forms.py:46 apps/collect_mail/forms.py:76
+#: apps/collect_mail/forms.py:109
+msgid "重复添加"
+msgstr "add repeatedly"
+
+#: apps/collect_mail/forms.py:49 apps/collect_mail/forms.py:79
+msgid "邮箱格式添加错误"
+msgstr "The mailbox format is wrong"
+
+#: apps/collect_mail/forms.py:52 apps/collect_mail/forms.py:82
+msgid "域名格式添加错误,　注意前面不要有符号'@'"
+msgstr "Add error to the domain format and notice that there is no sign '@' in front of you."
+
+#: apps/collect_mail/forms.py:106
+#, python-format
+msgid "添加失败，您需添加自己域名下的邮箱账号：(%(col_domains)s)"
+msgstr "Add failed, you need to add your own domain under the mailbox account: (%(col_domains)s)"
+
+#: apps/collect_mail/models.py:31 apps/collect_mail/models.py:32
+#: apps/mail/models.py:44 apps/mail/models.py:45
+msgid "疑似垃圾邮件,深度分析中..."
+msgstr "Suspected spam, in-depth analysis... "
+
+#: apps/collect_mail/models.py:44 apps/mail/models.py:65
+msgid "格式错误"
+msgstr "error format"
+
+#: apps/collect_mail/models.py:45 apps/mail/models.py:71
+msgid "高危邮件"
+msgstr "high-risk mail"
+
+#: apps/collect_mail/models.py:46 apps/mail/models.py:72
+msgid "发件黑"
+msgstr "sender blacklist"
+
+#: apps/collect_mail/models.py:47 apps/mail/models.py:73
+msgid "内容黑"
+msgstr "keyword blacklist"
+
+#: apps/collect_mail/models.py:48 apps/mail/models.py:74
+msgid "主题黑"
+msgstr "subject blacklist"
+
+#: apps/collect_mail/models.py:49 apps/mail/models.py:76
+msgid "主题和内容关键字"
+msgstr "subject and keyword"
+
+#: apps/collect_mail/models.py:50 apps/mail/models.py:80
+msgid "正常邮件"
+msgstr "normal mail"
+
+#: apps/collect_mail/models.py:51 apps/mail/models.py:81
+msgid "垃圾邮件(dspam)"
+msgstr "spam(dspam)"
+
+#: apps/collect_mail/models.py:52 apps/mail/models.py:82
+msgid "CYBER-Spam"
+msgstr "CYBER-Spam"
+
+#: apps/collect_mail/models.py:53 apps/mail/models.py:83
+msgid "垃圾邮件(spamassassin)"
+msgstr "spam(spamassassin)"
+
+#: apps/collect_mail/models.py:54 apps/mail/models.py:84
+msgid "病毒"
+msgstr "virus"
+
+#: apps/collect_mail/models.py:55 apps/mail/models.py:85
+msgid "自动审核-拒绝"
+msgstr "auto reject"
+
+#: apps/collect_mail/models.py:56 apps/mail/models.py:88
+msgid "检测出错"
+msgstr "detection error"
+
+#: apps/collect_mail/models.py:57
+#: apps/collect_mail/templates/collect_mail/mail_read.html:49
+#: apps/collect_mail/templates/collect_mail/mail_read.html:59
+#: apps/mail/models.py:91 templates/base_site.html:250
+msgid "发件人白名单"
+msgstr "Sender Whitelist"
+
+#: apps/collect_mail/models.py:58
+#: apps/collect_mail/templates/collect_mail/mail_read.html:53
+#: templates/base_site.html:258
+msgid "发件人黑名单"
+msgstr "Sender Blacklist"
+
+#: apps/collect_mail/models.py:93
+msgid "无"
+msgstr "none"
+
+#: apps/collect_mail/models.py:94
+msgid "连接错误-1"
+msgstr "connection error -1"
+
+#: apps/collect_mail/models.py:95
+msgid "邮箱不存在"
+msgstr "mailbox does not exist"
+
+#: apps/collect_mail/models.py:96
+msgid "其他错误"
+msgstr "other errors"
+
+#: apps/collect_mail/models.py:97
+msgid "超大/满"
+msgstr "oversize / full"
+
+#: apps/collect_mail/models.py:98
+msgid "垃圾邮件"
+msgstr "spam"
+
+#: apps/collect_mail/models.py:99
+msgid "不重试邮件"
+msgstr "no retry send"
+
+#: apps/collect_mail/models.py:100
+msgid "spf邮件"
+msgstr "spf email"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:5
+msgid "活跃收件人统计"
+msgstr "Active Recipient statistics"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:11
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:11
+#: apps/collect_mail/templates/collect_mail/mail_list.html:10
+#: apps/collect_mail/templates/collect_mail/mail_setting.html:7
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:11
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:10
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_modify.html:8
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:10
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_modify.html:8
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:10
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_modify.html:8
+#: apps/collect_mail/templates/collect_mail/statistics.html:11
+#: templates/base_site.html:209
+msgid "网关管理"
+msgstr "Gateway manage"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:12
+#: templates/base_site.html:275
+msgid "活跃收件人"
+msgstr "Active Recipient"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:21
+msgid "活跃收件人统计 "
+msgstr "Active Recipient statistics"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:24
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:25
+#: apps/collect_mail/templates/collect_mail/mail_list.html:25
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:24
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:25
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:25
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:25
+#: apps/collect_mail/templates/collect_mail/statistics.html:24
+#: apps/mail/templates/mail/active_sender_list.html:24
+#: apps/mail/templates/mail/deliver_logs.html:25
+#: apps/mail/templates/mail/mail_list.html:25
+#: apps/mail/templates/mail/mail_summary.html:24
+#: apps/mail/templates/mail/statistics.html:24
+msgid "总共"
+msgstr "total"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:34
+#: apps/collect_mail/templates/collect_mail/mail_list.html:46
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:34
+#: apps/collect_mail/templates/collect_mail/statistics.html:34
+#: apps/mail/templates/mail/active_sender_list.html:34
+#: apps/mail/templates/mail/mail_list.html:45
+#: apps/mail/templates/mail/mail_summary.html:34
+#: apps/mail/templates/mail/statistics.html:34
+msgid "查询"
+msgstr "Search"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:47
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:47
+#: apps/mail/templates/mail/active_sender_list.html:47
+#: apps/mail/templates/mail/mail_summary.html:47
+msgid "邮件封数"
+msgstr "Email Qty"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:48
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:48
+#: apps/mail/templates/mail/active_sender_list.html:48
+#: apps/mail/templates/mail/mail_summary.html:48 templates/home.html:59
+#: templates/home.html.py:285 templates/home.html:352
+#: templates/home.html.py:562
+msgid "入站邮件"
+msgstr "Inbound email"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:49
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:49
+#: apps/mail/templates/mail/active_sender_list.html:49
+#: apps/mail/templates/mail/mail_summary.html:49
+msgid "垃圾过滤邮件"
+msgstr "Filter Spam email"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:51
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:51
+#: apps/mail/templates/mail/active_sender_list.html:51
+#: apps/mail/templates/mail/mail_summary.html:51 templates/home.html:299
+#: templates/home.html.py:577
+msgid "成功出站邮件"
+msgstr "Successful outbound mail "
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:52
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:52
+#: apps/mail/templates/mail/active_sender_list.html:52
+#: apps/mail/templates/mail/mail_summary.html:52
+msgid "失败出站邮件"
+msgstr "Outbound failed email"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:53
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:53
+#: apps/mail/templates/mail/active_sender_list.html:53
+#: apps/mail/templates/mail/mail_summary.html:53
+msgid "垃圾率"
+msgstr "Spam rate"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:54
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:54
+#: apps/collect_mail/templates/collect_mail/statistics.html:58
+#: apps/mail/templates/mail/active_sender_list.html:54
+#: apps/mail/templates/mail/mail_summary.html:54
+#: apps/mail/templates/mail/statistics.html:58
+msgid "出站成功率"
+msgstr "Outbound success rate"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:57
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:59
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:61
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:63
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:65
+#: apps/collect_mail/templates/collect_mail/mail_list.html:60
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:57
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:58
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:59
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:60
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:61
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:62
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:63
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:64
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:65
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:66
+#: apps/mail/templates/mail/active_sender_list.html:57
+#: apps/mail/templates/mail/active_sender_list.html:59
+#: apps/mail/templates/mail/active_sender_list.html:61
+#: apps/mail/templates/mail/active_sender_list.html:63
+#: apps/mail/templates/mail/active_sender_list.html:65
+#: apps/mail/templates/mail/mail_list.html:59
+#: apps/mail/templates/mail/mail_summary.html:57
+#: apps/mail/templates/mail/mail_summary.html:59
+#: apps/mail/templates/mail/mail_summary.html:61
+#: apps/mail/templates/mail/mail_summary.html:63
+#: apps/mail/templates/mail/mail_summary.html:65 templates/home.html:52
+#: templates/home.html.py:345
+msgid "数量"
+msgstr "Quantity"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:58
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:60
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:62
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:64
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:66
+#: apps/mail/templates/mail/active_sender_list.html:58
+#: apps/mail/templates/mail/active_sender_list.html:60
+#: apps/mail/templates/mail/active_sender_list.html:62
+#: apps/mail/templates/mail/active_sender_list.html:64
+#: apps/mail/templates/mail/active_sender_list.html:66
+#: apps/mail/templates/mail/mail_summary.html:58
+#: apps/mail/templates/mail/mail_summary.html:60
+#: apps/mail/templates/mail/mail_summary.html:62
+#: apps/mail/templates/mail/mail_summary.html:64
+#: apps/mail/templates/mail/mail_summary.html:66 templates/home.html:48
+#: templates/home.html.py:341
+msgid "流量"
+msgstr "Traffic"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:133
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:128
+#: apps/collect_mail/templates/collect_mail/mail_list.html:137
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:136
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:115
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:117
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:117
+#: apps/collect_mail/templates/collect_mail/statistics.html:123
+#: apps/mail/templates/mail/active_sender_list.html:130
+#: apps/mail/templates/mail/deliver_logs.html:128
+#: apps/mail/templates/mail/mail_list.html:136
+#: apps/mail/templates/mail/mail_summary.html:136
+#: apps/mail/templates/mail/statistics.html:123
+msgid "显示 _MENU_ 每页"
+msgstr "show _MENU_ per page"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:134
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:129
+#: apps/collect_mail/templates/collect_mail/mail_list.html:138
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:137
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:116
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:118
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:118
+#: apps/collect_mail/templates/collect_mail/statistics.html:124
+#: apps/mail/templates/mail/active_sender_list.html:131
+#: apps/mail/templates/mail/deliver_logs.html:129
+#: apps/mail/templates/mail/mail_list.html:137
+#: apps/mail/templates/mail/mail_summary.html:137
+#: apps/mail/templates/mail/statistics.html:124
+msgid "对不起! 信息筛选结果为空!"
+msgstr "Sorry! Message filtering is empty!"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:135
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:130
+#: apps/collect_mail/templates/collect_mail/mail_list.html:139
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:138
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:117
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:119
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:119
+#: apps/collect_mail/templates/collect_mail/statistics.html:125
+#: apps/mail/templates/mail/active_sender_list.html:132
+#: apps/mail/templates/mail/deliver_logs.html:130
+#: apps/mail/templates/mail/mail_list.html:138
+#: apps/mail/templates/mail/mail_summary.html:138
+#: apps/mail/templates/mail/statistics.html:125
+msgid "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录"
+msgstr "Showing _START_ to _END_ of _TOTAL_ entries"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:136
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:131
+#: apps/collect_mail/templates/collect_mail/mail_list.html:140
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:139
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:118
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:120
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:120
+#: apps/collect_mail/templates/collect_mail/statistics.html:126
+#: apps/mail/templates/mail/active_sender_list.html:133
+#: apps/mail/templates/mail/deliver_logs.html:131
+#: apps/mail/templates/mail/mail_list.html:139
+#: apps/mail/templates/mail/mail_summary.html:139
+#: apps/mail/templates/mail/statistics.html:126
+msgid "总计: 0 条记录"
+msgstr "total: 0 record"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:137
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:132
+#: apps/collect_mail/templates/collect_mail/mail_list.html:141
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:140
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:119
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:121
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:121
+#: apps/collect_mail/templates/collect_mail/statistics.html:127
+#: apps/mail/templates/mail/active_sender_list.html:134
+#: apps/mail/templates/mail/deliver_logs.html:132
+#: apps/mail/templates/mail/mail_list.html:140
+#: apps/mail/templates/mail/mail_summary.html:140
+#: apps/mail/templates/mail/statistics.html:127
+msgid "(从 _MAX_ 条记录筛选出)"
+msgstr "(filter from the _MAX_ record)"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:138
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:133
+#: apps/collect_mail/templates/collect_mail/mail_list.html:142
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:141
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:120
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:122
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:122
+#: apps/collect_mail/templates/collect_mail/statistics.html:128
+#: apps/mail/templates/mail/active_sender_list.html:135
+#: apps/mail/templates/mail/deliver_logs.html:133
+#: apps/mail/templates/mail/mail_list.html:141
+#: apps/mail/templates/mail/mail_summary.html:141
+#: apps/mail/templates/mail/statistics.html:128
+msgid "搜索: "
+msgstr "Search: "
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:140
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:135
+#: apps/collect_mail/templates/collect_mail/mail_list.html:144
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:143
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:122
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:124
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:124
+#: apps/collect_mail/templates/collect_mail/statistics.html:130
+#: apps/mail/templates/mail/active_sender_list.html:137
+#: apps/mail/templates/mail/deliver_logs.html:135
+#: apps/mail/templates/mail/mail_list.html:143
+#: apps/mail/templates/mail/mail_summary.html:143
+#: apps/mail/templates/mail/statistics.html:130
+msgid "第一页"
+msgstr "First"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:141
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:136
+#: apps/collect_mail/templates/collect_mail/mail_list.html:145
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:144
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:123
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:125
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:125
+#: apps/collect_mail/templates/collect_mail/statistics.html:131
+#: apps/mail/templates/mail/active_sender_list.html:138
+#: apps/mail/templates/mail/deliver_logs.html:136
+#: apps/mail/templates/mail/mail_list.html:144
+#: apps/mail/templates/mail/mail_summary.html:144
+#: apps/mail/templates/mail/statistics.html:131
+msgid "上一页 "
+msgstr "Previous"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:142
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:137
+#: apps/collect_mail/templates/collect_mail/mail_list.html:146
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:145
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:124
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:126
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:126
+#: apps/collect_mail/templates/collect_mail/statistics.html:132
+#: apps/mail/templates/mail/active_sender_list.html:139
+#: apps/mail/templates/mail/deliver_logs.html:137
+#: apps/mail/templates/mail/mail_list.html:145
+#: apps/mail/templates/mail/mail_summary.html:145
+#: apps/mail/templates/mail/statistics.html:132
+msgid "下一页 "
+msgstr "Next"
+
+#: apps/collect_mail/templates/collect_mail/active_receiver_list.html:143
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:138
+#: apps/collect_mail/templates/collect_mail/mail_list.html:147
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:146
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:125
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:127
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:127
+#: apps/collect_mail/templates/collect_mail/statistics.html:133
+#: apps/mail/templates/mail/active_sender_list.html:140
+#: apps/mail/templates/mail/deliver_logs.html:138
+#: apps/mail/templates/mail/mail_list.html:146
+#: apps/mail/templates/mail/mail_summary.html:146
+#: apps/mail/templates/mail/statistics.html:133
+msgid "最后一页 "
+msgstr "Last"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:5
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:23
+#: apps/mail/templates/mail/deliver_logs.html:5
+#: apps/mail/templates/mail/deliver_logs.html:23
+msgid "发送日志"
+msgstr "Send log"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:12
+#: apps/collect_mail/templates/collect_mail/mail_list.html:11
+#: apps/mail/templates/mail/deliver_logs.html:12
+#: apps/mail/templates/mail/mail_list.html:11 templates/base_site.html:171
+#: templates/base_site.html.py:242
+msgid "邮件列表"
+msgstr "Email Lists"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:13
+#: apps/mail/templates/mail/deliver_logs.html:13
+msgid "发送记录"
+msgstr "Send history"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:37
+#: apps/collect_mail/templates/collect_mail/mail_list.html:59
+#: apps/collect_mail/views.py:41 apps/mail/templates/mail/deliver_logs.html:37
+#: apps/mail/templates/mail/mail_list.html:58 apps/mail/views.py:45
+msgid "大小"
+msgstr "Size"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:38
+#: apps/collect_mail/templates/collect_mail/mail_read.html:29
+#: apps/collect_mail/views.py:41 apps/mail/templates/mail/deliver_logs.html:38
+#: apps/mail/templates/mail/mail_read.html:29 apps/mail/views.py:45
+msgid "入站时间"
+msgstr "Inbound time"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:39
+#: apps/mail/templates/mail/deliver_logs.html:39
+msgid "发送通道"
+msgstr "Send channel"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:40
+#: apps/collect_mail/templates/collect_mail/mail_read.html:98
+#: apps/mail/templates/mail/deliver_logs.html:40
+#: apps/mail/templates/mail/mail_read.html:87
+msgid "发送IP"
+msgstr "Send IP"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:41
+#: apps/mail/templates/mail/deliver_logs.html:41
+msgid "接收IP"
+msgstr "Receive IP"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:42
+#: apps/mail/templates/mail/deliver_logs.html:42
+msgid "MX记录"
+msgstr "MX records"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:43
+#: apps/mail/templates/mail/deliver_logs.html:43
+msgid "代码"
+msgstr "Code"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:44
+#: apps/collect_mail/templates/collect_mail/mail_read.html:106
+#: apps/mail/templates/mail/deliver_logs.html:44
+#: apps/mail/templates/mail/mail_read.html:95
+msgid "发送时间"
+msgstr "Send Time"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:45
+#: apps/collect_mail/templates/collect_mail/mail_read.html:110
+#: apps/mail/templates/mail/deliver_logs.html:45
+#: apps/mail/templates/mail/mail_read.html:99
+msgid "发送详情"
+msgstr "Send detail"
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:89
+#: apps/collect_mail/templates/collect_mail/mail_list.html:79
+#: apps/mail/templates/mail/deliver_logs.html:89
+#: apps/mail/templates/mail/mail_list.html:78
+msgid "加载中"
+msgstr "loading..."
+
+#: apps/collect_mail/templates/collect_mail/deliver_logs.html:92
+#: apps/collect_mail/templates/collect_mail/mail_list.html:82
+#: apps/mail/templates/mail/deliver_logs.html:92
+#: apps/mail/templates/mail/mail_list.html:81
+msgid "页面加载中"
+msgstr "loading..."
+
+#: apps/collect_mail/templates/collect_mail/mail_list.html:4
+#: apps/collect_mail/templates/collect_mail/mail_list.html:22
+msgid "网关邮件列表"
+msgstr "Gateway mail list"
+
+#: apps/collect_mail/templates/collect_mail/mail_list.html:34
+#: apps/mail/templates/mail/mail_list.html:33
+msgid "导出数据"
+msgstr "Export"
+
+#: apps/collect_mail/templates/collect_mail/mail_list.html:61
+#: apps/mail/templates/mail/mail_list.html:60
+msgid "发送"
+msgstr "Send Qty"
+
+#: apps/collect_mail/templates/collect_mail/mail_list.html:63
+#: apps/mail/templates/mail/mail_list.html:62
+msgid "入站"
+msgstr "Inbound"
+
+#: apps/collect_mail/templates/collect_mail/mail_list.html:63
+#: apps/collect_mail/views.py:41 apps/mail/templates/mail/mail_list.html:62
+#: apps/mail/views.py:45
+msgid "出站时间"
+msgstr "Outbound Time"
+
+#: apps/collect_mail/templates/collect_mail/mail_list.html:86
+#: apps/collect_mail/templates/collect_mail/mail_read.html:49
+#: apps/collect_mail/templates/collect_mail/mail_read.html:50
+#: apps/mail/templates/mail/mail_list.html:85
+msgid "通过"
+msgstr "pass"
+
+#: apps/collect_mail/templates/collect_mail/mail_list.html:87
+#: apps/collect_mail/templates/collect_mail/mail_read.html:52
+#: apps/collect_mail/templates/collect_mail/mail_read.html:53
+#: apps/collect_mail/templates/collect_mail/mail_read.html:54
+#: apps/mail/templates/mail/mail_list.html:86
+#: apps/mail/templates/mail/mail_read.html:46
+msgid "拒绝"
+msgstr "reject"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:15
+#: apps/mail/templates/mail/mail_read.html:15
+msgid "查看邮件头"
+msgstr "View email header"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:16
+#: apps/mail/templates/mail/mail_read.html:16
+msgid "下载邮件"
+msgstr "Download email"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:25
+#: apps/core/models.py:81 apps/mail/templates/mail/mail_read.html:25
+#: templates/home.html:669 templates/home.html.py:765
+msgid "公司名称"
+msgstr "Company name"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:37
+#: apps/mail/templates/mail/mail_read.html:41
+msgid "邮件状态"
+msgstr "Email status"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:43
+msgid "再次投递邮件"
+msgstr "repost"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:48
+#: apps/mail/templates/mail/mail_read.html:45
+msgid "放行"
+msgstr "green light"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:50
+#: apps/collect_mail/templates/collect_mail/mail_read.html:60
+msgid "发件人域名白名单"
+msgstr ""
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:54
+msgid "发件人域名黑名单"
+msgstr "Sender Domain whitelist"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:57
+#: apps/mail/templates/mail/mail_read.html:50
+msgid "误判放行"
+msgstr "Misjudged release"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:67
+#: apps/mail/templates/mail/mail_read.html:57
+msgid "系统分析结果"
+msgstr "Analysis result"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:88
+#: apps/mail/templates/mail/mail_read.html:77
+msgid "邮件时间"
+msgstr "Post time"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:102
+#: apps/mail/templates/mail/mail_read.html:91
+msgid "发送代码"
+msgstr "Return code"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:114
+msgid "错误类型"
+msgstr "Error type"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:118
+#: apps/mail/templates/mail/mail_read.html:103
+msgid "垃圾举报"
+msgstr "Spam report"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:119
+#: apps/collect_mail/views.py:378 apps/mail/templates/mail/mail_read.html:104
+#: apps/mail/views.py:429
+msgid "已举报垃圾邮件"
+msgstr "Spamming has been reported "
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:121
+#: apps/mail/templates/mail/mail_read.html:106
+msgid "这是一封垃圾邮件"
+msgstr "This is a spam email"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:130
+#: apps/collect_mail/templates/collect_mail/mail_read.html:159
+#: apps/mail/templates/mail/mail_read.html:115
+#: apps/mail/templates/mail/mail_read.html:143
+msgid "附&nbsp;&nbsp;&nbsp;件"
+msgstr "Attachment"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:133
+#: apps/collect_mail/templates/collect_mail/mail_read.html:159
+#: apps/mail/templates/mail/mail_read.html:118
+#: apps/mail/templates/mail/mail_read.html:143
+msgid "个"
+msgstr " "
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:141
+#: apps/mail/templates/mail/mail_read.html:126
+msgid "查看全部附件"
+msgstr "View all attachments"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:163
+#: apps/mail/templates/mail/mail_read.html:147
+msgid "普通附件"
+msgstr "Ordinary attachments "
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:181
+#: apps/mail/templates/mail/mail_read.html:165
+msgid "下载附件"
+msgstr "Download attachment"
+
+#: apps/collect_mail/templates/collect_mail/mail_read.html:183
+#: apps/mail/templates/mail/mail_read.html:167
+msgid "预览"
+msgstr "Preview"
+
+#: apps/collect_mail/templates/collect_mail/mail_setting.html:5
+#: apps/collect_mail/templates/collect_mail/mail_setting.html:8
+#: apps/collect_mail/templates/collect_mail/mail_setting.html:19
+msgid "网关设置"
+msgstr "Gateway settings"
+
+#: apps/collect_mail/templates/collect_mail/mail_setting.html:41
+#: apps/mail/templates/mail/mail_setting.html:44 templates/base_site.html:192
+#: templates/base_site.html.py:283
+msgid "设置"
+msgstr "Settings"
+
+#: apps/collect_mail/templates/collect_mail/mail_setting.html:48
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_modify.html:40
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_modify.html:42
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_modify.html:44
+#: apps/mail/templates/mail/mail_setting.html:52
+msgid "确认"
+msgstr "Submit"
+
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:5
+msgid "网关总体统计"
+msgstr "Gateway statistics"
+
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:12
+#: apps/collect_mail/templates/collect_mail/mail_summary.html:21
+#: apps/mail/templates/mail/mail_summary.html:12
+#: apps/mail/templates/mail/mail_summary.html:21 templates/base_site.html:149
+#: templates/base_site.html.py:220
+msgid "总体统计"
+msgstr "Statistics"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:4
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_modify.html:5
+msgid "网关收件人白名单"
+msgstr "Gateway Recipient whitelist"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:11
+msgid "收件人白名单管理"
+msgstr "Recipient whitelist"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:22
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_modify.html:9
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_modify.html:21
+msgid "收件人白名单列表"
+msgstr "Recipient whitelist"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:33
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:33
+msgid "添加白名单"
+msgstr "Add whitelist"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:67
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:68
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:68
+msgid "添加日期"
+msgstr "Creat Time"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:68
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:69
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:69
+msgid "操作"
+msgstr "Operate"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:77
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:84
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:79
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:86
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:79
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:86
+#: templates/home.html:843 templates/home.html.py:878 templates/home.html:916
+#: templates/home.html.py:960
+msgid "禁用"
+msgstr "disabled"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:77
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:82
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:79
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:84
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:79
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:84
+#: templates/home.html:843 templates/home.html.py:878 templates/home.html:916
+#: templates/home.html.py:960
+msgid "启用"
+msgstr "enabled"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:80
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:82
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:82
+#: templates/home.html:805
+msgid "修改"
+msgstr "modify"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:86
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:88
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:88
+msgid "删除"
+msgstr "delete"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_list.html:131
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:133
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:133
+msgid "是否确认此操作？"
+msgstr "Are you sure to operate this?"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_modify.html:10
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_modify.html:24
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_modify.html:10
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_modify.html:24
+msgid "更新白名单"
+msgstr "Update Recipient whitelist"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_modify.html:33
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_modify.html:36
+msgid "白名单信息"
+msgstr "White recipient Info"
+
+#: apps/collect_mail/templates/collect_mail/recipient_whitelist_modify.html:41
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_modify.html:43
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_modify.html:45
+msgid "取消"
+msgstr "cancel"
+
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:4
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_modify.html:5
+msgid "网关发件人黑名单"
+msgstr "Gateway Sender Blacklist"
+
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:11
+msgid "发件人黑名单管理"
+msgstr "Gateway Sender blacklist"
+
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:22
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_modify.html:9
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_modify.html:21
+msgid "发件人黑名单列表"
+msgstr "Sender blacklist"
+
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:33
+msgid "添加黑名单"
+msgstr "Add sender blacklist"
+
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:66
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:66
+msgid "是否域名"
+msgstr "is domain?"
+
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:78
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:78
+msgid "是"
+msgstr "yes"
+
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_list.html:78
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:78
+msgid "否"
+msgstr "no"
+
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_modify.html:10
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_modify.html:24
+msgid "更新黑名单"
+msgstr "Update sender blacklist"
+
+#: apps/collect_mail/templates/collect_mail/sender_blacklist_modify.html:35
+msgid "黑名单信息"
+msgstr "sender blacklist Info"
+
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:4
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_modify.html:5
+msgid "网关发件人白名单"
+msgstr "Gateway sender whitelist"
+
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:11
+msgid "发件人白名单管理"
+msgstr "Sender whitelist"
+
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_list.html:22
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_modify.html:9
+#: apps/collect_mail/templates/collect_mail/sender_whitelist_modify.html:21
+msgid "发件人白名单列表"
+msgstr "Sender Whitelist"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:5
+msgid "网关出站报告"
+msgstr "Gateway Outbound report"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:12
+#: apps/collect_mail/templates/collect_mail/statistics.html:21
+#: apps/mail/templates/mail/statistics.html:12
+#: apps/mail/templates/mail/statistics.html:21 templates/base_site.html:159
+#: templates/base_site.html.py:230
+msgid "出站报告"
+msgstr "Outbound Report"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:47
+#: apps/mail/templates/mail/statistics.html:47
+msgid "出站总数"
+msgstr "Outbound Qty"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:48
+#: apps/mail/templates/mail/statistics.html:48
+msgid "成功数"
+msgstr "Success Qty"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:49
+#: apps/mail/templates/mail/statistics.html:49
+msgid "失败数"
+msgstr "Fail Qty"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:50
+#: apps/mail/templates/mail/statistics.html:50
+msgid "超大"
+msgstr "Oversized"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:51
+#: apps/mail/templates/mail/statistics.html:51
+msgid "连接失败"
+msgstr "Connection failed"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:52
+#: apps/mail/templates/mail/statistics.html:52
+msgid "发送超时"
+msgstr "Send timeout"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:53
+#: apps/mail/templates/mail/statistics.html:53
+msgid "不存在"
+msgstr "No exist"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:54
+#: apps/mail/templates/mail/statistics.html:54
+msgid "垃圾"
+msgstr "Spam"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:55
+#: apps/mail/templates/mail/statistics.html:55
+msgid "拒收"
+msgstr "Reject"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:56
+#: apps/mail/templates/mail/statistics.html:56
+msgid "SPF错误"
+msgstr "SPF error"
+
+#: apps/collect_mail/templates/collect_mail/statistics.html:57
+#: apps/mail/templates/mail/statistics.html:57
+msgid "其他失败"
+msgstr "Other failure"
+
+#: apps/collect_mail/views.py:313 apps/mail/views.py:299
+msgid "已放行"
+msgstr "Released"
+
+#: apps/collect_mail/views.py:316 apps/mail/views.py:302
+msgid "已拒绝"
+msgstr "Refused"
+
+#: apps/collect_mail/views.py:384 apps/collect_mail/views.py:393
+msgid "已添加"
+msgstr "Added"
+
+#: apps/collect_mail/views.py:433 apps/collect_mail/views.py:487
+#: apps/collect_mail/views.py:655
+msgid "成功删除"
+msgstr "Successfully deleted"
+
+#: apps/collect_mail/views.py:437 apps/collect_mail/views.py:491
+#: apps/collect_mail/views.py:659
+msgid "成功禁用"
+msgstr "Successfully disabled"
+
+#: apps/collect_mail/views.py:441 apps/collect_mail/views.py:495
+#: apps/collect_mail/views.py:663
+msgid "成功启用"
+msgstr "Successfully enabled"
+
+#: apps/collect_mail/views.py:457 apps/collect_mail/views.py:509
+#: apps/collect_mail/views.py:679
+msgid "信息添加成功"
+msgstr "Information added success "
+
+#: apps/collect_mail/views.py:472 apps/collect_mail/views.py:523
+#: apps/collect_mail/views.py:537 apps/collect_mail/views.py:694
+#: apps/core/views.py:28 apps/core/views.py:41 apps/mail/views.py:439
+msgid "信息修改成功"
+msgstr "Information was modified successfully"
+
+#: apps/collect_mail/views.py:571
+msgid "发送失败，只有发送完成/失败的邮件可以再次发送"
+msgstr "Send failed, only send complete / failed email can be sent again"
+
+#: apps/collect_mail/views.py:581
+msgid "已再次发送邮件"
+msgstr "Has sent email again"
+
+#: apps/core/models.py:33
+msgid "正常"
+msgstr "normal"
+
+#: apps/core/models.py:34
+msgid "即将过期"
+msgstr "expiring"
+
+#: apps/core/models.py:35
+msgid "已过期"
+msgstr "expired"
+
+#: apps/core/models.py:36
+msgid "已禁用"
+msgstr "disabled"
+
+#: apps/core/models.py:90 templates/home.html:779
+msgid "联系人"
+msgstr "Contact"
+
+#: apps/core/models.py:91 templates/home.html:786
+msgid "联系人手机"
+msgstr "Cell phone"
+
+#: apps/core/models.py:92 templates/home.html:772
+msgid "邮箱"
+msgstr "E-mail"
+
+#: apps/core/models.py:93 templates/home.html:793
+msgid "紧急联系人"
+msgstr "Emergency contact "
+
+#: apps/core/models.py:94 templates/home.html:800
+msgid "紧急联系人手机"
+msgstr "Emergency phone"
+
+#: apps/core/models.py:239
+msgid "中继:开启退信"
+msgstr "Relay: open bounce"
+
+#: apps/core/models.py:240
+msgid "中继:超大邮件自动转网络链接发送"
+msgstr "Relay: super mail is automatically converted to network links"
+
+#: apps/core/models.py:241
+msgid ""
+"如果开启：发送后日志显示邮件超大满的邮件，则自动转链接方式（发送一次，如果还"
+"不成功则不尝试），附件保留在服务器上，附件保留时间为X天。"
+msgstr ""
+"If you open: After sending the log shows the message overcrowding mail, then automatically transfer the link (send once, if not successful do not try), "
+"attachments remain on the server, the attachment retention time is X days."
+
+#: apps/core/models.py:242
+msgid "中继：自动转网络附件最大阀值"
+msgstr "Relay: automatic network attachment maximum valve value "
+
+#: apps/core/models.py:242
+msgid ""
+"单位：M，邮件大小超过该阀值，则该邮件发送时自动转网络附件, 默认值０, 表示用系"
+"统默认设置值"
+msgstr ""
+"Unit: M, the mail size exceeds that threshold, and when the mail is sent it automatically transmits the network attachment, "
+"default value 0, indicating the default setting value of the system "
+
+#: apps/core/models.py:243
+msgid "短信/邮件消息通知开关"
+msgstr "SMS / Email notification switch"
+
+#: apps/core/models.py:243
+msgid "选中即为开启，当关闭时，该用户账号不发短信/邮件通知"
+msgstr "When closed, you can not receive SMS / e-mail notification."
+
+#: apps/core/models.py:244
+msgid "用户是否可以查看邮件"
+msgstr "Whether the user can view the Email"
+
+#: apps/core/models.py:245
+msgid "网关：是否开启垃圾邮件隔离报告开关"
+msgstr "Gateway: open the spam isolation report switch "
+
+#: apps/core/models.py:245
+msgid ""
+"选中时为开启,会将被拒绝的邮件以报告的形式发送给该用户,默认每天零点发上一天的"
+"邮件；当关闭时，不会发送被拒绝的邮件给用户"
+msgstr ""
+"When selected, it will send the rejected email to the user in the form of a report. "
+"By default, the mail will be sent at zero every day. When it is closed, the rejected email will not be sent to the user."
+
+#: apps/core/models.py:246
+msgid "网关：是否开启垃圾邮件隔离报告开关(对管理员）"
+msgstr "Gateway: open the spam isolation report switch (for administrators) "
+
+#: apps/core/models.py:246
+msgid ""
+"选中时为开启,会将被拒绝的邮件以报告的形式发送给管理员,默认每天零点发上一天的"
+"邮件；当关闭时，不会发送被拒绝的邮件给管理员"
+msgstr ""
+"When selected, it will send the rejected email to the administrator in the form of a report. "
+"By default, the mail will be sent at zero every day. When it is closed, it will not send the rejected email to the administrator"
+
+#: apps/core/models.py:247
+msgid "网关过滤级别"
+msgstr "Gateway filtering level"
+
+#: apps/core/models.py:248
+msgid "网关过滤:spf"
+msgstr "Gateway filtering: spf"
+
+#: apps/core/models.py:249
+msgid "网关过滤:rbl"
+msgstr "Gateway filtering: rbl"
+
+#: apps/core/models.py:250
+msgid "网关过滤:dspam"
+msgstr "Gateway filtering: dspam"
+
+#: apps/core/models.py:251
+msgid "网关过滤:cyber"
+msgstr "Gateway filtering: cyber"
+
+#: apps/core/models.py:252
+msgid "网关过滤:发件人黑名单"
+msgstr "Gateway filtering: sender blacklist"
+
+#: apps/core/models.py:253
+msgid "网关过滤:主题关键字"
+msgstr "Gateway filtering: topic keywords"
+
+#: apps/core/models.py:254
+msgid "网关过滤:内容关键字"
+msgstr "Gateway filtering: content keywords"
+
+#: apps/core/models.py:255
+msgid "网关过滤:spamassassion"
+msgstr "Gateway filtering: spamassassion"
+
+#: apps/core/models.py:256
+msgid "网关过滤:高危邮件"
+msgstr "Gateway filtering: high-risk mail"
+
+#: apps/core/views.py:66
+msgid "删除成功"
+msgstr "successfully deleted"
+
+#: apps/mail/forms.py:35
+msgid "开始日期"
+msgstr "Start Date"
+
+#: apps/mail/forms.py:37
+msgid "结束日期"
+msgstr "End Date"
+
+#: apps/mail/models.py:46 templates/home.html:1034
+msgid "通道传输中"
+msgstr "in channel transmission"
+
+#: apps/mail/models.py:66
+msgid "无效地址"
+msgstr "invalid address"
+
+#: apps/mail/models.py:67
+msgid "收件人黑名单"
+msgstr "recipient blacklist"
+
+#: apps/mail/models.py:68 templates/base_site.html:265
+msgid "收件人白名单"
+msgstr "Recipient whitelist"
+
+#: apps/mail/models.py:69
+msgid "域名黑名单"
+msgstr "Domain blacklist"
+
+#: apps/mail/models.py:70
+msgid "动态SPAM"
+msgstr "active Spam"
+
+#: apps/mail/models.py:75
+msgid "自动回复"
+msgstr "auto-response"
+
+#: apps/mail/models.py:77
+msgid "群发邮件"
+msgstr "bulk email"
+
+#: apps/mail/models.py:78
+msgid "群发邮件(主题)"
+msgstr "bulk email(subject)"
+
+#: apps/mail/models.py:79
+msgid "大邮件"
+msgstr "large email"
+
+#: apps/mail/models.py:86
+msgid "关键字免审-拒绝"
+msgstr "keywords auto reject"
+
+#: apps/mail/models.py:87
+msgid "自动审核-通过"
+msgstr "auto pass"
+
+#: apps/mail/models.py:89
+msgid "自动拒绝-小危附件"
+msgstr "auto reject attach"
+
+#: apps/mail/models.py:90
+msgid "Esets 病毒"
+msgstr "Esets virus"
+
+#: apps/mail/models.py:172
+msgid "深圳"
+msgstr "shenzhen"
+
+#: apps/mail/models.py:173
+msgid "杭州"
+msgstr "hangzhou"
+
+#: apps/mail/models.py:671
+msgid ""
+"发件人白名单 如果发件人在白名单中，跳过后面所有的网关检测, 不支持正则标准,支"
+"持整域名过滤，如test.com且下面选中为域名，表示整个test.com为域名的发件人为白"
+"名单发件人"
+msgstr ""
+"If the sender on the whitelist, skip all the gateway detection, does not support the regular standard, "
+"support the whole domain filtering, such as test.com and below the selected for the domain name, "
+"said the test.com as the domain name of the sender as whitelist "
+
+#: apps/mail/models.py:673 apps/mail/models.py:686
+msgid "是否为域名"
+msgstr "Is Domain?"
+
+#: apps/mail/models.py:673
+msgid "当选中时，整个域名都为白名单，默认不选中"
+msgstr "When elected, the entire domain is whitelist, and the default is not selected "
+
+#: apps/mail/models.py:674 apps/mail/models.py:687
+msgid "是否为全局变量"
+msgstr "Is global"
+
+#: apps/mail/models.py:674
+msgid "全局白，是对所有客户生效。客户白，仅仅对这个客户生效"
+msgstr "Global whiteness is effective for all customers. Customer white, only for this customer"
+
+#: apps/mail/models.py:675 apps/mail/models.py:688 apps/mail/models.py:708
+msgid "是否禁用"
+msgstr "disabled?"
+
+#: apps/mail/models.py:676 apps/mail/models.py:689 apps/mail/models.py:709
+msgid "创建日期"
+msgstr "Create Time"
+
+#: apps/mail/models.py:684
+msgid ""
+"发件人黑名单：如果发件人在黑名单中，则不进行网关检测直接拒绝, 不支持正则标准,"
+"支持整域名过滤，如test.com且下面选中为域名，表示整个test.com为域名的发件人为"
+"黑名单发件人"
+msgstr ""
+"If the sender on the blacklist, skip all the gateway detection, does not support the regular standard, "
+"support the whole domain filtering, such as test.com and below the selected for the domain name, "
+"said the test.com as the domain name of the sender as blacklist "
+
+#: apps/mail/models.py:686
+msgid "当选中时，整个域名都为黑名单，默认不选中"
+msgstr "When elected, the entire domain is blacklist, and the default is not selected "
+
+#: apps/mail/models.py:687
+msgid "全局黑，是对所有客户生效。客户黑，仅仅对这个客户生效"
+msgstr "Global black, for all customers. Customer black, only for this customer "
+
+#: apps/mail/models.py:707
+msgid "网关收件人白名单, 如果收件人在白名单中，网关对该发件人不做任何过滤"
+msgstr "If the recipient is in the whitelist, the gateway does not do any filtering for the sender "
+
+#: apps/mail/models.py:710
+msgid "最后操作日期"
+msgstr "Last operate date"
+
+#: apps/mail/templates/mail/active_sender_list.html:5
+#: apps/mail/templates/mail/active_sender_list.html:21
+msgid "活跃发件人统计"
+msgstr "Active Sender statistics"
+
+#: apps/mail/templates/mail/active_sender_list.html:11
+#: apps/mail/templates/mail/deliver_logs.html:11
+#: apps/mail/templates/mail/mail_list.html:10
+#: apps/mail/templates/mail/mail_setting.html:7
+#: apps/mail/templates/mail/mail_summary.html:11
+#: apps/mail/templates/mail/statistics.html:11 templates/base_site.html:137
+msgid "中继管理"
+msgstr "Relay manage"
+
+#: apps/mail/templates/mail/active_sender_list.html:12
+#: templates/base_site.html:182
+msgid "活跃发件人"
+msgstr "Active sender"
+
+#: apps/mail/templates/mail/mail_list.html:4
+#: apps/mail/templates/mail/mail_list.html:22
+msgid "中继邮件列表"
+msgstr "Relay Email Lists"
+
+#: apps/mail/templates/mail/mail_read.html:37
+msgid "服务器地址"
+msgstr "Server address"
+
+#: apps/mail/templates/mail/mail_setting.html:5
+#: apps/mail/templates/mail/mail_setting.html:8
+#: apps/mail/templates/mail/mail_setting.html:20
+msgid "中继设置"
+msgstr "Relay settings"
+
+#: apps/mail/templates/mail/mail_summary.html:5
+msgid "中继总体统计"
+msgstr "Relay statistics"
+
+#: apps/mail/templates/mail/statistics.html:5
+msgid "中继出站报告"
+msgstr "Relay Outbound report"
+
+#: templates/base.html:8
+msgid "U-MAIL中继/网关平台"
+msgstr "U-Mail Relay / Gateway Mail Platform"
+
+#: templates/base_notice.html:11
+msgid "条未读通知"
+msgstr " unread notifications"
+
+#: templates/base_notice.html:39
+msgid "查看所有通知"
+msgstr "see more"
+
+#: templates/base_site.html:29
+msgid "U-Mail中继/网关邮件管理平台"
+msgstr "U-Mail Relay / Gateway Mail Platform"
+
+#: templates/base_site.html:51
+msgid "中文"
+msgstr "中文"
+
+#: templates/base_site.html:91
+msgid "属性"
+msgstr "Profile"
+
+#: templates/base_site.html:97
+msgid "修改密码"
+msgstr "Modify password"
+
+#: templates/base_site.html:104
+msgid "退出登录"
+msgstr "Logout"
+
+#: templates/base_site.html:125 templates/base_site.html.py:308
+msgid "主页"
+msgstr " Dashboard"
+
+#: templates/base_site.html:335
+msgid "备注栏"
+msgstr "Remark"
+
+#: templates/base_site.html:376 templates/login.html:286
+msgid "深圳市安般科技有限公司"
+msgstr "深圳市安般科技有限公司"
+
+#: templates/base_site.html:376 templates/login.html:286
+msgid "隐私保护"
+msgstr "Privacy Protection"
+
+#: templates/base_site.html:376 templates/login.html:286
+msgid "粤ICP备11061369号-5"
+msgstr "粤ICP备11061369号-5"
+
+#: templates/home.html:28
+msgid "中继统计"
+msgstr "Relay statistics "
+
+#: templates/home.html:44 templates/home.html.py:337
+msgid "项目"
+msgstr "Project"
+
+#: templates/home.html:74 templates/home.html.py:367
+msgid "系统已过滤邮件"
+msgstr "Filtered email"
+
+#: templates/home.html:90 templates/home.html.py:383
+msgid "我的过滤邮件"
+msgstr "My filter email"
+
+#: templates/home.html:107 templates/home.html.py:400
+msgid "系统分析中邮件"
+msgstr "Email being analyzed"
+
+#: templates/home.html:122
+msgid "发送通道传输中邮件"
+msgstr "Email in channel transmission"
+
+#: templates/home.html:139 templates/home.html.py:416
+msgid "投递中邮件"
+msgstr "Email in delivery"
+
+#: templates/home.html:154 templates/home.html.py:431
+msgid "重试投递中邮件"
+msgstr "Retry email in delivery"
+
+#: templates/home.html:185 templates/home.html.py:462
+msgid "出站成功邮件"
+msgstr "Outbound successful email "
+
+#: templates/home.html:200 templates/home.html.py:477
+msgid "出站失败邮件"
+msgstr "Outbound failed email "
+
+#: templates/home.html:229
+msgid "中继统计图示"
+msgstr "Relay statistical diagram"
+
+#: templates/home.html:235 templates/home.html.py:512
+msgid "今天"
+msgstr "today"
+
+#: templates/home.html:253 templates/home.html.py:530 templates/home.html:1068
+msgid "已过滤"
+msgstr "filtered "
+
+#: templates/home.html:257 templates/home.html.py:534 templates/home.html:1033
+#: templates/home.html.py:1069
+msgid "分析中"
+msgstr "analyzing "
+
+#: templates/home.html:261 templates/home.html.py:538 templates/home.html:1035
+#: templates/home.html.py:1070
+msgid "投递中"
+msgstr "delivery"
+
+#: templates/home.html:264 templates/home.html.py:541 templates/home.html:1036
+#: templates/home.html.py:1071
+msgid "重试投递中"
+msgstr "retry delivery"
+
+#: templates/home.html:321
+msgid "网关统计"
+msgstr "Gateway statistics"
+
+#: templates/home.html:506
+msgid "网关统计图示"
+msgstr "Gateway statistical diagram"
+
+#: templates/home.html:596
+msgid "用户属性"
+msgstr "User Info"
+
+#: templates/home.html:609
+msgid "基础信息"
+msgstr "Basic Info"
+
+#: templates/home.html:616 templates/home.html.py:759
+msgid "企业信息"
+msgstr "Enterprise Info"
+
+#: templates/home.html:624
+msgid "中继"
+msgstr "Relay"
+
+#: templates/home.html:633
+msgid "网关"
+msgstr "Gateway"
+
+#: templates/home.html:657
+msgid "基本信息"
+msgstr "Basic Info"
+
+#: templates/home.html:662
+msgid "登录帐号"
+msgstr "Username"
+
+#: templates/home.html:677
+msgid "中继服务开始时间"
+msgstr "Relay starts"
+
+#: templates/home.html:685
+msgid "中继服务到期时间"
+msgstr "Relay ends"
+
+#: templates/home.html:693
+msgid "中继状态"
+msgstr "Relay status"
+
+#: templates/home.html:703
+msgid "网关服务开始时间"
+msgstr "Gateway starts"
+
+#: templates/home.html:711
+msgid "网关服务到期时间"
+msgstr "Gateway ends"
+
+#: templates/home.html:719
+msgid "网关状态"
+msgstr "Gateway status"
+
+#: templates/home.html:728
+msgid "最后登录时间"
+msgstr "Last login time "
+
+#: templates/home.html:737
+msgid "创建时间"
+msgstr "Create time "
+
+#: templates/home.html:818 templates/home.html.py:827
+msgid "固定IP"
+msgstr "Fixed IP"
+
+#: templates/home.html:853 templates/home.html.py:862
+msgid "信任域名"
+msgstr "Trust domain"
+
+#: templates/home.html:887
+msgid "帐号密码"
+msgstr "Account password "
+
+#: templates/home.html:896
+msgid "帐号"
+msgstr "username"
+
+#: templates/home.html:897 templates/login.html:74
+msgid "密码"
+msgstr "password"
+
+#: templates/home.html:931 templates/home.html.py:941
+msgid "转发地址"
+msgstr "Forward address"
+
+#: templates/home.html:940
+msgid "域名"
+msgstr "Domain"
+
+#: templates/home.html:1031
+msgid "系统过滤"
+msgstr "filtered"
+
+#: templates/home.html:1032
+msgid "我的过滤"
+msgstr "my filter"
+
+#: templates/login.html:4
+msgid "帐号登录"
+msgstr "login"
+
+#: templates/login.html:31
+msgid "中继/网关平台"
+msgstr " Relay / Gateway Mail Platform"
+
+#: templates/login.html:44
+msgid "请输入登录信息"
+msgstr "Please Enter Your Information"
+
+#: templates/login.html:49
+msgid "错误提示： "
+msgstr "Error message: "
+
+#: templates/login.html:66
+msgid "用户名"
+msgstr "Username"
+
+#: templates/login.html:90
+msgid "记住我"
+msgstr "Remember Me"
+
+#: templates/login.html:95
+msgid "登录平台"
+msgstr "Login"
+
+#: templates/logout.html:3
+msgid "登录退出"
+msgstr "Logout"
+
+#: templates/logout.html:12
+msgid "您已成功退出U-Mail网关/中继平台, 感谢使用!"
+msgstr ""
+"Thanks for using, you have successfully exited the U-Mail gateway / relay "
+"platform!"
+
+#: templates/logout.html:14
+msgid "秒后，跳转回首页.或者"
+msgstr "s, jump back home. or"
+
+#: templates/logout.html:14
+msgid "点击这里"
+msgstr " click here "
+
+#: templates/logout.html:14
+msgid "重新登录"
+msgstr "re-login"
+
+#: web_customer/settings.py:190
+msgid "English"
+msgstr "English"
+
+#: web_customer/settings.py:191
+msgid "中文简体"
+msgstr "中文简体"
+
+

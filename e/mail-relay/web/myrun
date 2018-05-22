@@ -1,0 +1,2 @@
+#sudo lsof -t -i tcp:8069| xargs kill -9
+python manage.py runserver 0.0.0.0:8069

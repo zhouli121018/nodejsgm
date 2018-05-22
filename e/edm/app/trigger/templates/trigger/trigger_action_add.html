@@ -1,0 +1,209 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "触发器管理" %}--{{ trig_title }}{% endblock %}
+
+{% block breadcrumb %}
+<li><a href="{% url 'trigger_task' %}">{% trans "触发任务列表" %}</a></li>
+<li><a href="{% url 'trigger' %}">{% trans "触发器设置" %}</a></li>
+<li>{{ trig_title }}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-list margin-right-5"></i>{{ trig_title }}
+            </h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+
+    <section id="widget-grid" class="">
+        <div class="row">
+
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-sortable jarviswidget-color-teal" id="wid-id-1"
+                     data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-hand-o-right"></i></span>
+                        <h2>{{ trig_title }}</h2>
+                    </header>
+
+                    <div role="content">
+
+                        <div class="jarviswidget-editbox"></div>
+                        <div class="widget-body">
+
+                            <div class="row">
+                                <article class="col-xs-12 col-sm-12 col-md-1 col-lg-1 hidden-xs hidden-sm"></article>
+                                <article class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                                    <form id="wizard-1" novalidate="novalidate" action="" method="post" role="form">
+                                        <div id="bootstrap-wizard-1" class="col-sm-12">
+                                            <div class="form-bootstrapWizard">
+                                                <ul class="bootstrapWizard form-wizard">
+                                                    <li data-target="#step1">
+                                                        <!--<a href="#tab1" data-toggle="tab"> <span class="step">1</span> <span class="title">{% trans '设置触发器' %}</span> </a>-->
+                                                        <a href="javascript:void(0);" data-toggle="tab"> <span class="step">1</span> <span class="title">{% trans '设置触发器' %}</span> </a>
+                                                    </li>
+                                                    <li class="active" data-target="#step3">
+                                                        <!--<a href="#tab3" data-toggle="tab"> <span class="step">3</span> <span class="title">{% trans '设置触发动作' %}</span> </a>-->
+                                                        <a href="javascript:void(0);" data-toggle="tab"> <span class="step">2</span> <span class="title">{% trans '设置触发动作' %}</span> </a>
+                                                    </li>
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="tab-content">
+                                                <!-- 步骤1 设置触发器 -->
+                                                {% include 'trigger/include/step2.html' %}
+                                            </div>
+                                        </div>
+                                    </form>
+                                </article>
+                                <article class="col-xs-12 col-sm-12 col-md-3 col-lg-3 hidden-xs hidden-sm"></article>
+                            </div>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+
+        </div>
+    </section>
+{% endblock %}
+
+{% block css_block %}
+    <link href="{% static 'sa/js/plugin/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+    <style>
+        .myself-width-small{width: 100px!important;}
+        .myself-template-width{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .no-padding-right{padding-right: 0px!important;}
+        .pager .previous>button {
+            display: inline-block;
+            padding: 5px 14px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            color: #fff;
+            background-color: #3276b1;
+            border-color: #2c699d;
+            border-radius: 15px;
+            float: left;
+        }
+        .pager .next>button {
+            display: inline-block;
+            padding: 5px 14px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            color: #fff;
+            background-color: #3276b1;
+            border-color: #2c699d;
+            border-radius: 15px;
+            float: right;
+        }
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'sa/js/plugin/select2/select2.min.js' %}"></script>
+    <script src="{% static 'sa/js/plugin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static 'sa/js/plugin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+
+    <script>
+
+
+        $(function () {
+
+            $("#id_template").select2({
+                // placeholder: "Select a release...",
+                language: {
+                    noResults: function (params) {
+                        return "{% trans "暂无数据" %}";
+                    }
+                }
+            });
+
+            // 选择发件人
+            onchangeDomain('{{ form.send_acct_domain.value }}');
+            // onchangeAddress('{{ form.send_acct_address.value }}');
+
+            // 选择跟踪
+            onchangeTrack('{{ form.track_status.value }}');
+
+        })
+
+        function previousBurron(){
+            if(confirm('{% trans "确定返回上一步，本页修改的数据将不保存？" %}')) {
+                window.location.href = "{% url 'trigger_modify' trigobj.id %}";
+            }
+            return;
+        }
+
+        function removeClass(tagid){
+            $("#"+tagid).parent().parent().first().removeClass("display-none");
+        }
+        function addClass(tagid){
+            $("#"+tagid).parent().parent().first().addClass("display-none");
+        }
+
+        // 选择域名
+        function onchangeDomain(domain){
+            var objAcc = $("#id_send_acct_address");
+            var objNote = $('#id_send_acct_address').next('.help-block').first()
+            var ajax_url = "{% url 'ajax_get_mailbox' %}?domain=" + domain;
+            if(domain == 'all') {
+                objNote.html('<small class="text-success">{% trans "本次任务将使用所有发件人轮流发送。" %}</small>');
+                objAcc.html('<option value="all" selected="selected">{% trans "所有发件人" %}</option>');
+                return;
+            } else {
+                objNote.html('<small class="text-success">{% trans "本次任务将使用域名" %} <strong class="myself-txt-color-blue">' + domain + '</strong> {% trans "下所有发件人轮流发送。" %}</small>');
+                $.post(ajax_url, {}, function(data){
+                    if (data.json_list.length > 0){
+                        var select_html = '<option value="all" selected="selected">{% trans "所有发件人" %}</option>'
+                        for(var i=0;i<data.json_list.length;i++) {
+                            if (  data.json_list[i] == '{{ form.send_acct_address.value }}' ){
+                                select_html += '<option value="' + data.json_list[i] + '" selected>' + data.json_list[i] + '</option>'
+                                onchangeAddress('{{ form.send_acct_address.value }}');
+                            } else {
+                                select_html += '<option value="' + data.json_list[i] + '">' + data.json_list[i] + '</option>'
+                            }
+                        };
+                        objAcc.html(select_html);
+                    } else {
+                        objAcc.html('<option value="all" selected="selected">{% trans "所有发件人" %}</option>');
+                    };
+                });
+                return false;
+            };
+        }
+
+        // onChange 发件人
+        function onchangeAddress(value){
+            var objNote = $('#id_send_acct_address').next('.help-block').first()
+            if(value == 'all') {
+                var domain = $("#id_send_acct_domain").val();
+                if (domain != 'all'){
+                    objNote.html('<small class="text-success">{% trans "本次任务将使用域名" %}<strong class="myself-txt-color-blue">' + domain + '</strong> {% trans "下所有发件人轮流发送。" %}</small>');
+                } else {
+                    objNote.html('<small class="text-success">{% trans "本次任务将使用所有发件人轮流发送。" %}</small>');
+                }
+            } else {
+                objNote.html('');
+            }
+        }
+
+        function onchangeTrack(value){
+            if ( value == '0' ){
+                addClass("id_track_domain");
+            } else {
+                removeClass("id_track_domain");
+            }
+        }
+
+    </script>
+
+
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends 'base_site.html' %}
+{% load static %}
+{% load i18n %}
+{% load setting_tags %}
+{% block title %}{% trans '无效地址库' %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans '设置中心' %}</li><li>{% trans '无效地址管理' %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-list margin-right-5"></i>{% trans '无效地址库管理' %}
+            </h1>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <section id="widget-grid" class="">
+
+        <div class="row">
+
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <div class="jarviswidget well" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>{% trans '无效地址库' %}</h2>
+                    </header>
+
+                    <div>
+                        <div class="widget-body no-padding no-margin" style="min-height: 1px!important;">
+                            <div class="well well-sm display-inline myself-min-width">
+                                <p>
+                                    {% trans '当前无效地址库中共有 ' %}<strong class="txt-color-red">{{ invalid_qty|intcomma2 }}</strong> {% trans '个无效地址！' %}
+                                    <strong class="txt-color-red">{% trans '更新时间' %}：{{ updatetime|date:"Y-m-d H:i" }}</strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="widget-body no-padding no-margin" style="min-height: 1px!important;">
+                            <div class="display-inline">
+                                <form action="" class="form-horizontal myself-min-width" id="search_form" role="form">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label class="control-label">{% trans '无效地址查询' %}</label>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <textarea class="form-control" rows="5" name="addresses" id="id_addresses" onfocus="onfocusAddr();">{{ addresses }}</textarea>
+                                            </div>
+                                            <br>
+                                            <div class="col-md-12">
+                                                <small class="txt-color-red display-none" id="id_addresses_error"></small>
+                                            </div>
+                                            <div class="col-md-12 margin-top-5">
+                                                <button type="button" class="btn btn-primary margin-right-5" onclick="checkForm()">{% trans '查询' %}</button>
+                                                <strong class="txt-color-red">{% trans '注：' %}</strong>{% trans '每次最多只能查询5 个地址！ ' %}
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div>
+                        <div class="widget-body no-padding no-margin" style="min-height: 1px!important;">
+                            <div class="display-inline myself-min-width">
+                                <p class="no-padding no-margin">{% trans '查询结果' %}</p>
+                                <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
+                                    <thead>
+                                    <tr >
+                                        <th width="8%" class="txt-color-white bg-color-magenta">{% trans '序号' %}</th>
+                                        <th class="txt-color-white bg-color-magenta" width="490px">{% trans '邮箱地址' %}</th>
+                                        <th width="12%" class="txt-color-white bg-color-magenta">{% trans '操作' %}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if lists %}
+                                        {% for d in lists %}
+                                            <tr id="id_invalid_{{ forloop.counter }}">
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ d }}</td>
+                                                <td>
+                                                    <a href="javascript: void(0);" onclick="deleteAddress('{{ forloop.counter }}', '{{ d }}');" title="{% trans '从无效地址库中删除此地址' %}">{% trans '删除' %}</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="3">{% trans '找不到要查询的地址!' %}</td>
+                                        </tr>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="widget-body no-padding no-margin" style="min-height: 1px!important;">
+                            <div class="display-inline">
+                                <p><strong class="txt-color-red">{% trans '注：' %}</strong> {% trans '平台将地址不存在的邮箱自动加入到“无效地址库”中，以后当用户再次发送到该无效邮件地址时，系统会拒收该邮件！' %}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block css_block %}
+    <style>
+        .myself-min-width{min-width: 608px;}
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script>
+
+        // ajax post 设置
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        function onfocusAddr(){
+            $('#id_addresses_error').addClass('display-none');
+        }
+
+        function checkForm(){
+            var obj = $('#id_addresses_error');
+            var addresses = $('#id_addresses').val();
+            var arryL = addresses.split("\n"); //以换行符为分隔符将内容分割成数组
+            var count = 0;
+            for (var i = 0; i < arryL.length; i++){
+                var email = $.trim(arryL[i]);
+                if (email != ''){
+                    if ( email != '' && !checkEmail(email) ){
+                        obj.removeClass('display-none').html('{% trans '邮箱地址' %}<strong class="margin-right-5 margin-left-5">' + email + '</strong>{% trans '格式错误！' %}');
+                        return false;
+                    } else {
+                        count += 1;
+                    }
+                }
+            }
+            if ( count==0 ){
+                obj.removeClass('display-none').html('{% trans '请填写要查询的内容！' %}');
+                return false;
+            }
+            if ( count>5 ){
+                obj.removeClass('display-none').html('{% blocktrans %}每次最多只能查询<strong class="margin-right-5 margin-left-5">5</strong>个地址！{% endblocktrans %}');
+                return false;
+            }
+            var addresses = addresses.replace(/[ ]/g,""); //去掉空格;
+            var addresses = addresses.replace(/[\r\n]/g,","); //去掉回车换行
+            window.location.href = "/setting/invalid/addr/?addresses="+addresses;
+        }
+
+        function checkEmail(field){
+            var expression = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            var obj = new RegExp(expression);
+            if(obj.test(field)==true){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        function deleteAddress(id, addr){
+            $("#id_invalid_"+id).remove();
+            $.post("{% url 'ajax_delete_invalid_address' %}", {'addr': addr});
+        }
+
+    </script>
+{% endblock %}

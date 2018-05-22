@@ -1,0 +1,26 @@
+{% load core_tags %}
+{% for p in mypermissions %}
+    {% if p.per in perms %}
+        <li>
+            <a href="#"><i class="fa {{ class_list|get_index:forloop.counter0 }} fa-fw"></i> {{ p.nav_name }}<span class="fa arrow"></span></a>
+            <ul id="{{p.name}}" class="nav nav-second-level">
+                {% for p_child in p.nav_children|permission_order_by %}
+                    {% if p_child.per in perms %}
+                        <li>
+                            <a href="{{ p_child.url }}">{{ p_child.nav_name }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
+    <script>
+        $(function(){
+            var path = window.location.pathname;
+            if (path.indexOf('/{{p.name}}/')==0){
+                $('#{{p.name}}').addClass('collapse in');
+            };
+        });
+    </script>
+{% endfor %}
+

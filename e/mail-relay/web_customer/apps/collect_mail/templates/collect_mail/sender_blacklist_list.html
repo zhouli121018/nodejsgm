@@ -1,0 +1,143 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "网关发件人黑名单" %}{% endblock %}
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'assets/css/jquery-ui.min.css' %}" />
+{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "网关管理" %}</a> </li>
+    <li class="active">{% trans "发件人黑名单管理" %}</li>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-6">
+
+            <div class="page-header">
+                <h1>
+                    {% trans "发件人黑名单列表" %}
+                    <small>
+                        <i class="ace-icon fa fa-angle-double-right"></i>
+                        (<span class="text-danger">{% trans "总共" %}：{{ lists.count }}</span>)
+                    </small>
+                </h1>
+            </div>
+        </div>
+
+        <div class="col-xs-6">
+            <div class="pull-right" style="margin-right:30px;">
+                <a class="btn btn-primary" href="{% url 'sender_blacklist_add' %}">{% trans "添加黑名单" %}</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-block alert-success">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
+
+                    <i class="ace-icon fa fa-check green"></i>
+
+                    <strong class="green">
+                        {{ message }}
+                    </strong>,
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="col-xs-12">
+            <form id="id_form" action="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="id" id="id" />
+                <input type="hidden" name="status" id="status" />
+
+                <table id="ajax-table" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th width="6%">ID</th>
+                        <th>{% trans "发件人" %}</th>
+                        <th>{% trans "是否域名" %}</th>
+                        <th width="8%">{% trans "状态" %}</th>
+                        <th width="12%">{% trans "添加日期" %}</th>
+                        <th width="10%">{% trans "操作" %}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for d in lists %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ d.sender }}</td>
+                            <td>{% if d.is_domain %}{% trans "是" %}{% else %}{% trans "否" %}{% endif %}</td>
+                            <td>{% if d.disabled %}{% trans "禁用" %}{% else %}{% trans "启用" %}{% endif %}</td>
+                            <td>{{ d.created|date:"Y-m-d H:i" }}</td>
+                            <td>
+                                <a type="button" class="btn btn-outline btn-primary btn-mini" href="{% url 'sender_blacklist_modify' d.id %}">{% trans "修改" %}</a>
+                                {% if d.disabled %}
+                                    <a type="button" class="btn btn-outline btn-success btn-mini" href="Javascript: SetStatus({{ d.id }}, '1')">{% trans "启用" %}</a>
+                                {% else %}
+                                    <a type="button" class="btn btn-outline btn-danger btn-mini" href="Javascript: SetStatus({{ d.id }}, '-1')">{% trans "禁用" %}</a>
+                                {% endif %}
+                                <a type="button" class="btn btn-outline btn-danger btn-mini" href="Javascript: SetStatus({{ d.id }}, '-2')">{% trans "删除" %}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </div><!-- /.span -->
+    </div><!-- /.row -->
+
+
+{% endblock %}
+{% block my_jsblock %}
+    <script src="{% static 'assets/js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static 'assets/js/dataTables.tableTools.min.js' %}"></script>
+    <script src="{% static 'assets/js/dataTables.colVis.min.js' %}"></script>
+    <script>
+        $(function () {
+
+            ip_table = $('#ajax-table').dataTable({
+                //"columnDefs": [ { "targets": [ 0 ], "visible": false, "searchable": false }],
+                "iDisplayLength": 100,
+                "lengthMenu": [[20, 50, 100, 200, 500], [20, 50, 100, 200, 500]],
+                "aaSorting": [
+                    [ 4, "desc" ]
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "{% blocktrans %}显示 _MENU_ 每页{% endblocktrans %}",
+                    "sZeroRecords": "{% blocktrans %}对不起! 信息筛选结果为空!{% endblocktrans %}",
+                    "sInfo": "{% blocktrans %}从 _START_ 到 _END_ 总计: _TOTAL_ 条记录{% endblocktrans %}",
+                    "sInfoEmpty": "{% blocktrans %}总计: 0 条记录{% endblocktrans %}",
+                    "sInfoFiltered": "{% blocktrans %}(从 _MAX_ 条记录筛选出){% endblocktrans %}",
+                    "sSearch": "{% blocktrans %}搜索: {% endblocktrans %}",
+                    "oPaginate": {
+                        "sFirst":    "{% blocktrans %}第一页{% endblocktrans %}",
+                        "sPrevious": " {% blocktrans %}上一页 {% endblocktrans %}",
+                        "sNext":     " {% blocktrans %}下一页 {% endblocktrans %}",
+                        "sLast":     " {% blocktrans %}最后一页 {% endblocktrans %}"
+                    }
+                }
+            });
+        });
+        function SetStatus(id, status){
+            var str = '{% blocktrans %}是否确认此操作？{% endblocktrans %}';
+            if(confirm(str)) {
+                $('#id').val(id);
+                $('#status').val(status);
+                $('#id_form').submit();
+            }
+            return;
+        }
+    </script>
+
+{% endblock %}

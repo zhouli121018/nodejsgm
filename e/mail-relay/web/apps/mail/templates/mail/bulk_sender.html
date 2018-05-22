@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load static %}
+{% load mail_tags %}
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>{{ obj.customer }}</title>
+</head>
+<body style="overflow: auto;" scroll="yes">
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel">群发用户：{{ obj.customer }} 日期：{{ obj.date|date:"Y-m-d" }} 群发数：{{ obj.spam_count }}</h4>
+</div>
+
+<div class="modal-body">
+    <table class="table table-striped table-bordered table-hover dataTables-example">
+        <thead>
+        <tr>
+            <th>发件人</th>
+            <th>群发数量</th>
+            <th>群封操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for s in sender_info %}
+        <tr>
+            <td><a href="{% url 'mail_list' %}?date={{obj.date|date:'Y-m-d'}}&customer={{obj.customer.id}}&state=reject&mail_from={{ s.mail_from }}">{{ s.mail_from }}</a></td>
+            <td><a href="{% url 'mail_list' %}?date={{obj.date|date:'Y-m-d'}}&customer={{obj.customer.id}}&state=reject&mail_from={{ s.mail_from }}">{{ s.count }}</a></td>
+            <td>
+                {% with s.mail_from|get_sender_black as res %}
+                {% if res %}
+                <span style="color:#888888">已封({{res}})</span>
+                {% else %}
+                <span id="operate_{{ forloop.counter }}">
+                <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: AddSenderBlacklist({{ forloop.counter }}, {{ obj.customer.id }}, '{{ s.mail_from }}', 3)">3天</a>
+                <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: AddSenderBlacklist({{ forloop.counter }}, {{ obj.customer.id }}, '{{ s.mail_from }}', 7)">7天</a>
+                <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: AddSenderBlacklist({{ forloop.counter }}, {{ obj.customer.id }}, '{{ s.mail_from }}', 30)">30天</a>
+                </span>
+                {% endif %}
+                {% endwith %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer" id="modal-footer">
+    <button type="button" id="modal_close" class="btn btn-default btn-primary" data-dismiss="modal">Close</button>
+</div>
+<script type="">
+function AddSenderBlacklist(id, customer_id, sender, days){
+            var str = '是否要封除发件人('+ sender + ')连接' + days + '天?'
+            if(confirm(str)) {
+                var loading_img = "{% static 'img/loading.gif' %}";
+                $('#operate_'+id).html('<img src="' + loading_img + '"></img>');
+                $.getJSON("{% url 'ajax_add_tempsenderblacklist' %}?sender=" + sender + "&days=" + days + "&customer_id=" + customer_id,  function(data){
+                    $('#operate_'+id).html(data.msg);
+                });
+            }
+            return;
+        }
+</script>
+</body>
+</html>

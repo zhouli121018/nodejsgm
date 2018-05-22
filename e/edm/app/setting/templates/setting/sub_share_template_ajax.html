@@ -1,0 +1,20 @@
+{% load i18n %}
+{% load template_tags %}
+{% is_share_template d.id user_id as is_share %}
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+<td>
+    <a href="{% url 'template_preview' d.id %}" target="_blank" {% if d.result == 'red' %}style="color: grey;" {% endif %}>{{ d|show_template_name }}</a>
+</td>
+<td>{{ d.created|date:"Y-m-d H:i" }}</td>
+<td>{{ d.updated|date:"Y-m-d H:i" }}</td>
+<td style="white-space: nowrap;">
+    <div>
+        {% if is_share %}
+            <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: SetStatus({{ d.id }}, '2')">{% trans "撤销共享" %}</a>
+        {% else %}
+            <a type="button" class="btn btn-outline btn-primary btn-xs" href="Javascript: SetStatus({{ d.id }}, '1')">{% trans "共享" %}</a>
+        {% endif %}
+    </div>
+</td>
+

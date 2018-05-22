@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+{% load i18n %}
+{% load static from staticfiles %}
+<html lang="en">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>{% trans "U-MAIL中继/网关平台" %}-{% block title %}{% endblock %}</title>
+
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/font-awesome/4.2.0/css/font-awesome.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrapDatepickr-1.0.0.css' %}">
+    <!-- page specific plugin styles -->
+    <link rel="shortcut icon" href="{% static 'img/u.png' %}">
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="{% static 'assets/fonts/fonts.googleapis.com.css' %}" />
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="{% static 'assets/css/ace.min.css' %}" class="ace-main-stylesheet" id="main-ace-style" />
+
+    <!--[if lte IE 9]>
+			<link rel="stylesheet" href="{% static 'assets/css/ace-part2.min.css' %}" class="ace-main-stylesheet" />
+		<![endif]-->
+
+    <!--[if lte IE 9]>
+		  <link rel="stylesheet" href="{% static 'assets/css/ace-ie.min.css' %}" />
+		<![endif]-->
+    {% block css_block %}
+    {% endblock %}
+
+    <!-- inline styles related to this page -->
+
+    <!-- ace settings handler -->
+    <script src="{% static 'assets/js/ace-extra.min.js' %}"></script>
+
+    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+    <!--[if lte IE 8]>
+		<script src="{% static 'assets/js/html5shiv.min.js' %}"></script>
+		<script src="{% static 'assets/js/respond.min.js' %}"></script>
+		<![endif]-->
+    <style>
+        .lang_flag {
+            width: 16px;
+            height: 11px;
+            background: url(/static/img/flags.png) no-repeat;
+            margin-top: -.18em;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .lang_flag.lang_flag-cn {
+            background-position: -208px -22px;
+        }
+        .lang_flag.lang_flag-us {
+            background-position: -144px -154px;
+        }
+        #bootstrapDatepickr-table{
+            position: absolute;
+            left: -101px;
+            top: 10px;
+            /*right:64px;*/
+        }
+        .bootstrapDatepickr-cal.cal_id-calendar1,.bootstrapDatepickr-cal.cal_id-calendar2{
+            top:30px !important;
+            /*left:0 !important;*/
+            right:0;
+            width:100% !important;
+        }
+        #input-box .cal_id-calendar1,#collect-box .cal_id-calendar2{
+            top:48px !important;
+        }
+        #input-box .cal_id-calendar3,#collect-box .cal_id-calendar4{
+            top:106px !important;
+        }
+
+        .btn{
+            /*border:none !important;*/
+            border-radius:3px !important;
+        }
+    </style>
+</head>
+{% block body %}
+{% endblock %}
+
+<!-- basic scripts -->
+
+<!--[if !IE]> -->
+<script src="{% static 'assets/js/jquery.2.1.1.min.js' %}"></script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script src="{% static 'assets/js/jquery.1.11.1.min.js' %}"></script>
+<![endif]-->
+<script src="{% static 'assets/js/bootstrapDatepickr-1.0.0.js' %}"></script>
+<script src="{% static 'assets/js/fusioncharts.js' %}"></script>
+<!--[if !IE]> -->
+<script type="text/javascript">
+    window.jQuery || document.write("<script src='{% static 'assets/js/jquery.min.js' %}'>"+"<"+"/script>");
+</script>
+
+<!-- <![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='{% static 'assets/js/jquery1x.min.js' %}'>"+"<"+"/script>");
+</script>
+<![endif]-->
+<script type="text/javascript">
+    if('ontouchstart' in document.documentElement) document.write("<script src='{% static 'assets/js/jquery.mobile.custom.min.js' %}'>"+"<"+"/script>");
+</script>
+
+{% block jsblock %} {% endblock %}
+</html>

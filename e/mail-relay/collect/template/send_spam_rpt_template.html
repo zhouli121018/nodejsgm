@@ -1,0 +1,68 @@
+<!--<<collect_mail_targs>>-->
+<p><table bgcolor="#000000" border="0" cellpadding="1" cellspacing="0" width="750">
+    <tbody><tr><td>
+        <table bgcolor="#efefef" border="0" cellpadding="10" cellspacing="0" width="750">
+            <tbody><tr><td>
+                <font face="Arial, Helvetica, sans-serif" size="-2">
+                    <b>这封邮件包含了两个邮件列表，一个病毒列表，一个垃圾列表，是所有前一天发送给您、但被系统隔离了的邮件，您可以对列表进行如下操作：</b>
+                    <ul>
+                        <li>点击 <font color="blue">放行</font> 链接　将该邮件投递到您的收件箱</li>
+                        <li>点击 <font color="#2a702a">白名单</font> 链接　将该邮件投递到您的收件箱并将发件人加入白名单，白名单中的发件人发送邮件将不会被隔离</li>
+                        <li>点击 <font color="red">删除</font> 链接　删除隔离邮件</li>
+                        <li>所有隔离区的邮件将在 <font color="red">2</font> 天后自动删除</li>
+                    </ul>
+                </font>
+            </td></tr></tbody></table></td></tr></tbody></table></p>
+<p><table bgcolor="#000000" border="0" cellpadding="0" cellspacing="0" width="750">
+    <tbody><tr><td>
+        <table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="750">
+            <tbody><tr><td>
+                <table border="0" cellpadding="3" cellspacing="1" width="100%">
+                    <tbody>
+                        <tr>
+                            <td colspan="5"><b>病毒邮件列表 <!--(<<virus_mail_count_targs>>)--></b></td>
+                        </tr>
+                        <tr bgcolor="#6699cc" align="center" color="#ffffff">
+                            <td nowrap="nowrap">病毒</td>
+                            <td nowrap="nowrap">发件人</td>
+                            <td nowrap="nowrap">主题</td>
+                            <td nowrap="nowrap">隔离时间</td>
+                            <!--<td nowrap="nowrap">操作</td>-->
+                        </tr>
+                        <!--<<virus_mail_tags>>-->
+                        <tr bgcolor="#FFFFF" align="center" color="#ffffff">
+                            <td nowrap="nowrap">{check_message}</td>
+                            <td nowrap="nowrap">{mail_from}</td>
+                            <td nowrap="nowrap">{subject}</td>
+                            <td nowrap="nowrap">{created}</td>
+                            <!--<td nowrap="nowrap"><<virus_operate_targs>></td>-->
+                        </tr>
+                        <!--<<endfor_targs>>-->
+                    </tbody>
+                </table></td></tr></tbody></table></td></tr></tbody></table></p>
+<p><br><table bgcolor="#000000" border="0" cellpadding="0" cellspacing="0" width="750">
+    <tbody><tr><td>
+        <table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="750">
+            <tbody><tr><td>
+                <table border="0" cellpadding="3" cellspacing="1" width="100%">
+                    <tbody><tr>
+                        <td colspan="5"><b>垃圾邮件列表 <!--(<<other_mail_count_targs>>)--></b></td>
+                    </tr>
+                    <tr bgcolor="#6699cc" align="center" color="#ffffff">
+                        <td nowrap="nowrap">隔离原因</td>
+                        <td nowrap="nowrap">发件人</td>
+                        <td nowrap="nowrap">主题</td>
+                        <td nowrap="nowrap">隔离时间</td>
+                        <!--<td nowrap="nowrap">操作</td>-->
+                    </tr>
+                    <!--<<other_mail_targs>>-->
+                    <tr bgcolor="#FFFFF" align="center" color="#ffffff">
+                        <td nowrap="nowrap">{check_result}</td>
+                        <td nowrap="nowrap">{mail_from}</td>
+                        <td nowrap="nowrap">{subject}</td>
+                        <td nowrap="nowrap">{created}</td>
+                        <!--<td nowrap="nowrap"><<other_operate_targs>></td>-->
+                        </tr>
+                    <!--<<endfor_targs>>-->
+                    </tbody></table>
+            </td></tr></tbody></table></td></tr></tbody></table></p></body></html>

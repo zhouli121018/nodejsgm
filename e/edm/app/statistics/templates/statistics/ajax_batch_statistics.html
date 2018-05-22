@@ -1,0 +1,86 @@
+{% load i18n %}
+{% load task_tags %}
+<td>{{ d.task_date|date:"Y-m-d" }}</td>
+<td>
+    {{ d.task_ident|default_if_none:"-" }}
+</td>
+<td>
+    {% get_maillist_bysendname d.customer_id d.task_ident as multi_maillists %}
+    {% for subject in multi_maillists %}
+        <p>{{ subject }}</p>
+    {% endfor %}
+</td>
+
+<td>
+    {% if d.count_send_exp %}{{ d.count_send_exp }}{% else %}-{% endif %}
+</td>
+<td>
+    {% if d.count_fail %}{{ d.count_fail }}{% else %}-{% endif %}
+</td>
+<td>
+    {% if d.count_send_real %}{{ d.count_send_real }}{% else %}-{% endif %}
+</td>
+
+<td>
+    {% if d.count_err_1 %}
+        {% if subobj %}
+            <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ d.task_ident }}&errtype=1&user_id={{ subobj.id }}" title="{% trans "点击下载失败地址列表" %}" target="_blank">{{ d.count_err_1 }}</a>
+        {% else %}
+            <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ d.task_ident }}&errtype=1" title="{% trans "点击下载失败地址列表" %}" target="_blank">{{ d.count_err_1 }}</a>
+        {% endif %}
+    {% else %}-{% endif %}
+</td>
+<td>
+    {% if d.count_err_2 %}
+        {% if subobj %}
+            <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ d.task_ident }}&errtype=2&user_id={{ subobj.id }}" title="{% trans "点击下载失败地址列表" %}" target="_blank">{{ d.count_err_2 }}</a>
+        {% else %}
+            <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ d.task_ident }}&errtype=2" title="{% trans "点击下载失败地址列表" %}" target="_blank">{{ d.count_err_2 }}</a>
+        {% endif %}
+    {% else %}-{% endif %}
+</td>
+<td>
+    {% if d.count_err_3 %}
+        {% if subobj %}
+            <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ d.task_ident }}&errtype=3&user_id={{ subobj.id }}" title="{% trans "点击下载失败地址列表" %}" target="_blank">{{ d.count_err_3 }}</a>
+        {% else %}
+            <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ d.task_ident }}&errtype=3" title="{% trans "点击下载失败地址列表" %}" target="_blank">{{ d.count_err_3 }}</a>
+        {% endif %}
+    {% else %}-{% endif %}
+</td>
+<td>
+    {% if d.count_err_5 %}
+        {% if subobj %}
+            <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ d.task_ident }}&errtype=5&user_id={{ subobj.id }}" title="{% trans "点击下载失败地址列表" %}" target="_blank">{{ d.count_err_5 }}</a>
+        {% else %}
+            <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ d.task_ident }}&errtype=5" title="{% trans "点击下载失败地址列表" %}" target="_blank">{{ d.count_err_5 }}</a>
+        {% endif %}
+    {% else %}-{% endif %}
+</td>
+{% if not subobj %}
+{% autoescape off %}
+<td>
+    {% if d.send_id %}
+        <span id="stat_info_{{ d.send_id }}"><img src="/static/img/loading.gif" />{% trans "加载中..." %}</span>
+        <script>
+            $(function(){
+                $.getJSON("/task/ajax_stat_info/{{ d.send_id }}/",  function(data){
+                    $('#stat_info_{{ d.send_id }}').html(data.info);
+                });
+            })
+        </script>
+        {% elif d.task_id %}
+        <code><a href="{% url 'track_task_stat' %}?ident={{ d.task_ident }}&mode=2" target="_blank">查看详情</a></code>
+    {% else %}-{% endif %}
+</td>
+{% endautoescape %}
+
+<td>
+    <div id="id-{{ d.task_id }}">
+        <div class="">
+            <a href="javascript:clearErrAddr('all', '{{ d.task_date|date:"Y-m-d" }}', '{{ d.task_id }}', 'clear_by_tid');" title="{% trans "清除发送失败地址" %}">{% trans "无效地址清除" %}</a>
+        </div>
+        <div class="display-none"></div>
+    </div>
+</td>
+{% endif %}

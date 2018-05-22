@@ -1,0 +1,14 @@
+[redis]
+host                = localhost
+port                = 6379
+db                  = 0
+
+[task]
+host                = localhost
+port                = 10000
+
+[deliver]
+message_dir         = /tmp/deliver/message
+greenlet_number     = 4000
+connect_time        = 15
+deliver_time        = 180

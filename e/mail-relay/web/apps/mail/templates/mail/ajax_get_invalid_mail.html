@@ -1,0 +1,11 @@
+
+    <td>{{ d.id }}</td>
+    <td><a href="{% url 'mail_list' %}?show=sendlog&mail_to={{ d.mail }}&date={{ d.created|date:'Y-m-d' }}">{{ d.mail }}</a></td>
+    <td>{{ d.creater|default_if_none:"" }}</td>
+    <td>{{ d.created|date:"Y-m-d H:i" }}</td>
+    <td>{{ d.operater|default_if_none:"" }}</td>
+    <td>{{ d.operate_time|date:"Y-m-d H:i"  }}</td>
+    <td>
+        <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'invalid_mail_modify' d.id %}">修改</a>
+        <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: DeleteInvalidMail({{ d.id }}, '{{ d.mail }}')">删除</a>
+    </td>

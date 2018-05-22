@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mail_tags %}
+{% block header %}邮件审核统计{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <form class="form-search pull-right form-inline" style="text-align: right" action="">
+
+            <label>开始日期：</label>
+            <span class="input-append date dateinput" data-date="" data-date-format="yyyy-mm-dd">
+            <input type="text" name="start" value="{{ start }}" readonly="" />
+                <span class="add-on"><i class="icon-remove"></i></span>
+                <span class="add-on"><i class="icon-th"></i></span>
+            </span>
+            <label>结束日期：</label>
+            <span class="input-append date dateinput" data-date="" data-date-format="yyyy-mm-dd">
+            <input type="text" name="end" value="{{ end }}" readonly="" />
+                <span class="add-on"><i class="icon-remove"></i></span>
+                <span class="add-on"><i class="icon-th"></i></span>
+            </span>
+            <button type="submit" class="btn btn-primary">选择</button>
+
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-heading">
+                统计列表
+                <div class="pull-right">
+                        <label class="radio-inline">
+                        统计类型:
+                        </label>
+
+                        <label class="radio-inline">
+                            <input class="radioItem" type="radio" {% if request.GET.type == 'all' %}checked=""{% endif %}  value="all" name="optionsRadios">默认
+                        </label>
+                        <label class="radio-inline">
+                            <input class="radioItem" type="radio" {% if request.GET.type == 'reviewer' %}checked=""{% endif %} value="reviewer" name="optionsRadios">查看审核人员
+                        </label>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="dataTable_wrapper">
+                        <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <thead>
+                            <tr>
+                                <th rowspan="2">日期</th>
+                                {% if request.GET.type == 'reviewer' %}
+                                <th rowspan="2">审核人员</th>
+                                {% endif %}
+                                <th rowspan="2">全部</th>
+                                <th colspan="3">审核情况</th>
+                                <th colspan="3">误判情况</th>
+                                <th rowspan="2">平均审核时间(分钟)</th>
+                                <th rowspan="2">更新日期</th>
+                            </tr>
+                            <tr>
+                                <th>通过</th>
+                                <th>拒绝</th>
+                                <th>通过率</th>
+                                <th>拒>>通</th>
+                                <th>通>>拒</th>
+                                <th>误判率</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for r in res %}
+                            {% with r.date|date:"Y-m-d" as date %}
+                            <tr>
+                                <td>{{ date }}</td>
+                                {% if request.GET.type == 'reviewer' %}
+                                <td>{{ r.reviewer }}({{ r.reviewer.first_name }}{{ r.reviewer.last_name }})</td>
+                                {% endif %}
+                                <td>{{ r.review_all }}</td>
+                                <td>{{ r.review_pass }}</td>
+                                <td>{{ r.review_reject }}</td>
+                                <td><code>{{ r.review_pass|get_rate:r.review_all }}</code></td>
+                                <td><a href="{% url 'collect_mail_list' %}?date={{date}}&review=pass_undo&reviewer_id={{ r.reviewer_id|default_if_none:''}}">{{ r.review_pass_undo }}</a></td>
+                                <td><a href="{% url 'collect_mail_list' %}?date={{date}}&review=reject_undo&reviewer_id={{ r.reviewer_id|default_if_none:''}}">{{ r.review_reject_undo }}</a></td>
+                                <td><code>{{ r.review_undo|get_rate:r.review_all }}</code></td>
+                                <td>{{ r.times|get_div:60 }}</td>
+                                <td>{{ r.update_time|date:"Y-m-d H:i" }}</td>
+                            </tr>
+                            {% endwith %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 --> </div> </div>
+{% endblock %}
+{% block css-block %}
+    <link href="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'datatables-responsive/css/dataTables.responsive.css' %}" rel="stylesheet">
+    <link href="{% static "datetimepicker/css/bootstrap-datetimepicker.min.css" %}" rel="stylesheet">
+
+{% endblock %}
+
+
+{% block js-block %}
+    <script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js' %}"></script>
+    <script src="{% static "datetimepicker/js/bootstrap-datetimepicker.min.js" %}"></script>
+    <script src="{% static "datetimepicker/js/bootstrap-datetimepicker.zh-CN.js" %}"></script>
+
+
+    <script>
+            $(function () {
+
+            $('#dataTables-example').dataTable({
+                "iDisplayLength": 25,
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
+                "oLanguage": {
+                "sLengthMenu": "显示 _MENU_ 每页",
+                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                "sInfoEmpty": "总计: 0 条记录",
+                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                "sSearch": "搜索: ",
+                "oPaginate": {
+                       "sFirst":    "第一页",
+                       "sPrevious": " 上一页 ",
+                       "sNext":     " 下一页 ",
+                       "sLast":     " 最后一页 "
+                   }
+            }
+            });
+
+            $('.dateinput').datetimepicker({
+                format: "yyyy-mm-dd",
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                minView: 2,
+                pickerPosition: "bottom-left"
+
+            });
+
+            $(".radioItem").change( function() {
+            var selectedvalue = $("input[name='optionsRadios']:checked").val();
+            //window.location.href = $.query.set('type', selectedvalue);
+            window.location.href = '?type=' + selectedvalue;
+        });
+            });
+
+
+    </script>
+{% endblock %}

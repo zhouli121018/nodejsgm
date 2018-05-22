@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap %}
+
+{% block header %}网关邮件检测设置{% endblock %}
+
+{% block content %}
+<div class="row">
+<div class="col-lg-12">
+<div class="panel panel-default">
+<div class="panel-heading">
+    设置信息
+</div>
+<div class="panel-body">
+<div class="row">
+<div class="col-lg-12">
+<form role="form" action="" method="post">
+{% csrf_token %}
+    <div class="form-group">
+        <label class="control-label" for="id_bulk_max">1.收件人白名单检测:</label>
+        <div>
+           收件人在<a href="{% url 'collect_recipient_whitelist_list' %}">网关收件人白名单</a>中，网关对该发件人不做任何过滤
+        </div>
+    </div>
+<div class="form-group">
+    <label class="control-label" for="id_bulk_max">2.发件人格式检测:</label>
+    <div>正则:'^(\w|[&+\-./=])+@\w+([-.]\w+)*\.(\w+)$'</div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_bulk_max">3.发件人白名单:</label>
+    <div><a href="{% url 'sender_whitelist_list' %}">网关发件人白名单</a></div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_credit">4.发件人黑名单:</label>
+    <div><a href="{% url 'customer_sender_blacklist_list' %}">网关发件人黑名单</a></div>
+</div>
+
+<div class="form-group">
+    <label class="control-label" for="id_collect_attachment_min_size">5.小危附件检测:</label>
+    <div>
+        主题为非中文,且附件只有一个,附件类型在<a href="{% url 'attachment_type_blacklist_list' %}">小危附件类型黑名单</a>中,且大小小于
+        <input style="width:100px" id="id_collect_attachment_min_size" name="collect_attachment_min_size" value="25" type="number">
+        KB的邮件，直接拒绝，不审核，不学习。默认0KB, 表示不检测
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_bulk_max">6.免审关键字过滤:</label>
+    <p class="help-block">
+        (发件人, 主题, 内容, 附件)免审关键字黑名单,直接拒绝
+    </p>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_dspam_max_size">7.Dspam检测:</label>
+    <div>
+        检测大小阀值:邮件如果超过
+        <input style="width:100px" id="id_dspam_max_size" name="dspam_max_size" value="{{ form.dspam_max_size.value }}" type="number">
+        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_spf">8.SPF检测:</label>
+    <div>
+        如果客户开启SPF检测，或者发件人域名在SPF强制检测库中，进行SPF检测
+    </div>
+</div>
+<div class="form-group">
+
+    <label class="control-label" for="id_dspam_max_size">9.ClamAV病毒检测:</label>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_ctasd_max_size">10.Ctasd检测</label>
+    <div>
+        检测大小阀值:邮件如果超过
+        <input style="width:100px" id="id_ctasd_max_size" name="ctasd_max_size" value="{{ form.ctasd_max_size.value }}" type="number">
+        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label" for="id_sender_max_size">11.发件人黑名单检测:</label>
+    <div>
+        检测大小阀值(<a href="{% url 'sender_blacklist_list' %}">发件人关键字黑名单</a>):邮件如果超过
+        <input style="width:100px" id="id_sender_max_size" name="sender_max_size" value="{{ form.sender_max_size.value }}" type="number">
+        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_subject_max_size">12.主题黑名单检测:</label>
+    <div>
+        检测大小阀值(<a href="{% url 'subject_keyword_blacklist_list' %}">主题黑名单</a>):邮件如果超过
+        <input style="width:100px" id="id_subject_max_size" name="subject_max_size" value="{{ form.subject_max_size.value }}" type="number">
+        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_content_max_size">13.内容黑名单检测:</label>
+    <div>
+        检测大小阀值(<a href="{% url 'keyword_blacklist_list' %}">内容黑名单</a>):邮件如果超过
+        <input style="width:100px" id="id_content_max_size" name="content_max_size" value="{{ form.content_max_size.value }}" type="number">
+        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_spam_score_max">14.Spamassassin检测:</label>
+    <div>
+                        检测大小阀值:邮件如果超过
+                        <input style="width:100px" id="id_spam_max_size" name="spam_max_size" value="{{ form.spam_max_size.value }}" type="number">
+                        KB, 则直接放行, 不进行检测, 默认0KB, 表示全部检测
+                        </br>
+                        白天(07:00--19:00)spam检测分数超过
+                        <input style="width:100px" id="id_c_spam_score_max" name="c_spam_score_max" value="{{ form.c_spam_score_max.value }}" type="number">
+                        KB, 则被认为是垃圾邮件, 默认为5.0
+                        </br>
+                        晚上(19:00--07:00)spam检测分数超过
+                        <input style="width:100px" id="id_c_night_spam_score_max" name="c_night_spam_score_max" step="any" value="{{ form.c_night_spam_score_max.value }}" type="number">
+                        KB, 则被认为是垃圾邮件, 默认为5.0
+                        </br>
+                    </div>
+</div>
+<div class="form-group">
+    <label class="control-label" for="id_attachment_min_size">15.高危邮件检测:</label>
+    <div>
+        1.高危附件检测: 附件只有一个,且类型为'rar', 'zip', 'jar', 且大小小于
+        <input style="width:100px" id="id_attachment_min_size" name="attachment_min_size" value="{{ form.attachment_min_size.value }}" type="number">
+        KB, 为高危邮件
+    </div>
+    <div>
+        2.附件黑名单检测: 附件名称在<a href="{%url 'attachment_blacklist_list' %}">附件关键字黑名单</a>中的,为高危邮件
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label" for="id_force_check">16.收件人强制检测:</label>
+    <div>
+        收件人强制检测: 收件人如果在<a href="{%url 'collect_recipient_checklist_list' %}">收件人强制检测名单</a>中的,必须审核
+    </div>
+</div>
+
+<button type="submit" class="btn btn-primary">确认</button>
+</form>
+</div>
+</div>
+<!-- /.row (nested) -->
+</div>
+<!-- /.panel-body -->
+</div>
+</div>
+<!-- /.col-lg-12 -->
+</div>
+{% endblock %}
+

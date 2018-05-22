@@ -1,0 +1,119 @@
+{% extends 'base_site.html' %}
+{% load static %}
+{% load i18n %}
+{% load humanize %}
+{% block title %}{% trans '设置中心' %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans '设置中心' %}</li><li>{% trans '充值中心' %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-list margin-right-5"></i>{% trans '套餐信息' %}
+            </h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="well well-light">
+                <div class="row">
+                    {% for p in pricings %}
+                        <div class="col-xs-12 col-sm-6 col-md-3">
+                            <div class="panel panel-{% cycle 'success' 'teal' 'primary' 'darken' %} pricing-big">
+                                {% if p.is_popular %}
+                                    <img src="{% static 'sa/img/ribbon.png' %}" class="ribbon" alt="">
+                                {% endif %}
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"> {{ p.name }}</h3>
+                                </div>
+                                <div class="panel-body no-padding text-align-center">
+
+                                    <div class="the-price">
+                                        <h1> <span class="subscript">{{ p.buy_count|intcomma }}{% trans '点' %}</span> / ￥{{ p.pricing }}</h1>
+                                    </div>
+                                    <div class="price-features">
+                                        <ul class="list-unstyled text-left">
+                                            <li><i class="fa fa-check text-success"></i> {% trans '群发充值点数' %}：<strong> {{ p.buy_count|intcomma }}{% trans '点' %}</strong></li>
+                                            {% for d in p.desp_as_list %}
+                                                <li><i class="fa {% if d %}fa-check{% endif %} text-success"></i> {{ d }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="panel-footer text-align-center">
+                                    <a data-toggle="modal" href="{% url 'modal_pre_pricing' p.id %}" data-target="#myModal" class="btn btn-primary btn-block" role="button">{% trans '立即购买' %}</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" style="margin:150px auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans '加载中' %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% trans '页面加载中' %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">{% trans '关闭' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade " id="ModalSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" style="margin:150px auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans '充值完成' %}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="vertical-align-middle search-results clearfix no-padding padding-left-50">
+                        <img src="/static/img/icon_success.png" alt="">
+                        <div class="margin-top-25">
+                            <p class="description">
+                                <strong>{% trans '请在新开的页面完成充值！' %}</strong>
+                                <br>{% trans '根据充值结果，点击下方的按钮' %}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" href="{% url 'order' %}" id="modal_close" class="btn btn-primary">{% trans '充值成功' %}</a>
+                    <button type="button" id="modal_close" class="btn btn-primary" data-dismiss="modal">{% trans '充值遇到问题' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a data-toggle="modal" id="modal_success" data-target="#ModalSuccess" class="hide" role="button">{% trans '立即购买' %}</a>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script>
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(function () {
+            $('#myModal').on('show.bs.modal', function (event) {
+                $(this).removeData('bs.modal');
+            })
+
+        });
+    </script>
+{% endblock %}
+

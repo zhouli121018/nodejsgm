@@ -258,6 +258,9 @@
         .max-width-260{
             max-width:260px;
         }
+        .select2-container--default .select2-selection .select2-selection__clear{
+            right:-12px;
+        }
     </style>
 </head>
 
@@ -421,8 +424,6 @@
         <!-- #section:basics/navbar.dropdown -->
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
-
-
                 <li class="green">
                     <a  href="#" data-toggle="dropdown" href="#" class="dropdown-toggle">
                         <i class="ace-icon glyphicon glyphicon-font"></i>
@@ -513,7 +514,14 @@
                 <!-- /section:basics/navbar.user_menu -->
             </ul>
         </div>
-
+        <form class="pull-right" style="margin:6px 28px 5px 0;width:220px;">
+            <select class="select2"  id="search_select2" style="max-width:100%;">
+                <option disabled selected>输入关键词搜索功能</option>
+                <!--<option value="systemStatus/licence">授权信息</option>-->
+                <!--<option value="systemStatus/sysinfo">软件信息</option>-->
+                <!--<option value="systemStatus/status">系统状态</option>-->
+            </select>
+        </form>
         <!-- /section:basics/navbar.dropdown -->
     </div><!-- /.navbar-container -->
 </div>
@@ -1061,7 +1069,7 @@
 
             <!-- #section:basics/content.breadcrumbs -->
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                <div class="row pull-right" id="switch-email" style="margin-right:300px;z-index:100">
+                <div class="row pull-right" id="switch-email">
                     <div class="col-sm-2" style="width:120px;"><span class="">切换当前域名：</span></div>
                     <div class="col-sm-10" style="width:200px;">
                         <select class="chosen-select form-control"  data-placeholder="切换当前域名">
@@ -1128,16 +1136,16 @@
                 </ul><!-- /.breadcrumb -->
 
                  <!--#section:basics/content.searchbox -->
-                <div class="nav-search" id="nav-search">
-                    <form class="form-search">
-								<span class="input-icon">
-									<input type="text" placeholder="输入关键词搜索功能" class="nav-search-input" id="search_fun"  autocomplete="off" />
-									<i class="ace-icon fa fa-search nav-search-icon"></i>
+                <!--<div class="nav-search" id="nav-search">-->
+                    <!--<form class="form-search">-->
+								<!--<span class="input-icon">-->
+									<!--<input type="text" placeholder="输入关键词搜索功能" class="nav-search-input" id="search_fun"  autocomplete="off" />-->
+									<!--<i class="ace-icon fa fa-search nav-search-icon"></i>-->
 
-								</span>
-                        <input type="button" class="btn btn-primary btn-xs" id="search_btn" value="搜索">
-                    </form>
-                </div><!-- /.nav-search -->
+								<!--</span>-->
+                        <!--<input type="button" class="btn btn-primary btn-xs" id="search_btn" value="搜索">-->
+                    <!--</form>-->
+                <!--</div>&lt;!&ndash; /.nav-search &ndash;&gt;-->
 
                  <!--/section:basics/content.searchbox -->
             </div>
@@ -1640,6 +1648,340 @@
 </script>
 
 <script>
+    $('#search_select2').select2({
+        placeholder: "输入关键词搜索功能",
+        allowClear: true,
+        data: [
+            {id: 'home', text: '主页'},
+            {id: 'systemStatus/licence', text: '授权信息'},
+            {id: 'systemStatus/sysinfo', text: '软件信息'},
+            {id: 'systemStatus/status', text: '系统状态'},
+            {id: 'domain/dynamic', text: '域名管理'},
+            {id: 'domain/static', text: '域名配置'},
+            {id: 'mailbox/emailAccounts', text: '邮箱账号管理'},
+            {id: 'mailbox/recheck', text: '审批管理'},
+            {id: 'group', text: ' 组权限管理 '},
+            {id: 'department/departmentList', text: ' 部门列表 '},
+            {id: 'department/shareDomain', text: ' 其他域通讯录共享 '},
+            {id: 'department/domainGroup', text: ' 企业通讯录域组合 '},
+            {id: 'maillist', text: '  邮件列表管理  '},
+            {id: 'safeSet/banned_ips', text: '  动态屏蔽  '},
+            {id: 'safeSet/trustip', text: '  信任IP地址  '},
+            {id: 'safeSet/black', text: '  发件人黑/白名单  '},
+            {id: 'safeSet/white_rcp', text: '  收件人白名单  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 反垃圾/反病毒设置  '},
+            {id: 'safeSet/send_hz', text: ' 发信频率设置  '},
+            {id: 'misc/translate', text: ' 邮件头翻译  '},
+            {id: 'misc/review', text: ' 邮件审核设置  '},
+            {id: 'misc/monitor', text: ' 邮箱监控设置  '},
+            {id: 'misc/mailboxalias', text: ' 邮箱别名设置  '},
+            {id: 'misc/distribute', text: ' 分布式管理  '},
+            {id: 'misc/distribute', text: ' 分布式主机  '},
+            {id: 'misc/distribute|#distribute_config', text: ' 分布式开关  '},
+            {id: 'misc/distribute|#distribute_status', text: ' 服务器连接状态  '},
+            {id: 'misc/distribute|#distribute_move', text: ' 账号迁移进程  '},
+            {id: 'misc/ldap_ad', text: ' LDAP/AD域同步设置  '},
+            {id: 'misc/alias', text: ' 邮件域别名  '},
+            {id: 'misc/cfilter', text: ' 内容过滤器  '},
+            {id: 'misc/mail_send', text: ' 内网邮件代发  '},
+            {id: 'misc/ssl_secret', text: ' SSL数字证书  '},
+            {id: 'misc/global_set', text: ' 杂项设置  '},
+            {id: 'maintain/backup', text: ' 数据备份  '},
+            {id: 'maintain/acct_transfer', text: ' 帐号间数据迁移  '},
+            {id: 'maintain/mail_moving', text: ' 外域邮件数据导入  '},
+            {id: 'maintain/mail_queue', text: ' 邮件队列  '},
+            {id: 'maintain/weixin', text: ' 微信版管理  '},
+            {id: 'maintain/maillog', text: ' 邮件统计报告  '},
+            {id: 'system/userlog', text: ' 用户操作日志  '},
+            {id: 'system/adminlog', text: ' 管理员操作日志  '},
+            {id: 'maintain/log', text: ' 底层程序日志  '},
+            {id: 'wangguan/user', text: ' 用户管理  '},
+            {id: 'wangguan/usergroup', text: ' 用户组管理  '},
+            {id: 'wangguan/power', text: ' 权限管理  '},
+
+            {id: 'systemStatus/licence', text: '被授权单位'},
+            {id: 'systemStatus/licence', text: '绑定主域域名'},
+            {id: 'systemStatus/licence', text: '邮箱用户数'},
+            {id: 'systemStatus/licence', text: '附加模块'},
+            {id: 'systemStatus/licence', text: '服务到期时间'},
+            {id: 'systemStatus/licence', text: '授权截止时间'},
+            {id: 'systemStatus/licence', text: '更新授权文件'},
+
+            {id: 'systemStatus/sysinfo', text: ' 邮件系统使用统计'},
+            {id: 'systemStatus/sysinfo', text: ' Webmail程序版本信息'},
+            {id: 'systemStatus/sysinfo', text: ' 底层服务程序版本信息'},
+            {id: 'systemStatus/sysinfo', text: ' PHP、MySQL版本信息'},
+            {id: 'systemStatus/sysinfo', text: ' 病毒、反垃圾程序版本信息'},
+
+            {id: 'domain/dynamic', text: '添加域名'},
+            {id: 'domain/dynamic', text: 'DKIM配置'},
+
+            {id: 'mailbox/emailAccounts', text: '添加帐号'},
+            {id: 'mailbox/emailAccounts', text: '批量添加帐号'},
+            {id: 'mailbox/emailAccounts', text: '批量修改帐号'},
+            {id: 'mailbox/emailAccounts', text: '批量删除帐号'},
+            {id: 'mailbox/emailAccounts', text: '导入导出帐号'},
+            {id: 'mailbox/emailAccounts', text: '自动回复'},
+            {id: 'mailbox/emailAccounts', text: '自动转发'},
+
+            {id: 'mailbox/recheck', text: '审批申请'},
+            {id: 'mailbox/recheck|#tab_cancel', text: '审批注销'},
+            {id: 'mailbox/recheck|#tab_profile', text: '审批个人资料'},
+            {id: 'mailbox/recheck|#tab_config', text: '审批配置'},
+
+            {id: 'group', text: ' 组配置 '},
+            {id: 'group', text: ' 成员管理 '},
+            {id: 'group', text: ' 添加组 '},
+            {id: 'group', text: ' 删除组 '},
+
+            {id: 'department/departmentList', text: ' 添加部门 '},
+            {id: 'department/departmentList', text: ' 修改部门 '},
+            {id: 'department/departmentList', text: ' 删除部门 '},
+            {id: 'department/departmentList', text: ' 部门排序 '},
+
+            {id: 'maillist', text: '  添加邮件列表  '},
+            {id: 'maillist', text: '  修改邮件列表  '},
+            {id: 'maillist', text: '  维护邮件列表  '},
+
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 反病毒功能  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 反垃圾功能  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - SPF检测  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 灰名单检测  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 检查附件  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 匹配黑名单  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 反垃圾引擎  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 检查发件人格式  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 垃圾邮件投递位置  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 垃圾邮件主题标识  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 隔离邮件保存天数  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 发送隔离报告  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 隔离报告发件人  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 隔离报告链接地址  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 检测对象  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 本域进站邮件  '},
+            {id: 'safeSet/no_rubbish', text: ' 安全设置 - 外域进站邮件  '},
+
+            {id: 'safeSet/send_hz', text: ' 发信频率 - 速率  '},
+            {id: 'safeSet/send_hz', text: ' 发信频率 - 每小时发信数量  '},
+            {id: 'safeSet/send_hz', text: ' 发信频率 - 每天发信数量  '},
+            {id: 'safeSet/send_hz', text: ' 发信频率 - 超限操作  '},
+            {id: 'safeSet/send_hz', text: ' 发信频率 - 警告邮件接收地址  '},
+            {id: 'safeSet/send_hz', text: ' 发信频率 - 发信频率限制  '},
+
+            {id: 'misc/translate', text: ' 添加邮件头翻译  '},
+            {id: 'misc/translate', text: ' 修改邮件头翻译  '},
+            {id: 'misc/translate', text: ' 删除邮件头翻译  '},
+
+            {id: 'misc/monitor', text: ' 添加邮箱监控  '},
+            {id: 'misc/monitor', text: ' 修改邮箱监控  '},
+            {id: 'misc/monitor', text: ' 删除邮箱监控  '},
+
+            {id: 'misc/global_set', text: ' 超管后台标题  '},
+            {id: 'misc/global_set', text: ' 邮件收发日志保存天数  '},
+            {id: 'misc/global_set', text: ' 发件人数量限制  '},
+            {id: 'misc/global_set', text: ' 发信时对本服无效用户进行退信  '},
+            {id: 'misc/global_set', text: ' “旧邮件备份”目录备份功能  '},
+            {id: 'misc/global_set', text: ' 附件预览服务器域名  '},
+            {id: 'misc/global_set', text: ' Webmail地址和端口  '},
+            {id: 'misc/global_set', text: ' 邮件搜索加速  '},
+            {id: 'misc/global_set', text: ' 邮件发送编码  '},
+            {id: 'misc/global_set', text: ' 短信模块设置  '},
+            {id: 'misc/global_set', text: ' SMTP发送重试时间  '},
+
+            {id: 'maintain/mail_queue', text: ' 出站队列  '},
+            {id: 'maintain/mail_queue|#in_queue', text: ' 入站队列  '},
+            {id: 'maintain/mail_queue|#iso_queue', text: ' 隔离队列  '},
+
+            {id: 'maintain/weixin', text: ' 微信公众号配置  '},
+            {id: 'maintain/weixin|#teplate', text: ' 微信消息模板管理  '},
+            {id: 'maintain/weixin|#users', text: ' 微信用户管理  '},
+            {id: 'maintain/weixin|#news', text: ' 微信通知消息管理  '},
+            {id: 'maintain/weixin|#news_log', text: ' 微信API调用日志  '},
+            {id: 'maintain/weixin|#sms', text: ' 短信发送记录  '},
+
+            {id: 'system/userlog|#web', text: ' web访问记录  '},
+            {id: 'system/userlog|#custom', text: ' 客户端访问记录  '},
+
+            {id: 'domain/static|#tabs_email_basic', text: '邮件域基本信息'},
+            {id: 'domain/static|#tabs_email_basic', text: '邮件域名称'},
+            {id: 'domain/static|#tabs_email_basic', text: '限定邮箱数量'},
+            {id: 'domain/static|#tabs_email_basic', text: '限定别名数量'},
+            {id: 'domain/static|#tabs_email_basic', text: '限定邮箱空间总容量'},
+            {id: 'domain/static|#tabs_email_basic', text: '限定网络硬盘总容量'},
+            {id: 'domain/static|#tabs_email_basic', text: '发送邮件限制大小'},
+            {id: 'domain/static|#tabs_email_basic', text: '超大附件限制大小'},
+            {id: 'domain/static|#tabs_email_basic', text: '用户邮箱默认容量'},
+            {id: 'domain/static|#tabs_email_basic', text: '网络硬盘默认容量'},
+
+            {id: 'domain/static|#tabs_reg_login', text: '用户注册'},
+            {id: 'domain/static|#tabs_reg_login', text: '用户申请邮箱功能'},
+            {id: 'domain/static|#tabs_reg_login', text: '管理员登陆链接显示在邮件系统登陆页'},
+            {id: 'domain/static|#tabs_reg_login', text: '新用户欢迎信功能'},
+            {id: 'domain/static|#tabs_reg_login', text: '用户注册协议'},
+            {id: 'domain/static|#tabs_reg_login', text: '设置欢迎信内容'},
+
+            {id: 'domain/static|#tabs_sys', text: '域名功能设置'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_limit', text: '收发限制'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_limit', text: '发信功能限制'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_limit', text: '收信功能限制'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_limit', text: '批量修改用户收发信权限为上面两项'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_limit', text: 'POP/POPS邮箱收取功能'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_limit', text: 'SMTP/SMTPS客户端邮件发送功能'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_limit', text: 'IMAP/IMAPS客户端邮件收发功能'},
+
+            {id: 'domain/static|#tabs_sys|#sub_sys_safe', text: '安全类设置'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_safe', text: '修改密码通知信'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_safe', text: '用户登录安全'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_safe', text: '管理员登录密码错误3次锁定登录IP'},
+
+            {id: 'domain/static|#tabs_sys|#pwd_rule', text: '密码规则'},
+            {id: 'domain/static|#tabs_sys|#pwd_rule', text: '定期修改密码设置'},
+            {id: 'domain/static|#tabs_sys|#pwd_rule', text: '密码有效期'},
+            {id: 'domain/static|#tabs_sys|#pwd_rule', text: '密码有效开始时间'},
+            {id: 'domain/static|#tabs_sys|#pwd_rule', text: '首次登录修改密码'},
+            {id: 'domain/static|#tabs_sys|#pwd_rule', text: '密码组成字符种类'},
+            {id: 'domain/static|#tabs_sys|#pwd_rule', text: '其他密码规则设置'},
+
+            {id: 'domain/static|#tabs_sys|#sub_sys_third', text: '第三方对接'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_third', text: '第三方登录验证'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_third', text: '接口修改密码是否加密'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_third', text: '即时通讯软件集成'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_third', text: '登录防止xss启用token验证'},
+
+            {id: 'domain/static|#tabs_sys|#sub_sys_other', text: '域名功能设置 - 杂项设置'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_other', text: '邮箱容量满后拒绝接收邮件'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_other', text: '邮箱空间定时清理功能'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_other', text: '客户端在线附件开关'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_other', text: '登录默认打开收件箱'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_other', text: '收件时是否过滤重复邮件'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_other', text: '所有用户的“保存客户端已发送邮件”选项设置为“是”'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_other', text: '邮件列表发来邮件显示邮件列表名称'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_other', text: '短信通知功能'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_other', text: '邮箱空间清理设置'},
+            {id: 'domain/static|#tabs_sys|#sub_sys_other', text: '客户端在线附件设置'},
+
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: 'webmail页面定制'},
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: '企业名称'},
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: '页面标题'},
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: '显示SSL安全登录框'},
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: '登录页面自动输入域名'},
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: 'ICP备案是否显示'},
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: '备案号'},
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: '帮助文件地址'},
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: '设置系统公告'},
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: '登录系统地点限制'},
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: '启用验证码功能'},
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: '登出跳转地址'},
+            {id: 'domain/static|#tabs_web_d|#sub_webmail', text: 'SSL访问'},
+
+            {id: 'domain/static|#tabs_web_d|#tabs_logo', text: '页面LOGO设置'},
+            {id: 'domain/static|#tabs_web_d|#tabs_logo', text: 'Webmail Logo 设置'},
+            {id: 'domain/static|#tabs_web_d|#tabs_logo', text: '登录页面 Logo 设置'},
+
+            {id: 'domain/static|#tabs_web_d|#tabs_login', text: '登录模板选择'},
+
+            {id: 'domain/static|#tabs_web_d|#tabs_ad', text: '页面广告设置'},
+            {id: 'domain/static|#tabs_web_d|#tabs_ad', text: '登录页面广告设置'},
+            {id: 'domain/static|#tabs_web_d|#tabs_ad', text: 'webmail首页广告设置'},
+
+            {id: 'domain/static|#tabs_web_d|#tabs_first', text: '首页链接设置'},
+            {id: 'domain/static|#tabs_web_d|#tabs_first', text: '添加链接'},
+
+            {id: 'domain/static|#tabs_web_d|#tabs_paple', text: '信纸管理'},
+            {id: 'domain/static|#tabs_web_d|#tabs_paple', text: '添加信纸'},
+            {id: 'domain/static|#tabs_web_d|#tabs_paple', text: '修改信纸'},
+
+            {id: 'domain/static|#sign|#sub_sign_content', text: '签名'},
+            {id: 'domain/static|#sign|#sub_sign_content', text: '域签名'},
+            {id: 'domain/static|#sign|#sub_sign_content', text: '超文本签名'},
+            {id: 'domain/static|#sign|#sub_sign_content', text: '纯文本签名'},
+            {id: 'domain/static|#sign|#sub_sign_template', text: '个人签名模板'},
+            {id: 'domain/static|#sign|#sub_sign_template', text: '新邮件默认签名'},
+            {id: 'domain/static|#sign|#sub_sign_template', text: '回复/转发默认签名'},
+            {id: 'domain/static|#sign|#sub_sign_template', text: '新用户自动应用模板'},
+            {id: 'domain/static|#sign|#sub_sign_template', text: '签名模板'},
+
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '前台模块管理'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '首页区'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '商务小工具栏目'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '万年历'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '万用计算器'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '城市地图'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '邮箱容量查看功能'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '天气预报功能'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '企业通讯录功能'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '公共通讯录功能'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '其他域通讯录共享功能'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '企业通讯录域组合'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '父部门中是否显示子部门邮件账号'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '网络硬盘功能'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '日程功能'},
+            {id: 'domain/static|#module_made|#tabs_webmail', text: '便签功能'},
+
+            {id: 'domain/static|#module_made|#send_mail_block', text: '发邮件区'},
+            {id: 'domain/static|#module_made|#send_mail_block', text: '保存草稿功能'},
+            {id: 'domain/static|#module_made|#send_mail_block', text: '发送邮件显示加密选项'},
+            {id: 'domain/static|#module_made|#send_mail_block', text: '显示地址簿和信纸模块'},
+            {id: 'domain/static|#module_made|#send_mail_block', text: '去掉信纸模块'},
+            {id: 'domain/static|#module_made|#send_mail_block', text: '自动发送回执功能'},
+            {id: 'domain/static|#module_made|#send_mail_block', text: '添加Reply-To到邮件头'},
+
+            {id: 'domain/static|#module_made|#setting_block', text: '设置区'},
+            {id: 'domain/static|#module_made|#setting_block', text: '个人资料功能'},
+            {id: 'domain/static|#module_made|#setting_block', text: '密码修改功能'},
+            {id: 'domain/static|#module_made|#setting_block', text: '参数设置功能'},
+            {id: 'domain/static|#module_made|#setting_block', text: '邮件签名功能'},
+            {id: 'domain/static|#module_made|#setting_block', text: '自动回复功能'},
+            {id: 'domain/static|#module_made|#setting_block', text: '自动转发功能'},
+            {id: 'domain/static|#module_made|#setting_block', text: '黑白名单功能'},
+            {id: 'domain/static|#module_made|#setting_block', text: '设置自动转发默认值'},
+            {id: 'domain/static|#module_made|#setting_block', text: '邮箱搬家功能'},
+            {id: 'domain/static|#module_made|#setting_block', text: '邮箱意见反馈功能'},
+            {id: 'domain/static|#module_made|#setting_block', text: '邮件召回记录查看'},
+            {id: 'domain/static|#module_made|#setting_block', text: '邮件过滤功能'},
+            {id: 'domain/static|#module_made|#setting_block', text: 'SMTP外发邮件中转'},
+
+            {id: 'domain/static|#module_made|#other_block', text: '前台模块管理 - 杂项区'},
+            {id: 'domain/static|#module_made|#other_block', text: '清空文件夹功能'},
+            {id: 'domain/static|#module_made|#other_block', text: '代发邮件地址提醒'},
+            {id: 'domain/static|#module_made|#other_block', text: '邮件内容中时间显示'},
+            {id: 'domain/static|#module_made|#other_block', text: '用户积分功能'},
+            {id: 'domain/static|#module_made|#other_block', text: '设置用户积分'},
+            {id: 'domain/static|#module_made|#other_block', text: '部门邮件列表'},
+
+            {id: 'domain/static|#tabs_public', text: '公共通讯录'},
+            {id: 'domain/static|#tabs_public', text: '添加客户'},
+            {id: 'domain/static|#tabs_public', text: '客户分类'},
+
+            {id: 'domain/static|#tabs_secret', text: '密级管理'}
+
+
+        ]
+    }).on("change",function(){
+        var id = $('#search_select2').val();
+        if(id){
+            if(id.indexOf('|')>0){
+                var arr = id.split('|');
+                console.log(arr);
+                $("a[href='"+arr[0]+"']").trigger('click');
+
+                setTimeout(function(){
+                    $("a[href='"+arr[1]+"']").trigger('click');
+                    if(arr[2]){
+                        $("a[href='"+arr[2]+"']").trigger('click');
+                    }
+                },300)
+
+            }else{
+                if($("a[href='"+id+"']").parents('ul.submenu')&&$("a[href='"+id+"']").parents('ul.submenu').length>0){
+                    if(!$("a[href='"+id+"']").parents('ul.submenu').parent().hasClass('open')){
+                        $("a[href='"+id+"']").parents('ul.submenu').prev().prev().trigger('click');
+                    }
+                }
+                $("a[href='"+id+"']").trigger('click');
+            }
+        }
+    });
     $(".mydatetime").datetimepicker({
         format: 'YYYY-MM-DD HH:mm:ss',
 //        autoclose:true

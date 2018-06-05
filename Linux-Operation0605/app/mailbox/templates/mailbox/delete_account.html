@@ -1,0 +1,59 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "批量删除邮箱帐号" %}{% endblock %}
+{% block switch-domain %} {{ block.super }} {% endblock %}
+{% block breadcrumb %}
+<li> {% trans "邮箱管理" %} </li>
+<li><a href="{% url 'mailbox_account' %}"> {% trans "邮箱帐号管理" %} </a></li>
+<li class="active">批量删除帐号</li>
+{% endblock %}
+{% block page-content %}
+<form class="form-horizontal" >
+    <h3 class="header smaller lighter blue">批量删除帐号</h3>
+    <div class="table-header"> 批量删除账号 </div>
+
+    <table class="table  table-bordered  ">
+        <tbody>
+        <tr >
+            <td class="text-right">
+                邮箱域名：
+            </td>
+            <td>
+                <b>test.com</b>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">注意事项：</td>
+            <td>
+                <p>请输入要删除的邮箱帐户用户名，一行填写一个用户	</p>
+                <p class="red">例如:</p>
+                <p>tina</p>
+                <p>gary</p>
+                <p>tom</p>
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right">帐号列表：</td>
+            <td>
+                <textarea  rows="8" class="form-control"></textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="clearfix form-actions">
+        <div class="text-center">
+            <button class="btn btn-info" type="submit">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                保存
+            </button>
+            <button class="btn" type="reset">
+                <i class="ace-icon fa fa-undo bigger-110"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+

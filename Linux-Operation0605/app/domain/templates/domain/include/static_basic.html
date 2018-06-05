@@ -1,0 +1,117 @@
+{% load i18n %}
+{% load static %}
+
+<div class="tabs2">
+    <div class="tab-pane fade in active">
+        <form class="form-horizontal basic_form" role="form" name="form_select" action="" method="POST">
+            {% csrf_token %}
+            <div id="tabs_email_basic">
+                <div class="table-header">
+                    邮件域基本信息
+                </div>
+                <table  class="table  table-bordered table-hover table-striped">
+
+                    <tbody>
+                    <tr >
+                        <td class="text-right">
+                            邮件域名称：
+                        </td>
+
+                        <td class="">
+                            <div class="">
+                                <b style="margin-right:72px;">test.com</b>
+                                <label class="inline" >
+                                    <small class="muted smaller-90">邮件域状态:</small>
+                                    <input value="-1" name="domainDisabled" type="checkbox" {% if form.domainDisabled.value == '-1' %} checked {% endif %} class="ace ace-switch ace-switch-5">
+                                    <span class="lbl middle"></span>
+                                </label>
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right"><span class="red bold">*</span>限定邮箱数量：</td>
+                        <td>
+                            <input type="text" name="cf_limit_mailbox_cnt" class="col-sm-2" value="{{ form.cf_limit_mailbox_cnt.value }}"><span style="line-height:33px;"> 个 （已分配 {{ form.mailboxUsed.value }} 个）</span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right"><span class="red bold">*</span>限定别名数量：</td>
+                        <td>
+                            <input type="text" name="cf_limit_alias_cnt" class="col-sm-2" value="{{ form.cf_limit_alias_cnt.value }}"><span style="line-height:33px;"> 个 （已分配 {{ form.aliasUsed.value }} 个）</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><span class="red bold">*</span>限定邮箱空间总容量：</td>
+                        <td>
+                            <input type="text" name="cf_limit_mailbox_size" class="col-sm-2" value="{{ form.cf_limit_mailbox_size.value }}"><span style="line-height:33px;"> MB （已分配 {{ form.spaceUsed.value }} MB）</span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right"><span class="red bold">*</span>限定网络硬盘总容量：</td>
+                        <td>
+                            <input type="text" name="cf_limit_netdisk_size" class="col-sm-2" value="{{ form.cf_limit_netdisk_size.value }}"><span style="line-height:33px;"> MB （已分配 {{ form.netdiskUsed.value }} MB）</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">发送邮件限制大小：</td>
+                        <td>
+                            <input type="text" name="cf_limit_email_size" class="col-sm-2" value="{{ form.cf_limit_email_size.value }}"><span style="line-height:33px;"> MB （填写0默认限制为100MB以内）</span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right">超大附件限制大小：</td>
+                        <td>
+                            <input type="text" name="cf_limit_attach_size" class="col-sm-2" value="{{ form.cf_limit_attach_size.value }}"><span style="line-height:33px;"> MB （填写0默认限制为100MB以内）</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><span class="red bold">*</span>用户邮箱默认容量：</td>
+                        <td>
+                            <input type="text" name="cf_def_mailbox_size" class="col-sm-2" value="{{ form.cf_def_mailbox_size.value }}"><span style="line-height:33px;"> MB </span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right"><span class="red bold">*</span>网络硬盘默认容量：</td>
+                        <td>
+                            <input type="text" name="cf_def_netdisk_size" class="col-sm-2" value="{{ form.cf_def_netdisk_size.value }}"><span style="line-height:33px;"> MB</span>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class=" ">
+            <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+            </div>
+            <div class="center" style="background:#fafafa;">
+                <button type="button" class="btn btn-primary" onclick="onclickSubmitButton()">确定</button>
+                <button class="btn btn-warning" type="reset">重置</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% include 'domain/include/static_common.html' %}
+<script>
+    function onclickSubmitButton(){
+        var str = $(".basic_form").serialize();
+        console.log(str);
+        $.ajax({
+            url:"{% url 'domain_basic' %}",
+            type:"POST",
+            data:str,
+            complete:function(data){
+//                window.location.reload();
+                $('#domain_basic').hide();
+                setTimeout(function(){
+                    $('#domain_basic').show();
+                },100);
+            }
+        })
+    }
+</script>

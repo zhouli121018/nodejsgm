@@ -1,0 +1,352 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap %}
+{% block title %} {% trans "组配置" %} {% endblock %}
+{% block breadcrumb %}<li> <a href="#">{% trans "组配置" %}</a> </li><li class="active">{% trans "组配置信息" %}</li>{% endblock %}
+
+{% block page-content %}
+    <div class="row">
+        <div class="col-lg-12"><h1 class="page-header">{% trans "组配置信息" %}</h1></div>
+    </div>
+    <form role="form" action="" method="post" class="form-horizontal">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="panel panel-default" style="margin-bottom: 0px!important;">
+                    <div class="panel-heading">{% trans "组配置信息" %}</div>
+                    <div class="panel-body">
+                        {% csrf_token %}
+                        <div id="edit_email_tabs">
+                            <ul>
+                                <li>
+                                    <a href="#group_info1">{% trans '组信息' %}</a>
+                                </li>
+                                <li>
+                                    <a href="#group_info2">{% trans '常规设置' %}</a>
+                                </li>
+                                <li>
+                                    <a href="#group_info3">{% trans '登录方式限制' %}</a>
+                                </li>
+                                <li>
+                                    <a href="#group_info4">{% trans '密码规则' %}</a>
+                                </li>
+                                <li>
+                                    <a href="#group_info5">{% trans '反垃圾/反病毒' %}</a>
+                                </li>
+                                <li>
+                                    <a href="#group_info6">{% trans '账号页面设置' %}</a>
+                                </li>
+                                <li>
+                                    <a href="#group_info7">{% trans '账号密级' %}</a>
+                                </li>
+                            </ul>
+
+                            <div id="group_info1">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        {{ form.domain_id }}
+                                        {{ form.name|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                        {{ form.description|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+                            </div>
+
+                            <div id="group_info2">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        {{ form.mail_space|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                        {{ form.net_space|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                        {{ form.allow_out_size|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                        {{ form.send_limit|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                        {{ form.recv_limit|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                        {{ form.is_limit_send|bootstrap_horizontal_bool }}
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+                            </div>
+
+                            <div id="group_info3">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        {{ form.is_pop|bootstrap_horizontal_bool }}
+                                        {{ form.is_smtp|bootstrap_horizontal_bool }}
+                                        {{ form.is_imap|bootstrap_horizontal_bool }}
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+                            </div>
+
+                            <div id="group_info4">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        {{ form.is_passwd|bootstrap_horizontal_bool }}
+                                        {{ form.passwd_day|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                        {{ form.passwd_start|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                        {{ form.is_passwd_first|bootstrap_horizontal_bool }}
+                                        {{ form.passwd_type|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3 col-lg-3 " for="{{ form.passwd_other_bak.auto_id }}">{{ form.passwd_other_bak.label }}</label>
+                                            <div class=" col-sm-9 col-lg-9 ">
+                                                <div class="control-group">
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="{{ form.passwd_other_bak.name }}" class="ace" type="checkbox" value="passwd_size" {% if 'passwd_size' in form.passwd_other %}checked{% endif %}>
+                                                            <span class="lbl">
+                                                            <span class="">密码长度为</span>
+                                                            <select name="passwd_other_letter" id="id_passwd_other_letter" autocomplete="off">
+                                                                <option value="8" {% if form.passwd_size2 == '8' %}selected{% endif %}>8</option>
+                                                                <option value="9" {% if form.passwd_size2 == '9' %}selected{% endif %}>9</option>
+                                                                <option value="10" {% if form.passwd_size2 == '10' %}selected{% endif %}>10</option>
+                                                                <option value="11" {% if form.passwd_size2 == '11' %}selected{% endif %}>11</option>
+                                                                <option value="12" {% if form.passwd_size2 == '12' %}selected{% endif %}>12</option>
+                                                                <option value="13" {% if form.passwd_size2 == '13' %}selected{% endif %}>13</option>
+                                                                <option value="14" {% if form.passwd_size2 == '14' %}selected{% endif %}>14</option>
+                                                                <option value="15" {% if form.passwd_size2 == '15' %}selected{% endif %}>15</option>
+                                                                <option value="16" {% if form.passwd_size2 == '16' %}selected{% endif %}>16</option>
+                                                            </select>
+                                                            <span class="">至16位</span>
+                                                    </span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="{{ form.passwd_other_bak.name }}" checked="" class="ace" type="checkbox" value="passwd_name" {% if 'passwd_name' in form.passwd_other %}checked{% endif %}>
+                                                            <span class="lbl"> 密码不能包含账号 </span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="{{ form.passwd_other_bak.name }}" checked="" class="ace" type="checkbox" value="passwd_digital" {% if 'passwd_digital' in form.passwd_other %}checked{% endif %}>
+                                                            <span class="lbl"> 连续3位及以上数字不能连号（例如：123、654） </span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="{{ form.passwd_other_bak.name }}" class="ace" type="checkbox" value="passwd_letter" {% if 'passwd_letter' in form.passwd_other %}checked{% endif %}>
+                                                            <span class="lbl"> 连续3位及以上字母不能连号（例如：abc、cba） </span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="{{ form.passwd_other_bak.name }}" class="ace" type="checkbox" value="passwd_letter2" {% if 'passwd_letter2' in form.passwd_other %}checked{% endif %}>
+                                                            <span class="lbl"> 密码不能包含连续3个及以上相同字符（例如：aaa、rrr） </span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="checkbox">
+                                                        <label>
+                                                            <input name="{{ form.passwd_other_bak.name }}" class="ace" type="checkbox" value="passwd_name2" {% if 'passwd_name2' in form.passwd_other %}checked{% endif %}>
+                                                            <span class="lbl"> 密码不能包含用户姓名大小写全拼 </span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+                            </div>
+
+                            <div id="group_info5">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        {{ form.is_virus|bootstrap_horizontal_bool }}
+                                        {{ form.is_spam|bootstrap_horizontal_bool }}
+                                        {{ form.is_spf|bootstrap_horizontal_bool }}
+                                        {{ form.is_grey|bootstrap_horizontal_bool }}
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3 col-lg-3 " for="{{ form.check_attach_bak.auto_id }}">{{ form.check_attach_bak.label }}</label>
+                                            <div class=" col-sm-9 col-lg-9 ">
+                                                <div class="control-group">
+                                                    <label class="checkbox checkbox-inline no-padding margin-top-0 form-inline" style="margin-top: 7px;">
+                                                        <label style="margin-right:20px;">
+                                                            <input name="{{ form.check_attach_bak.name }}" value="low" type="checkbox" {% if 'low' in form.check_attach %}checked{% endif %}><span>小危附件</span>
+                                                        </label>
+                                                        <label>
+                                                            <input name="{{ form.check_attach_bak.name }}" value="high" type="checkbox" {% if 'high' in form.check_attach %}checked{% endif %}><span>高危附件</span>
+                                                        </label>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3 col-lg-3 " for="{{ form.match_black_bak.auto_id }}">{{ form.match_black_bak.label }}</label>
+                                            <div class=" col-sm-9 col-lg-9 ">
+                                                <div class="control-group">
+                                                    <label class="checkbox checkbox-inline no-padding margin-top-0 form-inline" style="margin-top: 7px;">
+                                                        <label style="margin-right:20px;">
+                                                            <input name="{{ form.match_black_bak.name }}" value="sender" type="checkbox" {% if 'sender' in form.match_black %}checked{% endif %}><span>发件人黑名单</span>
+                                                        </label>
+                                                        <label style="margin-right:20px;">
+                                                            <input name="{{ form.match_black_bak.name }}" value="subject" type="checkbox" {% if 'subject' in form.match_black %}checked{% endif %}><span>主题黑名单</span>
+                                                        </label>
+                                                        <label style="margin-right:20px;">
+                                                            <input name="{{ form.match_black_bak.name }}" value="content" type="checkbox" {% if 'content' in form.match_black %}checked{% endif %}><span>内容黑名单</span>
+                                                        </label>
+                                                        <label style="margin-right:20px;">
+                                                            <input name="{{ form.match_black_bak.name }}" value="attach" type="checkbox" {% if 'attach"' in form.match_black %}checked{% endif %}><span>附件黑名单</span>
+                                                        </label>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3 col-lg-3 " for="{{ form.check_spam_bak.auto_id }}">{{ form.check_spam_bak.label }}</label>
+                                            <div class=" col-sm-9 col-lg-9 ">
+                                                <div class="control-group">
+                                                    <label class="checkbox checkbox-inline no-padding margin-top-0 form-inline" style="margin-top: 7px;">
+                                                        <label style="margin-right:20px;">
+                                                            <input name="{{ form.check_spam_bak.name }}" value="dspam" type="checkbox" {% if 'dspam' in form.check_spam %}checked{% endif %}><span>Dspam</span>
+                                                        </label>
+                                                        <label>
+                                                            <input name="{{ form.check_spam_bak.name }}" value="spamassassion" type="checkbox" {% if 'spamassassion' in form.check_spam %}checked{% endif %}><span>Spamassassion</span>
+                                                        </label>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {{ form.is_formt|bootstrap_horizontal_bool }}
+                                        {{ form.spam_folder|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                        {{ form.spam_subject_flag|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                        {{ form.isolate_day|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                        {{ form.is_send_isolate|bootstrap_horizontal_bool }}
+                                        {{ form.send_isolate_name|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                        {{ form.isolate_url|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3 col-lg-3 " for="{{ form.check_object_bak.auto_id }}">{{ form.check_object_bak.label }}</label>
+                                            <div class=" col-sm-9 col-lg-9 ">
+                                                <div class="control-group">
+                                                    <label class="checkbox checkbox-inline no-padding margin-top-0 form-inline" style="margin-top: 7px;">
+                                                        <label style="margin-right:20px;">
+                                                            <input name="{{ form.check_object_bak.name }}" value="local" type="checkbox" {% if 'local' in form.check_object %}checked{% endif %}><span>本域进站邮件</span>
+                                                        </label>
+                                                        <label>
+                                                            <input name="{{ form.check_object_bak.name }}" value="outside" type="checkbox" {% if 'outside' in form.check_object %}checked{% endif %}><span>外域进站邮件</span>
+                                                        </label>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3 col-lg-3 " for="{{ form.check_local_bak.auto_id }}">{{ form.check_local_bak.label }}</label>
+                                            <div class=" col-sm-9 col-lg-9 ">
+                                                <div class="control-group">
+                                                    <label class="checkbox checkbox-inline no-padding margin-top-0 form-inline" style="margin-top: 7px;">
+                                                        <label style="margin-right:20px;">
+                                                            <input name="{{ form.check_local_bak.name }}" value="spam" type="checkbox" {% if 'spam' in form.check_local %}checked{% endif %}><span>开启反垃圾</span>
+                                                        </label>
+                                                        <label>
+                                                            <input name="{{ form.check_local_bak.name }}" value="virus" type="checkbox" {% if 'virus' in form.check_local %}checked{% endif %}><span>开启反病毒</span>
+                                                        </label>
+                                                    </label>
+                                                </div>
+                                                <p class="help-block">{{ form.check_outside_bak.help_text }}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-sm-3 col-lg-3 " for="{{ form.check_outside_bak.auto_id }}">{{ form.check_outside_bak.label }}</label>
+                                            <div class=" col-sm-9 col-lg-9 ">
+                                                <div class="control-group">
+                                                    <label class="checkbox checkbox-inline no-padding margin-top-0 form-inline" style="margin-top: 7px;">
+                                                        <label style="margin-right:20px;">
+                                                            <input name="{{ form.check_outside_bak.name }}" value="spam" type="checkbox" {% if 'spam' in form.check_outside %}checked{% endif %}><span>开启反垃圾</span>
+                                                        </label>
+                                                        <label>
+                                                            <input name="{{ form.check_outside_bak.name }}" value="virus" type="checkbox" {% if 'virus' in form.check_outside %}checked{% endif %}><span>开启反病毒</span>
+                                                        </label>
+                                                    </label>
+                                                </div>
+                                                <p class="help-block">{{ form.check_outside_bak.help_text }}</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+                            </div>
+
+                            <div id="group_info6">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        {{ form.is_info|bootstrap_horizontal_bool }}
+                                        {{ form.is_passwd_mdf|bootstrap_horizontal_bool }}
+                                        {{ form.is_param|bootstrap_horizontal_bool }}
+                                        {{ form.is_signature|bootstrap_horizontal_bool }}
+                                        {{ form.is_autoreply|bootstrap_horizontal_bool }}
+                                        {{ form.is_autotans|bootstrap_horizontal_bool }}
+                                        {{ form.is_blackwhite|bootstrap_horizontal_bool }}
+                                        {{ form.is_tansdefault|bootstrap_horizontal_bool }}
+                                        {{ form.is_move|bootstrap_horizontal_bool }}
+                                        {{ form.is_suggest|bootstrap_horizontal_bool }}
+                                        {{ form.is_view|bootstrap_horizontal_bool }}
+                                        {{ form.is_filter|bootstrap_horizontal_bool }}
+                                        {{ form.is_smtp_tans|bootstrap_horizontal_bool }}
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+                            </div>
+
+                            <div id="group_info7">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        {{ form.passwd_level|bootstrap_horizontal:"col-sm-3 col-lg-3" }}
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+        <div class="clearfix form-actions">
+            <div class="text-center">
+                <button class="btn btn-info" type="submit">
+                    <i class="ace-icon fa fa-check bigger-110"></i>{% trans "保存" %}</button>
+                <button class="btn" type="reset">
+                    <i class="ace-icon fa fa-undo bigger-110"></i>{% trans "重置" %}</button>
+                <button type="button" class="btn btn-link" onclick="location.href='{% url 'core_group_list' %}'">{% trans "取消" %}</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{% block css_block %}
+    <link href="{% static "components/datetimepiker/bootstrap-datetimepicker.min.css" %}" rel="stylesheet">
+{% endblock %}
+{% block my_jsblock %}
+    <script src="{% static 'assets/js/jquery-ui.custom.js' %}" ></script>
+    <script src="{% static 'assets/js/jquery.ui.touch-punch.js' %}" ></script>
+    <script src="{% static 'assets/js/jquery-ui.js' %}" ></script>
+    <script src="{% static "components/datetimepiker/bootstrap-datetimepicker.min.js" %}"></script>
+    <script src="{% static "components/datetimepiker/bootstrap-datetimepicker.zh-CN.js" %}"></script>
+    <script>
+        $('#edit_email_tabs').tabs();
+        var passobj = $('#{{ form.passwd_start.auto_id }}').parent();
+        var template = passobj.html();
+        var template2 = '<div class="input-group">' + template + '<span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span></div>'
+        passobj.html(template2);
+        $('#{{ form.passwd_start.auto_id }}').datetimepicker({
+            format: 'yyyy-mm-dd hh:ii:00',
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            // minView: 2,
+            pickerPosition: "top-right",
+        });
+    </script>
+{% endblock %}
+

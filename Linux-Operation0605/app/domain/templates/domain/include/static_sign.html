@@ -1,0 +1,131 @@
+<div id="sign">
+    <div id="sub_sign_tabs">
+        <ul>
+            <li>
+                <a href="#sub_sign_content">域签名</a>
+            </li>
+            <li>
+                <a href="#sub_sign_template">个人签名模板</a>
+            </li>
+        </ul>
+        <div id="sub_sign_content">
+            <div class="table-header">
+                域签名设置
+            </div>
+            <div>
+                <form class="form-horizontal form_domain">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">超文本签名：</label>
+                        <div class="col-sm-10">
+                            <div class="wysiwyg-editor" id="editor2"> {{ form_domain.content_html }} </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">纯文本签名：</label>
+                        <div class="col-sm-10">
+                            <textarea name="content_text" class="form-control" rows="10"> {{ form_domain.content_text }} </textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer center">
+                        <button type="button" class="btn btn-success" onclick="clickSubmitButton('domain_sign','form_domain')">提交</button>
+                        <button type="button"  class="btn btn-warning">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="sub_sign_template">
+            <div class="table-header">个人签名模板</div>
+            <div>
+                <form class="form-horizontal form_personal">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <td style="width:140px;">新邮件默认签名</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="personal_sign_new" value="1" {% if form_personal.personal_sign_new == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl middle"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>回复/转发默认签名</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="personal_sign_forward" value="1" {% if form_personal.personal_sign_forward == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl middle"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>新用户自动应用模板</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="personal_sign_auto" value="1" {% if form_personal.personal_sign_auto == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl middle"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>签名模板</td>
+                        <td>
+                            <div class="wysiwyg-editor" id="editor_sign">
+                                {{ form_personal.personal_sign_templ }}
+                            </div>
+                            <div class="widget-toolbox padding-4  admin_setted center">
+                                <button type="button" class="btn btn-info" onclick="clickSubmitButton('personal_sign','form_personal')">
+                                    <i class="ace-icon fa fa-floppy-o bigger-110"></i>
+                                    保存但不应用
+                                </button>
+                                <button type="button" class="btn btn-success" onclick="clickSubmitButton('personal_sign_apply','form_personal')">
+                                    <i class="ace-icon fa fa-check bigger-110"></i>
+                                    保存并应用到域名下所有帐号
+                                </button>
+                                <button type="button" class="btn btn-danger">
+                                    <i class="ace-icon fa fa-undo bigger-110"></i>
+                                    重置
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $('#sub_sign_tabs').tabs();
+    var editor2_content = htmlDecodeByRegExp("{{form_domain.content_html}}");
+    var editor_sign_content = htmlDecodeByRegExp("{{ form_personal.personal_sign_templ }}");
+    $('#editor2').html(editor2_content);
+    $('#editor_sign').html(editor_sign_content);
+    initEditor('#editor2');
+    initEditor('#editor_sign');
+
+    function clickSubmitButton(action, form_name){
+        var str = $("."+form_name).serialize();
+        var data = str;
+        if(action=='domain_sign'){
+            content = $("#editor2").html();
+            data = data + '&action=domain_sign&content_html='+content;
+        }else{
+            content = $("#editor_sign").html();
+            data = data + '&action=' + action + '&content_html='+content;
+        }
+        $.ajax({
+            url:"{% url 'domain_sign' %}",
+            type:"POST",
+            data:data,
+            success:function(data){
+                $('#domain_sign').html('<div>保存中...</div>');
+                                setTimeout(function(){
+                                    $('#domain_sign').html(data);
+                                },100)
+            }
+        })
+    }
+
+</script>

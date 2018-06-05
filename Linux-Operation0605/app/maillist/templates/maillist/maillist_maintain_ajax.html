@@ -1,0 +1,14 @@
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+<td>{{ d.address }}</td>
+{% if not lobj.is_everyone %}
+    <td>{{ d.get_permit_display }}</td>
+    <td>{{ d.updated }}</td>
+    <td>{{ d.name }}</td>
+{% endif %}
+<td>
+    {% if not lobj.is_everyone %}
+        <a type="button" class="green btn btn-white btn-primary btn-xs" href="{% url 'maillist_maintain_modify' d.list_id d.id %}">修改成员权限</a>
+    {% endif %}
+    <a type="button" class="red delete btn btn-white btn-danger btn-xs" href="Javascript: Delete({{ d.id }}, '{{ d.address }}')">删除</a>
+</td>

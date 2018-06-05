@@ -1,0 +1,87 @@
+{% load i18n %}
+{% load static %}
+
+<div class="row">
+    <div class="col-lg-12" style="margin-bottom: 10px">
+        <div class="">
+            <form id="search_form" class="form-inline" role="form" action="" style="text-align: left">
+                <table class="table">
+                <tr>
+                <th class="text-right">类型: </th><th>{{ form.type }} </th>
+                <th class="text-right">用户名: </th> <th>{{ form.username }} </th>
+                <th class="text-right">最大附件: </th> <th>{{ form.max_attach }} </th>
+                <th class="text-right">最小附件: </th> <th>{{ form.min_attach }} </th>
+                </tr>
+                <tr>
+                    <th class="text-right">发信人: </th> <th>{{ form.send_mail }} </th>
+                    <th class="text-right">收信人: </th> <th>{{ form.recv_mail }} </th>
+                    <th class="text-right" >发信服务器: </th>
+                    <th>
+                         <input type="text" name="senderip" id="id_senderip" value="{{ form.get_senderip }}" size="16" class="textinput"  />
+                    </th>
+                    <th class="text-right">收信服务器: </th>
+                    <th>
+                         <input type="text" name="rcv_server" id="id_rcv_server" value="{{ form.get_rcv_server }}" size="16" class="textinput"  />
+                    </th>
+                </tr>
+                <tr>
+                    <th class="text-right">开始时间: </th>
+                    <th>
+                         <input type="text" name="start_time" id="id_start_time" value="{{ form.get_start_time }}" readonly="" size="16" data-date-format="yyyy-mm-dd hh:ii:00" class="dateinput" />
+                    </th>
+                    <th class="text-right">结束时间: </th>
+                    <th>
+                         <input type="text" name="end_time" id="id_end_time" value="{{ form.get_end_time }}" readonly="" size="16" data-date-format="yyyy-mm-dd hh:ii:00" class="dateinput"  />
+                    </th>
+                    <th class="text-right">标题/附件: </th>
+                    <th>
+                        <input type="text" name="text" id="id_text" value="{{ form.get_text }}" size="16" class="textinput" />
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </table>
+
+                <input type="hidden" name="d" id="id_selectdomain" value="{{ domain.domain }}" />
+                <button type="submit" class="btn btn-primary btn-sm">查询</button>
+                <button type="reset" class="btn btn-primary btn-sm" onClick="resetSearch()">重置查询</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <form id="id_form" action="" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="id" id="id" />
+            <input type="hidden" name="status" id="status" />
+            <input type="hidden" name="ids" id="ids" />
+        </form>
+        <div class="table-responsive">
+            <table id="ajax-table" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th width="4%">{% trans "序号" %}</th>
+                    <th>{% trans "时间" %}</th>
+                    <th>{% trans "用户名" %}</th>
+                    <th>{% trans "类型" %}</th>
+                    <th>{% trans "发件邮箱" %}</th>
+                    <th>{% trans "收件邮箱" %}</th>
+                    <th>{% trans "发件服务器" %}</th>
+                    <th>{% trans "收件服务器" %}</th>
+                    <th>{% trans "邮件标题" %}</th>
+                    <th>{% trans "附件名称" %}</th>
+                    <th>{% trans "附件大小" %}</th>
+                    <th>{% trans "投递位置" %}</th>
+                    <th>{% trans "结果" %}</th>
+                    <th>{% trans "投递提示" %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

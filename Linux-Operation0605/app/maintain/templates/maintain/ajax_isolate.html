@@ -1,0 +1,10 @@
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+<td>{{ d.get_datetime|default_if_none:'' }}</td>
+<td>{{ d.sender|default_if_none:'' }}</td>
+<td>{{ d.recipient|default_if_none:'' }}</td>
+<td>{{ d.subject|default_if_none:'' }}</td>
+<td>{{ d.reason|default_if_none:'' }}</td>
+<td>{{ d.detail|default_if_none:'' }}</td>
+<td>{{ d.mailsize|filesizeformat }}</td>
+<td>{{ d.get_status_display }}</td>

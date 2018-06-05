@@ -1,0 +1,258 @@
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">{{ obj.mailbox }} -> 自动转发设置</h4>
+    </div>
+    <div class="modal-body">
+        <div class="active">
+            <div>
+                <button class="btn btn-success add-btn pull-right btn-sm" style="margin-bottom:6px;">新增</button>
+            </div>
+            <table class="table table-bordered">
+                <tr>
+                    <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                        <label class="pos-rel">
+                            <input type="checkbox" class="ace">
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>排序</th>
+                    <th>条件</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                <tr>
+                    <!--<td class="center">-->
+                    <!--<label class="pos-rel">-->
+                    <!--<input type="checkbox" class="ace">-->
+                    <!--<span class="lbl"></span>-->
+                    <!--</label>-->
+                    <!--</td>-->
+                    <!--<td>1</td>-->
+                    <!--<td>条件</td>-->
+                    <!--<td>开启</td>-->
+                    <!--<td>开启</td>-->
+                </tr>
+            </table>
+
+            <div class="well" style="background:#fff;margin-top:12px;">
+                <p>通过本功能您可以根据您设置的条件规则来进行自动回复</p>
+
+                <p>操作方法:</p>
+                <ul>
+                    <li>确定自动回复规则标题，并将规则启用，即选中“使用本规则”。</li>
+                    <li>根据您的需要选择规则条件，可以对邮件（原始）发件人、（原始）收件人/抄送人、邮件主题、和邮件大小进行设定。</li>
+                    <li>输入要自动回复的内容。</li>
+                    <li>单击增加规则页【确定】完成单条规则设置。</li>
+                    <li>已经设置完毕的规则会显示在自动回复列表中，也可以对该自动回复规则进行删除/修改操作。</li>
+                </ul>
+                <p>注意事项:</p>
+                <ul>
+                    <li>自动回复规则的执行顺序：规则列表由上而下的顺序；支持手动进行规则排序。</li>
+                    <li>多条自动回复规则都要进行自动回复的动作，以先执行的一条为准，即会执行较上方的一条要求进行自动回复。</li>
+                    <li>如要对所有收到的邮件进行自动回复，则可设置条件为：发件人包含@。</li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <table class="table table-bordered">
+                <tr>
+                    <td>是否启用</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="status12" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>自动转发条件：</td>
+                    <td>
+                        <div>
+                            <label class="radio-inline">
+                                <input type="radio" name="status12" value="1" checked> 符合以下所有选中的条件
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="status12" value="0"> 符合以下任意一个选中条件
+                            </label>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> 发件人：
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">包含</a></li>
+                                            <li><a href="#">不包含</a></li>
+                                        </ul>
+                                    </div>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> 原始发件人：
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">包含</a></li>
+                                            <li><a href="#">不包含</a></li>
+                                        </ul>
+                                    </div>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox">收件人：
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">包含</a></li>
+                                            <li><a href="#">不包含</a></li>
+                                        </ul>
+                                    </div>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> 原始收件人：
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">包含</a></li>
+                                            <li><a href="#">不包含</a></li>
+                                        </ul>
+                                    </div>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> 抄送人：
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">包含</a></li>
+                                            <li><a href="#">不包含</a></li>
+                                        </ul>
+                                    </div>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> 主题：
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="#">包含</a></li>
+                                            <li><a href="#">不包含</a></li>
+                                        </ul>
+                                    </div>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> 邮件大小（MB）：
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="number" value="0" style="width:60px"> -
+                                <input type="number" value="0" style="width:60px">
+                                <span>(0表示不限制)</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>执行时间：</td>
+                    <td>
+                        <div>
+                            <input type="datetime" class="mydatetime start_time">
+                            <input type="datetime" class="mydatetime end_time">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>转发到：</td>
+                    <td>
+                        <textarea class="form-control" rows="5">sfasdfdsfa</textarea>
+                        <p class="red">注意：有多个转发地址以英文逗号分隔；如：qone@test.com,two@test.com</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>转发选项：</td>
+                    <td>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"> 同时将信件保存在本邮箱内
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="center">
+                        <button type="button" class="btn btn-sm btn-primary">保存</button>
+                        <button type="button" class="btn btn-sm btn-danger cancel-btn">返回</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

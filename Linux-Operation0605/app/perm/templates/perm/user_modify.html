@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 class="modal-title" id="myModalLabel" style="font-weight: 600">修改“{{ user_obj.fullname }}({{ user_obj.username }})”的用户组</h4>
+</div>
+<form action="{% url 'user_modify' user_id %}" method="post" role="form" class="">
+    {% csrf_token %}
+    <div class="modal-body">
+        <div class="widget-body no-padding no-margin" style="border-color: #fff!important;">
+            <div class="form-horizontal">
+                <fieldset>
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label"><strong>用户组：</strong></label>
+                                <div class="col-md-10 input-group">
+                                    <div>
+                                        {% for g in groups %}
+                                            <span style="display: inline;float: left;">
+                                                <span onclick="changeLists('{{ g.id }}')" style="" id="id_change_{{ g.id }}" class="ac-tag_tag {% if g.id in user_group_ids %}is-active_tag{% endif %}">{{ g.name }}</span>
+                                                {% if g.id in user_group_ids %}
+                                                    <input type="text" class="display-none" name="name[]" id="id_name_{{ g.id }}" value="{{ g.id }}"/>
+                                                {% endif %}
+                                            </span>
+                                        {% endfor %}
+                                        <span id="id_group_list">
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">保存</button>
+        <button id="modal_close" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+    </div>
+</form>
+
+
+<script>
+    function changeLists(group_id) {
+        var obj = $("#id_change_" + group_id);
+        if (obj.hasClass('is-active_tag')) {
+            obj.removeClass('is-active_tag');
+            $("#id_name_" + group_id).remove();
+        } else {
+            obj.addClass('is-active_tag');
+            $("#id_group_list").append('<input type="text" class="display-none" name="name[]" id="id_name_' + group_id + '" value="' + group_id + '"/>');
+        }
+    }
+</script>

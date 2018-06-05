@@ -1,0 +1,146 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "动态屏蔽" %}{% endblock %}
+
+{% block breadcrumb %}
+<li> <a href="{% url 'fail2ban_home' %}">{% trans "动态屏蔽" %}</a> </li>
+<li class="active">{% trans "修改" %}</li>
+{% endblock %}
+
+{% block page-content %}
+
+<div class="row">
+    <div class="space-6"></div>
+    <div class="col-xs-12">
+        <div class="page-header">
+            <h1>{% trans "动态屏蔽" %}
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    修改 {{ name }}
+                </small>
+            </h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <form class="form-horizontal" role="form" action="" method="POST">
+            {% csrf_token %}
+            <!-- #section:elements.form -->
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="name"> 名称 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" name="name" id="name" value="{{ form.name.value }}" class="col-xs-10 col-sm-5" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="proto"> 协议 </label>
+
+                <div class="col-sm-9">
+                    <label>
+                        <input type="checkbox" name="proto_all" value="all" {% if form.proto_all.value == "all"  %} checked {% endif %}><span> 所有 </span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="proto_smtp" value="smtp" {% if form.proto_smtp.value == "smtp"  %} checked {% endif %}><span> SMTP </span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="proto_smtps" value="smtps" {% if form.proto_smtps.value == "smtps"  %} checked {% endif %}><span> SMTPS </span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="proto_imap" value="imap" {% if form.proto_imap.value == "imap"  %} checked {% endif %}><span> IMAP </span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="proto_imaps" value="imaps" {% if form.proto_imaps.value == "imaps"  %} checked {% endif %}><span> IMAPS </span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="proto_pop" value="pop" {% if form.proto_pop.value == "imap"  %} checked {% endif %}><span> POP3 </span>
+                    </label>
+                    <label>
+                        <input type="checkbox" name="proto_pops" value="pops" {% if form.proto_pops.value == "pops"  %} checked {% endif %}><span> POP3S </span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="block_fail"> 验证失败次数 </label>
+
+                <div class="col-sm-9">
+                    <input type="number" id="block_fail" name="block_fail" value="{{form.block_fail.value}}" class="col-xs-10 col-sm-5" required/>
+                {% if form.block_fail.error %}
+                <div style="clear: both"><p class="errornote txt-color-red">{{ form.block_fail.error }}</p></div>
+                {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="block_unexists"> 验证不存在帐号次数 </label>
+
+                <div class="col-sm-9">
+                    <input type="number" id="block_unexists" name="block_unexists" value="{{form.block_unexists.value}}" class="col-xs-10 col-sm-5" required/>
+                {% if form.block_unexists.error %}
+                <div style="clear: both"><p class="errornote txt-color-red">{{ form.block_unexists.error }}</p></div>
+                {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="internal"> 检测间隔(分钟) </label>
+
+                <div class="col-sm-9">
+                    <input type="number" id="internal" name="internal" value="{{form.internal.value}}" class="col-xs-10 col-sm-5" required/>
+                {% if form.internal.error %}
+                <div style="clear: both"><p class="errornote txt-color-red">{{ form.internal.error }}</p></div>
+                {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="block_minute"> 禁用时间(分钟) </label>
+
+                <div class="col-sm-9">
+                    <input type="number" id="block_minute" name="block_minute" value="{{form.block_minute.value}}" class="col-xs-10 col-sm-5" required/>
+                    {% if form.block_minute.error %}
+                    <div style="clear: both"><p class="errornote txt-color-red">{{ form.block_minute.error }}</p></div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="disabled"> 是否启用 </label>
+
+                <div class="col-sm-9">
+                    <select class="col-xs-10 col-sm-5" id="disabled" name="disabled">
+                        <option value="-1" {% if form.disabled.value == '-1' %}selected{% endif %}>启用</option>
+                        <option value="1" {% if form.disabled.value == '1' %}selected{% endif %}>禁用</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button class="btn btn-info" type="submit">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        保存
+                    </button>
+
+                    <button class="btn" type="reset">
+                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                        重置
+                    </button>
+
+                    <a type="button" class="btn btn-link" href="{% url 'fail2ban_home' %}">取消</a>
+                </div>
+            </div>
+        </form>
+
+
+    </div><!-- /.span -->
+</div><!-- /.row -->
+{% endblock %}
+
+{% block my_jsblock %}
+
+{% endblock %}
+

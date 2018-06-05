@@ -1,0 +1,192 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap %}
+{% block title %}{% trans "邮箱帐号管理" %}{% endblock %}
+{% block switch-domain %} {{ block.super }} {% endblock %}
+{% block breadcrumb %}
+<li> {% trans "邮箱管理" %} </li>
+<li><a href="{% url 'mailbox_account' %}"> {% trans "邮箱帐号管理" %} </a></li>
+<li class="active">添加新帐号</li>
+{% endblock %}
+{% block page-content %}
+
+<form class="form-horizontal" action="" method="POST" >
+    {% csrf_token %}
+    <h3 class="header smaller lighter blue">添加新帐号</h3>
+
+    <div class="row">
+        <div class="col-sm-6" style="border-right:2px dotted #ccc;">
+            <div class="table-header">邮箱基本信息</div>
+            <div class="col-sm-9">
+                {{ form.name|bootstrap_horizontal:"col-sm-5"}}
+                {{ form.password1|bootstrap_horizontal:"col-sm-5"}}
+                {{ form.password2|bootstrap_horizontal:"col-sm-5"}}
+                {{ form.quota_mailbox|bootstrap_horizontal:"col-sm-5"}}
+                {{ form.quota_netdisk|bootstrap_horizontal:"col-sm-5"}}
+                {{ form.limit_send|bootstrap_horizontal:"col-sm-5"}}
+                {{ form.limit_recv|bootstrap_horizontal:"col-sm-5"}}
+                {{ form.limit_login|bootstrap_horizontal:"col-sm-5"}}
+                {{ form.enable_share|bootstrap_horizontal_bool:"col-sm-5"}}
+                {{ form.limit_pop|bootstrap_horizontal_bool:"col-sm-5"}}
+                {{ form.limit_imap|bootstrap_horizontal_bool:"col-sm-5"}}
+                {{ form.disabled|bootstrap_horizontal_bool:"col-sm-5"}}
+                {{ form.change_pwd|bootstrap_horizontal_bool:"col-sm-5"}}
+                {{ form.pwd_days|bootstrap_horizontal:"col-sm-5"}}
+                {{ form.pwd_days_time|bootstrap_horizontal:"col-sm-5"}}
+                {{ form.ip_limit|bootstrap_horizontal:"col-sm-5"}}
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="table-header">用户信息</div>
+            <div class="col-sm-9">
+                {{ user_form.realname|bootstrap_horizontal:"col-sm-5"}}
+                {{ user_form.engname|bootstrap_horizontal:"col-sm-5"}}
+                {{ user_form.eenumber|bootstrap_horizontal:"col-sm-5"}}
+                {{ user_form.gender|bootstrap_horizontal:"col-sm-5"}}
+                {{ user_form.birthday|bootstrap_horizontal:"col-sm-5"}}
+                {{ user_form.tel_mobile|bootstrap_horizontal:"col-sm-5"}}
+                {{ user_form.tel_work|bootstrap_horizontal:"col-sm-5"}}
+                {{ user_form.tel_work_ext|bootstrap_horizontal:"col-sm-5"}}
+                {{ user_form.tel_group|bootstrap_horizontal:"col-sm-5"}}
+                {{ user_form.tel_home|bootstrap_horizontal:"col-sm-5"}}
+                {{ user_form.oabshow|bootstrap_horizontal_bool:"col-sm-5"}}
+                {{ user_form.showorder|bootstrap_horizontal:"col-sm-5"}}
+                <div class="form-group">
+                    <p></p>
+                    <label class="col-sm-5 control-label">归属部门：</label>
+                    <div class="col-sm-7 no-padding">
+                        <div class="col-sm-12">
+                            <ul id="add_list">
+                            </ul>
+                        </div>
+                        <div class="col-sm-12" style="margin-bottom:4px;">
+                            <select class="select2 form-control dept_select"  data-placeholder="归属部门">
+                                <option disabled selected>选择归属部门</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control dept_name" placeholder="部门职务">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="button" id="add_department" class="btn btn-success btn-xs" value="添加">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <p></p>
+                    <label class="col-sm-5 control-label">归属邮件列表：</label>
+                    <div class="col-sm-7 no-padding">
+                        <div class="col-sm-12">
+                            <ul id="add_mail_list">
+                            </ul>
+                        </div>
+                        <div class="col-sm-6" style="width:160px;">
+                            <select class="select2 form-control mail_select"  data-placeholder="归属邮件列表">
+                                <option disabled selected>请选择邮箱</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4 no-padding">
+                            <select id="maillist_add_permit" class="form-control" title="成员权限">
+                                <option value="收发">收发</option>
+                                <option value="只收">只收</option>
+                                <option value="只发">只发</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2" >
+                            <input type="button" id="add_mail_btn" class="btn btn-success btn-xs" value="添加">
+                        </div>
+                    </div>
+                </div>
+                {{ user_form.im_qq|bootstrap_horizontal:"col-sm-5"}}
+                {{ user_form.im_msn|bootstrap_horizontal:"col-sm-5"}}
+                {{ user_form.remark|bootstrap_horizontal:"col-sm-5"}}
+            {% comment %}
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">性别：</label>
+                    <div class="col-sm-7">
+                        <label class="radio-inline">
+                            <input type="radio" name="gender" value="male" checked> 男
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="gender" value="female" > 女
+                        </label>
+                    </div>
+                </div>
+            {% endcomment %}
+        </div>
+        </div>
+    </div>
+    <div class="clearfix form-actions">
+        <div class="text-center">
+            <button class="btn btn-info" type="submit">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                保存
+            </button>
+            <button class="btn" type="reset">
+                <i class="ace-icon fa fa-undo bigger-110"></i>
+                重置
+            </button>
+
+        </div>
+    </div>
+
+</form>
+<script src="{% static 'assets/js/select2.js' %}" ></script>
+<script>
+    $('.dept_select').select2({
+        placeholder: "搜索...",
+//        allowClear: true,
+        data: [
+            {% for d, level in dept_list %}
+            {id: '{{ d.id }}', text: '{{ d.title }}'{% if level %}, title: "child_{{level}}"{% endif %}},
+            {% endfor %}
+        ]
+    })
+    $('#add_department').click(function(){
+        var a = $('.dept_select').val();
+        var b = $('.dept_name').val();
+        var c = $('.dept_select option[value="'+a+'"]').text();
+        if(!a){
+            layer.tips("请选择归属部门！",'.dept_select+');
+            return;
+        }
+        if(!b){
+            layer.tips("请填写部门职务！",'.dept_name');
+            return;
+        }
+        $('#add_list').append('<li><b>'+c+' （'+b+'）</b> <b class="red delete" style="cursor:pointer;font-size:1.4em;">&times;</b></li>')
+    })
+    $('#add_list').on('click','li .delete',function(){
+        $(this).parent().remove();
+    })
+
+    $('.mail_select').select2({
+        placeholder: "搜索...",
+//        allowClear: true,
+        data: [
+            {% for m in mail_list %}
+            {id: '{{ m.id }}', text: '{{ m.address }}'},
+            {% endfor %}
+        ]
+    })
+    $('#add_mail_btn').click(function(){
+        var a = $('.mail_select').val();
+        var b = $('#maillist_add_permit').val();
+        var c = $('.mail_select option[value="'+a+'"]').text();
+        if(!a){
+            layer.tips("请选择邮箱！",'.mail_select+');
+            return;
+        }
+        if(!b){
+            layer.tips("请选择！",'#maillist_add_permit');
+            return;
+        }
+        $('#add_mail_list').append('<li><b>'+c+' （'+b+'）</b> <b class="red delete" style="cursor:pointer;font-size:1.4em;">&times;</b></li>')
+    })
+    $('#add_mail_list').on('click','li .delete',function(){
+        $(this).parent().remove();
+    })
+</script>
+{% endblock %}

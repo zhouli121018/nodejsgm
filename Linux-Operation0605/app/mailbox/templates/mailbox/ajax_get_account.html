@@ -1,0 +1,36 @@
+{% load i18n %}
+<tr>
+<td>{{ number }}</td>
+<td style="vertical-align: middle">
+    <a data-toggle="modal" href="{% url 'mailbox_edit_account' l.id %}" data-target="#modal-lg" onclick="setTimeout(function(){$('#edit_email_tabs').tabs();},200);">{{ l.mailbox }}</a>
+</td>
+ <td data-toggle="modal" data-target="#edit_email_single" title="点击修改" style="cursor:pointer;"><a href="{% url 'mailbox_edit_account' l.id %}">{{ l.user.realname }}</a></td>
+<td >
+ {% for d in l.depts %}
+ {{ d.title }}
+ {% if not forloop.last %} <br> {% endif %}
+ {% endfor %}
+</td>
+ <td>邮箱：{{ l.quota_mailbox }}MB <br> 网盘：{{ l.quota_netdisk }}MB</td>
+<td>
+ {% with l.size as s %}
+ <span title='{% trans "最后更新于：" %}{{ s.last_update|date:"Y-m-d H:i:s"  }}'>{{ s.size }}MB <br> {{ s.per }}%</span>
+ {% endwith %}
+ </td>
+<td>
+ <span class="label label-sm {% if l.limit_send == '-1' %}label-success{% else %}label-grey{% endif %}">发送: {{ l.get_limit_send_display }}</span>
+ <span class="label label-sm {% if l.limit_pop == '-1' %}label-success{% else %}label-grey{% endif %}">POP3: {{ l.get_limit_pop_display }}</span><br>
+ <span class="label label-sm {% if l.limit_recv == '-1' %}label-success{% else %}label-grey{% endif %}">接收: {{ l.get_limit_recv_display }}</span>
+ <span class="label label-sm {% if l.limit_imap == '-1' %}label-success{% else %}label-grey{% endif %}">IMAP: {{ l.get_limit_imap_display }}</span>
+</td>
+ <td>{{ l.ip_limit }}</td>
+ <td>  <label class="inline" > <input name="status{{ l.id}}" {% if l.disabled == '-1' %}checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5">
+<span class="lbl"></span></label>
+ </td>
+ <td>{{ l.user.last_login|date:"Y-m-d H:i:s" }}</td>
+<td><div class="">
+<a class="green btn btn-white btn-primary btn-xs" data-toggle="modal" href="{% url 'mailbox_reply' l.id %}" data-target="#modal-lg">自动回复</a>
+ <a class="green btn btn-white btn-primary btn-xs" data-toggle="modal" href="{% url 'mailbox_forward' l.id %}" data-target="#modal-lg">自动转发</a>
+</div>
+</td>
+</tr>

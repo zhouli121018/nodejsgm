@@ -1,0 +1,164 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue"><span class="red">杂项设置</span>
+
+    </h3>
+
+    <div class="table-header">
+        杂项设置
+    </div>
+    <div>
+        <table class="table table-bordered">
+            <tr>
+                <td class="text-right">超管后台标题：</td>
+                <td class="row">
+                    <div class="col-sm-3 no-padding">
+                        <input type="text" class="form-control" value="U-Mail邮件系统--超级管理员后台">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">邮件收发日志保存天数：</td>
+                <td class="row">
+                    <div class="col-sm-3 no-padding">
+                        <input type="number" class="form-control" value="15">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">发件人数量限制：</td>
+                <td class="row">
+                    <div class="col-sm-3 no-padding">
+                        <input type="number" class="form-control" value="100">
+                    </div>
+                    <div class="col-sm-9">
+                        <p class="help-block green">
+                            例如：100、500、1000
+                        </p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">发信时对本服无效用户进行退信：</td>
+                <td>
+                    <label class="inline" >
+                        <input name="sys_pass_all_local"  type="checkbox" class="ace ace-switch ace-switch-5">
+                        <span class="lbl middle"></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">"旧邮件备份"目录备份功能：</td>
+                <td class="row">
+                    <div class="col-sm-3 no-padding">
+                        <label class="inline" >
+                            <input name="sys_pass_all_local"  type="checkbox" class="ace ace-switch ace-switch-5">
+                            <span class="lbl middle"></span>
+                        </label>
+                    </div>
+                    <div class="col-sm-9 green">
+                        备注：每天仅保留收件箱最新的1万封邮件，老邮件转移到"旧邮件备份"目录中，开启该功能可提高邮件搜索速度。
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">附件预览服务器域名：</td>
+                <td class="row">
+                    <div class="col-sm-3 no-padding">
+                        <input type="text" class="form-control" value="http://office.comingchina.com">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">Webmail地址和端口：</td>
+                <td class="row">
+                    <div class="col-sm-3 no-padding">
+                        <input type="text" class="form-control" value="http://mail.test.com:80">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right" >邮件搜索加速：</td>
+                <td>
+                    <label class="inline" >
+                        <input name="sw_search_speedup" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                        <span class="lbl"></span>
+                    </label>
+                </td>
+
+            </tr>
+            <tr>
+                <td class="text-right">邮件发送编码：</td>
+                <td class="row">
+                    <div class="col-sm-12 no-padding" style="width:110px;">
+                        <select class="chosen-select form-control">
+                            <option selected value="utf-8">UTF-8(默认)</option>
+                            <option  value="gbk">GB2312</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">短信模块设置：</td>
+                <td class="row">
+                    <div class="col-sm-4 no-padding-left">
+                        <div class="input-group">
+                            <span class="input-group-addon">短信服务商：</span>
+                            <select name="type" class="form-control">
+                                <option value="jiutian" selected="">U-Mail短信通道</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">用户ID：</span>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="input-group">
+                            <span class="input-group-addon">帐号密码：</span>
+                            <input type="password" class="form-control">
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right">SMTP发送重试时间：</td>
+                <td class="row">
+                    <div class="col-sm-4 no-padding-left">
+                        <p>第1次重试：</p>
+                        <div class="input-group">
+                            <span class="input-group-addon">与上次发送间隔</span>
+                            <input type="number" class="form-control" value="5">
+                            <span class="input-group-addon">分</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <p>第2次重试：</p>
+                        <div class="input-group">
+                            <span class="input-group-addon">与上次发送间隔</span>
+                            <input type="number" class="form-control" value="25">
+                            <span class="input-group-addon">分</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <p>第3次重试：</p>
+                        <div class="input-group">
+                            <span class="input-group-addon">与上次发送间隔</span>
+                            <input type="number" class="form-control" value="60">
+                            <span class="input-group-addon">分</span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="table-footer center" style="margin-top:8px;">
+        <button type="button" class="btn btn-success">保存</button>
+        <button type="button"  class="btn btn-warning">重置</button>
+    </div>
+</div>
+<script>
+    $('#switch-email').hide();
+</script>

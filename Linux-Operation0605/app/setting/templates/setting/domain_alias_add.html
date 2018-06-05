@@ -1,0 +1,105 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% if form.instance %} {% trans "修改域别名" %}  {% else %} {% trans "添加域别名" %} {% endif %}{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "功能设置" %}</a> </li>
+    <li> <a href="#">{% trans "域别名管理" %}</a> </li>
+    <li class="active">{% if form.instance %} {% trans "修改域别名" %}  {% else %} {% trans "添加域别名" %} {% endif %}</li>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>{% if form.instance %} {% trans "修改域别名" %}  {% else %} {% trans "添加域别名" %} {% endif %}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form-horizontal" role="form" action="" method="POST">
+                {% csrf_token %}
+
+                <div class="form-group {% if form.source.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_source"> 虚拟邮件域 </label>
+                    <div class="col-sm-9">
+                        <div class="col-sm-12">
+                            <label class="control-label pull-left">@</label>
+                            {% if form.instance %}
+                                <label class="control-label">{{ form.source.value }}</label>
+                            {% else %}
+                                <input type="text" maxlength="200" id="id_source" name="source" value="{{ form.source.value }}" class="col-xs-10 col-sm-5" required/>
+                            {% endif %}
+                        </div>
+                        {% if form.source.error %}
+                            <div style="clear: both"><p class="errornote txt-color-red" style="margin-left: 25px;">{{ form.source.error }}</p></div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group {% if form.target.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_target"> 真实邮件域 </label>
+                    <div class="col-sm-9">
+                        <div class="col-sm-12">
+                            <label class="control-label pull-left">@</label>
+                            <select class="col-xs-10 col-sm-5" id="id_target" name="target">
+                                {% for d in form.getDomainList %}
+                                    <option value="{{ d.domain }}" {% if form.target.value == d.domain %}selected{% endif %}>{{ d.domain }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% if form.target.error %}
+                            <div style="clear: both"><p class="errornote txt-color-red" style="margin-left: 25px;">{{ form.target.error }}</p></div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_greylist"> 状态 </label>
+                    <div class="col-sm-9">
+                        <label class="radio radio-inline padding-top-0 margin-top-0 form-inline">
+                            <label>
+                                <input type="radio" name="disabled" value="-1" {% if form.disabled.value == '-1'  %} checked="" {% endif %}><span>启用</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="disabled" value="1" {% if form.disabled.value != '-1'  %} checked="" {% endif %}><span>禁用</span>
+                            </label>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button class="btn btn-info" type="submit">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            保存
+                        </button>
+                        <button class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+
+                        <a type="button" class="btn btn-link" href="{% url 'domain_alias_set' %}">取消</a>
+
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+{% block css_block %}
+{% endblock %}
+
+{% block my_jsblock %}
+{% endblock %}

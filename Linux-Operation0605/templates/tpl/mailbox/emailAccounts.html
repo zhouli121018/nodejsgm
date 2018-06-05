@@ -1,0 +1,2858 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue">邮箱账号管理</h3>
+    <div class="row">
+        <div class="col-sm-2 max-width-200">
+            <span>选择部门：</span>
+            <div style="position:relative;" class="parent_test">
+                <input type="text" class="form-control department_choice" value="所有部门">
+                <div class="widget-box widget-color-blue2 email_box_tree" style="position:absolute;top:34px;left:0;z-index:10;min-width:230px;">
+                    <div class="widget-body">
+                        <div class="widget-main padding-8">
+                            <ul id="tree"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 max-width-240">
+            <span>登录时间：</span>
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar bigger-110"></i>
+                </span>
+                <input class="form-control" type="text" name="date-range-picker" id="id-date-range-picker-1" />
+
+            </div>
+        </div>
+        <div class="col-sm-2 max-width-200">
+            <span>筛选用户：</span>
+            <select name="search_type" class="chosen-select form-control" id="search_con">
+                <option value="1">按关键词查询</option>
+                <option value="2">邮箱状态：禁用</option>
+                <option value="3">邮箱状态：正常</option>
+                <option value="4">邮箱空间</option>
+                <option value="100">邮箱空间满-红色</option>
+                <option value="101">邮箱空间即将满-橙色</option>
+                <option value="5">网络硬盘空间</option>
+                <option value="6">发信功能限制</option>
+                <option value="7">收信功能限制</option>
+                <option value="8">已用容量(MB)</option>
+            </select>
+        </div>
+        <div class="col-sm-3 key_words max-width-200" style="padding-top:18px;padding-bottom:8px;">
+
+            <input type="text" class="form-control" >
+        </div>
+        <div class="col-sm-3 email_place max-width-240" style="padding-top:18px;padding-bottom:8px;display:none;">
+            <select name="search_term" style="">
+                <option value="0" selected="">=</option>
+                <option value="-1">&lt;</option>
+                <option value="1">&gt;</option>
+            </select>
+            <input type="number" min="0">
+        </div>
+        <div class="col-sm-3 alr_place max-width-300" style="display:none">
+            <span>已用容量：</span>
+            <div class=" input-group">
+                <input type="text" class=" form-control" name="start">
+            <span class="input-group-addon">
+                <i class="fa fa-exchange"></i>
+                <!-- - -->
+            </span>
+                <input type="text" class=" form-control" name="end">
+            </div>
+        </div>
+
+        <div class="col-sm-2" style="padding-top:18px;padding-bottom:8px;">
+
+            <button class="btn btn-success btn-sm" type="button">查询</button>
+        </div>
+    </div>
+    <div class="row margin-bottom-8">
+        <div class="col-sm-12 text-right">
+            <div class="button-group">
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#add_email_single">添加帐号</button>
+                <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#add_email">批量添加帐号</button>
+                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#edit_email">批量修改帐号</button>
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_email">批量删除帐号</button>
+                <button type="button" class="btn btn-purple btn-sm" data-toggle="modal" data-target="#backup">导入导出账号</button>
+            </div>
+        </div>
+    </div>
+    <div class="table-header">
+        邮箱账号管理
+    </div>
+
+    <!-- div.table-responsive -->
+
+    <!-- div.dataTables_borderWrap -->
+    <div class="table-responsive">
+            <table id="dynamic-table" class="table table-striped table-bordered table-hover table-center" role="grid" >
+                <thead>
+                <tr role="row">
+                    <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace">
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                    <th class="sorting" tabindex="0">序号</th>
+                    <th class="sorting" tabindex="0">邮箱地址</th>
+                    <th class="" tabindex="0" >真实姓名</th>
+                    <th  tabindex="0" >
+                        <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+                        部门
+                    </th>
+                    <th class="" tabindex="0">邮箱/网盘 容量</th>
+                    <th class="sorting" >已用容量</th>
+                    <th class="sorting" >发送/接收/POP/IMAP限制</th>
+                    <th>只允许登录IP</th>
+                    <th class="sorting" >账号状态</th>
+                    <th class="sorting" >最后登录时间</th>
+                    <th  >操作</th>
+                </tr>
+                </thead>
+                <tbody id="data-body">
+
+            </tbody>
+        </table>
+    </div>
+    <div class="button-group" style="margin-top:8px;">
+        <input type="button" class="btn btn-danger btn-sm" value="删除所选邮箱" >
+        <input type="button" class="btn btn-warning btn-sm" value="禁用所选邮箱" >
+        <input type="button" class="btn btn-success btn-sm" value="启用所选邮箱" >
+        <input type="button" class="btn btn-info btn-sm" value="提示所选邮箱修改密码" >
+        <input type="button" class="btn btn-primary btn-sm" value="提示所有邮箱修改密码" >
+    </div>
+
+    <!--<div class="table-footer center" style="margin-top:4px;">-->
+        <!--<div class="btn-group">-->
+            <!--<button class="btn btn-info edit">批量修改账号</button>-->
+            <!--<button class="btn btn-danger delete">批量删除账号</button>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+<div class="modal fade" id="auto_replay" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">自动回复设置</h4>
+            </div>
+            <div class="modal-body">
+                <div class="active">
+                    <div>
+                        <button class="btn btn-success add-btn pull-right btn-sm" style="margin-bottom:6px;">新增</button>
+                    </div>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                                <label class="pos-rel">
+                                    <input type="checkbox" class="ace">
+                                    <span class="lbl"></span>
+                                </label>
+                            </th>
+                            <th>排序</th>
+                            <th>条件</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr>
+                            <!--<td class="center">-->
+                            <!--<label class="pos-rel">-->
+                            <!--<input type="checkbox" class="ace">-->
+                            <!--<span class="lbl"></span>-->
+                            <!--</label>-->
+                            <!--</td>-->
+                            <!--<td>1</td>-->
+                            <!--<td>条件</td>-->
+                            <!--<td>开启</td>-->
+                            <!--<td>开启</td>-->
+                        </tr>
+                    </table>
+
+                    <div class="well" style="background:#fff;margin-top:12px;">
+                        <p>通过本功能您可以根据您设置的条件规则来进行自动回复</p>
+
+                        <p>操作方法:</p>
+                        <ul>
+                            <li>确定自动回复规则标题，并将规则启用，即选中“使用本规则”。</li>
+                            <li>根据您的需要选择规则条件，可以对邮件（原始）发件人、（原始）收件人/抄送人、邮件主题、和邮件大小进行设定。</li>
+                            <li>输入要自动回复的内容。</li>
+                            <li>单击增加规则页【确定】完成单条规则设置。</li>
+                            <li>已经设置完毕的规则会显示在自动回复列表中，也可以对该自动回复规则进行删除/修改操作。</li>
+                        </ul>
+                        <p>注意事项:</p>
+                        <ul>
+                            <li>自动回复规则的执行顺序：规则列表由上而下的顺序；支持手动进行规则排序。</li>
+                            <li>多条自动回复规则都要进行自动回复的动作，以先执行的一条为准，即会执行较上方的一条要求进行自动回复。</li>
+                            <li>如要对所有收到的邮件进行自动回复，则可设置条件为：发件人包含@。</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>是否启用</td>
+                            <td>
+                                <label class="inline" >
+                                    <input name="status11" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                    <span class="lbl"></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>自动回复条件：</td>
+                            <td>
+                                <div>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="status12" value="1" checked> 符合以下所有选中的条件
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="status12" value="0"> 符合以下任意一个选中条件
+                                    </label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 发件人：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">包含</a></li>
+                                                    <li><a href="#">不包含</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 原始发件人：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">包含</a></li>
+                                                    <li><a href="#">不包含</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox">收件人：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">包含</a></li>
+                                                    <li><a href="#">不包含</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 原始收件人：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">包含</a></li>
+                                                    <li><a href="#">不包含</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 抄送人：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">包含</a></li>
+                                                    <li><a href="#">不包含</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 主题：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">包含</a></li>
+                                                    <li><a href="#">不包含</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 邮件大小：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="number" value="0" style="width:60px">
+                                        <input type="number" value="0" style="width:60px">
+                                        <span>(0表示不限制)</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>执行时间：</td>
+                            <td>
+                                <div>
+                                    <input type="datetime" class="mydatetime start_time">
+                                    <input type="datetime" class="mydatetime end_time">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>回复内容：</td>
+                            <td>
+                                <textarea class="form-control" rows="5">sfasdfdsfa</textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="center">
+                                <button type="button" class="btn btn-sm btn-primary">保存</button>
+                                <button type="button" class="btn btn-sm btn-danger cancel-btn">返回</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="auto_forward">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">自动转发设置</h4>
+            </div>
+            <div class="modal-body">
+                <div class="active">
+                    <div>
+                        <button class="btn btn-success add-btn pull-right btn-sm" style="margin-bottom:6px;">新增</button>
+                    </div>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                                <label class="pos-rel">
+                                    <input type="checkbox" class="ace">
+                                    <span class="lbl"></span>
+                                </label>
+                            </th>
+                            <th>排序</th>
+                            <th>条件</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr>
+                            <!--<td class="center">-->
+                            <!--<label class="pos-rel">-->
+                            <!--<input type="checkbox" class="ace">-->
+                            <!--<span class="lbl"></span>-->
+                            <!--</label>-->
+                            <!--</td>-->
+                            <!--<td>1</td>-->
+                            <!--<td>条件</td>-->
+                            <!--<td>开启</td>-->
+                            <!--<td>开启</td>-->
+                        </tr>
+                    </table>
+
+                    <div class="well" style="background:#fff;margin-top:12px;">
+                        <p>通过本功能您可以根据您设置的条件规则来进行自动回复</p>
+
+                        <p>操作方法:</p>
+                        <ul>
+                            <li>确定自动回复规则标题，并将规则启用，即选中“使用本规则”。</li>
+                            <li>根据您的需要选择规则条件，可以对邮件（原始）发件人、（原始）收件人/抄送人、邮件主题、和邮件大小进行设定。</li>
+                            <li>输入要自动回复的内容。</li>
+                            <li>单击增加规则页【确定】完成单条规则设置。</li>
+                            <li>已经设置完毕的规则会显示在自动回复列表中，也可以对该自动回复规则进行删除/修改操作。</li>
+                        </ul>
+                        <p>注意事项:</p>
+                        <ul>
+                            <li>自动回复规则的执行顺序：规则列表由上而下的顺序；支持手动进行规则排序。</li>
+                            <li>多条自动回复规则都要进行自动回复的动作，以先执行的一条为准，即会执行较上方的一条要求进行自动回复。</li>
+                            <li>如要对所有收到的邮件进行自动回复，则可设置条件为：发件人包含@。</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>是否启用</td>
+                            <td>
+                                <label class="inline" >
+                                    <input name="status12" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                    <span class="lbl"></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>自动转发条件：</td>
+                            <td>
+                                <div>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="status12" value="1" checked> 符合以下所有选中的条件
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="status12" value="0"> 符合以下任意一个选中条件
+                                    </label>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 发件人：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">包含</a></li>
+                                                    <li><a href="#">不包含</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 原始发件人：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">包含</a></li>
+                                                    <li><a href="#">不包含</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox">收件人：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">包含</a></li>
+                                                    <li><a href="#">不包含</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 原始收件人：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">包含</a></li>
+                                                    <li><a href="#">不包含</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 抄送人：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">包含</a></li>
+                                                    <li><a href="#">不包含</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 主题：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group">
+                                            <div class="input-group-btn">
+                                                <button type="button" style="border:none;" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">包含 <span class="caret"></span></button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#">包含</a></li>
+                                                    <li><a href="#">不包含</a></li>
+                                                </ul>
+                                            </div>
+                                            <input type="text" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 邮件大小（MB）：
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="number" value="0" style="width:60px"> -
+                                        <input type="number" value="0" style="width:60px">
+                                        <span>(0表示不限制)</span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>执行时间：</td>
+                            <td>
+                                <div>
+                                    <input type="datetime" class="mydatetime start_time">
+                                    <input type="datetime" class="mydatetime end_time">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>转发到：</td>
+                            <td>
+                                <textarea class="form-control" rows="5">sfasdfdsfa</textarea>
+                                <p class="red">注意：有多个转发地址以英文逗号分隔；如：qone@test.com,two@test.com</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>转发选项：</td>
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> 同时将信件保存在本邮箱内
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="center">
+                                <button type="button" class="btn btn-sm btn-primary">保存</button>
+                                <button type="button" class="btn btn-sm btn-danger cancel-btn">返回</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add_email">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">批量添加账号</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">
+                    批量添加账号
+                </div>
+                <table class="table  table-bordered  ">
+                    <tbody>
+                    <tr >
+                        <td class="text-right" style="width:100px;">默认邮箱容量：</td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" value="100" class="form-control">
+                                <span class="input-group-addon">MB</span>
+                            </div>
+                        </td>
+                        <td class="text-right">默认网盘容量：</td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" value="100" class="form-control">
+                                <span class="input-group-addon">MB</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">默认所属部门：</td>
+                        <td>
+                            <select name="dept_id" class="chosen-select form-control">
+                                <option value="0">请选择所属部门</option>
+                                <option value="519">大中华区</option>
+                                <option value="520">　华南区</option>
+                                <option value="521">　　财务部</option>
+                                <option value="523">zsh部门</option>
+                                <option value="524">zzz</option>
+                                <option value="424">丽兹行集团</option>
+                                <option value="511">　上海丽兹行房地产经纪有限公司</option>
+                                <option value="228">　　运营</option>
+                                <option value="326">　　　浦东区</option>
+                                <option value="351">　　　　陆家嘴四区</option>
+                                <option value="490">　　　　　陆家嘴世茂店</option>
+                                <option value="488">　　　　　　陆家嘴世茂店D组</option>
+                                <option value="491">　　　　　　陆家嘴世茂店A组</option>
+                                <option value="492">　　　　　　陆家嘴世茂店B组</option>
+                                <option value="493">　　　　　　陆家嘴世茂店C组</option>
+                                <option value="344">　　　　陆家嘴二区</option>
+                                <option value="480">　　　　　陆家嘴旗舰店</option>
+                                <option value="389">　　　　　　陆家嘴旗舰店F组</option>
+                                <option value="481">　　　　　　陆家嘴旗舰店A组</option>
+                                <option value="482">　　　　　　陆家嘴旗舰店B组</option>
+                                <option value="483">　　　　　　陆家嘴旗舰店C组</option>
+                                <option value="484">　　　　　　陆家嘴旗舰店D组</option>
+                                <option value="485">　　　　　　陆家嘴旗舰店E组</option>
+                                <option value="378">　　　　陆家嘴一区</option>
+                                <option value="425">　　　　　陆家嘴金融中心店</option>
+                                <option value="358">　　　　　　陆家嘴金融中心店B组</option>
+                                <option value="359">　　　　　　陆家嘴金融中心店A组</option>
+                                <option value="361">　　　　　　陆家嘴金融中心店E组</option>
+                                <option value="362">　　　　　　陆家嘴金融中心店D组</option>
+                                <option value="306">　　　　联洋区</option>
+                                <option value="201">　　　　　仁恒河滨城店</option>
+                                <option value="380">　　　　　　仁恒河滨城店B组</option>
+                                <option value="200">　　　　　　仁恒河滨城店A组</option>
+                                <option value="202">　　　　　　仁恒河滨城店C组</option>
+                                <option value="204">　　　　　　仁恒河滨城店E组</option>
+                                <option value="205">　　　　　　仁恒河滨城店D组</option>
+                                <option value="206">　　　　　　仁恒河滨城店H组</option>
+                                <option value="207">　　　　　　仁恒河滨城店F组</option>
+                                <option value="208">　　　　　　仁恒河滨城店G组</option>
+                                <option value="407">　　　　陆家嘴三区</option>
+                                <option value="163">　　　　　陆家嘴滨江店</option>
+                                <option value="164">　　　　　　陆家嘴滨江店A组</option>
+                                <option value="161">　　　　　　陆家嘴滨江店B组</option>
+                                <option value="162">　　　　　　陆家嘴滨江店C组</option>
+                                <option value="222">　　　　陆家嘴中区</option>
+                                <option value="156">　　　　　陆家嘴中央公寓店</option>
+                                <option value="449">　　　　　　陆家嘴中央公寓店C组</option>
+                                <option value="450">　　　　　　陆家嘴中央公寓店B组</option>
+                                <option value="447">　　　　　　陆家嘴中央公寓店A组</option>
+                                <option value="446">　　　　　　陆家嘴中央公寓店D组</option>
+                                <option value="154">　　　　花木区</option>
+                                <option value="272">　　　　　星河湾店</option>
+                                <option value="269">　　　　　　星河湾店E组</option>
+                                <option value="270">　　　　　　星河湾店B组</option>
+                                <option value="271">　　　　　　星河湾店C组</option>
+                                <option value="273">　　　　　　星河湾店A组</option>
+                                <option value="159">　　　　碧云别墅区</option>
+                                <option value="402">　　　　　碧云店</option>
+                                <option value="398">　　　　　　碧云店D组</option>
+                                <option value="399">　　　　　　碧云店C组</option>
+                                <option value="400">　　　　　　碧云店B组</option>
+                                <option value="401">　　　　　　碧云店A组</option>
+                                <option value="182">　　　　花木别墅区</option>
+                                <option value="297">　　　　　御翠园店</option>
+                                <option value="295">　　　　　　御翠园店E组</option>
+                                <option value="296">　　　　　　御翠园店F组</option>
+                                <option value="298">　　　　　　御翠园店A组</option>
+                                <option value="299">　　　　　　御翠园店B组</option>
+                                <option value="300">　　　　　　御翠园店C组</option>
+                                <option value="496">　　　运营管理部</option>
+                                <option value="334">　　　　运营管理部</option>
+                                <option value="443">　　　交易中心</option>
+                                <option value="246">　　　　运营交易中心交易部</option>
+                                <option value="261">　　渠道</option>
+                                <option value="512">　　　渠道渠道中心</option>
+                                <option value="379">　　　　渠道渠道中心项目部</option>
+                                <option value="286">　　　　渠道渠道中心拓展部</option>
+                                <option value="192">　　　　渠道渠道中心店面拓展部</option>
+                                <option value="160">　　职能</option>
+                                <option value="339">　　　职能职能中心</option>
+                                <option value="486">　　　　职能职能中心能力发展部</option>
+                                <option value="510">　　　　职能职能中心招聘部</option>
+                                <option value="458">　　　　职能职能中心运营支持部</option>
+                                <option value="459">　　　　　职能职能中心运营支持部浦东区</option>
+                                <option value="229">　　　　职能职能中心财务部</option>
+                                <option value="215">　　　　职能职能中心总经办</option>
+                                <option value="243">　　　　职能职能中心人事部</option>
+                                <option value="435">　北京丽兹行房地产投资顾问有限公司</option>
+                                <option value="433">　　职能</option>
+                                <option value="343">　　　职能运营支持中心</option>
+                                <option value="473">　　　　职能运营支持中心总经办</option>
+                                <option value="518">　　　　职能运营支持中心店面支持部</option>
+                                <option value="248">　　　　职能运营支持中心运营支持部</option>
+                                <option value="329">　　　　　职能运营支持中心运营支持部顶豪区</option>
+                                <option value="247">　　　　　职能运营支持中心运营支持部北区</option>
+                                <option value="249">　　　　　职能运营支持中心运营支持部南区</option>
+                                <option value="250">　　　　　职能运营支持中心运营支持部东区</option>
+                                <option value="251">　　　　　职能运营支持中心运营支持部西区</option>
+                                <option value="284">　　　职能财务中心</option>
+                                <option value="155">　　　　职能财务中心财务部</option>
+                                <option value="313">　　　职能人力资源中心</option>
+                                <option value="158">　　　　职能人力资源中心人事部</option>
+                                <option value="508">　　　职能信息科技中心</option>
+                                <option value="305">　　　　职能信息科技中心研发部</option>
+                                <option value="408">　　　　职能信息科技中心产品运营部</option>
+                                <option value="197">　　　　职能信息科技中心产品部</option>
+                                <option value="457">　　　职能总裁办</option>
+                                <option value="321">　　　　职能总裁办中心业务管理部</option>
+                                <option value="434">　　　　职能临时岗</option>
+                                <option value="227">　　　　职能总裁办中心总裁办</option>
+                                <option value="231">　　　职能交易中心</option>
+                                <option value="328">　　　　职能交易中心交易部</option>
+                                <option value="183">　　　职能知识管理中心</option>
+                                <option value="352">　　　　职能知识管理中心客服部</option>
+                                <option value="426">　　　　职能知识管理中心能力发展部</option>
+                                <option value="218">　　　　职能知识管理中心招聘部</option>
+                                <option value="444">　　运营</option>
+                                <option value="337">　　　北区</option>
+                                <option value="381">　　　　北八区</option>
+                                <option value="354">　　　　　远洋万和城店</option>
+                                <option value="355">　　　　　　远洋万和城店A组</option>
+                                <option value="356">　　　　　　远洋万和城店B组</option>
+                                <option value="364">　　　　　　远洋万和城店C组</option>
+                                <option value="353">　　　　　　远洋万和城店D组</option>
+                                <option value="293">　　　　北二区</option>
+                                <option value="169">　　　　　太阳宫旗舰店</option>
+                                <option value="166">　　　　　　太阳宫旗舰店D组</option>
+                                <option value="167">　　　　　　太阳宫旗舰店F组</option>
+                                <option value="168">　　　　　　太阳宫旗舰店A组</option>
+                                <option value="170">　　　　　　太阳宫旗舰店C组</option>
+                                <option value="171">　　　　　　太阳宫旗舰店B组</option>
+                                <option value="165">　　　　　　太阳宫旗舰店E组</option>
+                                <option value="304">　　　　北三区</option>
+                                <option value="429">　　　　　裘马都店</option>
+                                <option value="428">　　　　　　裘马都店A组</option>
+                                <option value="430">　　　　　　裘马都店C组</option>
+                                <option value="431">　　　　　　裘马都店B组</option>
+                                <option value="406">　　　　　凤凰城店</option>
+                                <option value="301">　　　　　　凤凰城店A组</option>
+                                <option value="404">　　　　　　凤凰城店B组</option>
+                                <option value="405">　　　　　　凤凰城店C组</option>
+                                <option value="501">　　　　北七区</option>
+                                <option value="368">　　　　　大湖山庄店</option>
+                                <option value="365">　　　　　　大湖山庄店E组</option>
+                                <option value="366">　　　　　　大湖山庄店D组</option>
+                                <option value="367">　　　　　　大湖山庄店A组</option>
+                                <option value="369">　　　　　　大湖山庄店C组</option>
+                                <option value="370">　　　　　　大湖山庄店B组</option>
+                                <option value="448">　　　　北五区</option>
+                                <option value="495">　　　　　中央别墅区旗舰店</option>
+                                <option value="219">　　　　　　中央别墅区旗舰店D组</option>
+                                <option value="220">　　　　　　中央别墅区旗舰店E组</option>
+                                <option value="221">　　　　　　中央别墅区旗舰店F组</option>
+                                <option value="223">　　　　　　中央别墅区旗舰店A组</option>
+                                <option value="224">　　　　　　中央别墅区旗舰店B组</option>
+                                <option value="225">　　　　　　中央别墅区旗舰店C组</option>
+                                <option value="432">　　　　北六区</option>
+                                <option value="320">　　　　　紫玉新新店</option>
+                                <option value="315">　　　　　　紫玉新新店E组</option>
+                                <option value="316">　　　　　　紫玉新新店D组</option>
+                                <option value="317">　　　　　　紫玉新新店C组</option>
+                                <option value="318">　　　　　　紫玉新新店B组</option>
+                                <option value="319">　　　　　　紫玉新新店A组</option>
+                                <option value="214">　　　　　紫玉新新店222222</option>
+                                <option value="157">　　　　北九区</option>
+                                <option value="195">　　　　　润泽新店</option>
+                                <option value="292">　　　　　　润泽新店C组</option>
+                                <option value="291">　　　　　　润泽新店B组</option>
+                                <option value="290">　　　　　　润泽新店A组</option>
+                                <option value="288">　　　　　　润泽新店D组</option>
+                                <option value="377">　　　顶豪区</option>
+                                <option value="427">　　　　顶级豪宅部</option>
+                                <option value="312">　　　　　营销部</option>
+                                <option value="184">　　　　　　营销部A组</option>
+                                <option value="185">　　　　　　营销部B组</option>
+                                <option value="193">　　　　　　营销部C组</option>
+                                <option value="194">　　　　　　营销部D组</option>
+                                <option value="216">　　　　　管家部</option>
+                                <option value="294">　　　　　　管家部F组</option>
+                                <option value="336">　　　　　　管家部E组</option>
+                                <option value="186">　　　　　　管家部D组</option>
+                                <option value="188">　　　　　　管家部B组</option>
+                                <option value="189">　　　　　　管家部C组</option>
+                                <option value="191">　　　　　　管家部A组</option>
+                                <option value="190">　　　　　顶级豪宅部</option>
+                                <option value="153">　　　　四合院事业部</option>
+                                <option value="418">　　　　　四合院事业部E组</option>
+                                <option value="423">　　　　　四合院事业部</option>
+                                <option value="417">　　　　　　四合院事业部F组</option>
+                                <option value="419">　　　　　　四合院事业部D组</option>
+                                <option value="420">　　　　　　四合院事业部C组</option>
+                                <option value="421">　　　　　　四合院事业部B组</option>
+                                <option value="422">　　　　　　四合院事业部A组</option>
+                                <option value="416">　　　　　　四合院事业部G组</option>
+                                <option value="415">　　　　　　四合院事业部H组</option>
+                                <option value="414">　　　　　　四合院事业部E组</option>
+                                <option value="226">　　　南区</option>
+                                <option value="342">　　　　南二区</option>
+                                <option value="469">　　　　　新光天地旗舰店</option>
+                                <option value="467">　　　　　　新光天地旗舰店D组</option>
+                                <option value="468">　　　　　　新光天地旗舰店E组</option>
+                                <option value="470">　　　　　　新光天地旗舰店A组</option>
+                                <option value="471">　　　　　　新光天地旗舰店B组</option>
+                                <option value="472">　　　　　　新光天地旗舰店C组</option>
+                                <option value="302">　　　　南四区</option>
+                                <option value="187">　　　　　山水文园店</option>
+                                <option value="338">　　　　　　山水文园店D组</option>
+                                <option value="333">　　　　　　山水文园店C组</option>
+                                <option value="335">　　　　　　山水文园店A组</option>
+                                <option value="487">　　　　　　山水文园店B组</option>
+                                <option value="513">　　　　南五区</option>
+                                <option value="289">　　　　　新城国际店</option>
+                                <option value="363">　　　　　　新城国际店D组</option>
+                                <option value="198">　　　　　　新城国际店B组</option>
+                                <option value="199">　　　　　　新城国际店C组</option>
+                                <option value="196">　　　　　　新城国际店A组</option>
+                                <option value="262">　　　　　新城国际店（禁用）</option>
+                                <option value="263">　　　　　　新城国际店A组（禁用）</option>
+                                <option value="264">　　　　　　新城国际店B组（禁用）</option>
+                                <option value="265">　　　　　　新城国际店C组（禁用）</option>
+                                <option value="266">　　　　　　新城国际店D组（禁用）</option>
+                                <option value="403">　　　　北一区</option>
+                                <option value="392">　　　　　当代Moma店</option>
+                                <option value="393">　　　　　　当代Moma店A组</option>
+                                <option value="310">　　　　　海晟名苑店</option>
+                                <option value="307">　　　　　　海晟名苑店C组</option>
+                                <option value="308">　　　　　　海晟名苑店B组</option>
+                                <option value="309">　　　　　　海晟名苑店A组</option>
+                                <option value="209">　　　　　万国城店</option>
+                                <option value="212">　　　　　　万国城店C组</option>
+                                <option value="213">　　　　　　万国城店D组</option>
+                                <option value="211">　　　　　　万国城店B组</option>
+                                <option value="210">　　　　　　万国城店A组</option>
+                                <option value="236">　　　　南三区</option>
+                                <option value="462">　　　　　广渠路金茂府店</option>
+                                <option value="463">　　　　　　广渠路金茂府店C组</option>
+                                <option value="464">　　　　　　广渠路金茂府店B组</option>
+                                <option value="465">　　　　　　广渠路金茂府店E组</option>
+                                <option value="466">　　　　　　广渠路金茂府店D组</option>
+                                <option value="461">　　　　　　广渠路金茂府店A组</option>
+                                <option value="180">　　　　南一区</option>
+                                <option value="245">　　　　　CBD旗舰店</option>
+                                <option value="314">　　　　　　CBD旗舰店A组</option>
+                                <option value="409">　　　　　　CBD旗舰店G组</option>
+                                <option value="410">　　　　　　CBD旗舰店F组</option>
+                                <option value="411">　　　　　　CBD旗舰店E组</option>
+                                <option value="412">　　　　　　CBD旗舰店C组</option>
+                                <option value="413">　　　　　　CBD旗舰店B组</option>
+                                <option value="217">　　　西区</option>
+                                <option value="360">　　　　西一区</option>
+                                <option value="173">　　　　　西山壹号院店</option>
+                                <option value="172">　　　　　　西山壹号院店A组</option>
+                                <option value="174">　　　　　　西山壹号院店C组</option>
+                                <option value="175">　　　　　　西山壹号院店B组</option>
+                                <option value="176">　　　　　　西山壹号院店E组</option>
+                                <option value="177">　　　　　　西山壹号院店D组</option>
+                                <option value="178">　　　　　　西山壹号院店F组</option>
+                                <option value="341">　　　　西三区</option>
+                                <option value="474">　　　　　唐宁one店</option>
+                                <option value="287">　　　　　　唐宁one店A组</option>
+                                <option value="479">　　　　　　唐宁one店E组</option>
+                                <option value="478">　　　　　　唐宁one店D组</option>
+                                <option value="477">　　　　　　唐宁one店C组</option>
+                                <option value="476">　　　　　　唐宁one店B组</option>
+                                <option value="345">　　　　西六区</option>
+                                <option value="499">　　　　　西山华府店</option>
+                                <option value="497">　　　　　　西山华府店B组</option>
+                                <option value="498">　　　　　　西山华府店C组</option>
+                                <option value="500">　　　　　　西山华府店A组</option>
+                                <option value="455">　　　　　　西山华府店D组</option>
+                                <option value="456">　　　　　　西山华府店E组</option>
+                                <option value="453">　　　　　紫金长安店</option>
+                                <option value="451">　　　　　　紫金长安店B组</option>
+                                <option value="452">　　　　　　紫金长安店C组</option>
+                                <option value="454">　　　　　　紫金长安店A组</option>
+                                <option value="303">　　　　西四区</option>
+                                <option value="254">　　　　　西山别墅区旗舰店</option>
+                                <option value="258">　　　　　　西山别墅区旗舰店D组</option>
+                                <option value="257">　　　　　　西山别墅区旗舰店E组</option>
+                                <option value="253">　　　　　　西山别墅区旗舰店A组</option>
+                                <option value="255">　　　　　　西山别墅区旗舰店C组</option>
+                                <option value="256">　　　　　　西山别墅区旗舰店B组</option>
+                                <option value="509">　　　　西二区</option>
+                                <option value="385">　　　　　万柳旗舰店</option>
+                                <option value="386">　　　　　　万柳旗舰店F组</option>
+                                <option value="387">　　　　　　万柳旗舰店E组</option>
+                                <option value="388">　　　　　　万柳旗舰店D组</option>
+                                <option value="384">　　　　　　万柳旗舰店A组</option>
+                                <option value="382">　　　　　　万柳旗舰店C组</option>
+                                <option value="285">　　　　　　万柳旗舰店B组</option>
+                                <option value="230">　　　　西五区</option>
+                                <option value="494">　　　　　金融街店</option>
+                                <option value="323">　　　　　　金融街店E组</option>
+                                <option value="324">　　　　　　金融街店B组</option>
+                                <option value="325">　　　　　　金融街店C组</option>
+                                <option value="327">　　　　　　金融街店A组</option>
+                                <option value="322">　　　　　　金融街店D组</option>
+                                <option value="259">　　　　北四区</option>
+                                <option value="507">　　　　　亚奥旗舰店</option>
+                                <option value="502">　　　　　　亚奥旗舰店E组</option>
+                                <option value="503">　　　　　　亚奥旗舰店D组</option>
+                                <option value="504">　　　　　　亚奥旗舰店C组</option>
+                                <option value="505">　　　　　　亚奥旗舰店B组</option>
+                                <option value="506">　　　　　　亚奥旗舰店A组</option>
+                                <option value="244">　　　东区</option>
+                                <option value="376">　　　　东一区</option>
+                                <option value="279">　　　　　朝阳公园旗舰店</option>
+                                <option value="275">　　　　　　朝阳公园旗舰店D组</option>
+                                <option value="276">　　　　　　朝阳公园旗舰店G组</option>
+                                <option value="277">　　　　　　朝阳公园旗舰店F组</option>
+                                <option value="278">　　　　　　朝阳公园旗舰店A组</option>
+                                <option value="280">　　　　　　朝阳公园旗舰店C组</option>
+                                <option value="281">　　　　　　朝阳公园旗舰店B组</option>
+                                <option value="282">　　　　　　朝阳公园旗舰店I组</option>
+                                <option value="283">　　　　　　朝阳公园旗舰店H组</option>
+                                <option value="274">　　　　　　朝阳公园旗舰店E组</option>
+                                <option value="330">　　　　东四区</option>
+                                <option value="442">　　　　　丽都商圈旗舰店</option>
+                                <option value="489">　　　　　　丽都商圈旗舰店A组</option>
+                                <option value="437">　　　　　　丽都商圈旗舰店F组</option>
+                                <option value="438">　　　　　　丽都商圈旗舰店D组</option>
+                                <option value="439">　　　　　　丽都商圈旗舰店E组</option>
+                                <option value="440">　　　　　　丽都商圈旗舰店B组</option>
+                                <option value="441">　　　　　　丽都商圈旗舰店C组</option>
+                                <option value="332">　　　　东五区（原）</option>
+                                <option value="311">　　　　东六区</option>
+                                <option value="394">　　　　　远洋万和公馆店</option>
+                                <option value="390">　　　　　　远洋万和公馆店D组</option>
+                                <option value="391">　　　　　　远洋万和公馆店E组</option>
+                                <option value="395">　　　　　　远洋万和公馆店A组</option>
+                                <option value="396">　　　　　　远洋万和公馆店B组</option>
+                                <option value="397">　　　　　　远洋万和公馆店C组</option>
+                                <option value="475">　　　　东二区</option>
+                                <option value="237">　　　　　棕榈泉店</option>
+                                <option value="238">　　　　　　棕榈泉店A组</option>
+                                <option value="239">　　　　　　棕榈泉店B组</option>
+                                <option value="240">　　　　　　棕榈泉店C组</option>
+                                <option value="241">　　　　　　棕榈泉店D组</option>
+                                <option value="242">　　　　　　棕榈泉店E组</option>
+                                <option value="260">　　　　东七区</option>
+                                <option value="347">　　　　　公园大道店</option>
+                                <option value="357">　　　　　　公园大道店D组</option>
+                                <option value="346">　　　　　　公园大道店A组</option>
+                                <option value="348">　　　　　　公园大道店C组</option>
+                                <option value="349">　　　　　　公园大道店B组</option>
+                                <option value="350">　　　　　　公园大道店E组</option>
+                                <option value="267">　　　　东三区</option>
+                                <option value="517">　　　　　星河湾店</option>
+                                <option value="514">　　　　　　星河湾店C组</option>
+                                <option value="515">　　　　　　星河湾店B组</option>
+                                <option value="516">　　　　　　星河湾店A组</option>
+                                <option value="252">　　　　　保利东郡店</option>
+                                <option value="383">　　　　　　保利东郡店A组</option>
+                                <option value="179">　　　　　　保利东郡店B组</option>
+                                <option value="181">　　　　　　保利东郡店C组</option>
+                                <option value="268">　　　　东五区</option>
+                                <option value="373">　　　　　望京金茂府店</option>
+                                <option value="371">　　　　　　望京金茂府店B组</option>
+                                <option value="372">　　　　　　望京金茂府店C组</option>
+                                <option value="374">　　　　　　望京金茂府店A组</option>
+                                <option value="375">　　　　　　望京金茂府店D组</option>
+                                <option value="203">　　渠道</option>
+                                <option value="445">　　　渠道渠道中心</option>
+                                <option value="340">　　　　渠道渠道中心国际部</option>
+                                <option value="331">　　　　渠道渠道中心拓展部</option>
+                                <option value="460">　　　　渠道渠道中心策划部</option>
+                                <option value="232">　　　　渠道渠道中心项目部</option>
+                                <option value="233">　　　　　渠道渠道中心项目部A组</option>
+                                <option value="234">　　　　　渠道渠道中心项目部B组</option>
+                                <option value="235">　　　　　渠道渠道中心项目部C组</option>
+                                <option value="436">　集团本部</option>
+                                <option value="63">莆系民营客户部</option>
+                                <option value="81">售后服务部</option>
+                                <option value="85">国内营销系统2222</option>
+                                <option value="89">　国内市场部</option>
+                                <option value="101">　　市场策划部</option>
+                                <option value="105">　　超声市场部</option>
+                                <option value="92">　售后服务部</option>
+                                <option value="111">　　售后服务部</option>
+                                <option value="102">　　技术支持部</option>
+                                <option value="104">　　产品技术部</option>
+                                <option value="95">　国内销售部</option>
+                                <option value="110">　　项目部</option>
+                                <option value="109">　　国内销售部</option>
+                                <option value="108">　　渠道推广部</option>
+                                <option value="103">　　国内销售部(大区)</option>
+                                <option value="106">　　销售管理部</option>
+                                <option value="107">　　莆系民营客户部</option>
+                                <option value="145">　深圳市</option>
+                                <option value="146">　　福田区</option>
+                                <option value="86">审计部</option>
+                                <option value="87">董事会办公室</option>
+                                <option value="98">　董事会办公室</option>
+                                <option value="88">总裁办</option>
+                                <option value="99">　总裁办</option>
+                                <option value="77">中美、墨西哥区域</option>
+                                <option value="64">渠道推广部</option>
+                                <option value="65">国内销售部</option>
+                                <option value="66">项目部</option>
+                                <option value="68">亚洲区域</option>
+                                <option value="72">国际营销系统(公共)</option>
+                                <option value="112">国际营销系统</option>
+                                <option value="113">　国际销售部</option>
+                                <option value="114">　　内窥镜组</option>
+                                <option value="115">测试部门</option>
+                                <option value="116">财务部</option>
+                                <option value="117">财务部1</option>
+                                <option value="118">技术部</option>
+                                <option value="119">高级工程师</option>
+                                <option value="120">off</option>
+                                <option value="122">后勤部</option>
+                                <option value="144">LED事业部22</option>
+                                <option value="1">职能支持系统</option>
+                                <option value="2">　供应商管理部</option>
+                                <option value="3">　行政部</option>
+                                <option value="4">　质量部</option>
+                                <option value="7">　人力资源部</option>
+                                <option value="9">　国内售后服务部</option>
+                                <option value="10">　IT组</option>
+                                <option value="11">　财务部</option>
+                                <option value="21">中东区域</option>
+                                <option value="23">检验生产</option>
+                                <option value="24">超声软件部</option>
+                                <option value="25">检验软件部</option>
+                                <option value="27">内窥镜硬件部</option>
+                                <option value="30">探头</option>
+                                <option value="16">研发中心</option>
+                                <option value="17">　研发中心通用部门</option>
+                                <option value="80">　　研发人力资源部</option>
+                                <option value="70">　　工业设计部</option>
+                                <option value="74">　　通用硬件技术部</option>
+                                <option value="18">　　通用硬件测试部</option>
+                                <option value="19">　　临床与需求部</option>
+                                <option value="20">　　通用软件测试部</option>
+                                <option value="22">　　通用软件技术部</option>
+                                <option value="26">　　通用工艺技术部</option>
+                                <option value="28">　　项目管理部</option>
+                                <option value="29">　　通用pcb设计部</option>
+                                <option value="53">　　法规部</option>
+                                <option value="35">　研发中心检验</option>
+                                <option value="79">　　检验生产</option>
+                                <option value="69">　　检验试剂部</option>
+                                <option value="75">　　检验结构部</option>
+                                <option value="76">　　检验硬件部</option>
+                                <option value="49">　　检验系统部</option>
+                                <option value="42">　　检验软件部</option>
+                                <option value="36">　研发中心超声</option>
+                                <option value="67">　　超声软件部</option>
+                                <option value="54">　　超声硬件部</option>
+                                <option value="61">　　超声系统部</option>
+                                <option value="43">　　超声结构部</option>
+                                <option value="37">　研发中心内窥镜</option>
+                                <option value="71">　　内窥镜</option>
+                                <option value="56">　　内窥镜硬件部</option>
+                                <option value="58">　　内窥镜软件部</option>
+                                <option value="59">　　内窥镜系统部</option>
+                                <option value="62">　　内窥镜结构部</option>
+                                <option value="38">　研发中心探头</option>
+                                <option value="82">　　探头</option>
+                                <option value="78">　　探头结构部</option>
+                                <option value="73">　　探头系统部</option>
+                                <option value="5">制造系统</option>
+                                <option value="100">　供应商管理部</option>
+                                <option value="6">　供应部</option>
+                                <option value="8">　探头制造部</option>
+                                <option value="12">　主机制造部</option>
+                                <option value="13">　资财部</option>
+                                <option value="39">　内窥镜生产部</option>
+                                <option value="40">　质量部</option>
+                                <option value="83">　　来料检验/体系</option>
+                                <option value="84">　　成品检验</option>
+                                <option value="41">　资材部</option>
+                                <option value="14">营销系统</option>
+                                <option value="15">　国际营销系统</option>
+                                <option value="91">　　国际市场部</option>
+                                <option value="94">　　国际售后管理部</option>
+                                <option value="96">　　国际商务管理部</option>
+                                <option value="34">　　国际销售部</option>
+                                <option value="31">成品检验</option>
+                                <option value="32">职能系统</option>
+                                <option value="90">　人力资源部</option>
+                                <option value="93">　财务部</option>
+                                <option value="97">　it组</option>
+                                <option value="33">　行政部</option>
+                                <option value="50">国内销售部(大区)</option>
+                                <option value="51">欧洲区域</option>
+                                <option value="52">产品技术部</option>
+                                <option value="55">超声市场部</option>
+                                <option value="57">美德区域</option>
+                                <option value="60">销售管理部</option>
+                                <option value="48">技术支持部</option>
+                                <option value="47">内窥镜组</option>
+                                <option value="46">非洲区域</option>
+                                <option value="44">市场策划部</option>
+                                <option value="45">南美区域</option>
+                                <option value="151">on 13528775736 0755</option>
+                                <option value="152">　89421857</option>
+                                <option value="126">总经理办公室</option>
+                                <option value="143">　test</option>
+                            </select>
+                        </td>
+                        <td class="text-right">兼容模式：</td>
+                        <td>
+                            <select name="compatible_id" class="tree_select form-control">
+                                <option value="1">U-Mail Linux 版数据格式</option>
+                                <option value="2">U-Mail Windows 版数据格式</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">格式说明：</td>
+                        <td colspan="5">
+                            <p>用户名可以是字符、数字、上划线、下划线、点，但用户名的第一个字必须是数字或字母。
+                                如果输入的用户名是大写字母，系统将自动转为小写！</p>
+                            <p><span class="red">注意：</span>每行的格式为
+                    <span class="blue">
+                    用户名 密码 邮箱大小 网盘大小 真实名称 所属部门 工号 职位 手机号码 电话号码 QQ 出生日期
+                    </span> 之间用“TAB”符号隔开
+                                “邮箱大小”和“网盘大小”的单位为“M”</p>
+                            <p>eg:</p>
+                <textarea   rows="6" class="form-control">tina	password1	500	100	水中花	技术部	12345	高级工程师	13600000000	88776655	123456	1985-01-01
+gary	password2	100	100	张三	财务部	12346	会计员	13700000000	88995566	987456	1990-10-25
+tom	djd834kjd	200	50	李四	后勤部	12347	司机	13811110000	88661122	657823	1980-07-11</textarea>
+                            <div class="hr hr-18 dotted hr-double"></div>
+                            <p>另外:有相同的子部门时，所属部门用 - 隔开如：</p>
+                <textarea  rows="4" class="form-control">toy	password4	100	100	王五	华南区-财务部	12348	出纳	13122223333	56485264	545847	1984-08-16
+mike	password5	100	100	李明	华北区-财务部	12349	财务主管	13956485264	58746932	568742	1977-05-11</textarea>
+                            <div class="hr hr-18 dotted hr-double"></div>
+                            <p>标准操作步骤：</p>
+                            <ul>
+                                <li>1、使用EXCEL先进行数据处理，处理成sys_mailbox_eg格式</li>
+                                <li>2、然后将EXCEL文件内容拷贝到文本文件，见然后将EXCEL文件内容拷贝到文本文件，见。</li>
+                                <li>3、然后将文本文件内容拷入下面的表格。</li>
+                                <li>4、点击表格下方的添加进行批量添加用户</li>
+                                <li>5、eg:显示名称 为空，则默认为选择列表"所属部门"的设置值</li>
+                                <li>6、eg:邮箱大小或网盘大小为空，则默认为邮箱容量或网盘容量的设置值</li>
+                                <li>7、eg:所属部门为空，则默认为选择列表"所属部门"的设置值</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">导入数据：</td>
+                        <td colspan="5">
+                            <textarea  rows="6" class="form-control"></textarea>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer center">
+                <button class="btn btn-primary  btn-sm" type="button">添加</button>
+                <button class="btn btn-warning  btn-sm" type="button">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="edit_email">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">批量修改账号</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">
+                    批量编辑账号
+                </div>
+                <table class="table  table-bordered  ">
+                    <tbody>
+                    <tr >
+                        <td class="text-right">
+                            邮箱域名：
+                        </td>
+                        <td>
+                            <b>test.com</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">格式说明：</td>
+                        <td>
+                            <p><span class="red">注意：</span>每行的格式为
+                    <span class="blue">
+                    用户名 密码 邮箱大小 网盘大小 真实名称 所属部门 工号 职位 手机号码 电话号码 QQ 出生日期
+                    </span> 之间用“TAB”符号隔开
+                                “邮箱大小”和“网盘大小”的单位为“M”</p>
+                            <p>eg:</p>
+                            <p>tina	password1	500	100	张三	财务部	12345	on	13528775736	0755-89421857	员工</p>
+                            <p>gary	password2	100	100	李四	技术部	12346	on	13528775236	0755-89721857	员工</p>
+                            <p>tom	passwor3	200	50	王五	后勤部	12347	off	13527675736	0734-89421857	员工</p>
+                            <div class="hr hr-18 dotted hr-double"></div>
+                            <p>另外:有相同的子部门时，所属部门用 - 隔开如：</p>
+                            <p>test1	password4	100	100	王五	大中华区-华南区-财务部	12347	on	13528775736	0755-89421857	员工</p>
+                            <p>test2	password5	100	100	赵六	大中华区-华北区-财务部	12348	on	13528775236	0755-89721857	员工</p>
+                            <div class="hr hr-18 dotted hr-double"></div>
+                            <p>注：如果某项留空，则不进行修改！</p>
+                            <ul>
+                                <li>1、使用EXCEL先进行数据处理，处理成范例文件格式</li>
+                                <li>2、txt数据导入和excel数据导入只能选择其中一种方式导入</li>
+                                <li>3、点击表格下方的编辑进行批量修改用户。</li>
+                                <li>4、eg:用户名为必填项</li>
+                                <li>5、eg:邮箱大小或网盘大小为空，则默认为邮箱容量或网盘容量的设置值</li>
+                                <li>6、eg:部门为空，但是填写了职位，则会修改所有的该用户所有的部门职位，建议修改职位指定部门</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">txt数据导入：</td>
+                        <td>
+                            <textarea  rows="8" class="form-control"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">excel数据导入：</td>
+                        <td>
+                            <input type="file">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer center">
+                <button class="btn btn-primary" type="button">编辑</button>
+                <button class="btn btn-warning" type="button">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="delete_email" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">批量删除账号</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">
+                    批量删除邮箱
+                </div>
+                <table class="table  table-bordered  ">
+                    <tbody>
+                    <tr >
+                        <td class="text-right">
+                            邮箱域名：
+                        </td>
+                        <td>
+                            <b>test.com</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">注意事项：</td>
+                        <td>
+                            <p>请输入要删除的邮箱帐户用户名，一行填写一个用户	</p>
+                            <p class="red">例如:</p>
+                            <p>tina</p>
+                            <p>gary</p>
+                            <p>tom</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">帐号列表：</td>
+                        <td>
+                            <textarea  rows="8" class="form-control"></textarea>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer center">
+                <button class="btn btn-primary" type="button">确定</button>
+                <button class="btn btn-warning" type="button">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="backup">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">导入导出账号</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">
+                    导入导出帐号
+                </div>
+                <table id="email-basic-table" class="table  table-bordered  table-striped">
+                    <tbody>
+                    <tr >
+                        <td class="center" style="vertical-align: middle"><b>备份域“test.com”的邮箱</b></td>
+                        <td class="text-right">
+                            备份文件名称：
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="backup_20180412">
+                                <span class="input-group-addon">.dat</span>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info">备份数据</button>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td class="center"><b>恢复域“test.com”的备份</b></td>
+                        <td class="text-right">
+                            请选择备份文件：：
+                        </td>
+                        <td>
+                            <input type="file">
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info">恢复备份</button>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td class="center"><b>导出域“test.com”的邮箱列表</b></td>
+                        <td class="text-right">
+                            导出文件名称：
+                        </td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" class="form-control" value="backup_20180412">
+                                <span class="input-group-addon">.cvs</span>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-info">导出邮箱</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add_email_single">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加新账号</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6" style="border-right:2px dotted #ccc;">
+                        <div class="table-header">邮箱基本信息</div>
+                        <form class="form-horizontal" >
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">邮箱名称：</label>
+                                <div class="col-sm-5">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="邮箱名称" >
+                                        <span class="input-group-addon" >@test.com</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">登录密码：</label>
+                                <div class="col-sm-5">
+                                    <input type="password" class="form-control">
+                                    <p class="help-block">注：密码长度最少为8位，其中必须包括大写字母和小写字母，以及数字！</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">确认密码：</label>
+                                <div class="col-sm-5">
+                                    <input type="password" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><span class="red bold">*</span>邮箱容量：</label>
+                                <div class="col-sm-5">
+                                    <div class="input-group">
+                                        <input type="number" value="100" class="form-control" placeholder="限定邮箱数量" >
+                                        <span class="input-group-addon" >MB</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label"><span class="red bold">*</span>网络硬盘容量：</label>
+                                <div class="col-sm-5">
+                                    <div class="input-group">
+                                        <input type="number" value="100" class="form-control" placeholder="限定邮箱数量" >
+                                        <span class="input-group-addon" >MB</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">发信功能限制：</label>
+                                <div class="col-sm-5">
+                                    <select name="limit_send" class="form-control">
+                                        <option value="-1" selected="">不限制邮件发送</option>
+                                        <option value="1">禁止发送所有邮件</option>
+                                        <option value="2">只发送本地域邮件</option>
+                                        <option value="3">可发送指定外域邮件</option>
+                                        <option value="4">可发送本地所有域邮件</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">收信功能限制：</label>
+                                <div class="col-sm-5">
+                                    <select name="limit_recv" class="form-control">
+                                        <option value="-1" selected="">不限制邮件接收</option>
+                                        <option value="1">禁此接收所有邮件</option>
+                                        <option value="2">只接收本地域邮件</option>
+                                        <option value="3">可接收指定外域邮件</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">登录方式限制：</label>
+                                <div class="col-sm-5">
+                                    <select name="limit_login" class="form-control">
+                                        <option value="-1" selected="">不限制登录方式</option>
+                                        <option value="1">禁止网页登录</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">是否打开邮箱共享：</label>
+                                <div class="col-sm-7">
+                                    <label class="inline" >
+                                        <input name="enable_share" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">POP功能：</label>
+                                <div class="col-sm-7">
+                                    <label class="inline" >
+                                        <input name="limit_pop" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">IMAP功能：</label>
+                                <div class="col-sm-7">
+                                    <label class="inline" >
+                                        <input name="limit_imap"   type="checkbox" class="ace ace-switch ace-switch-5">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">邮箱帐号状态：</label>
+                                <div class="col-sm-7">
+                                    <label class="inline" >
+                                        <input name="limit_disabled"   type="checkbox" class="ace ace-switch ace-switch-5">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">登录强制修改密码：</label>
+                                <div class="col-sm-7">
+                                    <label class="inline" >
+                                        <input name="change_pwd"   type="checkbox" class="ace ace-switch ace-switch-5">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">密码有效期：</label>
+                                <div class="col-sm-5">
+                                    <div class="input-group">
+                                        <input type="number" value="365" class="form-control" placeholder="密码有效期" >
+                                        <span class="input-group-addon" >天</span>
+                                    </div>
+                                    <p class="help-block">0代表永远有效，大于0代表多少天密码过期后会强制用户修改密码,新增用户默认是365天</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">密码有效开始时间：</label>
+                                <div class="col-sm-5">
+                                    <input type="datetime"  class="mydatetime form-control" placeholder="密码有效开始时间" >
+                                    <p class="help-block">不能大于当前时间</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">只允许登录IP：</label>
+                                <div class="col-sm-5">
+                                    <input type="text"  class="form-control" placeholder="只允许登录IP" >
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="table-header">用户信息</div>
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label"><span class="red">*</span>姓名：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" placeholder="姓名" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">英文名：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" placeholder="英文名" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">工号：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" placeholder="工号" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">性别：</label>
+                                <div class="col-sm-7">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="gender" value="1" checked> 男
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="gender" value="0" > 女
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p></p>
+                                <label class="col-sm-3 control-label">归属部门：</label>
+                                <div class="col-sm-5" style="width:150px;">
+                                    <select class="chosen-select form-control"  data-placeholder="归属部门">
+                                        <option value="">test.com</option>
+                                        <option value="AL">Alabama</option>
+                                        <option value="AK">Alaska</option>
+                                        <option value="AZ">Arizona</option>
+                                        <option value="AR">Arkansas</option>
+                                        <option value="CA">California</option>
+                                        <option value="CO">Colorado</option>
+                                        <option value="CT">Connecticut</option>
+                                        <option value="DE">Delaware</option>
+                                        <option value="FL">Florida</option>
+                                        <option value="GA">Georgia</option>
+                                        <option value="HI">Hawaii</option>
+                                        <option value="ID">Idaho</option>
+                                        <option value="IL">Illinois</option>
+                                        <option value="IN">Indiana</option>
+                                        <option value="IA">Iowa</option>
+                                        <option value="KS">Kansas</option>
+                                        <option value="KY">Kentucky</option>
+                                        <option value="LA">Louisiana</option>
+                                        <option value="ME">Maine</option>
+                                        <option value="MD">Maryland</option>
+                                        <option value="MA">Massachusetts</option>
+                                        <option value="MI">Michigan</option>
+                                        <option value="MN">Minnesota</option>
+                                        <option value="MS">Mississippi</option>
+                                        <option value="MO">Missouri</option>
+                                        <option value="MT">Montana</option>
+                                        <option value="NE">Nebraska</option>
+                                        <option value="NV">Nevada</option>
+                                        <option value="NH">New Hampshire</option>
+                                        <option value="NJ">New Jersey</option>
+                                        <option value="NM">New Mexico</option>
+                                        <option value="NY">New York</option>
+                                        <option value="NC">North Carolina</option>
+                                        <option value="ND">North Dakota</option>
+                                        <option value="OH">Ohio</option>
+                                        <option value="OK">Oklahoma</option>
+                                        <option value="OR">Oregon</option>
+                                        <option value="PA">Pennsylvania</option>
+                                        <option value="RI">Rhode Island</option>
+                                        <option value="SC">South Carolina</option>
+                                        <option value="SD">South Dakota</option>
+                                        <option value="TN">Tennessee</option>
+                                        <option value="TX">Texas</option>
+                                        <option value="UT">Utah</option>
+                                        <option value="VT">Vermont</option>
+                                        <option value="VA">Virginia</option>
+                                        <option value="WA">Washington</option>
+                                        <option value="WV">West Virginia</option>
+                                        <option value="WI">Wisconsin</option>
+                                        <option value="WY">Wyoming</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2 no-padding">
+                                    <input type="text" class="form-control" placeholder="部门职务">
+                                </div>
+                                <div class="col-sm-2" >
+                                    <input type="button" id="add_department" class="btn btn-success btn-xs" value="添加">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <p></p>
+                                <label class="col-sm-3 control-label">归属邮件列表：</label>
+                                <div class="col-sm-5" style="width:150px;">
+                                    <select class="chosen-select form-control"  data-placeholder="归属邮件列表">
+                                        <option value="">选择邮件列表</option>
+                                        <option value="AL">Alabama</option>
+                                        <option value="AK">Alaska</option>
+                                        <option value="AZ">Arizona</option>
+                                        <option value="AR">Arkansas</option>
+                                        <option value="CA">California</option>
+                                        <option value="CO">Colorado</option>
+                                        <option value="CT">Connecticut</option>
+                                        <option value="DE">Delaware</option>
+                                        <option value="FL">Florida</option>
+                                        <option value="GA">Georgia</option>
+                                        <option value="HI">Hawaii</option>
+                                        <option value="ID">Idaho</option>
+                                        <option value="IL">Illinois</option>
+                                        <option value="IN">Indiana</option>
+                                        <option value="IA">Iowa</option>
+                                        <option value="KS">Kansas</option>
+                                        <option value="KY">Kentucky</option>
+                                        <option value="LA">Louisiana</option>
+                                        <option value="ME">Maine</option>
+                                        <option value="MD">Maryland</option>
+                                        <option value="MA">Massachusetts</option>
+                                        <option value="MI">Michigan</option>
+                                        <option value="MN">Minnesota</option>
+                                        <option value="MS">Mississippi</option>
+                                        <option value="MO">Missouri</option>
+                                        <option value="MT">Montana</option>
+                                        <option value="NE">Nebraska</option>
+                                        <option value="NV">Nevada</option>
+                                        <option value="NH">New Hampshire</option>
+                                        <option value="NJ">New Jersey</option>
+                                        <option value="NM">New Mexico</option>
+                                        <option value="NY">New York</option>
+                                        <option value="NC">North Carolina</option>
+                                        <option value="ND">North Dakota</option>
+                                        <option value="OH">Ohio</option>
+                                        <option value="OK">Oklahoma</option>
+                                        <option value="OR">Oregon</option>
+                                        <option value="PA">Pennsylvania</option>
+                                        <option value="RI">Rhode Island</option>
+                                        <option value="SC">South Carolina</option>
+                                        <option value="SD">South Dakota</option>
+                                        <option value="TN">Tennessee</option>
+                                        <option value="TX">Texas</option>
+                                        <option value="UT">Utah</option>
+                                        <option value="VT">Vermont</option>
+                                        <option value="VA">Virginia</option>
+                                        <option value="WA">Washington</option>
+                                        <option value="WV">West Virginia</option>
+                                        <option value="WI">Wisconsin</option>
+                                        <option value="WY">Wyoming</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2 no-padding">
+                                    <select id="maillist_add_permit" title="成员权限">
+                                        <option value="1">收发</option>
+                                        <option value="0">只收</option>
+                                        <option value="-1">只发</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-2" >
+                                    <input type="button" id="add_email_list" class="btn btn-success btn-xs" value="添加">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">生日：</label>
+                                <div class="col-sm-5">
+                                    <div class="input-group">
+                                        <input class="form-control date-picker"  type="text" data-date-format="yyyy-mm-dd" />
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">手机号码：</label>
+                                <div class="col-sm-5">
+                                    <input type="number" class="form-control" placeholder="手机号码" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">公司电话：</label>
+                                <div class="col-sm-5">
+                                    <input type="number" class="form-control" placeholder="公司电话" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">分机号码：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" placeholder="分机号码" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">集团号：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" placeholder="集团号" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">住宅电话：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" placeholder="住宅电话" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">通讯录显示：</label>
+                                <div class="col-sm-7">
+                                    <label class="inline" >
+                                        <input name="oabshow" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                        <span class="lbl"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">排序权重：</label>
+                                <div class="col-sm-5">
+                                    <input type="number" value="0" class="form-control" placeholder="排序权重" >
+                                    <p class="help-block">注：数字越大越靠前显示</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">QQ：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" placeholder="QQ" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">MSN：</label>
+                                <div class="col-sm-5">
+                                    <input type="text" class="form-control" placeholder="MSN" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">备注：</label>
+                                <div class="col-sm-5">
+                                    <textarea rows="4" class="form-control"></textarea>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="edit_email_single">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改信息</h4>
+            </div>
+            <div class="modal-body">
+                <div id="edit_email_tabs">
+                    <ul>
+                        <li>
+                            <a href="#mailbox_info">邮箱基本信息</a>
+                        </li>
+                        <li>
+                            <a href="#user_info">用户信息</a>
+                        </li>
+                        <li>
+                            <a href="#user_group">用户组</a>
+                        </li>
+                        <li>
+                            <a href="#user_department">用户归属部门</a>
+                        </li>
+                        <li>
+                            <a href="#user_belong">用户归属邮件列表</a>
+                        </li>
+                        <li>
+                            <a href="#relation_share">关联共享邮箱列表（默认完全控制权限）</a>
+                        </li>
+                    </ul>
+                    <div id="mailbox_info">
+                        <div class="table-header" style="margin-bottom:8px;">邮箱基本信息</div>
+                        <form class="form-horizontal row">
+                            <div class="col-sm-6" style="border-right:2px dashed #eee;">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">邮箱名称：</label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="邮箱名称" value="aaa@test.com">
+                                            <span class="input-group-addon" >@test.com</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">登录密码：</label>
+                                    <div class="col-sm-7">
+                                        <input type="password" class="form-control" value="12345678">
+                                        <p class="help-block">注：密码长度最少为8位，其中必须包括大写字母和小写字母，以及数字！</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">确认密码：</label>
+                                    <div class="col-sm-7">
+                                        <input type="password" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">密码有效开始时间：</label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group">
+                                            <input class="form-control date-picker"  type="text" data-date-format="yyyy-mm-dd" />
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+                                        <p class="help-block">不能大于当前时间</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">密码有效期：</label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group">
+                                            <input type="number" value="365" class="form-control" placeholder="密码有效期" >
+                                            <span class="input-group-addon" >天</span>
+                                        </div>
+                                        <p class="help-block">0代表永远有效，大于0代表多少天密码过期后会强制用户修改密码,新增用户默认是365天</p>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">限制发送频率：</label>
+                                    <div class="col-sm-7">
+                                        <label class="inline" >
+                                            <input name="send_hz" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl "></span>
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">是否打开邮箱共享：</label>
+                                    <div class="col-sm-7">
+                                        <label class="inline" >
+                                            <input name="enable_share"   type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><span class="red bold">*</span>邮箱容量：</label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group">
+                                            <input type="number" value="100" class="form-control" placeholder="限定邮箱数量" >
+                                            <span class="input-group-addon" >MB(已使用0MB)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><span class="red bold">*</span>网络硬盘容量：</label>
+                                    <div class="col-sm-7">
+                                        <div class="input-group">
+                                            <input type="number" value="100" class="form-control" placeholder="限定邮箱数量" >
+                                            <span class="input-group-addon" >MB(已使用0MB)</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">发信功能限制：</label>
+                                    <div class="col-sm-7">
+                                        <select name="limit_send" class="form-control">
+                                            <option value="-1" selected="">不限制邮件发送</option>
+                                            <option value="1">禁止发送所有邮件</option>
+                                            <option value="2">只发送本地域邮件</option>
+                                            <option value="3">可发送指定外域邮件</option>
+                                            <option value="4">可发送本地所有域邮件</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">收信功能限制：</label>
+                                    <div class="col-sm-7">
+                                        <select name="limit_recv" class="form-control">
+                                            <option value="-1" selected="">不限制邮件接收</option>
+                                            <option value="1">禁此接收所有邮件</option>
+                                            <option value="2">只接收本地域邮件</option>
+                                            <option value="3">可接收指定外域邮件</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">登录方式限制：</label>
+                                    <div class="col-sm-7">
+                                        <select name="limit_login" class="form-control">
+                                            <option value="-1" selected="">不限制登录方式</option>
+                                            <option value="1">禁止网页登录</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">只允许登录IP：</label>
+                                    <div class="col-sm-7">
+                                        <input type="text"  class="form-control" placeholder="只允许登录IP" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">邮箱帐号状态：</label>
+                                    <div class="col-sm-7">
+                                        <label class="inline" >
+                                            <input name="limit_disabled" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">登录强制修改密码：</label>
+                                    <div class="col-sm-7">
+                                        <label class="inline" >
+                                            <input name="change_pwd" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">POP功能：</label>
+                                    <div class="col-sm-7">
+                                        <label class="inline" >
+                                            <input name="limit_pop" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">IMAP功能：</label>
+                                    <div class="col-sm-7">
+                                        <label class="inline" >
+                                            <input name="limit_imap" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+
+
+
+
+
+
+
+                        </form>
+                    </div>
+                    <div id="user_info">
+                        <div class="table-header" style="margin-bottom:8px;">用户信息</div>
+                        <form class="form-horizontal row">
+                            <div class="col-sm-6" >
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label"><span class="red">*</span>姓名：</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" placeholder="姓名" value="白松岩">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">英文名：</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" placeholder="英文名" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">工号：</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" placeholder="工号" value="30005684">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">性别：</label>
+                                    <div class="col-sm-7">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="gender" value="1" checked> 男
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="gender" value="0" > 女
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">生日：</label>
+                                    <div class="col-sm-5">
+                                        <div class="input-group">
+                                            <input class="form-control date-picker"  type="text" data-date-format="yyyy-mm-dd" />
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">排序权重：</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" placeholder="排序权重" >
+                                        <p class="help-block">注：数字越大越靠前显示</p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">QQ：</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" placeholder="QQ" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="border-left:2px dashed #eee;">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">手机号码：</label>
+                                    <div class="col-sm-5">
+                                        <input type="number" class="form-control" placeholder="手机号码" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">公司电话：</label>
+                                    <div class="col-sm-5">
+                                        <input type="number" class="form-control" placeholder="公司电话" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">分机号码：</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" placeholder="分机号码" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">集团号：</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" placeholder="集团号" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">住宅电话：</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" placeholder="住宅电话" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">通讯录显示：</label>
+                                    <div class="col-sm-7">
+                                        <label class="inline" >
+                                            <input name="oabshow" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">MSN：</label>
+                                    <div class="col-sm-5">
+                                        <input type="text" class="form-control" placeholder="MSN" >
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">备注：</label>
+                                    <div class="col-sm-5">
+                                        <textarea rows="4" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </form>
+                    </div>
+                    <div id="user_group">
+                        <div class="table-header" style="margin-bottom:8px;">
+                            用户组
+                        </div>
+                        <div>
+                            <table class="table table-bordered table-center">
+                                <thead>
+                                    <tr>
+                                        <th>序号</th>
+                                        <th>组名称</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>11254654</td>
+                                        <td><button class="btn btn-xs btn-danger" type="button">删除</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">添加组：</span>
+                                    <select name="" id="" class="chosen-select form-control">
+                                        <option value="">选择组</option>
+                                        <option value="1">12</option>
+                                        <option value="12">123456</option>
+                                        <option value="13">12345</option>
+                                        <option value="14">123459</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-success btn-sm" type="button">添加</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="user_department">
+                        <div class="table-header" style="margin-bottom:8px;">
+                            用户归属部门
+                        </div>
+                        <div>
+                            <table class="table table-bordered table-center">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>部门名称</th>
+                                    <th>职位</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>11254654</td>
+                                    <td>112187dsfsd</td>
+                                    <td>
+                                        <button class="btn btn-xs btn-primary" type="button">编辑</button>
+                                        <button class="btn btn-xs btn-danger" type="button">删除</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">归属部门：</span>
+                                    <select class="chosen-select form-control"  data-placeholder="归属部门">
+                                        <option value="">选择归属部门</option>
+                                        <option value="1">test.com</option>
+                                        <option value="AL">Alabama</option>
+                                        <option value="AK">Alaska</option>
+                                        <option value="AZ">Arizona</option>
+                                        <option value="AR">Arkansas</option>
+                                        <option value="CA">California</option>
+                                        <option value="CO">Colorado</option>
+                                        <option value="CT">Connecticut</option>
+                                        <option value="DE">Delaware</option>
+                                        <option value="FL">Florida</option>
+                                        <option value="GA">Georgia</option>
+                                        <option value="HI">Hawaii</option>
+                                        <option value="OR">Oregon</option>
+                                        <option value="PA">Pennsylvania</option>
+                                        <option value="RI">Rhode Island</option>
+                                        <option value="SC">South Carolina</option>
+                                        <option value="SD">South Dakota</option>
+                                        <option value="TN">Tennessee</option>
+                                        <option value="TX">Texas</option>
+                                        <option value="UT">Utah</option>
+                                        <option value="VT">Vermont</option>
+                                        <option value="VA">Virginia</option>
+                                        <option value="WA">Washington</option>
+                                        <option value="WV">West Virginia</option>
+                                        <option value="WI">Wisconsin</option>
+                                        <option value="WY">Wyoming</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">职位：</span>
+                                    <input type="text" class="form-control" value="员工">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-success btn-sm" type="button">添加</button>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div id="user_belong">
+                        <div class="table-header" style="margin-bottom:8px;">
+                            用户归属邮件列表
+                        </div>
+                        <div>
+                            <table class="table table-bordered table-center">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>列表名称</th>
+                                    <th>地址</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>1125465测试4</td>
+                                    <td>112187dsfsd</td>
+                                    <td>
+                                        <button class="btn btn-xs btn-danger" type="button">删除</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">归属邮件列表：</span>
+                                    <select class="chosen-select form-control"  data-placeholder="归属邮件列表">
+                                        <option value="">选择归属邮件列表</option>
+                                        <option value="1">test.com</option>
+                                        <option value="AL">Alabama</option>
+                                        <option value="AK">Alaska</option>
+                                        <option value="AZ">Arizona</option>
+                                        <option value="AR">Arkansas</option>
+                                        <option value="CA">California</option>
+                                        <option value="CO">Colorado</option>
+                                        <option value="CT">Connecticut</option>
+                                        <option value="DE">Delaware</option>
+                                        <option value="FL">Florida</option>
+                                        <option value="GA">Georgia</option>
+                                        <option value="HI">Hawaii</option>
+                                        <option value="OR">Oregon</option>
+                                        <option value="PA">Pennsylvania</option>
+                                        <option value="RI">Rhode Island</option>
+                                        <option value="SC">South Carolina</option>
+                                        <option value="SD">South Dakota</option>
+                                        <option value="TN">Tennessee</option>
+                                        <option value="TX">Texas</option>
+                                        <option value="UT">Utah</option>
+                                        <option value="VT">Vermont</option>
+                                        <option value="VA">Virginia</option>
+                                        <option value="WA">Washington</option>
+                                        <option value="WV">West Virginia</option>
+                                        <option value="WI">Wisconsin</option>
+                                        <option value="WY">Wyoming</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">权限：</span>
+                                    <select class="form-control" >
+                                        <option value="1">收发</option>
+                                        <option value="0">只收</option>
+                                        <option value="-1">只发</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-success btn-sm" type="button">添加</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="relation_share">
+                        <div class="table-header" style="margin-bottom:8px;">
+                            关联共享邮箱列表
+                        </div>
+                        <div>
+                            <table class="table table-bordered table-center">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+                                    <th>邮箱地址</th>
+                                    <th>所属域名</th>
+                                    <th>权限</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>sads@test.com</td>
+                                    <td>test.com</td>
+                                    <td>权限</td>
+                                    <td>
+                                        <button class="btn btn-xs btn-danger" type="button">删除</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 no-padding-right">
+                                <div class="input-group">
+                                    <span class="input-group-addon">添加关联共享邮箱：</span>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 no-padding-left">
+                                <div class="input-group">
+                                    <span class="input-group-addon">@</span>
+                                    <select name="domain" id="domain_select" class="form-control chosen-select">
+                                        <option value="test.com">test.com</option>
+                                        <option value="linbihuan1.com">linbihuan1.com</option>
+                                        <option value="linbihuan2.com">linbihuan2.com</option>
+                                        <option value="magvision.com">magvision.com</option>
+                                        <option value="domain.com">domain.com</option>
+                                        <option value="wsdk.com">wsdk.com</option>
+                                        <option value="linbihuan-test.com">linbihuan-test.com</option>
+                                        <option value="hokai.com">hokai.com</option>
+                                        <option value="heqq.com">heqq.com</option>
+                                        <option value="hao123.com">hao123.com</option>
+                                        <option value="hhhh">hhhh</option>
+                                        <option value="shfjny123.cc">shfjny123.cc</option>
+                                        <option value="bbb.com">bbb.com</option>
+                                        <option value="shfjny123456.cn">shfjny123456.cn</option>
+                                        <option value="shfjny123456.cc">shfjny123456.cc</option>
+                                        <option value="testtest.com">testtest.com</option>
+                                        <option value="chinazndd.com">chinazndd.com</option>
+                                        <option value="lvchichuxing.com">lvchichuxing.com</option>
+                                        <option value="llzzb.gov">llzzb.gov</option>
+                                        <option value="wiprocc.com.cn">wiprocc.com.cn</option>
+                                        <option value="ncc-edu.com">ncc-edu.com</option>
+                                        <option value="bcec.com.cn">bcec.com.cn</option>
+                                        <option value="dexingroup.com">dexingroup.com</option>
+                                        <option value="kylin.com.cn">kylin.com.cn</option>
+                                        <option value="modousport.com">modousport.com</option>
+                                        <option value="shengquanwuye.com">shengquanwuye.com</option>
+                                        <option value="cufs.cc">cufs.cc</option>
+                                        <option value="cufs.com.cn">cufs.com.cn</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-success btn-sm" type="button">添加(默认完全控制权限)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-primary">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function initiateDemoData(){
+        var tree_data = {
+            'for-sale' : {text: 'For Sale', type: 'folder',
+                additionalParameters:{
+                    'children' : {
+                        'appliances': {text: 'Appliances', type: 'item'},
+                        'arts-crafts': {text: 'Arts & Crafts', type: 'item'},
+                        'clothing': {text: 'Clothing', type: 'item'},
+                        'computers': {text: 'Computers', type: 'item'},
+                        'jewelry': {text: 'Jewelry', type: 'item'},
+                        'office-business': {text: 'Office & Business', type: 'item'},
+                        'sports-fitness': {text: 'Sports & Fitness', type: 'item'}
+                    }
+                }
+            }   ,
+            'rentals' : {text: 'Rentals', type: 'folder'}   ,
+            'real-estate' : {text: 'Real Estate', type: 'folder'}   ,
+            'pets' : {text: 'Pets', type: 'folder'}
+//            'tickets' : {text: 'Tickets', type: 'item'}   ,
+//            'services' : {text: 'Services', type: 'item'} ,
+//            'personals' : {text: 'Personals', type: 'item'}
+        }
+        var tree_data_copy = {
+
+        }
+
+
+        tree_data['rentals']['additionalParameters'] = {
+            'children' : {
+                'apartments-rentals' : {text: 'appliances测试长度测试长度测试长度appliances测试长度测试长度测试长度', type: 'item'},
+                'office-space-rentals' : {text: 'Office Space', type: 'item'},
+                'vacation-rentals' : {text: 'Vacation Rentals', type: 'item'}
+            }
+        }
+        tree_data['real-estate']['additionalParameters'] = {
+            'children' : {
+                'apartments' : {text: 'Apartments', type: 'item'},
+                'villas' : {text: 'Villas', type: 'item'},
+                'plots' : {text: 'Plots', type: 'item'}
+            }
+        }
+        tree_data['pets']['additionalParameters'] = {
+            'children' : {
+                'cats' : {text: 'Cats', type: 'item'},
+                'dogs' : {text: 'Dogs', type: 'item'},
+                'horses' : {text: 'Horses', type: 'item'},
+                'reptiles' : {text: 'Reptiles', type: 'item'}
+            }
+        }
+
+        var dataSource1 = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data;//the root tree
+                callback({ data: $data });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+            console.log($data);
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                callback({ data: $data });
+//                setTimeout(function(){} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+        var data_copy = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data_copy;//the root tree
+                callback({ data: tree_data_copy });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+            console.log($data);
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+
+
+
+
+        var tree_data_2 = {
+            'pictures' : {text: 'Pictures', type: 'folder', 'icon-class':'red'} ,
+            'music' : {text: 'Music', type: 'folder', 'icon-class':'orange'}    ,
+            'video' : {text: 'Video', type: 'folder', 'icon-class':'blue'}  ,
+            'documents' : {text: 'Documents', type: 'folder', 'icon-class':'green'} ,
+            'backup' : {text: 'Backup', type: 'folder'} ,
+            'readme' : {text: '<i class="ace-icon fa fa-file-text grey"></i> ReadMe.txt', type: 'item'},
+            'manual' : {text: '<i class="ace-icon fa fa-book blue"></i> Manual.html', type: 'item'}
+        }
+        tree_data_2['music']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-music blue"></i> song1.ogg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-music blue"></i> song2.ogg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-music blue"></i> song3.ogg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-music blue"></i> song4.ogg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-music blue"></i> song5.ogg', type: 'item'}
+            ]
+        }
+        tree_data_2['video']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie1.avi', type: 'item'},
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie2.avi', type: 'item'},
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie3.avi', type: 'item'},
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie4.avi', type: 'item'},
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie5.avi', type: 'item'}
+            ]
+        }
+        tree_data_2['pictures']['additionalParameters'] = {
+            'children' : {
+                'wallpapers' : {text: 'Wallpapers', type: 'folder', 'icon-class':'pink'},
+                'camera' : {text: 'Camera', type: 'folder', 'icon-class':'pink'}
+            }
+        }
+        tree_data_2['pictures']['additionalParameters']['children']['wallpapers']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> wallpaper1.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> wallpaper2.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> wallpaper3.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> wallpaper4.jpg', type: 'item'}
+            ]
+        }
+        tree_data_2['pictures']['additionalParameters']['children']['camera']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo1.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo2.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo3.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo4.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo5.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo6.jpg', type: 'item'}
+            ]
+        }
+
+
+        tree_data_2['documents']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-file-text red"></i> document1.pdf', type: 'item'},
+                {text: '<i class="ace-icon fa fa-file-text grey"></i> document2.doc', type: 'item'},
+                {text: '<i class="ace-icon fa fa-file-text grey"></i> document3.doc', type: 'item'},
+                {text: '<i class="ace-icon fa fa-file-text red"></i> document4.pdf', type: 'item'},
+                {text: '<i class="ace-icon fa fa-file-text grey"></i> document5.doc', type: 'item'}
+            ]
+        }
+
+        tree_data_2['backup']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-archive brown"></i> backup1.zip', type: 'item'},
+                {text: '<i class="ace-icon fa fa-archive brown"></i> backup2.zip', type: 'item'},
+                {text: '<i class="ace-icon fa fa-archive brown"></i> backup3.zip', type: 'item'},
+                {text: '<i class="ace-icon fa fa-archive brown"></i> backup4.zip', type: 'item'}
+            ]
+        }
+        var dataSource2 = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data_2;//the root tree
+                callback({ data: $data });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+
+
+        return {'dataSource1': dataSource1 , 'dataSource2' : dataSource2,'dataSource_copy':data_copy}
+    }
+    var sampleData = initiateDemoData();
+    $('#tree').ace_tree({
+        dataSource: sampleData['dataSource1'],
+        multiSelect: false,
+        cacheItems: true,
+        'open-icon' : 'ace-icon tree-minus',
+        'close-icon' : 'ace-icon tree-plus',
+        'itemSelect' : true,
+        'folderSelect': false,
+        'selected-icon' : 'ace-icon fa fa-check',
+        'unselected-icon' : 'ace-icon fa fa-times',
+        loadingHTML : '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>'
+    });
+    $('#tree').on('click','.tree-item',function(){
+        if($(this).hasClass('tree-selected')){
+            $('.department_choice').val($(this).find('.tree-label').html());
+        }
+    })
+
+    $('#edit_email_tabs').tabs();
+    $('input[name=date-range-picker]').daterangepicker({
+                'applyClass' : 'btn-sm btn-success',
+                'cancelClass' : 'btn-sm btn-default',
+                locale: {
+                    applyLabel: '确认',
+                    cancelLabel: '取消'
+                }
+            })
+            .prev().on(ace.click_event, function(){
+        $(this).next().focus();
+    });
+    $('.date-picker').datepicker({
+                autoclose: true,
+                todayHighlight: true
+            })
+            //show datepicker when clicking on the icon
+            .next().on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+    if(!ace.vars['touch']) {
+        $('.chosen-select').chosen();
+
+        $(window)
+                .off('resize.chosen')
+                .on('resize.chosen', function() {
+                    $('.chosen-select').each(function() {
+                        var $this = $(this);
+                        $this.next().css({'width': $this.parent().width()});
+                    })
+                }).trigger('resize.chosen');
+        $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+            if(event_name != 'sidebar_collapsed') return;
+            $('.chosen-select').each(function() {
+                var $this = $(this);
+                $this.next().css({'width': $this.parent().width()});
+            })
+        });
+    }
+    $('#search_con').change(function(){
+        var data_title = $(this).val();
+//        alert(data_title)
+        if(data_title=="1"){
+            $('.email_place').hide();
+            $('.alr_place').hide();
+            $('.key_words').show();
+        }else if(data_title=="4" || data_title=="5"){
+            $('.key_words').hide();
+            $('.alr_place').hide();
+            $('.email_place').show();
+        }else if(data_title=="8"){
+            $('.key_words').hide();
+            $('.email_place').hide();
+            $('.alr_place').show();
+        }else{
+            $('.key_words').hide();
+            $('.email_place').hide();
+            $('.alr_place').hide();
+        }
+    })
+    var myTable;
+    function initDate(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr role="row"><td class="center"><label class="pos-rel"><input type="checkbox" class="ace">' +
+                    '<span class="lbl"></span> </label></td><td>  '+(i+1)+' </td>' +
+                    '<td data-toggle="modal" data-target="#edit_email_single" title="点击修改" style="cursor:pointer;"><span class="label  label-info arrowed arrowed-righ">test.com</span></td>' +
+                    '<td data-toggle="modal" data-target="#edit_email_single" title="点击修改" style="cursor:pointer;"><span class="label  label-success arrowed-right">姓名</span></td>' +
+                    '<td >后勤部</td><td>邮箱：300MB；网盘：100MB</td>' +
+                    '<td>8MB</td><td><span class="label label-sm label-success">发送: 正常</span>' +
+                    '<span class="label label-sm label-grey">POP3: 正常</span><br>' +
+                    '<span class="label label-sm label-success">接收: 正常</span><span class="label label-sm label-success">IMAP: 正常</span>' +
+                    '</td><td>192.168.1.1-200</td> <td>  <label class="inline" >' +
+                    '<input name="status'+(i+1)+'" checked  type="checkbox" class="ace ace-switch ace-switch-5">' +
+                    '<span class="lbl"></span></label></td><td>2018-01-01 ${i+10}:12:00</td>' +
+                    '<td><div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#auto_replay">自动回复</a>' +
+                    ' <a class="red btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#auto_forward"> 自动转发</a>' +
+                    '</div></td></tr>'
+        }
+        /*<!--<td class="hidden-480">-->
+            <!--<span class="label label-sm label-warning">Expiring</span>-->
+        <!--</td>-->*/
+        $('#data-body').html(html);
+
+        myTable =
+                $('#dynamic-table')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                null,
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                null,{ "bSortable": false },{ "bSortable": false },{ "bSortable": false },null,
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+        myTable.on( 'select', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable.row( index ).node() ).find('input:checkbox:eq(0)').prop('checked', true);
+            }
+        } );
+        myTable.on( 'deselect', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable.row( index ).node() ).find('input:checkbox:eq(0)').prop('checked', false);
+            }
+        } );
+        /////////////////////////////////
+        //table checkboxes
+        $('#dynamic-table th input[type=checkbox]:eq(0),#dynamic-table td input[type=checkbox]:eq(0)').prop('checked', false);
+
+        //select/deselect all rows according to table header checkbox
+        $('#dynamic-table > thead > tr > th input[type=checkbox], #dynamic-table_wrapper input[type=checkbox]').eq(0).on('click', function(){
+            var th_checked = this.checked;//checkbox inside "TH" table header
+
+            $('#dynamic-table').find('tbody > tr').each(function(){
+                var row = this;
+                if(th_checked) myTable.row(row).select();
+                else  myTable.row(row).deselect();
+            });
+        });
+
+        //select/deselect a row when the checkbox is checked/unchecked
+        $('#dynamic-table').on('click', 'td .pos-rel input[type=checkbox]' , function(){
+            var row = $(this).closest('tr').get(0);
+            if(this.checked) myTable.row(row).deselect();
+            else myTable.row(row).select();
+        });
+        $(document).on('click', '#dynamic-table .dropdown-toggle', function(e) {
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+
+        /********************************/
+        //add tooltip for small view action buttons in dropdown menu
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+        //tooltip placement on right or left
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            //var w2 = $source.width();
+
+            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+            return 'left';
+        }
+        /***************/
+        $('.show-details-btn').on('click', function(e) {
+            e.preventDefault();
+            $(this).closest('tr').next().toggleClass('open');
+            $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+        });
+
+
+
+    }
+    initDate(28);
+
+    $('#search-btn').click(function(){
+        myTable.destroy();
+        initDate(8);
+    })
+
+
+    $('.table-footer button').click(function(){
+        if($(this).hasClass('edit')){
+            confirm("确定批量修改账号吗？")
+        }else if($(this).hasClass('delete')){
+            confirm("确定批量删除账号吗？")
+        }
+    })
+
+$('.modal-body>div .add-btn').click(function(){
+    $(this).parents('.active').removeClass('active').siblings().addClass('active');
+})
+$('.modal-body>div .cancel-btn').click(function(){
+    $(this).parents('.active').removeClass('active').siblings().addClass('active');
+})
+
+$(document).on('click', '#dynamic-table a', function(e) {
+    e.preventDefault();
+    console.log(123)
+});
+
+
+
+</script>

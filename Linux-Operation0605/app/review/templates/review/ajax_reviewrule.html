@@ -1,0 +1,40 @@
+<td>{{ number }}</td>
+<td>{{ d.id }}</td>
+<td>{{ d.name|default_if_none:'' }}</td>
+<td>{{ d.review.name|default_if_none:'' }}</td>
+<td>{{ d.get_workmode_display }}</td>
+<td>
+    {% if d.pre_action %}
+        {{ d.get_pre_action_display }}
+    {% else %}
+        人工
+    {% endif %}
+</td>
+<td>{{ d.department }}</td>
+<td>{{ d.get_cond_logic_display }}</td>
+<td>
+    {% for rtype, action, value in d.getConditionList %}
+        {% if rtype in d.getNoInputOptionList %}
+            <p>{{ rtype }}</p>
+        {% else %}
+            <p>{{ rtype }}<span class="badge badge-success">{{ action }}</span>{{ value }}</p>
+        {% endif %}
+    {% endfor %}
+</td>
+<td>{{ d.sequence }}</td>
+<td>
+    {% if d.disabled == 1 %}
+        <span class="label label-xlg label-light arrowed-in arrowed-in-right">{{ d.get_disabled_display }}</span>
+    {% elif d.disabled == -1 %}
+        <span class="label label-xlg label-yellow arrowed-in arrowed-in-right">{{ d.get_disabled_display }}</span>
+    {% endif %}
+</td>
+<td>
+    <a type="button" class="btn btn-minier btn-primary" href="{% url 'reviewrule_modify' d.id %}">修改</a>
+    {% if d.disabled == 1 %}
+        <a type="button" class="btn btn-minier btn-info" href="Javascript: setStatus({{ d.id }}, 'active')">启用</a>
+    {% elif d.disabled == -1 %}
+        <a type="button" class="btn btn-minier btn-grey" href="Javascript: setStatus({{ d.id }}, 'disabled')">禁用</a>
+    {% endif %}
+    <a type="button" class="btn btn-minier btn-danger" href="Javascript: setStatus({{ d.id }}, 'delete')">删除</a>
+</td>

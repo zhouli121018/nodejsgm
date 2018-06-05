@@ -1,0 +1,68 @@
+{% load i18n %}
+
+<div class="row">
+    <div class="col-xs-12">
+        <form class="form-horizontal" role="form" method="POST" action="{% url 'sslPrivateView' %}" enctype="multipart/form-data" id="id_sslkeyFrom">
+
+            {% csrf_token %}
+
+            <div class="hr hr-6 hr-dotted"></div>
+            <div class="form-group" style="margin-bottom:0px;">
+                <label class="col-sm-2 control-label no-padding-right"></label>
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="page-header"  style="padding-bottom: 7px;padding-top: 0px;">
+                        <h3><span class="badge" style="font-size:22px;font-weight:bold;padding:6px;">1</span>{% trans " 设置私钥" %}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" >
+                <label class="col-sm-3 control-label no-padding-right"> 当前私钥信息 </label>
+                <div class="col-sm-9">
+                    <p style="margin-bottom: 4px;margin-top: 9px;">
+                        {% if keyValue %}
+                            密钥长度：<span style="color: red;margin-right: 15px;">{{ keyValue }}</span>
+                            <button type="button" class="btn btn-primary btn-minier" onclick="sslPrivatekey('export')">导出私钥</button>
+                            <button type="button" class="btn btn-danger btn-minier" onclick="sslPrivatekey('clear')">清除私钥</button>
+                        {% else %}
+                            <span style="color: red; margin-right: 15px;" >没有设置私钥</span>
+                            <button type="button" class="btn btn-primary btn-minier" onclick="sslPrivatekey('generate')">生成新私钥</button>
+                            <button type="button" class="btn btn-primary btn-minier" onclick="sslPrivatekey('import')">导入私钥</button>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            {% if keyValue %}
+                <div class="form-group display-none" id="id_ssl_privatekey_export">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_ssl_privatekey">  </label>
+                    <div class="col-sm-9">
+                        <span class="block">
+                            <span class="control-label pull-left"> <strong>保护密码：</strong></span>
+                            <input type="password" name="sslkey_passwd_export" value="" id="id_sslkey_passwd_export">
+                            <button type="button" class="btn btn-primary btn-xs" onclick="sslkeySubmit('export')">导出</button>
+                            <button type="button" class="btn btn-link btn-xs" onclick="sslPrivatekey('export-cancel')">取消</button>
+                        </span>
+                    </div>
+                </div>
+            {% else %}
+                <div class="form-group display-none" id="id_ssl_privatekey_import">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_ssl_privatekey">  </label>
+                    <div class="col-sm-9">
+                        <span class="block">
+                            <span class="control-label pull-left"> <strong>选择私钥：</strong></span>
+                            <input type="file" name="sslkeyfile" value="">
+                        </span>
+                        <div style="clear: both; margin:5px;"> </div>
+                        <span class="block">
+                            <span class="control-label pull-left"> <strong>保护密码：</strong></span>
+                            <input type="password" name="sslkey_passwd_import" value="" id="id_sslkey_passwd_import">
+                            <button type="button" class="btn btn-primary btn-xs" onclick="sslkeySubmit('import')">导入</button>
+                            <button type="button" class="btn btn-link btn-xs" onclick="sslPrivatekey('import-cancel')">取消</button>
+                        </span>
+                    </div>
+                </div>
+            {% endif %}
+
+            <input type="hidden" name="sslkey_status" id="sslkey_status" />
+        </form>
+    </div>
+</div>

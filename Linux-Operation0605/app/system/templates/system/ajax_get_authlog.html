@@ -1,0 +1,9 @@
+<td>{{ number }}</td>
+<td>{{ l.user }}</td>
+<td>{{ l.type }}</td>
+<td>{{ l.time|date:"Y-m-d H:i:s" }}</td>
+<td>{{ l.client_ip }}</td>
+<td>{% if l.is_login %}<span class="text-success">是</span>
+    {% else %}<span class="text-danger">否</span>
+    {% endif %}
+</td>

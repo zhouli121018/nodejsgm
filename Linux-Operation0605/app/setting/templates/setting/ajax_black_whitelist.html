@@ -1,0 +1,17 @@
+<td>{{ number }}</td>
+<td>{{ d.get_type_display }}</td>
+<td>{{ d.email|default_if_none:'' }}</td>
+<td>{{ d.addtime }}</td>
+<td>
+    <span class="label label-xlg {% if d.disabled == '1' %} label-light {% else %} label-yellow {% endif %} arrowed-in arrowed-in-right">
+        {{ d.get_disabled_display }}
+    </span>
+</td>
+<td>
+    {% if d.disabled == '1' %}
+        <a type="button" class="btn btn-minier btn-info" href="Javascript: setStatus({{ d.id }}, 'active')">启用</a>
+    {% elif d.disabled == '-1' %}
+        <a type="button" class="btn btn-minier btn-grey" href="Javascript: setStatus({{ d.id }}, 'disabled')">禁用</a>
+    {% endif %}
+    <a type="button" class="btn btn-minier btn-danger" href="Javascript: setStatus({{ d.id }}, 'delete')">删除</a>
+</td>

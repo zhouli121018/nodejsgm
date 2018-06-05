@@ -1,0 +1,12 @@
+<td>{{ number }}</td>
+<td>{{ l.mailbox.name }}</td>
+<td>{{ l.mailbox }}</td>
+<td>{{ l.logintime|date:"Y-m-d H:i:s" }}</td>
+<td>{{ l.lasttime|date:"Y-m-d H:i:s" }}</td>
+<td>{{ continuetime }}</td>
+<td>{{ l.clienttype }}</td>
+<td>{{ l.clientip }}</td>
+<td>{% if is_login %}<span class="text-success">在线</span>
+    {% else %}<span class="text-danger">离线</span>
+    {% endif %}
+</td>

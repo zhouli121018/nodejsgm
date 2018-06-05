@@ -1,0 +1,231 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "队列信息" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li class="active">{% trans "查看队列信息" %}({{ name }})</li>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-6">
+            <div class="page-header">
+                <h1>{% trans "队列信息" %}
+                    <small>
+                        <i class="ace-icon fa fa-angle-double-right"></i>
+                        {{ name }}
+                    </small>
+                </h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-12">
+            <div class="pull-right" style="margin-right:30px;">
+                <form method="get" action="">
+                    {{ form }}
+                    <button type="submit" class="btn btn-primary">{% trans "查询" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="hr hr-18 dotted hr-double"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <form id="id_form" action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="ids" id="ids" />
+                        <input type="hidden" name="action" id="action" />
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>
+                                    <button type="button" class="btn btn-link" onclick="fnGetAll();">全选</button>/<button type="button" class="btn btn-link" onclick="fnGetReverse();">取消</button>
+                                    <button type="button" class="btn btn-danger" onclick="DeleteAll()">全部删除</button>
+                                    <button type="button" class="btn btn-danger pull-right" onclick="EmptyAll()">全部清空</button>
+                                </p>
+                            </div>
+                        </div>
+        <table id="ajax-table" class="table table-striped table-bordered table-hover dataTable">
+            <thead>
+            <tr>
+                <th>KEY</th>
+                <th>发件人</th>
+                <th>收件人</th>
+                <th>发件IP</th>
+                <th>接收时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+            </form>
+    </div><!-- /.span -->
+</div><!-- /.row -->
+
+<!-- Modal -->
+<input type="hidden" id="modal_id" name="modal_id" />
+<div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-llg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">加载中</h4>
+            </div>
+            <div class="modal-body">
+                页面加载中
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block my_jsblock %}
+		<script src="{% static 'components/datatables/media/js/jquery.dataTables.js' %}"></script>
+		<script src="{% static 'components/_mod/datatables/jquery.dataTables.bootstrap.js' %}"></script>
+        <script>
+            $('#myModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                var recipient = button.data('whatever') // Extract info from data-* attributes
+                $('#modal_id').val(recipient);
+                $(this).removeData('bs.modal');
+            })
+
+        $(function () {
+            var ajax_url = "{% url 'ajax_queue' name %}" + window.location.search;
+
+            ip_table = $('#ajax-table').dataTable({
+                "iDisplayLength": 10,
+                "processing": true,
+                "responsive": true,
+                "serverSide": true,
+                "aaSorting": [
+                    [ 0, "desc" ]
+                ],
+                "drawCallback": function( settings ) {
+                    $('#ajax-table tr').click( function() {
+                    if ( $(this).hasClass('selected') )
+                     $(this).removeClass('selected');
+                        else
+                    $(this).addClass('selected');
+                    } );
+    $('.tooltip-demo').tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+    });
+                },
+                "ajax": ajax_url,
+
+                "oLanguage": {
+                    "sLengthMenu": "{% blocktrans %}显示 _MENU_ 每页{% endblocktrans %}",
+                    "sZeroRecords": "{% blocktrans %}对不起! 信息筛选结果为空!{% endblocktrans %}",
+                    "sInfo": "{% blocktrans %}从 _START_ 到 _END_ 总计: _TOTAL_ 条记录{% endblocktrans %}",
+                    "sInfoEmpty": "{% blocktrans %}总计: 0 条记录{% endblocktrans %}",
+                    "sInfoFiltered": "{% blocktrans %}(从 _MAX_ 条记录筛选出){% endblocktrans %}",
+                    "sSearch": "{% blocktrans %}搜索: {% endblocktrans %}",
+                    "oPaginate": {
+                        "sFirst":    "{% blocktrans %}第一页{% endblocktrans %}",
+                        "sPrevious": " {% blocktrans %}上一页 {% endblocktrans %}",
+                        "sNext":     " {% blocktrans %}下一页 {% endblocktrans %}",
+                        "sLast":     " {% blocktrans %}最后一页 {% endblocktrans %}"
+                    }
+                }
+            });
+        });
+
+    $.fn.dataTableExt.oApi.fnGetFilteredNodes = function ( oSettings )
+    {
+        var anRows = [];
+        //var length = oSettings._iDisplayLength > 0 ? oSettings._iDisplayLength: oSettings.aiDisplay.length;
+        var length = oSettings.aiDisplay.length;
+        for ( var i=0, iLen=length ; i<iLen ; i++ )
+        {
+            var nRow = oSettings.aoData[ oSettings.aiDisplay[i] ].nTr;
+            anRows.push( nRow );
+        }
+        return anRows;
+    };
+
+    function fnGetAll()
+    {
+        var aTrs = ip_table.fnGetFilteredNodes();
+
+        for ( var i=0 ; i<aTrs.length ; i++ )
+        {
+            if ( !$(aTrs[i]).hasClass('selected') )
+                $(aTrs[i]).addClass('selected');
+        }
+    }
+
+    function fnGetReverse()
+    {
+        var aTrs = ip_table.fnGetFilteredNodes();
+
+        for (var i=0 ; i<aTrs.length ; i++ )
+        {
+            if ( $(aTrs[i]).hasClass('selected') )
+            {
+                $(aTrs[i]).removeClass('selected');
+            }
+        }
+    }
+
+    function fnGetSelected()
+    {
+        var aReturn = new Array();
+        var aTrs = ip_table.fnGetFilteredNodes();
+        for ( var i=0 ; i<aTrs.length ; i++ )
+        {
+            if ( $(aTrs[i]).hasClass('selected') )
+            {
+                var aData = ip_table.fnGetData( aTrs[i]);
+                var iId = aData[0];
+                aReturn.push( iId );
+            }
+        }
+        return aReturn;
+    }
+
+    function DeleteAll() {
+        var id_array = fnGetSelected();
+
+        if (id_array.length == 0){
+            alert("你还没有选中要操作的邮件！ 请点击需要操作的行");
+            return false;
+        }
+
+        if (!confirm("你确定要删除所选队列邮件?")) {
+            return false;
+        } else {
+            $('#ids').val(id_array);
+            $('#id_form').submit();
+        }
+    }
+    function Delete(key) {
+         if (confirm("你确定要删除邮件" + key + "?")) {
+            $('#ids').val(key);
+            $('#id_form').submit();
+        }
+    }
+    function EmptyAll() {
+         if (confirm("你确定要全部清空搜索出来的所有邮件?")) {
+            $('#action').val('empty_all');
+            $('#id_form').submit();
+        }
+    }
+
+
+</script>
+
+{% endblock %}
+

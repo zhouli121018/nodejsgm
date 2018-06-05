@@ -1,0 +1,127 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block css_block %}
+
+<style>
+    #search_form th{
+        border-top:none;
+    }
+    #search_form th input,#search_form th select{
+        width:95%;
+    }
+    #search_form .text-right{
+        white-space: nowrap;
+    }
+    .sorting_asc:after{
+        content:"" !important;
+    }
+    .sorting_desc:after{
+        content:"" !important;
+    }
+</style>
+
+
+{% endblock %}
+
+{% block page-content %}
+
+<div id="static-div" class="tabs2">
+    <h3 class="header smaller lighter blue">域名配置
+    </h3>
+    <div class="box" >
+        <div id="tab2">
+            <ul>
+                <li>
+                    <a href="#domain_basic">邮件域基本信息</a>
+                </li>
+                <li>
+                    <a href="#domain_reg_login" >用户注册</a>
+                </li>
+                <li>
+                    <a href="#domain_sys">域名功能设置</a>
+                </li>
+                <li class="sign_show" >
+                    <a href="#domain_webmail">Webmail 页面定制</a>
+                </li >
+                <li>
+                    <a href="#domain_sign">签名</a>
+                </li>
+                <li>
+                    <a href="#domain_module">前台模块管理</a>
+                </li>
+                <li>
+                    <a href="#domain_public">公共通讯录</a>
+                </li>
+                <li>
+                    <a href="#domain_secret">密级管理</a>
+                </li>
+            </ul>
+                <div id="domain_basic">
+                    {% include 'domain/include/static_basic.html' %};
+                </div>
+                <div id="domain_reg_login"></div>
+                <div id="domain_sys"></div>
+                <div id="domain_webmail"></div>
+                <div id="domain_sign"></div>
+                <div id="domain_module"></div>
+                <div id="domain_public"></div>
+                <div id="domain_secret"></div>
+
+        </div>
+    </div>
+
+
+    <!--<div class="hr hr-18 dotted hr-double"></div>-->
+</div>
+
+{% endblock %}
+
+
+
+{% include 'domain/include/static_common.html' %}
+
+{% block my_jsblock %}
+
+<script>
+    function onchangeDomainOptions(value){
+        var base_url = "{% url 'domain_basic' %}" + "?domain="+ value;
+        window.location.href = base_url;
+    }
+
+    $('#tab2>ul>li>a').click(function(){
+        var href = $(this).attr('href');
+        //console.log(href);
+        //console.log($(href))
+        if(href == "#domain_basic"){
+            url = "{% url 'domain_basic' %}";
+        }else if(href == "#domain_reg_login"){
+            url = "{% url 'domain_reg_login' %}";
+        }else if(href == "#domain_sys"){
+            url = "{% url 'domain_sys' %}";
+        }else if(href == "#domain_webmail"){
+            url = "{% url 'domain_webmail' %}";
+        }else if(href == "#domain_sign"){
+            url = "{% url 'domain_sign' %}";
+        }else if(href == "#domain_module"){
+            url = "{% url 'domain_module' %}";
+        }else if(href == "#domain_public"){
+            url = "{% url 'domain_public' %}";
+        }else if(href == "#domain_secret"){
+            url = "{% url 'domain_secret' %}";
+        }else if(href == "#domain_public"){
+            url = "{% url 'domain_public' %}";
+        }
+
+        $.ajax(
+        {
+            url: url,
+            success: function(html){
+                $(href).html(html);
+            }
+        }
+        );
+    })
+</script>
+{% endblock %}

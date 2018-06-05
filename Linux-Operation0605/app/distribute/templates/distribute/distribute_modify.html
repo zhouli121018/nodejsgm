@@ -1,0 +1,102 @@
+
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% if form.instance %} {% trans "修改服务器" %}  {% else %} {% trans "添加服务器" %} {% endif %}{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "分布式管理" %}</a> </li>
+    <li class="active">{% if form.instance %} {% trans "修改服务器" %}  {% else %} {% trans "添加服务器" %} {% endif %}</li>
+{% endblock %}
+
+{% block page-content %}
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>{% if form.instance %} {% trans "修改服务器" %}  {% else %} {% trans "添加服务器" %} {% endif %}
+                    <small>
+                        <i class="ace-icon fa fa-angle-double-right"></i>
+                        {{ form.server_name.value }}
+                    </small>
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form-horizontal" role="form" action="" method="POST" id="id_Form">
+                {% csrf_token %}
+
+                <div class="form-group {% if form.server_name.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_server_name"> 服务器名称 </label>
+                    <div class="col-sm-9">
+                        <input type="text" name="server_name" id="id_server_name" value="{{ form.server_name.value }}" maxlength="120" class="col-xs-10 col-sm-5" required/>
+                        {% if form.server_name.error %}
+                            <div style="clear: both">
+                                <p class="errornote txt-color-red">{{ form.server_name.error }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+                <div class="form-group {% if form.server_ip.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_server_ip"> 服务器IP </label>
+                    <div class="col-sm-9">
+                        <input type="text" name="server_ip" id="id_server_ip" value="{{ form.server_ip.value }}" maxlength="20" class="col-xs-10 col-sm-5" placeholder="192.168.1.1" required/>
+                        {% if form.server_ip.error %}
+                            <div style="clear: both">
+                                <p class="errornote txt-color-red">{{ form.server_ip.error }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="button" class="btn btn-info" id="id_save_button">
+                            <i class="ace-icon fa fa-check bigger-110"></i>{% trans "保存" %}
+                        </button>
+
+                        <button class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>重置
+                        </button>
+
+                        <a type="button" class="btn btn-link" href="{% url 'distribute_list' %}">取消</a>
+                    </div>
+                </div>
+            </form>
+
+
+        </div><!-- /.span -->
+    </div><!-- /.row -->
+
+{% endblock %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block my_jsblock %}
+    <script>
+
+        $(function () {
+
+            // 防止重复提交
+            saveButtonRemove();
+            $("#id_save_button").click(function(){
+                saveButtonAdd();
+                $("#id_Form").submit();
+            });
+
+        });
+
+        function saveButtonAdd(){$("#id_save_button").attr("disabled", "disabled").addClass('disabled');}
+        function saveButtonRemove(){$("#id_save_button").removeAttr("disabled").removeClass('disabled');}
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,124 @@
+{% load i18n %}
+
+<div class="row">
+    <div class="col-xs-12">
+        <form class="form-horizontal" role="form" method="POST" action="{% url 'sslSignatureView' %}" id="id_sigForm">
+            {% csrf_token %}
+
+            <div class="hr hr-6 hr-dotted"></div>
+            <div class="form-group" style="margin-bottom:0px;">
+                <label class="col-sm-2 control-label no-padding-right"></label>
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="page-header"  style="padding-bottom: 7px;padding-top: 0px;">
+                        <h3><span class="badge" style="font-size:22px;font-weight:bold;padding:6px;">2</span>{% trans " 生成证书签名请求" %}</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> 当前签名请求 </label>
+                <div class="col-sm-9">
+                    {% if is_verify %}
+                    {% else %}
+                    <p style="margin-bottom: 16px;margin-top: 8px;">
+                        <span class="" style="color: red">没有生成签名请求</span>
+                    </p>
+                    {% endif %}
+                </div>
+                <div class="col-md-offset-2 col-md-6 ">
+
+                    {% if is_verify %}
+                    <table border="0" cellpadding="0" cellspacing="2" class="table table-striped">
+                        <tbody>
+                        <tr>
+                            <td class="text-right two-border">域名：</td>
+                            <td class="no-left-b"><strong class="c_red">{{ signature.sig_domain }}</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right two-border">单位/组织：</td>
+                            <td class="no-left-b"><strong>{{ signature.sig_organization }}</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right two-border">部门：</td>
+                            <td class="no-left-b">{{ signature.sig_depart }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right two-border">省/市/自治区：</td>
+                            <td class="no-left-b">{{ signature.sig_province }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right two-border">所在地：</td>
+                            <td class="no-left-b">{{ signature.sig_locale }}</td>
+                        </tr>
+                        <tr >
+                            <td colspan="2" >
+                                <div style="padding-left: 35px;" class="text-center">
+                                    <button type="button" class="btn btn-primary btn-minier" onclick="sslPrivatekey('export-signature')">导出签名请求</button>
+                                    <button type="button" class="btn btn-danger btn-minier" onclick="sslPrivatekey('clear-signature')">清除签名请求</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    {% else %}
+
+                    <table class="table  table-striped" >
+                        <tr>
+                            <td class="text-right two-border"><strong><span style="color: red">*</span>域名：</strong></td>
+                            <td>
+                                <input type="text" name="sig_domain" maxlength="100" value="{{ signature.sig_domain }}" id="id_sig_domain" class="sig-input-width" required>
+
+                            </td>
+                            <td class="no-left-b">
+                                <span>请填写主机域名，例如邮件域为“test.com”，则主机域名一般为“mail.test.com”！</span>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-right  two-border"><strong><span style="color: red">*</span>单位/组织：</strong></td>
+                            <td>
+                                <input type="text" name="sig_organization" maxlength="100" value="{{ signature.sig_organization }}" id="id_sig_organization" class="sig-input-width" required>
+
+                            </td>
+                            <td class="no-left-b"><span>只能填写英文字符！</span></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right two-border"><b>部门：</b></td>
+                            <td>
+                                <input type="text" name="sig_depart" maxlength="100" value="{{ signature.sig_depart }}" class="sig-input-width" id="id_sig_depart">
+
+                            </td>
+                            <td class="no-left-b"><span>只能填写英文字符！</span></td>
+
+                        </tr>
+                        <tr>
+                            <td class="text-right two-border"><strong><span style="color: red">*</span>省/市/自治区：</strong></td>
+                            <td>
+                                <input type="text" name="sig_province" maxlength="100" value="{{ signature.sig_province }}" id="id_sig_province" class="sig-input-width" required>
+
+                            </td>
+                            <td class="no-left-b"><span>只能填写英文字符！</span></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right two-border"><strong><span style="color: red">*</span>所在地：</strong></td>
+                            <td >
+                                <input type="text" name="sig_locale" maxlength="100" value="{{ signature.sig_locale }}" id="id_sig_locale" class="sig-input-width" required>
+
+                            </td>
+                            <td class="no-left-b"><span>只能填写英文字符！</span></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-center">
+                                <button type="button" class="btn btn-primary btn-xs" onclick="signatureSubmit()">生成签名请求</button>
+                            </td>
+                        </tr>
+
+                    </table>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

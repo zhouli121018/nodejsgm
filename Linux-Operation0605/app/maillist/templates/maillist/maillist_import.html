@@ -1,0 +1,69 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap %}
+{% block title %} {% trans "地址文件导入" %} {% endblock %}
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "邮件列表管理" %}</a> </li>
+    <li class="active">{% trans "邮件列表文件导入" %}</li>
+{% endblock %}
+{% block page-content %}
+    <div class="row">
+        <div class="col-lg-12"><h1 class="page-header">{% trans "邮件列表文件导入" %}</h1></div>
+    </div>
+
+    <form role="form" action="" method="post">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="panel panel-default" style="margin-bottom: 0px!important;">
+                    <div class="panel-heading">{% trans "邮件列表文件导入" %}</div>
+                    <div class="panel-body">
+                        <dl>
+                            <dt>文件格式说明</dt>
+                            <dd style="width: 850px;">
+<pre>user1@domain.com	姓名	性别	生日	手机	地区	变量1	变量2
+user2@domain.com	姓名	性别	生日	手机	地区	变量1	变量2	变量3	变量4	变量5	...
+user3@domain.com	姓名	性别	生日	手机	地区	变量3</pre>
+                                <span style="color: red">注：</span>
+
+                                文件中一个地址占一行，每个邮件可以另外有10个变量；每个变量支持最长100个字符。
+                                格式如上，变量之间用“TAB”或“；”或“，”符隔开。
+
+                                <br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                要导入的文件大小不能超过 20MB，大于 20MB 的文件请切割后分批导入。
+                                地址导入时会进行地址合法性检测、有效性检测和重复性检测。<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                下面有xls,xlsx,csv,txt模板格式导出。
+                            </dd>
+                            <dt class="margin-top-10">模板格式导出</dt>
+                            <dd>
+                                <a type="button" class="btn btn-primary btn-sm" href="{% url 'maillist_template' %}?ext=xls">导出xls模板</a>
+                                <a type="button" class="btn btn-primary btn-sm" href="{% url 'maillist_template' %}?ext=xlsx">导出xlsx模板</a>
+                                <a type="button" class="btn btn-primary btn-sm" href="{% url 'maillist_template' %}?ext=txt">导出txt模板</a>
+                                <!--<a type="button" class="btn btn-primary btn-sm" href="{% url 'maillist_template' %}?ext=csv">导出csv模板</a>-->
+                            </dd>
+                        </dl>
+
+                        {% csrf_token %}
+                        {{ form|bootstrap }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix form-actions">
+            <div class="text-center">
+                <button class="btn btn-info" type="submit">
+                    <i class="ace-icon fa fa-check bigger-110"></i>{% trans "保存" %}</button>
+                <button class="btn" type="reset">
+                    <i class="ace-icon fa fa-undo bigger-110"></i>{% trans "重置" %}</button>
+                <button type="button" class="btn btn-link" onclick="location.href='{% url 'maillist_list' %}'">{% trans "取消" %}</button>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+{% block css_block %}
+{% endblock %}
+{% block my_jsblock %}
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "动态屏蔽" %}{% endblock %}
+
+{% block breadcrumb %}
+<li> <a href="{% url 'fail2ban_home' %}">{% trans "动态屏蔽" %}</a> </li>
+<li class="active">{% trans "修改" %}</li>
+{% endblock %}
+
+{% block page-content %}
+
+<div class="row">
+    <div class="space-6"></div>
+    <div class="col-xs-12">
+        <div class="page-header">
+            <h1>{% trans "动态屏蔽" %}
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    修改 {{ name }}
+                </small>
+            </h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <form class="form-horizontal" role="form" action="" method="POST">
+            {% csrf_token %}
+            <!-- #section:elements.form -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="name"> 名称 </label>
+
+                <div class="col-sm-9">
+                    <input type="text" name="name" id="name" value="{{ name }}" disabled="disabled" class="col-xs-10 col-sm-5" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="findtime"> 检测时间(秒) </label>
+
+                <div class="col-sm-9">
+                    <input type="number" id="findtime" name="findtime" value="{{obj.findtime}}" class="col-xs-10 col-sm-5" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="maxretry"> 最大重试次数 </label>
+
+                <div class="col-sm-9">
+                    <input type="number" id="maxretry" name="maxretry" value="{{obj.maxretry}}" class="col-xs-10 col-sm-5" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="bantime"> 禁用时间(秒) </label>
+
+                <div class="col-sm-9">
+                    <input type="number" id="bantime" name="bantime" value="{{obj.bantime}}" class="col-xs-10 col-sm-5" required/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="enabled"> 是否启用 </label>
+
+                <div class="col-sm-9">
+                    <select class="col-xs-10 col-sm-5" id="enabled" name="enabled">
+                        <option value="true" {% if obj.enabled == 'true' %}selected{% endif %}>启用</option>
+                        <option value="false" {% if obj.enabled == 'false' %}selected{% endif %}>禁用</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button class="btn btn-info" type="submit">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        保存
+                    </button>
+
+                    <button class="btn" type="reset">
+                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                        重置
+                    </button>
+
+                    <a type="button" class="btn btn-link" href="{% url 'fail2ban_home' %}">取消</a>
+                </div>
+            </div>
+        </form>
+
+
+    </div><!-- /.span -->
+</div><!-- /.row -->
+{% endblock %}
+
+{% block my_jsblock %}
+
+{% endblock %}
+

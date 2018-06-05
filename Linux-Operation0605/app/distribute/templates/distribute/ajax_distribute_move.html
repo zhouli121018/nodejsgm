@@ -1,0 +1,32 @@
+<td>{{ number }}</td>
+<td>
+    {{ d.from_server_obj.server_name|default_if_none:'' }}
+    <br>
+    {{ d.from_server_obj.server_ip|default_if_none:'' }}
+</td>
+<td>
+    {{ d.target_server_obj.server_name|default_if_none:'' }}
+    <br>
+    {{ d.target_server_obj.server_ip|default_if_none:'' }}
+</td>
+<td>{{ d.mailbox|default_if_none:'' }}</td>
+<td>{{ d.old_mailbox|default_if_none:'' }}</td>
+<td>{{ d.get_move_type_display }}</td>
+<td>{{ d.get_status_display }}</td>
+<td>{{ d.desc_msg|default_if_none:'' }}</td>
+<td>
+    {% if d.sync_mail %}
+        <span class="label label-xlg label-success arrowed-in arrowed-in-right">是</span>
+    {% else %}
+        <span class="label label-xlg label-light arrowed-in arrowed-in-right">否</span>
+    {% endif %}
+</td>
+<td>{{ d.last_update|date:"Y-m-d H:i" }}</td>
+<td>
+    {% if d.can_mdf %}
+        <a type="button" class="btn btn-minier btn-primary" href="{% url 'distribute_move_modify' d.id %}">修改</a>
+    {% endif %}
+    {% if d.can_delete %}
+        <a type="button" class="btn btn-minier btn-danger" href="Javascript: setStatus({{ d.id }}, 'delete')">删除</a>
+    {% endif %}
+</td>

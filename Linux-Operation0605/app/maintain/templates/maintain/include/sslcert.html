@@ -1,0 +1,112 @@
+{% load i18n %}
+
+<div class="row">
+    <div class="col-xs-12">
+        <form class="form-horizontal" role="form" method="POST" action="{% url 'sslCertView' %}" enctype="multipart/form-data" id="id_sslctfFrom">
+
+            {% csrf_token %}
+            <div class="hr hr-6 hr-dotted"></div>
+            <div class="form-group" style="margin-bottom:0px;">
+                <label class="col-sm-2 control-label no-padding-right"></label>
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="page-header"  style="padding-bottom: 7px;padding-top: 0px;">
+                        <h3><span class="badge" style="font-size:22px;font-weight:bold;padding:6px;">3</span>{% trans " 设置证书" %}</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" >
+                <label class="col-sm-3 control-label no-padding-right"> 当前证书信息 </label>
+                <div class="col-sm-9">
+                    {% if is_ca %}
+                    {% else %}
+                    <p style="margin-bottom: 16px;margin-top: 8px;">
+                        <span class="" style="color: red">没有生成签名请求</span>
+                    </p>
+                    {% endif %}
+
+                </div>
+                <div class="col-md-10 col-md-offset-2">
+                    {% if is_ca %}
+                    <table border="0" cellpadding="0" cellspacing="2" class="tb_clear">
+                        <tbody>
+                        <tr>
+                            <td colspan="2" style="padding-left: 35px;border-right: 1px solid #CFCFCF">
+                                <strong>*主题信息*</strong>
+                            </td>
+                            <td colspan="2" style="padding-left: 25px;">
+                                <strong>*签发者信息*</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>域名：</th>
+                            <td width="130" style="border-right: 1px solid #CFCFCF"><strong class="c_red">{{ cert_subject.sig_domain }}</strong></td>
+                            <th>常用名：</th>
+                            <td><strong class="c_red">{{ sert_issuer.sig_domain }}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>单位/组织：</th>
+                            <td style="border-right: 1px solid #CFCFCF"><strong>{{ cert_subject.sig_organization }}</strong></td>
+
+                            <th>单位/组织：</th>
+                            <td><strong>{{ sert_issuer.sig_organization }}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>部门：</th>
+                            <td style="border-right: 1px solid #CFCFCF">{{ cert_subject.sig_depart }}</td>
+
+                            <th>部门：</th>
+                            <td>{{ sert_issuer.sig_depart }}</td>
+                        </tr>
+                        <tr>
+                            <th>国家/地区：</th>
+                            <td style="border-right: 1px solid #CFCFCF">{{ cert_subject.sig_contry }}</td>
+
+                            <th>国家/地区：</th>
+                            <td>{{ sert_issuer.sig_contry }}</td>
+                        </tr>
+                        <tr>
+                            <th>省/市/自治区：</th>
+                            <td style="border-right: 1px solid #CFCFCF">{{ cert_subject.sig_province }}</td>
+
+                            <th>省/市/自治区：</th>
+                            <td>{{ sert_issuer.sig_province }}</td>
+                        </tr>
+                        <tr>
+                            <th>所在地：</th>
+                            <td style="border-right: 1px solid #CFCFCF">{{ cert_subject.sig_locale }}</td>
+                            <th>所在地：</th>
+                            <td>{{ sert_issuer.sig_locale }}</td>
+                        </tr>
+                        <tr >
+                            <td colspan="4">
+                                <div style="padding-left: 35px;">
+                                    <button type="button" class="btn btn-primary btn-minier" onclick="sslPrivatekey('cert-export')">导出证书</button>
+                                    <button type="button" class="btn btn-danger btn-minier" onclick="sslPrivatekey('cert-clear')">清除证书</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    {% else %}
+
+                    <div class="form-group sig-div-bottom">
+                        <div class="col-md-12">
+                                <span class="block">
+                                    <span class="control-label pull-left "> <strong><span style="color: red">*</span>选择证书：</strong></span>
+                                    <input type="file" name="certfile" value="" style="float: left">
+                                </span>
+                                <span class="block">
+                                    <button type="submit" class="btn btn-primary btn-minier">导入</button>
+                                </span>
+                        </div>
+                    </div>
+
+
+                    {% endif %}
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

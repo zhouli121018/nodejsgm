@@ -1,0 +1,155 @@
+{% load static %}
+<script src="{% static 'assets/js/ace-extra.js' %}"></script>
+<script src="{% static 'assets/js/jquery-ui.js' %}"></script>
+<script src="{% static 'assets/js/jquery-ui.custom.js' %}" ></script>
+<script src="{% static 'assets/js/jquery.ui.touch-punch.js' %}"></script>
+
+<script src="{% static 'assets/js/markdown/markdown.js' %}" ></script>
+<script src="{% static 'assets/js/markdown/bootstrap-markdown.js' %}" ></script>
+<script src="{% static 'assets/js/jquery.hotkeys.js' %}" ></script>
+<script src="{% static 'assets/js/bootstrap-wysiwyg.js' %}"></script>
+<script src="{% static 'assets/js/bootbox.js' %}"></script>
+
+<script src="{% static 'assets/js/fuelux/fuelux.spinner.js' %}" ></script>
+<script src="{% static 'assets/js/date-time/moment.js' %}" ></script>
+<script src="{% static 'assets/js/date-time/bootstrap-datetimepicker.js' %}" ></script>
+<script src="{% static 'assets/js/date-time/bootstrap-datepicker.js' %}" ></script>
+<script src="{% static 'assets/js/date-time/daterangepicker.js' %}" ></script>
+<script src="{% static 'assets/js/ace/elements.fileinput.js' %}" ></script>
+<script src="{% static 'assets/js/select2.js' %}" ></script>
+
+<script src="{% static 'assets/js/dataTables/jquery.dataTables.js' %}" ></script>
+<script src="{% static 'assets/js/dataTables/jquery.dataTables.bootstrap.js' %}" ></script>
+<script src="{% static 'assets/js/dataTables/extensions/Select/js/dataTables.select.js' %}" ></script>
+
+<script src="{% static 'assets/js/fuelux/fuelux.tree.js' %}" ></script>
+
+<!-- ace scripts -->
+<script src="{% static 'assets/js/ace/elements.colorpicker.js' %}" ></script>
+<script src="{% static 'assets/js/ace/elements.fileinput.js' %}" ></script>
+<script src="{% static 'assets/js/ace/elements.wysiwyg.js' %}" ></script>
+<script src="{% static 'assets/js/ace/elements.spinner.js' %}" ></script>
+<script src="{% static 'assets/js/ace/elements.treeview.js' %}" ></script>
+<script src="{% static 'assets/js/ace/elements.wizard.js' %}" ></script>
+<script src="{% static 'assets/js/ace/elements.aside.js' %}" ></script>
+<script src="{% static 'assets/js/ace/ace.js' %}" ></script>
+<script src="{% static 'assets/js/ace/ace.ajax-content.js' %}" ></script>
+<script src="{% static 'assets/js/ace/ace.touch-drag.js' %}" ></script>
+<script src="{% static 'assets/js/ace/ace.sidebar.js' %}" ></script>
+<script src="{% static 'assets/js/ace/ace.sidebar-scroll-1.js' %}" ></script>
+<script src="{% static 'assets/js/ace/ace.submenu-hover.js' %}" ></script>
+<script src="{% static 'assets/js/ace/ace.widget-box.js' %}" ></script>
+<script src="{% static 'assets/js/ace/ace.settings.js' %}" ></script>
+<script src="{% static 'assets/js/ace/ace.settings-rtl.js' %}" ></script>
+<script src="{% static 'assets/js/ace/ace.settings-skin.js' %}" ></script>
+<script src="{% static 'assets/js/ace/ace.widget-on-reload.js' %}" ></script>
+<script src="{% static 'assets/js/ace/ace.searchbox-autocomplete.js' %}" ></script>
+<!-- ace scripts -->
+{% block my_jsblock %}
+<script>
+    $( "#tab2" ).tabs();
+    function showErrorAlert (reason, detail) {
+        var msg='';
+        if (reason==='unsupported-file-type') { msg = "Unsupported format " +detail; }
+        else {
+            //console.log("error uploading file", reason, detail);
+        }
+        $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>'+
+                '<strong>File upload error</strong> '+msg+' </div>').prependTo('#alerts');
+    }
+
+    $('textarea[data-provide="markdown"]').each(function(){
+        var $this = $(this);
+
+        if ($this.data('markdown')) {
+            $this.data('markdown').showEditor();
+        }
+        else $this.markdown()
+
+        $this.parent().find('.btn').addClass('btn-white');
+    })
+    function initEditor(el){
+        $(el).ace_wysiwyg({
+            toolbar:
+                    [
+                        {name:'font', title: '字体'},
+                        null,
+                        {name:'fontSize', title: '字体大小'},
+                        null,
+                        {name:'bold', className:'btn-info',title: '粗体/ctrl+B'},
+                        {name:'italic', className:'btn-info',title:"斜体/Ctrl+I"},
+                        {name:'strikethrough', className:'btn-info',title:"删除线"},
+                        {name:'underline', className:'btn-info',title:"下划线"},
+                        null,
+                        {name:'insertunorderedlist', className:'btn-success',title:"图形列表"},
+                        {name:'insertorderedlist', className:'btn-success',title:"数字列表"},
+                        {name:'outdent', className:'btn-purple',title:"减少缩进"},
+                        {name:'indent', className:'btn-purple',title:"缩进"},
+                        null,
+                        {name:'justifyleft', className:'btn-primary',title:"左对齐"},
+                        {name:'justifycenter', className:'btn-primary',title:"居中对齐"},
+                        {name:'justifyright', className:'btn-primary',title:"右对齐"},
+                        {name:'justifyfull', className:'btn-inverse',title:"两端对齐"},
+                        null,
+                        {name:'createLink', className:'btn-pink',title:"链接"},
+                        {name:'unlink', className:'btn-pink',title:"断开链接"},
+                        null,
+                        {name:'insertImage', className:'btn-success',title:"图片"},
+                        null,
+                        {name:'foreColor', title:"颜色"},
+                        null,
+                        {name:'undo', className:'btn-grey',title:"撤销"}
+                    ],
+            'wysiwyg': {
+                fileUploadError: showErrorAlert
+            }
+        }).prev().addClass('wysiwyg-style2');
+
+        $('[data-toggle="buttons"] .btn').on('click', function(e){
+            var target = $(this).find('input[type=radio]');
+            var which = parseInt(target.val());
+            var toolbar = $(el).prev().get(0);
+            if(which >= 1 && which <= 4) {
+                toolbar.className = toolbar.className.replace(/wysiwyg\-style(1|2)/g , '');
+                if(which == 1) $(toolbar).addClass('wysiwyg-style1');
+                else if(which == 2) $(toolbar).addClass('wysiwyg-style2');
+                if(which == 4) {
+                    $(toolbar).find('.btn-group > .btn').addClass('btn-white btn-round');
+                } else $(toolbar).find('.btn-group > .btn-white').removeClass('btn-white btn-round');
+            }
+        });
+    }
+    $(function(){
+//        $(".sign_show a").trigger("click");
+        $(".mydatetime").datetimepicker({
+            format: 'YYYY-MM-DD HH:mm:ss'
+//        autoclose:true
+        });
+        $('#mycolor').ace_colorpicker().on('change', function() {
+//        alert(this.value);
+//        alert(this.selectedIndex);
+        });
+        $('.date-picker').datepicker({
+                    autoclose: true,
+                    todayHighlight: true
+                })
+                //show datepicker when clicking on the icon
+                .next().on(ace.click_event, function(){
+            $(this).prev().focus();
+        });
+
+    })
+    function htmlDecodeByRegExp(str){
+        var s = "";
+        if(str.length == 0) return "";
+        s = str.replace(/&amp;/g,"&");
+        s = s.replace(/&lt;/g,"<");
+        s = s.replace(/&gt;/g,">");
+        s = s.replace(/&nbsp;/g," ");
+        s = s.replace(/&#39;/g,"\'");
+        s = s.replace(/&quot;/g,"\"");
+        return s;
+    }
+</script>
+
+{% endblock %}

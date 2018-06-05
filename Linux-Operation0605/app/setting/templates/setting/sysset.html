@@ -1,0 +1,241 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "综合功能设置" %}{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'assets/css/jquery-ui.min.css' %}" />
+<style>
+    .nowrap0{
+        white-space: nowrap;
+    }
+    table td.text-right{
+      font-weight:bold;
+        /*white-space: nowrap;*/
+    }
+</style>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="{% url 'system_set' %}">{% trans "综合功能设置" %}</a> </li>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>{% trans "综合功能设置" %}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form-horizontal table-responsive" role="form" action="" method="POST">
+                {% csrf_token %}
+
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <td class="text-right">灰名单功能：</td>
+                        <td class="nowrap0">
+
+                            <label class="">
+                                <input type="radio" name="greylist" value="1" {% if form.greylist.value == '1'  %} checked {% endif %}>开启
+                            </label>
+                            <label class="">
+                                <input type="radio" name="greylist" value="-1" {% if form.greylist.value != '1'  %} checked {% endif %}>关闭
+                            </label>
+                        </td>
+                        <td class="text-right">收件人数量限制：</td>
+                        <td style="border:none;">
+                            <input type="number" id="id_recipientlimit" style="min-width:60px;" name="recipientlimit" value="{{ form.recipientlimit.value }}" class="col-xs-10 col-sm-5" required/>
+                            {% if form.recipientlimit.error %}
+                            <div style="clear: both"><p class="errornote txt-color-red">{{ form.recipientlimit.error }}</p></div>
+                            {% endif %}
+
+                        </td>
+                        <td style="border:none;"><span class="middle text-success">例如：100、500、1000</span></td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">语言设置：</td>
+                        <td>
+                            <label>
+                                <input type="radio" name="notice_lang" value="1" {% if form.notice_lang.value == '1'  %} checked="" {% endif %}><span>中文</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="notice_lang" value="-1" {% if form.notice_lang.value != '1'  %} checked="" {% endif %}><span>英文</span>
+                            </label>
+                        </td>
+                        <td class="text-right">登录界面域名检测：</td>
+                        <td colspan="2">
+                                <label>
+                                    <input type="radio" name="login_domaincheck" value="1" {% if form.login_domaincheck.value == '1'  %} checked="" {% endif %}>开启
+                                </label>
+                                <label>
+                                    <input type="radio" name="login_domaincheck" value="-1" {% if form.login_domaincheck.value != '1'  %} checked="" {% endif %}> 关闭
+                                </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">发信时对本服无效用户进行退信：</td>
+                        <td>
+                                <label>
+                                    <input type="radio" name="sys_pass_all_local" value="1" {% if form.sys_pass_all_local.value == '1'  %} checked="" {% endif %}><span>开启</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="sys_pass_all_local" value="-1" {% if form.sys_pass_all_local.value != '1'  %} checked="" {% endif %}><span>关闭</span>
+                                </label>
+                        </td>
+                        <td class="text-right">"旧邮件备份"目录备份功能：</td>
+                        <td class="nowrap0" style="border:none;">
+
+                                <label>
+                                    <input type="radio" name="sys_auto_backup_mail" value="1" {% if form.sys_auto_backup_mail.value == '1'  %} checked="" {% endif %}><span>开启</span>
+                                </label>
+                                <label>
+                                    <input type="radio" name="sys_auto_backup_mail" value="-1" {% if form.sys_auto_backup_mail.value != '1'  %} checked="" {% endif %}><span>关闭</span>
+                                </label>
+                        </td>
+                        <td style="border:none;">
+                            <p class="middle text-success "><strong style="color: red">注：</strong> 开启这个功能后，每天只会保留收件箱最新的1万封邮件，其余邮件转移到"旧邮件备份"目录中。在邮件量比较大时，开启该功能可以加快收件箱邮件的搜索效率。</p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-3 control-label no-padding-right" for="id_greylist"> 灰名单功能 </label>-->
+                    <!--<div class="col-sm-9">-->
+                        <!--<label class="radio radio-inline padding-top-0 margin-top-0 form-inline">-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="greylist" value="1" {% if form.greylist.value == '1'  %} checked="" {% endif %}><span>开启</span>-->
+                            <!--</label>-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="greylist" value="-1" {% if form.greylist.value != '1'  %} checked="" {% endif %}><span>关闭</span>-->
+                            <!--</label>-->
+                        <!--</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="form-group {% if form.recipientlimit.error %} has-error {% endif %}">-->
+                    <!--<label class="col-sm-3 control-label no-padding-right" for="id_recipientlimit"> 收件人数量限制 </label>-->
+                    <!--<div class="col-sm-9" style="padding-left:32px;">-->
+                        <!--<input type="number" id="id_recipientlimit" name="recipientlimit" value="{{ form.recipientlimit.value }}" class="col-xs-10 col-sm-5" required/>-->
+                        <!--{% if form.recipientlimit.error %}-->
+                            <!--<div style="clear: both"><p class="errornote txt-color-red">{{ form.recipientlimit.error }}</p></div>-->
+                        <!--{% endif %}-->
+                    <!--</div>-->
+                    <!--<div class="" style="padding-left:32px;">-->
+                        <!--<label class="col-sm-3 control-label no-padding-right"></label>-->
+                        <!--<span class="help-inline col-xs-9 col-sm-7">-->
+                            <!--<span class="middle text-success">例如：100、500、1000</span>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-3 control-label no-padding-right" for="id_notice_lang"> 语言设置 </label>-->
+                    <!--<div class="col-sm-9">-->
+                        <!--<label class="radio radio-inline padding-top-0 margin-top-0 form-inline">-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="notice_lang" value="1" {% if form.notice_lang.value == '1'  %} checked="" {% endif %}><span>中文</span>-->
+                            <!--</label>-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="notice_lang" value="-1" {% if form.notice_lang.value != '1'  %} checked="" {% endif %}><span>英文</span>-->
+                            <!--</label>-->
+                        <!--</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-3 control-label no-padding-right" for="id_login_domaincheck"> 登录界面域名检测 </label>-->
+                    <!--<div class="col-sm-9">-->
+                        <!--<label class="radio radio-inline padding-top-0 margin-top-0 form-inline">-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="login_domaincheck" value="1" {% if form.login_domaincheck.value == '1'  %} checked="" {% endif %}><span>开启</span>-->
+                            <!--</label>-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="login_domaincheck" value="-1" {% if form.login_domaincheck.value != '1'  %} checked="" {% endif %}><span>关闭</span>-->
+                            <!--</label>-->
+                        <!--</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-3 control-label no-padding-right" for="id_sys_pass_all_local"> 发信时对本服无效用户进行退信 </label>-->
+                    <!--<div class="col-sm-9">-->
+                        <!--<label class="radio radio-inline padding-top-0 margin-top-0 form-inline">-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="sys_pass_all_local" value="1" {% if form.sys_pass_all_local.value == '1'  %} checked="" {% endif %}><span>开启</span>-->
+                            <!--</label>-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="sys_pass_all_local" value="-1" {% if form.sys_pass_all_local.value != '1'  %} checked="" {% endif %}><span>关闭</span>-->
+                            <!--</label>-->
+                        <!--</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-3 control-label no-padding-right" for="id_sys_auto_backup_mail"> "旧邮件备份"目录备份功能 </label>-->
+                    <!--<div class="col-sm-9">-->
+                        <!--<label class="radio radio-inline padding-top-0 margin-top-0 form-inline">-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="sys_auto_backup_mail" value="1" {% if form.sys_auto_backup_mail.value == '1'  %} checked="" {% endif %}><span>开启</span>-->
+                            <!--</label>-->
+                            <!--<label>-->
+                                <!--<input type="radio" name="sys_auto_backup_mail" value="-1" {% if form.sys_auto_backup_mail.value != '1'  %} checked="" {% endif %}><span>关闭</span>-->
+                            <!--</label>-->
+                        <!--</label>-->
+                        <!--<div style="clear: both">-->
+                        <!--<div style="padding-left:20px;">-->
+                        <!--<span class="middle text-success "><strong style="color: red">注：</strong> 开启这个功能后，每天只会保留收件箱最新的1万封邮件，其余邮件转移到"旧邮件备份"目录中。</span>-->
+                        <!--</div>-->
+                        <!--<div style="padding-left:20px;">-->
+                        <!--<span class="middle text-success">在邮件量比较大时，开启该功能可以加快收件箱邮件的搜索效率。</span>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_sys_search_mails"> 搜索邮件加速开关 </label>
+                    <div class="col-sm-9">
+                        <label class="radio radio-inline padding-top-0 margin-top-0 form-inline">
+                            <label>
+                                <input type="radio" name="sys_search_mails" value="1" {% if form.sys_search_mails.value == '1'  %} checked="" {% endif %}><span>开启</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="sys_search_mails" value="-1" {% if form.sys_search_mails.value != '1'  %} checked="" {% endif %}><span>关闭</span>
+                            </label>
+                            <label>
+                                <span class="middle text-success"><strong>注：</strong> 开启此功能后系统会启用中文分词搜索邮件；</span>
+                            </label>
+                        </label>
+                    </div>
+                </div>
+                -->
+
+                <div class="clearfix form-actions">
+                    <div class="text-center">
+                        <button class="btn btn-info" type="submit">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            保存
+                        </button>
+                        <button class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+
+                    </div>
+                </div>
+            </form>
+
+        </div><!-- /.span -->
+    </div><!-- /.row -->
+{% endblock %}
+
+{% block my_jsblock %}
+
+{% endblock %}

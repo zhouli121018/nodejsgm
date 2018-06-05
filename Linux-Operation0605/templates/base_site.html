@@ -1,0 +1,656 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load perm_tags %}
+{% load tags %}
+{% block js_block %}
+ <!-- basic scripts -->
+
+    <!--[if !IE]> -->
+    <script src="{% static 'components/jquery/dist/jquery.js' %}"></script>
+
+    <!-- <![endif]-->
+    <!--[if IE]>
+    <script src="{% static 'components/jquery.1x/dist/jquery.js' %}"></script>
+    <![endif]-->
+{% endblock %}
+
+{% block body %}
+
+    <body class="no-skin">
+    <!-- #section:basics/navbar.layout -->
+    <div id="navbar" class="navbar navbar-default          ace-save-state">
+        <div class="navbar-container ace-save-state" id="navbar-container">
+            <!-- #section:basics/sidebar.mobile.toggle -->
+            <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+                <span class="sr-only">Toggle sidebar</span>
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- /section:basics/sidebar.mobile.toggle -->
+            <div class="navbar-header pull-left">
+                <!-- #section:basics/navbar.layout.brand -->
+                <a href="#" class="navbar-brand">
+                    <small>
+                        <i class="fa fa-leaf"></i>
+                        U-Mail邮件系统--超级管理员后台
+                    </small>
+                </a>
+
+                <!-- /section:basics/navbar.layout.brand -->
+
+                <!-- #section:basics/navbar.toggle -->
+
+                <!-- /section:basics/navbar.toggle -->
+            </div>
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+                    <li class="green">
+                        <a  href="#" data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <i class="ace-icon glyphicon glyphicon-font"></i>
+                            语言
+                            <!--<span class="badge badge-important">8</span>-->
+                            <i class="ace-icon fa fa-caret-down"></i>
+                        </a>
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li>
+                                <a href="#" >
+                                    <!--<i class="ace-icon fa fa-user"></i>-->
+                                    中文
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#" >
+                                    <!--<i class="ace-icon fa fa-cog"></i>-->
+                                    English
+                                </a>
+                            </li>
+                        </ul>
+
+                    </li>
+                    <li class=" blue">
+                        <a  href="#" data-toggle="modal" id="fankui_btn" data-target="#fankui">
+                            <i class="ace-icon fa fa-codepen"></i>
+                            反馈
+                            <!--<span class="badge badge-important">8</span>-->
+                        </a>
+
+                    </li>
+
+                    <li class="purple">
+                        <a   href="#" data-toggle="modal" data-target="#resetPwd">
+                            <i class="ace-icon fa fa-cog"></i>
+                            修改密码
+                        </a>
+                    </li>
+
+                    <li class="light-blue">
+                        <a   href="{% url 'logout' %}" >
+                            <i class="ace-icon fa fa-power-off"></i>
+                            退出登录
+                        </a>
+                    </li>
+
+                    <!-- #section:basics/navbar.user_menu -->
+                    <!--<li class="light-blue">-->
+                    <!--<a data-toggle="dropdown" href="#" class="dropdown-toggle">-->
+                    <!--<img class="nav-user-photo" src="../assets/avatars/user.jpg" alt="Jason's Photo" />-->
+                    <!--<span class="user-info">-->
+                    <!--<small>Welcome,</small>-->
+                    <!--Jason-->
+                    <!--</span>-->
+
+                    <!--<i class="ace-icon fa fa-caret-down"></i>-->
+                    <!--</a>-->
+
+                    <!--<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">-->
+                    <!--<li>-->
+                    <!--<a href="#" data-toggle="modal" data-target="#resetPwd">-->
+                    <!--<i class="ace-icon fa fa-user"></i>-->
+                    <!--修改密码-->
+                    <!--</a>-->
+                    <!--</li>-->
+
+                    <!--<li>-->
+                    <!--<a href="#" data-toggle="modal" data-target="#global_set">-->
+                    <!--<i class="ace-icon fa fa-cog"></i>-->
+                    <!--全局设置-->
+                    <!--</a>-->
+                    <!--</li>-->
+
+                    <!--<li class="divider"></li>-->
+
+                    <!--<li>-->
+                    <!--<a href="#">-->
+                    <!--<i class="ace-icon fa fa-power-off"></i>-->
+                    <!--退出登录-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!--</ul>-->
+                    <!--</li>-->
+
+                    <!-- /section:basics/navbar.user_menu -->
+                </ul>
+            </div>
+            <form class="pull-right" style="margin:6px 28px 5px 0;width:220px;">
+                <select class="select2"  id="search_select2" style="max-width:100%;">
+                    <option disabled selected>输入关键词搜索功能</option>
+                    <!--<option value="systemStatus/licence">授权信息</option>-->
+                    <!--<option value="systemStatus/sysinfo">软件信息</option>-->
+                    <!--<option value="systemStatus/status">系统状态</option>-->
+                </select>
+            </form>
+            <!-- #section:basics/navbar.dropdown -->
+            <!-- /section:basics/navbar.dropdown -->
+        </div><!-- /.navbar-container -->
+    </div>
+
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container ace-save-state" id="main-container">
+        <script type="text/javascript">
+            try{ace.settings.loadState('main-container')}catch(e){}
+        </script>
+
+        <!-- #section:basics/sidebar -->
+        <div id="sidebar" class="sidebar                  responsive                    ace-save-state">
+            <script type="text/javascript">
+                try{ace.settings.loadState('sidebar')}catch(e){}
+            </script>
+
+
+            <ul class="nav nav-list">
+
+                <li class="">
+                    <a href="{% url 'home' %}">
+                        <i class="menu-icon fa fa-tachometer"></i>
+                        <span class="menu-text"> 主页 </span>
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+
+                {% show_nav perms %}
+
+                {% comment %}
+
+                    <li class="" id="nav_system">
+
+                        <a href="#" class="dropdown-toggle">
+                            <i class="menu-icon fa fa-list"></i>
+                            <span class="menu-text"> 系统状态 </span>
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+
+                        <b class="arrow"></b>
+
+                        <ul class="submenu">
+                            <li class="">
+                                <a href="{% url 'system_licence' %}"><i class="menu-icon fa fa-caret-right"></i> 授权信息 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'system_sysinfo' %}"><i class="menu-icon fa fa-caret-right"></i> 软件信息 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'system_visitlog' %}"><i class="menu-icon fa fa-caret-right"></i> 用户访问记录 </a><b class="arrow"></b>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="" id="nav_function">
+
+                        <a href="#" class="dropdown-toggle">
+                            <i class="menu-icon fa fa-list"></i>
+                            <span class="menu-text"> 系统功能设置 </span>
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+
+                        <b class="arrow"></b>
+
+                        <ul class="submenu">
+                            <li class="">
+                                <a href="{% url 'domain_alias_set' %}"><i class="menu-icon fa fa-caret-right"></i> 邮件域别名 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'review_list' %}"><i class="menu-icon fa fa-caret-right"></i> 审核管理 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'cfilter_set' %}"><i class="menu-icon fa fa-caret-right"></i> 内容过滤器 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'account_transfer' %}"><i class="menu-icon fa fa-caret-right"></i> 帐号间数据迁移 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'mail_moving' %}"><i class="menu-icon fa fa-caret-right"></i> 外域邮件数据导入 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'mail_transfer' %}"><i class="menu-icon fa fa-caret-right"></i> 内网邮件代发 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'ssl_maintain' %}"><i class="menu-icon fa fa-caret-right"></i> SSL数字证书 </a><b class="arrow"></b>
+                            </li>
+
+                            <li class="">
+                                <a href="{% url 'domain_header_trans' %}"><i class="menu-icon fa fa-caret-right"></i> 邮件头翻译 </a><b class="arrow"></b>
+                            </li>
+
+                            <li class="">
+                                <a href="{% url 'dkim' %}"><i class="menu-icon fa fa-caret-right"></i> DKIM设置 </a><b class="arrow"></b>
+                            </li>
+
+                            <li class="">
+                                <a href="{% url 'setting' %}"><i class="menu-icon fa fa-caret-right"></i> 全局设置开关 </a><b class="arrow"></b>
+                            </li>
+
+                            {% if request.user.open_custom_kkserver %}
+                                <li class="">
+                                    <a href="{% url 'custom_kkserver' %}"><i class="menu-icon fa fa-caret-right"></i> KKServer推送设置 </a><b class="arrow"></b>
+                                </li>
+                            {% endif %}
+
+                        </ul>
+                    </li>
+
+                    <li class="" id="nav_domain">
+
+                        <a href="#" class="dropdown-toggle">
+                            <i class="menu-icon fa fa-list"></i>
+                            <span class="menu-text"> 域名功能设置 </span>
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+
+                        <b class="arrow"></b>
+
+                        <ul class="submenu">
+                            <li class="">
+                                <a href="{% url 'domain_basic' %}"><i class="menu-icon fa fa-caret-right"></i> 域名配置 </a><b class="arrow"></b>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="" id="nav_security">
+
+                        <a href="#" class="dropdown-toggle">
+                            <i class="menu-icon fa fa-list"></i>
+                            <span class="menu-text"> 安全设置 </span>
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+
+                        <b class="arrow"></b>
+
+                        <ul class="submenu">
+                            <li class="">
+                                <a href="{% url 'fail2ban_home' %}"><i class="menu-icon fa fa-caret-right"></i> 动态屏蔽 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'trustip_set' %}"><i class="menu-icon fa fa-caret-right"></i> 信任IP地址 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'blacklist_set' %}"><i class="menu-icon fa fa-caret-right"></i> 发件人黑/白名单 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'whitelist_rcp_set' %}"><i class="menu-icon fa fa-caret-right"></i> 收件人白名单 </a><b class="arrow"></b>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="" id="nav_maintain">
+
+                        <a href="#" class="dropdown-toggle">
+                            <i class="menu-icon fa fa-list"></i>
+                            <span class="menu-text"> 系统维护 </span>
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+
+                        <b class="arrow"></b>
+
+                        <ul class="submenu">
+                            <li class="">
+                                <a href="{% url 'backup_maintain' %}"><i class="menu-icon fa fa-caret-right"></i> 数据备份 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'log_maintain' %}"><i class="menu-icon fa fa-caret-right"></i> 程序日志 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'isolate_maintain' %}"><i class="menu-icon fa fa-caret-right"></i> 隔离邮件 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'maillog' %}"><i class="menu-icon fa fa-caret-right"></i> 邮件统计报告 </a><b class="arrow"></b>
+                            </li>
+                        </ul>
+                    </li>
+
+                    {% if request.user.open_distribute %}
+                        <li class="" id="nav_distribute">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-list"></i>
+                                <span class="menu-text"> 分布式管理 </span>
+
+                                <b class="arrow fa fa-angle-down"></b>
+                            </a>
+                            <b class="arrow"></b>
+
+                            <ul class="submenu">
+                                <li class="">
+                                    <a href="{% url 'distribute_list' %}">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        分布式主机列表
+                                    </a>
+                                    <b class="arrow"></b>
+                                    <a href="{% url 'proxy_open_config' %}">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        分布式开关
+                                    </a>
+                                    <b class="arrow"></b>
+                                    <a href="{% url 'distribute_server_status' %}">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        服务器连接状态
+                                    </a>
+                                    <b class="arrow"></b>
+                                    <a href="{% url 'distribute_account_move' %}">
+                                        <i class="menu-icon fa fa-caret-right"></i>
+                                        帐号迁移进程列表
+                                    </a>
+                                    <b class="arrow"></b>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                {% endcomment %}
+
+                {% if request.user.is_superuser %}
+                    <li class="" id="nav_perm">
+                        <a href="#" class="dropdown-toggle">
+                            <i class="menu-icon fa fa-list"></i>
+                            <span class="menu-text"> 管理官管理 </span>
+                            <b class="arrow fa fa-angle-down"></b>
+                        </a>
+                        <b class="arrow"></b>
+                        <ul class="submenu">
+                            <li class="">
+                                <a href="{% url 'user_list' %}"><i class="menu-icon fa fa-caret-right"></i> 用户管理 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'group_list' %}"><i class="menu-icon fa fa-caret-right"></i> 用户组管理 </a><b class="arrow"></b>
+                            </li>
+                            <li class="">
+                                <a href="{% url 'perm_list' %}"><i class="menu-icon fa fa-caret-right"></i> 权限管理 </a><b class="arrow"></b>
+                            </li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+            </ul><!-- /.nav-list -->
+
+
+            <!-- #section:basics/sidebar.layout.minimize -->
+            <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+                <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+            </div>
+
+            <!-- /section:basics/sidebar.layout.minimize -->
+        </div>
+
+        <!-- /section:basics/sidebar -->
+        <div class="main-content">
+            <div class="main-content-inner">
+                <!-- #section:basics/content.breadcrumbs -->
+                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                    {% block switch-domain %}
+                    {% switch_domain request %}
+                    {% endblock %}
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="ace-icon fa fa-home home-icon"></i>
+                            <a href="{% url 'home' %}">主页</a>
+                        </li>
+
+                        {% block breadcrumb %}
+                        {% endblock %}
+
+                    </ul><!-- /.breadcrumb -->
+
+                </div>
+
+
+                <!-- /section:basics/content.breadcrumbs -->
+                <div class="page-content">
+                    {% if messages %}
+                        <div class="row">
+                            <article class="col-sm-12">
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }} fade in">
+                                        <button class="close" data-dismiss="alert">
+                                            ×
+                                        </button>
+                                        <i class="fa-fw fa fa-{{ message.tags }}"></i>
+                                        <strong>{{ message.tags|capfirst }}</strong> {{ message }}
+                                    </div>
+                                {% endfor %}
+                            </article>
+                        </div>
+                    {% endif %}
+                    {% block page-content %}
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <!-- PAGE CONTENT BEGINS -->
+
+                                <!-- PAGE CONTENT ENDS -->
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    {% endblock %}
+
+                    {% include 'remark.html' %}
+
+                </div><!-- /.page-content -->
+
+
+            </div>
+        </div><!-- /.main-content -->
+
+        <div class="footer">
+            <div class="footer-inner">
+                <!-- #section:basics/footer -->
+                <div class="footer-content">
+                    <a href="http://www.comingchina.com/" target="_blank">
+						<span class="bigger-120">
+							<span class="blue bolder">www.comingchina.com</span>
+						</span>
+                    </a>
+                </div>
+
+                <!-- /section:basics/footer -->
+            </div>
+        </div>
+
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
+    </body>
+{% endblock %}
+
+{% block jsblock %}
+
+    <script charset="utf-8" src="{% static 'editor/kindeditor.js' %}"></script>
+    <script charset="utf-8" src="{% static 'editor/lang/zh_CN.js' %}"></script>
+    <script type="text/javascript">
+        if('ontouchstart' in document.documentElement) document.write("<script src='{% static 'components/_mod/jquery.mobile.custom/jquery.mobile.custom.js' %}'>"+"<"+"/script>");
+
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(function(){
+            var path = window.location.pathname;
+            $('#sidebar').find('[href="'+path+'"]').parent().first().addClass('active');
+            if ( path.indexOf('/operation/system/')==0 ){
+                $('#nav_system').addClass('active open');
+            } else if ( path.indexOf('/operation/function/maillog/')==0 ){
+                $('#nav_maintain').addClass('active open');
+            } else if ( path.indexOf('/operation/function/distribute/')==0 ){
+                $('#nav_distribute').addClass('active open');
+            } else if (path.indexOf('/operation/function/')==0){
+                $('#nav_function').addClass('active open');
+            } else if ( path.indexOf('/operation/domain/')==0 ){
+                $('#nav_domain').addClass('active open');
+            } else if ( path.indexOf('/operation/security/')==0 ){
+                $('#nav_security').addClass('active open');
+            } else if ( path.indexOf('/operation/maintain/')==0 ){
+                $('#nav_maintain').addClass('active open');
+            }else if ( path.indexOf('/operation/perms/')==0 ){
+                $('#nav_perm').addClass('active open');
+            };
+        });
+
+        /* -------------备注----------------- */
+        // 备注
+        var editor_remark_base;
+        KindEditor.ready(function(K) {
+            var options = {
+                width: '100%',
+                minHeight: '350',
+                items: ['source', 'preview', 'fullscreen', '|', 'undo', 'redo', '|', 'cut', 'copy', 'paste', 'plainpaste', 'wordpast', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', '|', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', '|', 'template', 'clearhtml', 'quickformat', 'selectall', '|', 'lineheight', '/', 'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline', 'strikethrough', 'linehieght', 'removeformat', '|', 'localimage', 'flash', 'media', 'insertfile', 'table', 'hr', 'link', 'unlink', '|', 'umail_link'],
+                filterMode: false,
+                wellFormatMode: false,
+                allowImageUpload: false,
+                allowFlashUpload: false,
+                allowMediaUpload: false,
+                resizeType: 2,
+                afterBlur:function(){this.sync();},
+                colorTable: [
+                    //["#FBEFEF", "#FBF2EF", "#FBF5EF", "#FBF8EF", "#FBFBEF", "#F8FBEF", "#F5FBEF", "#F2FBEF", "#EFFBEF", "#EFFBF2", "#EFFBF5", "#EFFBF8", "#EFFBFB", "#EFF8FB", "#EFF5FB", "#EFF2FB", "#EFEFFB", "#F2EFFB", "#F5EFFB", "#F8EFFB", "#FBEFFB", "#FBEFF8", "#FBEFF5", "#FBEFF2", "#FFFFFF"],
+
+                    ["#F8E0E0", "#F8E6E0", "#F8ECE0", "#F7F2E0", "#F7F8E0", "#F1F8E0", "#ECF8E0", "#E6F8E0", "#E0F8E0", "#E0F8E6", "#E0F8EC", "#E0F8F1", "#E0F8F7", "#E0F2F7", "#E0ECF8", "#E0E6F8", "#E0E0F8", "#E6E0F8", "#ECE0F8", "#F2E0F7", "#F8E0F7", "#F8E0F1", "#F8E0EC", "#F8E0E6", "#FAFAFA"],
+
+                    ["#F6CECE", "#F6D8CE", "#F6E3CE", "#F5ECCE", "#F5F6CE", "#ECF6CE", "#E3F6CE", "#D8F6CE", "#CEF6CE", "#CEF6D8", "#CEF6E3", "#CEF6EC", "#CEF6F5", "#CEECF5", "#CEE3F6", "#CED8F6", "#CECEF6", "#D8CEF6", "#E3CEF6", "#ECCEF5", "#F6CEF5", "#F6CEEC", "#F6CEE3", "#F6CED8", "#F2F2F2"],
+
+                    ["#F5A9A9", "#F5BCA9", "#F5D0A9", "#F3E2A9", "#F2F5A9", "#E1F5A9", "#D0F5A9", "#BCF5A9", "#A9F5A9", "#A9F5BC", "#A9F5D0", "#A9F5E1", "#A9F5F2", "#A9E2F3", "#A9D0F5", "#A9BCF5", "#A9A9F5", "#BCA9F5", "#D0A9F5", "#E2A9F3", "#F5A9F2", "#F5A9E1", "#F5A9D0", "#F5A9BC", "#E6E6E6"],
+
+                    ["#F78181", "#F79F81", "#F7BE81", "#F5DA81", "#F3F781", "#D8F781", "#BEF781", "#9FF781", "#81F781", "#81F79F", "#81F7BE", "#81F7D8", "#81F7F3", "#81DAF5", "#81BEF7", "#819FF7", "#8181F7", "#9F81F7", "#BE81F7", "#DA81F5", "#F781F3", "#F781D8", "#F781BE", "#F7819F", "#D8D8D8"],
+
+                    ["#FA5858", "#FA8258", "#FAAC58", "#F7D358", "#F4FA58", "#D0FA58", "#ACFA58", "#82FA58", "#58FA58", "#58FA82", "#58FAAC", "#58FAD0", "#58FAF4", "#58D3F7", "#58ACFA", "#5882FA", "#5858FA", "#8258FA", "#AC58FA", "#D358F7", "#FA58F4", "#FA58D0", "#FA58AC", "#FA5882", "#BDBDBD"],
+
+                    ["#FE2E2E", "#FE642E", "#FE9A2E", "#FACC2E", "#F7FE2E", "#C8FE2E", "#9AFE2E", "#64FE2E", "#2EFE2E", "#2EFE64", "#2EFE9A", "#2EFEC8", "#2EFEF7", "#2ECCFA", "#2E9AFE", "#2E64FE", "#2E2EFE", "#642EFE", "#9A2EFE", "#CC2EFA", "#FE2EF7", "#FE2EC8", "#FE2E9A", "#FE2E64", "#A4A4A4"],
+
+                    ["#FF0000", "#FF4000", "#FF8000", "#FFBF00", "#FFFF00", "#BFFF00", "#80FF00", "#40FF00", "#00FF00", "#00FF40", "#00FF80", "#00FFBF", "#00FFFF", "#00BFFF", "#0080FF", "#0040FF", "#0000FF", "#4000FF", "#8000FF", "#BF00FF", "#FF00FF", "#FF00BF", "#FF0080", "#FF0040", "#848484"],
+
+                    ["#DF0101", "#DF3A01", "#DF7401", "#DBA901", "#D7DF01", "#A5DF00", "#74DF00", "#3ADF00", "#01DF01", "#01DF3A", "#01DF74", "#01DFA5", "#01DFD7", "#01A9DB", "#0174DF", "#013ADF", "#0101DF", "#3A01DF", "#7401DF", "#A901DB", "#DF01D7", "#DF01A5", "#DF0174", "#DF013A", "#6E6E6E"],
+
+                    ["#B40404", "#B43104", "#B45F04", "#B18904", "#AEB404", "#86B404", "#5FB404", "#31B404", "#04B404", "#04B431", "#04B45F", "#04B486", "#04B4AE", "#0489B1", "#045FB4", "#0431B4", "#0404B4", "#3104B4", "#5F04B4", "#8904B1", "#B404AE", "#B40486", "#B4045F", "#B40431", "#585858"],
+
+                    ["#8A0808", "#8A2908", "#8A4B08", "#886A08", "#868A08", "#688A08", "#4B8A08", "#298A08", "#088A08", "#088A29", "#088A4B", "#088A68", "#088A85", "#086A87", "#084B8A", "#08298A", "#08088A", "#29088A", "#4B088A", "#6A0888", "#8A0886", "#8A0868", "#8A084B", "#8A0829", "#424242"],
+
+                    ["#610B0B", "#61210B", "#61380B", "#5F4C0B", "#5E610B", "#4B610B", "#38610B", "#21610B", "#0B610B", "#0B6121", "#0B6138", "#0B614B", "#0B615E", "#0B4C5F", "#0B3861", "#0B2161", "#0B0B61", "#210B61", "#380B61", "#4C0B5F", "#610B5E", "#610B4B", "#610B38", "#610B21", "#2E2E2E"],
+
+                    ["#3B0B0B", "#3B170B", "#3B240B", "#3A2F0B", "#393B0B", "#2E3B0B", "#243B0B", "#173B0B", "#0B3B0B", "#0B3B17", "#0B3B24", "#0B3B2E", "#0B3B39", "#0B2F3A", "#0B243B", "#0B173B", "#0B0B3B", "#170B3B", "#240B3B", "#2F0B3A", "#3B0B39", "#3B0B2E", "#3B0B24", "#3B0B17", "#1C1C1C"],
+
+                    ["#2A0A0A", "#2A120A", "#2A1B0A", "#29220A", "#292A0A", "#222A0A", "#1B2A0A", "#122A0A", "#0A2A0A", "#0A2A12", "#0A2A1B", "#0A2A22", "#0A2A29", "#0A2229", "#0A1B2A", "#0A122A", "#0A0A2A", "#120A2A", "#1B0A2A", "#220A29", "#2A0A29", "#2A0A22", "#2A0A1B", "#2A0A12", "#151515"],
+
+                    ["#190707", "#190B07", "#191007", "#181407", "#181907", "#141907", "#101907", "#0B1907", "#071907", "#07190B", "#071910", "#071914", "#071918", "#071418", "#071019", "#070B19", "#070719", "#0B0719", "#100719", "#140718", "#190718", "#190714", "#190710", "#19070B", "#000000"]
+                ]
+            };
+            editor_remark_base = K.create('#id_base_site_remark', options);
+            var base_url = window.location.pathname;
+            $("#id_base_site_remark_button_save").hide();
+            $("#id_base_site_remark_div").hide();
+            $.get("{% url 'ajax_get_remark' %}", {'base_url': base_url}, function(data){
+                editor_remark_base.html(data.remark);
+                $("#id_base_site_remark").html(data.remark);
+                $("#id_base_site_remark_label").html(data.remark);
+            })
+        });
+        function edit_remark_base(){
+            $('#id_base_site_remark_button_edit').hide();
+            $('#id_base_site_remark_button_save').show();
+            $("#id_base_site_remark_label_div").hide();
+            $("#id_base_site_remark_div").show();
+        };
+        function save_remark_base(){
+            var remark = $("#id_base_site_remark").val();
+            var base_url = window.location.pathname;
+            var kwargs = {'base_url': base_url, 'remark': remark}
+            $('#id_base_site_remark_button_save').hide();
+            $('#id_base_site_remark_button_edit').show();
+            $.post("{% url 'ajax_set_remark' %}", kwargs,  function(data){
+                editor_remark_base.html(remark);
+                $("#id_base_site_remark_label").html(remark);
+                $("#id_base_site_remark").html(remark);
+                $("#id_base_site_remark_div").hide();
+                $("#id_base_site_remark_label_div").show();
+            });
+        }
+        /* -------------备注----------------- */
+
+    </script>
+    <script src="{% static 'components/bootstrap/dist/js/bootstrap.js' %}"></script>
+
+    <!-- page specific plugin scripts -->
+    <script src="{% static 'assets/js/src/ace.js' %}"></script>
+    <script src="{% static 'assets/js/src/ace.basics.js' %}"></script>
+    <script src="{% static 'assets/js/src/ace.sidebar.js' %}"></script>
+    <script src="{% static 'assets/js/date-time/bootstrap-datepicker.js' %}" ></script>
+    <script src="{% static 'assets/js/select2.js' %}" ></script>
+    <script src="{% static 'assets/layer/layer.js' %}" ></script>
+
+    <!-- ace scripts -->
+    <script src="{% static 'assets/js/ace/elements.scroller.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/elements.colorpicker.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/elements.fileinput.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/elements.typeahead.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/elements.wysiwyg.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/elements.spinner.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/elements.treeview.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/elements.wizard.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/elements.aside.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/ace.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/ace.ajax-content.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/ace.touch-drag.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/ace.sidebar.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/ace.sidebar-scroll-1.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/ace.submenu-hover.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/ace.widget-box.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/ace.settings.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/ace.settings-rtl.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/ace.settings-skin.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/ace.widget-on-reload.js' %}" ></script>
+    <script src="{% static 'assets/js/ace/ace.searchbox-autocomplete.js' %}" ></script>
+    <!-- ace scripts -->
+
+    {% comment %}
+        <!-- ace scripts -->
+        <script src="{% static 'assets/js/src/elements.scroller.js' %}"></script>
+        <script src="{% static 'assets/js/src/elements.colorpicker.js' %}"></script>
+        <script src="{% static 'assets/js/src/elements.fileinput.js' %}"></script>
+        <script src="{% static 'assets/js/src/elements.typeahead.js' %}"></script>
+        <script src="{% static 'assets/js/src/elements.wysiwyg.js' %}"></script>
+        <script src="{% static 'assets/js/src/elements.spinner.js' %}"></script>
+        <script src="{% static 'assets/js/src/elements.treeview.js' %}"></script>
+        <script src="{% static 'assets/js/src/elements.wizard.js' %}"></script>
+        <script src="{% static 'assets/js/src/elements.aside.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.basics.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.scrolltop.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.ajax-content.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.touch-drag.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.sidebar.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.sidebar-scroll-1.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.submenu-hover.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.widget-box.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.settings.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.settings-rtl.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.settings-skin.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.widget-on-reload.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.searchbox-autocomplete.js' %}"></script>
+        <!-- inline scripts related to this page -->
+        <!-- the following scripts are used in demo only for onpage help and you don't need them -->
+        <link rel="stylesheet" href="{% static 'assets/css/ace.onpage-help.css' %}" />
+        <script type="text/javascript"> ace.vars['base'] = '..'; </script>
+        <script src="{% static 'assets/js/src/elements.onpage-help.js' %}"></script>
+        <script src="{% static 'assets/js/src/ace.onpage-help.js' %}"></script>
+    {% endcomment %}
+    {% block my_jsblock %}{% endblock %}
+
+{% endblock %}

@@ -1,0 +1,234 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "邮件统计报告" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "邮件统计报告" %}</a> </li>
+    <li class="active">{% trans "邮箱统计" %}</li>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-6">
+            <div class="page-header">
+                <h1>{% trans "邮件统计报告" %}
+                    <small>
+                        <i class="ace-icon fa fa-angle-double-right"></i>
+                        {% trans "邮箱统计" %}
+                    </small>
+                </h1>
+            </div>
+
+            <table>
+            <tr>
+            <th width="4%">域名: </th>
+            <th>
+                <select id="id_selectdomain" name="select_domain" onchange="onchangeDomainOptions(this.value)" >
+                {% for obj in domain_list %}
+                    <option value="{{ obj.domain }}" {% if domain.domain == obj.domain %} selected {% endif %} > {{ obj.domain }} </option>
+                {% endfor %}
+                </select>
+            </th>
+            </tr>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li>
+                        <a href="{% url 'maillog_mailbox_stat' %}">
+                            <i class="green ace-icon fa fa-home bigger-120"></i>{% trans "邮箱统计" %}
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'maillog_active_user' %}">
+                            <i class="green ace-icon fa bigger-120"></i>{% trans "邮件收发统计" %}
+                        </a>
+                    </li>
+
+                    <li class="active">
+                        <a href="#">{% trans "邮件统计报告" %}</a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'maillog_list' %}"><i class="green ace-icon fa bigger-120"></i>{% trans "邮件日志查询" %}</a>
+                    </li>
+
+                </ul>
+
+                <div class="tab-content">
+
+                    <div class="tab-pane fade in active">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <form id="id_form" action="" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id" id="id" />
+                                    <input type="hidden" name="status" id="status" />
+                                    <input type="hidden" name="ids" id="ids" />
+                                    <input type="hidden" name="d" id="id_selectdomain" value="{{ domain.domain }}" />
+                                    <button type="reset" class="btn btn-primary btn-sm" onClick="exportLog()">导出日志</button>
+                                </form>
+                                <table id="" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>{% trans "SMTP/IMAP/POP" %}</th>
+                                        <th>{% trans "近期总计" %}</th>
+                                        <th>{% trans "7天总计" %}</th>
+                                        <th>{% trans "今日" %}</th>
+                                        <th>{% trans "昨日" %}</th>
+                                        <th>{% trans "2日之前" %}</th>
+                                        <th>{% trans "3日之前" %}</th>
+                                        <th>{% trans "4日之前" %}</th>
+                                        <th>{% trans "5日之前" %}</th>
+                                        <th>{% trans "6日之前" %}</th>
+                                    </tr>
+                                    <tr>
+                                        <td> SMTP邮件(收信) </td>
+                                        <td> {{ smtp_in.stat_total }} </td>
+                                        <td> {{ smtp_in.stat_week }} </td>
+                                        <td> {{ smtp_in.stat_today }} </td>
+                                        <td> {{ smtp_in.stat_1 }} </td>
+                                        <td> {{ smtp_in.stat_2 }} </td>
+                                        <td> {{ smtp_in.stat_3 }} </td>
+                                        <td> {{ smtp_in.stat_4 }} </td>
+                                        <td> {{ smtp_in.stat_5 }} </td>
+                                        <td> {{ smtp_in.stat_6 }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td> SMTP邮件(发信) </td>
+                                        <td> {{ smtp_out.stat_total }} </td>
+                                        <td> {{ smtp_out.stat_week }} </td>
+                                        <td> {{ smtp_out.stat_today }} </td>
+                                        <td> {{ smtp_out.stat_1 }} </td>
+                                        <td> {{ smtp_out.stat_2 }} </td>
+                                        <td> {{ smtp_out.stat_3 }} </td>
+                                        <td> {{ smtp_out.stat_4 }} </td>
+                                        <td> {{ smtp_out.stat_5 }} </td>
+                                        <td> {{ smtp_out.stat_6 }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td> IMAP会话 </td>
+                                        <td> {{ imap_session.stat_total }} </td>
+                                        <td> {{ imap_session.stat_week }} </td>
+                                        <td> {{ imap_session.stat_today }} </td>
+                                        <td> {{ imap_session.stat_1 }} </td>
+                                        <td> {{ imap_session.stat_2 }} </td>
+                                        <td> {{ imap_session.stat_3 }} </td>
+                                        <td> {{ imap_session.stat_4 }} </td>
+                                        <td> {{ imap_session.stat_5 }} </td>
+                                        <td> {{ imap_session.stat_6 }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td> POP3会话 </td>
+                                        <td> {{ pop3_session.stat_total }} </td>
+                                        <td> {{ pop3_session.stat_week }} </td>
+                                        <td> {{ pop3_session.stat_today }} </td>
+                                        <td> {{ pop3_session.stat_1 }} </td>
+                                        <td> {{ pop3_session.stat_2 }} </td>
+                                        <td> {{ pop3_session.stat_3 }} </td>
+                                        <td> {{ pop3_session.stat_4 }} </td>
+                                        <td> {{ pop3_session.stat_5 }} </td>
+                                        <td> {{ pop3_session.stat_6 }} </td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+
+                                <table id="" class="table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>{% trans "垃圾/病毒邮件" %}</th>
+                                        <th>{% trans "近期总计" %}</th>
+                                        <th>{% trans "7天总计" %}</th>
+                                        <th>{% trans "今日" %}</th>
+                                        <th>{% trans "昨日" %}</th>
+                                        <th>{% trans "2日之前" %}</th>
+                                        <th>{% trans "3日之前" %}</th>
+                                        <th>{% trans "4日之前" %}</th>
+                                        <th>{% trans "5日之前" %}</th>
+                                        <th>{% trans "6日之前" %}</th>
+                                    </tr>
+                                    <tr>
+                                        <td> 已接收的垃圾邮件 </td>
+                                        <td> {{ spam_receive.stat_total }} </td>
+                                        <td> {{ spam_receive.stat_week }} </td>
+                                        <td> {{ spam_receive.stat_today }} </td>
+                                        <td> {{ spam_receive.stat_1 }} </td>
+                                        <td> {{ spam_receive.stat_2 }} </td>
+                                        <td> {{ spam_receive.stat_3 }} </td>
+                                        <td> {{ spam_receive.stat_4 }} </td>
+                                        <td> {{ spam_receive.stat_5 }} </td>
+                                        <td> {{ spam_receive.stat_6 }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td> 已拒绝的垃圾邮件 </td>
+                                        <td> {{ spam_reject.stat_total }} </td>
+                                        <td> {{ spam_reject.stat_week }} </td>
+                                        <td> {{ spam_reject.stat_today }} </td>
+                                        <td> {{ spam_reject.stat_1 }} </td>
+                                        <td> {{ spam_reject.stat_2 }} </td>
+                                        <td> {{ spam_reject.stat_3 }} </td>
+                                        <td> {{ spam_reject.stat_4 }} </td>
+                                        <td> {{ spam_reject.stat_5 }} </td>
+                                        <td> {{ spam_reject.stat_6 }} </td>
+                                    </tr>
+                                    <tr>
+                                        <td> 已拒绝的病毒邮件 </td>
+                                        <td> {{ spam_virus.stat_total }} </td>
+                                        <td> {{ spam_virus.stat_week }} </td>
+                                        <td> {{ spam_virus.stat_today }} </td>
+                                        <td> {{ spam_virus.stat_1 }} </td>
+                                        <td> {{ spam_virus.stat_2 }} </td>
+                                        <td> {{ spam_virus.stat_3 }} </td>
+                                        <td> {{ spam_virus.stat_4 }} </td>
+                                        <td> {{ spam_virus.stat_5 }} </td>
+                                        <td> {{ spam_virus.stat_6 }} </td>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'otreetable1.0/otreetable.css' %}" />
+    <link href="{% static "components/datetimepiker/bootstrap-datetimepicker.min.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'components/datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'components/_mod/datatables/jquery.dataTables.bootstrap.js' %}"></script>
+    <script src="{% static "components/datetimepiker/bootstrap-datetimepicker.min.js" %}"></script>
+    <script src="{% static "components/datetimepiker/bootstrap-datetimepicker.zh-CN.js" %}"></script>
+
+    <script>
+        function onchangeDomainOptions(value){
+            var base_url = "{% url 'maillog_mail_stat' %}" + "?d="+ value;
+            window.location.href = base_url;
+        }
+
+        function exportLog(){
+            window.location.href="{% url 'maillog_export_maillog' %}" + "?d="+ $('#id_selectdomain').val();
+        }
+
+    </script>
+
+{% endblock %}

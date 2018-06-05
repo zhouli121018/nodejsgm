@@ -1,0 +1,120 @@
+{% load i18n %}
+{% load static %}
+
+<div class="row">
+    <div class="col-xs-12">
+        <form class="form-horizontal" role="form" action="" method="POST" id="id_Form">
+            {% csrf_token %}
+
+            <div class="form-group {% if form.account.error %} has-error {% endif %}">
+                <label class="col-sm-3 control-label no-padding-right" for="id_account"> 远程帐号 </label>
+                <div class="col-sm-9">
+                <input type="text" name="account" id="id_account" value="{{ form.account.value }}" maxlength="200" class="col-xs-10 col-sm-5" />
+                </div>
+            </div>
+
+            <div class="form-group {% if form.server.error %} has-error {% endif %}">
+                <label class="col-sm-3 control-label no-padding-right" for="id_server"> 远程服务器 </label>
+                <div class="col-sm-9">
+                <input type="text" name="server" id="id_server" value="{{ form.server.value }}" maxlength="200" class="col-xs-10 col-sm-5" />
+                </div>
+            </div>
+
+            <div class="form-group {% if form.password.error %} has-error {% endif %}">
+                <label class="col-sm-3 control-label no-padding-right" for="id_password"> 密码 </label>
+                <div class="col-sm-9">
+                <input type="password" name="password" id="id_password" value="{{ form.password.value }}" maxlength="200" class="col-xs-10 col-sm-5" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="id_for_ssl" > SSL登录 </label>
+                <div class="col-sm-9">
+                    <select class="col-xs-10 col-sm-5" id="id_ssl" name="ssl" ">
+                        <option value="1" {% if form.ssl.value == '1' %} selected {% endif %} > 是 </option>
+                        <option value="-1" {% if form.ssl.value != '1' %} selected {% endif %} > 否 </option>
+                    </select>
+                    {% if form.ssl.error %}
+                        <div style="clear: both"><p class="errornote txt-color-red">{{ form.ssl.error }}</p></div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="id_for_auth" > 需要验证 </label>
+                <div class="col-sm-9">
+                    <select class="col-xs-10 col-sm-5" id="id_auth" name="auth"">
+                        <option value="-1" {% if form.auth.value == -1 %} selected {% endif %} > 否 </option>
+                        <option value="1" {% if form.auth.value != -1 %} selected {% endif %} > 是 </option>
+                    </select>
+                    {% if form.auth.error %}
+                        <div style="clear: both"><p class="errornote txt-color-red">{{ form.auth.error }}</p></div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="id_disabled" > 状态 </label>
+                <div class="col-sm-9">
+                    <select class="col-xs-10 col-sm-5" id="id_disabled" name="disabled"">
+                        <option value="-1" {% if form.disabled.value != '1' %} selected {% endif %} > 启用 </option>
+                        <option value="1" {% if form.disabled.value == '1' %} selected {% endif %} > 禁用 </option>
+                    </select>
+                    {% if form.disabled.error %}
+                        <div style="clear: both"><p class="errornote txt-color-red">{{ form.disabled.error }}</p></div>
+                    {% endif %}
+                </div>
+            </div>
+
+
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="button" class="btn btn-info" id="id_save_button" onClick="clickSave()">
+                        <i class="ace-icon fa fa-check bigger-110"></i>{% trans "保存" %}
+                    </button>
+
+                    <button class="btn" type="reset">
+                        <i class="ace-icon fa fa-undo bigger-110"></i>重置
+                    </button>
+
+                    <a type="button" class="btn btn-link" href="{% url 'review_list' %}">取消</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% block my_jsblock %}
+    <script>
+        function clickSave(){
+            server = $("#id_server").val();
+            account = $("#id_account").val();
+            password = $("#id_password").val();
+            ssl = $("#id_ssl").val();
+            auth = $("#id_auth").val();
+            var ajax_url = "{% url 'ajax_smtpcheck' %}";
+            $.post(ajax_url,
+                {
+                    server:server,
+                    account:account,
+                    password:password,
+                    ssl:ssl,
+                    auth:auth,
+                },
+                function(data)
+                {
+                    if(data.status == 'OK'){
+                        alert('邮件服务器验证通过');
+                        $("#id_Form").submit();
+                        saveButtonAdd();
+                        return true;
+                    }
+                    else{
+                        alert(data.msg);
+                    }
+                },
+            'json');
+        }
+
+    </script>
+{% endblock %}

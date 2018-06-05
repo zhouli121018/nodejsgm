@@ -1,0 +1,38 @@
+<form id="id_form" action="{% url 'review_list' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="id" id="id" />
+    <input type="hidden" name="status" id="status" />
+    <input type="hidden" name="ids" id="ids" />
+</form>
+<div style="line-height:24px;padding:5px 0;">
+    <input type="button" class="btn btn-primary btn-sm" onclick="expandAll();" value="全部展开" />
+    <input type="button" class="btn btn-success btn-sm" onclick="collapseAll();" value="全部收缩" />
+    <a  class="btn btn-primary btn-sm" href="{% url 'review_add' %}">添加</a>
+</div>
+<table id="basic-table" class="table table-striped table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>审核名称</th>
+        <th>ID</th>
+        <th>主审</th>
+        <th>副审</th>
+        <th>副转主等待时间(分钟)</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for id, pid, level, name, master, assist, wait_time, real_id in lists %}
+        <tr lang="{ id: '{{ id }}',pid:'{{ pid }}',level:'{{ level }}' }" >
+            <td>{{ name }}</td>
+            <td>{{ real_id }}</td>
+            <td>{{ master }}</td>
+            <td>{{ assist }}</td>
+            <td>{{ wait_time }}</td>
+            <th>
+                <a type="button" class="btn btn-minier btn-primary" href="{% url 'review_modify' real_id %}">修改</a>
+                <a type="button" class="btn btn-minier btn-danger" href="Javascript: setStatus({{ real_id }}, 'delete')">删除</a>
+            </th>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,260 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue"><span class="red">邮箱别名管理</span>
+
+    </h3>
+    <div class="text-right margin-bottom-8">
+        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#mailboxalias_add" >添加别名</button>
+        <button class="btn btn-danger" type="button">删除选中别名</button>
+    </div>
+    <div class="table-header">
+        邮箱别名列表
+    </div>
+    <div>
+        <table id="dynamic-table" class="table table-bordered table-striped table-center">
+            <thead>
+            <tr>
+                <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace">
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th class="center">序号</th>
+                <th>虚拟地址</th>
+                <th>真实地址</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="data-body">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="mailboxalias_add" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加邮箱别名</h4>
+            </div>
+            <div class="modal-body" style="padding:10px 40px;">
+                <form class="">
+                    <div class="corm-group">
+                        <label class="control-label">选择域名：</label>
+                        <div>
+                            <select name="type" class="form-control">
+                                <option value="-1">test.com</option>
+                                <option value="1">domain.com</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label">虚拟地址：</label>
+                        <div class="">
+                            <input type="text"   class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label">真实地址：</label>
+                        <!--<div class="input-group">-->
+                        <!--<input type="text" class="form-control" value="cs">-->
+                        <!--<span class="input-group-addon">@test.com</span>-->
+                        <!--</div>-->
+                        <div class="">
+                            <input type="text"   class="form-control">
+                        </div>
+                    </div>
+                </form>
+                <div class="alert-warning" style="padding:4px;">
+                    <ul>
+                        <li>1、注： 请输入邮箱用户名，真实地址的域名后缀与所选域名一致。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">提交</button>
+                <button type="button"  class="btn btn-warning">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="edit_name" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改邮箱别名</h4>
+            </div>
+            <div class="modal-body" style="padding:10px 40px;">
+                <form class="">
+
+                    <div class="form-group">
+                        <label class=" control-label">虚拟地址：</label>
+                        <div class="">
+                            <input type="text"  disabled value="123@test.com" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label">真实地址：</label>
+                        <!--<div class="input-group">-->
+                            <!--<input type="text" class="form-control" value="cs">-->
+                            <!--<span class="input-group-addon">@test.com</span>-->
+                        <!--</div>-->
+                        <div class="">
+                            <input type="text"  value="aaa@test.com" class="form-control">
+                        </div>
+                    </div>
+                </form>
+                <div class="alert-warning" style="padding:4px;">
+                    <ul>
+                        <li>1、注： 请输入邮箱用户名，真实地址的域名后缀与所选域名一致。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">提交</button>
+                <button type="button"  class="btn btn-warning">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var myTable;
+    function initDate(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr role="row">' +
+                    '<td class="center">' +
+                    '<label class="pos-rel">' +
+                    '<input type="checkbox" class="ace">' +
+                    '<span class="lbl"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td class="center">'+(i+1)+'</td>' +
+                    '<td>test.com</td>' +
+                    '<td>adfstest.com</td>' +
+                    '<td >' +
+                    '<label class="inline" >' +
+                    '<input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">' +
+                    '<span class="lbl middle"></span>' +
+                    '</label>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_name">修改</a>' +
+                    '<a class="red btn btn-white btn-danger btn-xs" href="#">删除</a>' +
+                    '</div></td></tr>'
+        }
+        /*<!--<td class="hidden-480">-->
+         <!--<span class="label label-sm label-warning">Expiring</span>-->
+         <!--</td>-->*/
+        $('#data-body').html(html);
+
+        myTable =
+                $('#dynamic-table')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+
+        myTable.on( 'select', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable.row( index ).node() ).find('input:checkbox:eq(0)').prop('checked', true);
+            }
+        } );
+        myTable.on( 'deselect', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable.row( index ).node() ).find('input:checkbox:eq(0)').prop('checked', false);
+            }
+        } );
+
+
+
+
+        /////////////////////////////////
+        //table checkboxes
+        $('#dynamic-table th input[type=checkbox]:eq(0),#dynamic-table td input[type=checkbox]:eq(0)').prop('checked', false);
+
+        //select/deselect all rows according to table header checkbox
+        $('#dynamic-table > thead > tr > th input[type=checkbox], #dynamic-table_wrapper input[type=checkbox]').eq(0).on('click', function(){
+            var th_checked = this.checked;//checkbox inside "TH" table header
+
+            $('#dynamic-table').find('tbody > tr').each(function(){
+                var row = this;
+                if(th_checked) myTable.row(row).select();
+                else  myTable.row(row).deselect();
+            });
+        });
+
+        //select/deselect a row when the checkbox is checked/unchecked
+        $('#dynamic-table').on('click', 'td .pos-rel input[type=checkbox]' , function(){
+            var row = $(this).closest('tr').get(0);
+            if(this.checked) myTable.row(row).deselect();
+            else myTable.row(row).select();
+        });
+        $(document).on('click', '#dynamic-table .dropdown-toggle', function(e) {
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+
+        /********************************/
+        //add tooltip for small view action buttons in dropdown menu
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+        //tooltip placement on right or left
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            //var w2 = $source.width();
+
+            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+            return 'left';
+        }
+        /***************/
+        $('.show-details-btn').on('click', function(e) {
+            e.preventDefault();
+            $(this).closest('tr').next().toggleClass('open');
+            $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+        });
+
+
+
+    }
+    initDate(28);
+
+</script>

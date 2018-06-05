@@ -1,0 +1,51 @@
+<td>{{ number }}</td>
+<td>{{ d.mailbox|default_if_none:'' }}</td>
+<td>
+    {% if d.account == None or d.account == '' %}
+        <span class="label label-xlg label-light ">--</span>
+    {% else %}
+        {{ d.account|default_if_none:'--' }}
+    {% endif %}
+</td>
+<td>{{ d.recipient|default_if_none:'' }}</td>
+<td>
+    {% if d.account == None or d.account == '' %}
+        <span class="label label-xlg label-light ">--</span>
+    {% else %}
+        {{ d.server|default_if_none:'--' }}
+    {% endif %}
+</td>
+<td>
+    {% if d.account == None or d.account == '' %}
+        <span class="label label-xlg label-light ">--</span>
+    {% else %}
+        {% if d.ssl == 1 %}
+            <span class="label label-xlg label-success arrowed-in arrowed-in-right">是</span>
+        {% else %}
+            <span class="label label-xlg label-light arrowed-in arrowed-in-right">否</span>
+        {% endif %}
+    {% endif %}
+</td>
+<td>
+    {% if d.account == None or d.account == '' %}
+        <span class="label label-xlg label-light ">--</span>
+    {% else %}
+        {% if d.auth == 1 %}
+            <span class="label label-xlg label-success arrowed-in arrowed-in-right">是</span>
+        {% else %}
+            <span class="label label-xlg label-light arrowed-in arrowed-in-right">否</span>
+        {% endif %}
+    {% endif %}
+</td>
+<td>{{ d.fail_report|default_if_none:'' }}</td>
+<td>
+    {% if d.disabled == 1 %}
+        <span class="label label-xlg label-light arrowed-in arrowed-in-right">禁用</span>
+    {% else %}
+        <span class="label label-xlg label-success arrowed-in arrowed-in-right">启用</span>
+    {% endif %}
+</td>
+<td>
+    <a type="button" class="btn btn-minier btn-primary" href="{% url 'post_transfer_mdf' d.id %}">修改</a>
+    <a type="button" class="btn btn-minier btn-danger" href="Javascript: setStatus({{ d.id }}, 'delete')">删除</a>
+</td>

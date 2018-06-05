@@ -1,0 +1,760 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue">微信版管理</h3>
+    <div id="weixin_tabs">
+        <ul>
+            <li>
+                <a href="#config">微信公众号配置</a>
+            </li>
+            <li>
+                <a href="#teplate">微信消息模板管理</a>
+            </li>
+            <li>
+                <a href="#users">微信用户管理</a>
+            </li>
+            <li>
+                <a href="#news">微信通知消息管理</a>
+            </li>
+            <li>
+                <a href="#news_log">微信API调用日志</a>
+            </li>
+            <li>
+                <a href="#sms">短信发送记录</a>
+            </li>
+        </ul>
+        <div id="config">
+            <div class="table-header">
+                微信公众号配置
+            </div>
+            <div class="table-responsive">
+                <table id="dynamic-table" class="table table-striped table-bordered table-hover table-center">
+                    <thead>
+                    <tr>
+                        <th class="center">序号</th>
+                        <th>服务号/企业号名称</th>
+                        <th>服务号token</th>
+                        <th>AppID/CorpID</th>
+                        <th>agentid</th>
+                        <th>appsecret/secret</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="data-body">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="teplate">
+            <div class="row" style="margin-bottom:8px;">
+                <div class="col-sm-12 text-right">
+                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#template_add">添加模板</button>
+                    <button class="btn btn-danger btn-sm delete">删除选中模板</button>
+                </div>
+            </div>
+
+            <div class="table-header">
+                微信消息模板管理
+            </div>
+            <div class="table-responsive">
+                <table id="dynamic-table-tpl" class="table table-striped table-bordered table-hover table-center" role="grid" >
+                    <thead>
+                    <tr role="row">
+                        <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                            <label class="pos-rel">
+                                <input type="checkbox" class="ace">
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>序号</th>
+                        <th>模板标题</th>
+                        <th>微信模板ID</th>
+                        <th>code</th>
+                        <th>字段</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="data-body-tpl">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="users">
+            <div class="table-header">
+                微信用户管理
+            </div>
+            <div class="table-responsive">
+                <table id="dynamic-table-user" class="table table-striped table-bordered table-hover table-center" role="grid" >
+                    <thead>
+                    <tr role="row">
+                        <th>序号</th>
+                        <th>微信昵称（企业号为成员名）</th>
+                        <th>头像</th>
+                        <th>省份</th>
+                        <th>城市</th>
+                        <th>绑定的邮箱账号</th>
+                        <th>账号添加时间</th>
+                        <th>最近更新时间</th>
+                        <th>是否关注公众号（是否为企业号成员）</th>
+                        <th>关注公众号时间</th>
+                    </tr>
+                    </thead>
+                    <tbody id="data-body-user">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="news">
+
+            <div class="row" style="margin-bottom:8px;">
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon">状态：</span>
+                        <select name="status0" class="form-control">
+                            <option value="1">成功</option>
+                            <option value="0">失败</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-10">
+                    <span>时间：</span>
+                    <input type="datetime" name="start-time" class="mydatetime" />
+                    <input type="datetime" name="end-time" class="mydatetime" />
+                    <button id="search-btn" type="button" class="btn btn-info btn-sm" >查询</button>
+                </div>
+            </div>
+            <div class="table-header">
+                微信通知消息管理
+            </div>
+
+            <!-- div.table-responsive -->
+
+            <!-- div.dataTables_borderWrap -->
+            <div class="table-responsive">
+                <table id="dynamic-table-news" class="table table-striped table-bordered table-hover table-center">
+                    <thead>
+                    <tr>
+                        <th class="center">序号</th>
+                        <th>openid/UserId</th>
+                        <th>
+                            微信模板ID
+                        </th>
+                        <th>模板数据</th>
+                        <th>返回地址</th>
+                        <th>接口调用时间</th>
+                        <th>微信发送时间</th>
+                        <th>状态</th>
+                        <th>调用者ip</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="data-body-news">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="news_log">
+            <div class="row" style="margin-bottom:8px;">
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <span class="input-group-addon">状态：</span>
+                        <select name="status0" class="form-control">
+                            <option value="1">成功</option>
+                            <option value="0">失败</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-10">
+                    <span>时间：</span>
+                    <input type="datetime" name="start-time" class="mydatetime" />
+                    <input type="datetime" name="end-time" class="mydatetime" />
+                    <button id="search-btn-log" type="button" class="btn btn-info btn-sm" >查询</button>
+                </div>
+            </div>
+            <div class="table-header">
+                消息api调用日志
+            </div>
+            <div class="table-responsive">
+                <table id="dynamic-table-api" class="table table-striped table-bordered table-hover table-center">
+                    <thead>
+                    <tr>
+                        <th class="center">序号</th>
+                        <th>调用方法</th>
+                        <th>模板数据</th>
+                        <th>返回消息</th>
+                        <th>调用时间</th>
+                        <th>调用者ip</th>
+                        <th>服务器ip</th>
+                        <th>状态</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="data-body-api">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="sms">
+            <div class="table-header">
+                短信发送记录
+            </div>
+            <div class="table-responsive">
+                <table id="dynamic-table-sms" class="table table-striped table-bordered table-hover table-center">
+                    <thead>
+                    <tr>
+                        <th class="center">序号</th>
+                        <th>手机号</th>
+                        <th>发送验证码</th>
+                        <th>是否验证手机号</th>
+                        <th>类型</th>
+                        <th>验证码发送时间</th>
+                        <th>验证码验证时间</th>
+                        <th>ip</th>
+                        <th>备注</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="data-body-sms">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="edit_config" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">配置服务号/企业号</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">服务号/企业号名称：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="umail微信公众号" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">服务号token：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="umail201703" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">appid/CorpID：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="SDJFOSDIJFES" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="col-sm-4 control-label">agentid：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="1000002" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">appsecret：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="dsfjsdiofjdsofjodsi" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-sm btn-info">保存</button>
+                <button type="button" class="btn btn-sm btn-danger">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="template_add" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">编辑或新增模板</h4>
+            </div>
+            <div class="modal-body">
+                <form class="">
+                    <div class="form-group">
+                        <label class=" control-label">模板名称：</label>
+                        <div class="">
+                            <input type="text" class="form-control" value="<br>jdlfodsfjdosioijdsf<b>dsfhsidfhi</b>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label">微信模板ID：</label>
+                        <div class="">
+                            <input type="text" class="form-control" value="<br>jdlfodsfjdosioijDFDDDDDDDDDDDdsf<b>dsfhsidfhi</b>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class=" control-label">调用方法标识code：</label>
+                        <div class="">
+                            <input type="text" class="form-control" value="<br>jdlfod<b>dsfhsidfhi</b>">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">保存</button>
+                <button type="button"  class="btn btn-warning">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="edit_template" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">编辑或新增模板</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">模板名称：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="umail微信公众号" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">微信模板ID：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="umail201703" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">调用方法表示code：</label>
+                        <div class="col-sm-8">
+                            <input type="text" value="SDJFOSDIJFES" class="form-control">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-sm btn-info">保存</button>
+                <button type="button" class="btn btn-sm btn-danger">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#weixin_tabs").tabs();
+    $('#switch-email').hide();
+    $(".mydatetime").datetimepicker({
+        format: 'YYYY-MM-DD HH:mm:ss'
+//        autoclose:true
+    });
+    var myTable,myTable_tpl,myTable_user,myTable_news,myTable_api,myTable_sms;
+    function initDate(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td><span class="label label-success">U-Mail微信公众号</span></td>' +
+                    '<td>U-Mail20173</td>' +
+                    '<td>wwcdsljdfj</td>' +
+                    ' <td>1000002</td>' +
+                    '<td>dsfjksodjfosifjsdiojfo</td>' +
+                    '<td><span class="label label-warning arrowed-in arrowed-in-right">待验证</span></td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_config">修改</a>' +
+                    '</div></td></tr>'
+        }
+        $('#data-body').html(html);
+            myTable =
+                $('#dynamic-table')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+//                            select: {
+//                                style: 'multi'
+//                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                } );
+    }
+    initDate(28);
+
+    function initDate_tpl(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr role="row">' +
+                    '<td class="center">' +
+                    '<label class="pos-rel">' +
+                    '<input type="checkbox" class="ace">' +
+                    '<span class="lbl"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td>'+(i+1)+'</td>' +
+                    '<td><span class="label label-success">新邮件通知</span></td>' +
+                    '<td>dslfjsdsdjfodjfdhiof dso</td>' +
+                    '<td >new_maildjfios</td>' +
+                    '<td>操作字段</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_template">编辑</a>' +
+                    ' <a class="red btn btn-white btn-danger btn-xs" href="#">删除</a>' +
+                    '</div></td></tr>'
+        }
+        $('#data-body-tpl').html(html);
+
+        myTable_tpl =
+                $('#dynamic-table-tpl')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+
+        myTable_tpl.on( 'select', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable_tpl.row( index ).node() ).find('input:checkbox').prop('checked', true);
+            }
+        } );
+        myTable_tpl.on( 'deselect', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable_tpl.row( index ).node() ).find('input:checkbox').prop('checked', false);
+            }
+        } );
+
+
+
+
+        /////////////////////////////////
+        //table checkboxes
+        $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
+
+        //select/deselect all rows according to table header checkbox
+        $('#dynamic-table-tpl > thead > tr > th input[type=checkbox], #dynamic-table-tpl_wrapper input[type=checkbox]').eq(0).on('click', function(){
+            var th_checked = this.checked;//checkbox inside "TH" table header
+
+            $('#dynamic-table-tpl').find('tbody > tr').each(function(){
+                var row = this;
+                if(th_checked) myTable_tpl.row(row).select();
+                else  myTable_tpl.row(row).deselect();
+            });
+        });
+
+        //select/deselect a row when the checkbox is checked/unchecked
+        $('#dynamic-table-tpl').on('click', 'td input[type=checkbox]' , function(){
+            var row = $(this).closest('tr').get(0);
+            if(this.checked) myTable_tpl.row(row).deselect();
+            else myTable_tpl.row(row).select();
+        });
+        $(document).on('click', '#dynamic-table-tpl .dropdown-toggle', function(e) {
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+
+        /********************************/
+        //add tooltip for small view action buttons in dropdown menu
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+        //tooltip placement on right or left
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            //var w2 = $source.width();
+
+            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+            return 'left';
+        }
+        /***************/
+        $('.show-details-btn').on('click', function(e) {
+            e.preventDefault();
+            $(this).closest('tr').next().toggleClass('open');
+            $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+        });
+
+
+
+    }
+    initDate_tpl(28);
+
+    function initDate_user(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr role="row">' +
+                    '<td>'+(i+1)+'</td>' +
+                    '<td><span class="label label-success">nickname</span></td>' +
+                    '<td>头像</td>' +
+                    '<td >湖南</td>' +
+                    '<td >邵东</td>' +
+                    '<td>test@163.com</td>' +
+                    '<td>2018-01-02</td>' +
+                    '<td>2018-02-02</td>' +
+                    '<td><span class="label label-warning arrowed-in arrowed-in-right">是</span></td>' +
+                    '<td>2018-02-01</td></tr>'
+        }
+        $('#data-body-user').html(html);
+
+        myTable_user =
+                $('#dynamic-table-user')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+    }
+    initDate_user(18);
+
+    function initDate_news(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>sdjofjdsfiojfdifjosdjf</td>' +
+                    '<td>dsjfugfyeftettdfjidfjdijfdsi</td>' +
+                    '<td>sdiajjidsjiffjoidsjfjioseefjoifjisfjsoidfjsefjsdiiiiiiidshfsdhfusdfh</td>' +
+                    '<td>http://www.baidu.com</td>' +
+                    '<td>2018-01-02</td>' +
+                    '<td>2018-01-09</td>' +
+                    '<td><span class="label label-warning arrowed-in arrowed-in-right">启用</span></td>' +
+                    '<td>192.168.1.24</td></tr>'
+        }
+        $('#data-body-news').html(html);
+        myTable_news =
+                $('#dynamic-table-news')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+    }
+    initDate_news(15);
+
+    function initDate_api(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>方法方法</td>' +
+                    '<td>dsjfugfyeftettdfjidfjdijfdsi</td>' +
+                    '<td>sdiajjidsjiffjoidsjfjioseefjoifjiidshfsdhfusdfh</td>' +
+                    '<td>2018-01-02</td>' +
+                    '<td>192.168.1.24</td>' +
+                    '<td>192.168.1.23</td>' +
+                    '<td><span class="label label-warning arrowed-in arrowed-in-right">启用</span></td></tr>'
+        }
+        $('#data-body-api').html(html);
+        myTable_api =
+                $('#dynamic-table-api')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+    }
+    initDate_api(21);
+
+    function initDate_sms(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td><span class="label label-success">13528775734</span></td>' +
+                    '<td>'+(i+4564874)+'</td>' +
+                    '<td><span class="label label-warning arrowed-in arrowed-in-right">是</span></td>' +
+                    '<td>绑定帐号发送手机验证码</td>' +
+                    '<td>2018-02-03 17:23:20</td>' +
+                    '<td>2018-02-03 17:23:34</td>' +
+                    '<td>192.168.1.23</td>' +
+                    '<td>微信绑定验证手机号</td></tr>'
+        }
+        $('#data-body-sms').html(html);
+        myTable_sms =
+                $('#dynamic-table-sms')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+    }
+    initDate_sms(15);
+
+    $('.delete').click(function(){
+        confirm("确认删除？")
+    })
+</script>

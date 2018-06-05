@@ -1,0 +1,158 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue">其他域通讯录共享管理
+    </h3>
+
+    <div class="table-header">
+        其他域通讯录共享管理
+    </div>
+    <div>
+        <table id="dynamic-table" class="table table-striped table-bordered table-hover table-center">
+            <thead>
+            <tr>
+                <th class="center">序号</th>
+                <th>域名</th>
+                <th>可查看企业通讯录数量</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="data-body">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="details_share">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">邮件域 <b>test.com</b> 可查看的企业通讯录共享域</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span>添加共享域：</span>
+                    <select>
+                        <option value="0">请选择</option>
+                        <option value="1">domain.com</option>
+                        <option value="2">test.com</option>
+                    </select>
+                    <button type="button" class="btn btn-success btn-sm">确定</button>
+                    <button type="button" class="btn btn-danger btn-sm">返回</button>
+                </div>
+                <table id="dynamic-table2" class="table table-bordered table-striped table-hover table-center">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>域名</th>
+                            <th>是否默认显示</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-body2">
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var myTable,myTable2;
+    function initDate(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td><span class="label  label-info">test.com</span></td>' +
+                    '<td>${10+i}</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="blue btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#details_share">查看详情</a>' +
+                    '</div></td></tr>'
+        }
+        $('#data-body').html(html);
+            myTable =
+                $('#dynamic-table')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                null,
+                                { "bSortable": false },
+                                null,
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                } );
+    }
+    initDate(28);
+    function initDate2(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td>test.com</td>' +
+                    '<td>是</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="blue btn btn-white btn-primary btn-xs" href="#">设为默认</a>' +
+                    '<a class="red btn btn-white btn-danger btn-xs" href="#">删除</a>' +
+                    '</div></td></tr>'
+        }
+        $('#data-body2').html(html);
+        myTable2 =
+                $('#dynamic-table2')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                null,
+                                { "bSortable": false },
+                                null,
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+    }
+    initDate2(5);
+
+</script>

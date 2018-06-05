@@ -1,0 +1,1357 @@
+<div id="tabs_sys">
+    <div id="sub_sys_tabs">
+        <ul>
+            <li>
+                <a href="#sub_sys_limit">收发限制</a>
+            </li>
+            <li>
+                <a href="#sub_sys_safe">安全类设置</a>
+            </li>
+            <li>
+                <a href="#pwd_rule">密码规则</a>
+            </li>
+            <li>
+                <a href="#sub_sys_third">第三方对接</a>
+            </li>
+            <li>
+                <a href="#sub_sys_other">杂项设置</a>
+            </li>
+        </ul>
+        <div id="sub_sys_limit">
+            <div class="table-header" style="cursor:pointer;">
+                收发限制
+            </div>
+        <form class="form-horizontal form_limit" role="form" name="form_limit" id="form_limit" action="" method="POST">
+                {% csrf_token %}
+            <table  class="table  table-bordered table-hover table-striped">
+                <tr>
+                    <td class="text-right"><span class="red bold">*</span>发信功能限制：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <select class="limit_send_select" name="limit_send" style="width:162px;">
+                                {% for v, name in form_limit.getLimitSendParams %}
+                                    <option value="{{ v }}" {% if form_limit.limit_send.value == v %} selected {% endif %} > {{ name }} </option>
+                                {% endfor %}
+                            </select>
+                            <button type="button" class="btn btn-xs btn-info" style="display:none;" data-toggle="modal" data-target="#allow_send_email_dress">设置允许名单</button>
+                        <div>
+                            <input name="modify_all_limit_send" value="1" type="checkbox"  class="ace">
+                            <span class="lbl"> 修改域名下所有用户的发信限制 </span>
+                        </div>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <span class="red">注：勾选“修改域名下所有用户的发信限制”后,将针对域名下全部邮箱设置修改；请谨慎修改</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right"><span class="red bold">*</span>收信功能限制：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <select class="limit_send_select" name="limit_recv" style="width:162px;">
+                                {% for v, name in form_limit.getLimitRecvParams %}
+                                    <option value="{{ v }}" {% if form_limit.limit_recv.value == v %} selected {% endif %} > {{ name }} </option>
+                                {% endfor %}
+                            </select>
+                            <button type="button" class="btn btn-xs btn-info" style="display:none;" data-toggle="modal" data-target="#allow_rec_email_dress">设置允许名单</button>
+                        <div>
+                            <input name="modify_all_limit_recv" value="1" type="checkbox"  class="ace">
+                            <span class="lbl"> 修改域名下所有用户的收信限制 </span>
+                        </div>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <span class="red">注：勾选“修改域名下所有用户的收信限制”后,将针对域名下全部邮箱设置修改；请谨慎修改</span>
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">POP/POPS邮箱收取功能：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="limit_pop" value="1" {% if form_limit.limit_pop.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">SMTP/SMTPS客户端邮件发送功能：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="limit_smtp" value="1" {% if form_limit.limit_smtp.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">IMAP/IMAPS客户端邮件收发功能：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="limit_imap" value="1" {% if form_limit.limit_imap.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+
+            <div class=" ">
+            <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+            <input type="hidden" value="limit" name="action" id="action_limit" />
+            </div>
+            <div class="center" style="background:#fafafa;">
+                <button class="btn btn-primary" type="button" onclick="clickSubmitButton('form_limit')">确定</button>
+                <button class="btn btn-warning" type="reset">重置</button>
+            </div>
+        </form>
+        </div>
+
+        <div id="sub_sys_safe">
+            <div class="table-header" style="cursor:pointer;">
+                安全类设置
+            </div>
+        <form class="form-horizontal form_security" role="form" name="form_security" id="form_security" action="" method="POST">
+                {% csrf_token %}
+            <table  class="table  table-bordered  table-striped">
+                <tr>
+                    <td class="text-right">修改密码通知信：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_def_login_limit_mail" {% if form_security.sw_def_login_limit_mail.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#edit_pwd_modal">修改密码通知信</button>
+
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">用户登录安全：</td>
+                    <td class="row no-padding-left">
+                        <div class="col-sm-4 ">
+                            <div class="input-group" >
+                                <span class="input-group-addon">安全登录次数</span>
+                                <input type="text" name="count" value="{{ form_security.count }}" class="form-control">
+                                <span class="input-group-addon">次</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 no-padding">
+                            <div class="input-group">
+                                <span class="input-group-addon">账号禁用时间</span>
+                                <input type="text" name="timespan" value="{{ form_security.timespan }}" class="form-control">
+                                <span class="input-group-addon">分钟</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right" >管理员登录密码错误3次锁定登录IP：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="admin_login_switch" {% if form_security.admin_login_switch.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+
+                </tr>
+            </table>
+            <div class=" ">
+            <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+            <input type="hidden" value="security" name="action" id="action_security" />
+            </div>
+            <div class="center" style="background:#fafafa;">
+                <button class="btn btn-primary" type="button" onclick="clickSubmitButton('form_security')">确定</button>
+                <button class="btn btn-warning" type="reset">重置</button>
+            </div>
+        </form>
+        </div>
+
+        <div id="pwd_rule">
+            <div>
+        <form class="form-horizontal form_password" role="form" name="form_password" id="form_password" action="" method="POST">
+                {% csrf_token %}
+                <table class="table table-bordered">
+                    <tr>
+                        <td class="text-right" style="width:144px;">定期密码修改设置：</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="sw_pwd_timeout" value="1" {% if form_password.sw_pwd_timeout.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr class="nable_set">
+                        <td class="text-right" style="width:120px;">密码有效期：</td>
+                        <td class="row">
+                            <div class="col-sm-4 no-padding">
+                                <div class="input-group max-width-200">
+                                    <input type="number" name="cf_pwd_days" value="{{ form_password.cf_pwd_days.value }}" class="form-control" placeholder="密码有效期">
+                                    <span class="input-group-addon">天</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 ">
+                                <p class="help-block green">0代表永远有效，大于0代表多少天密码过期后会强制用户修改密码</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="nable_set">
+                        <td class="text-right">密码有效开始时间：</td>
+                        <td class="row">
+                            <div class="col-sm-4 no-padding">
+                                <div class="input-group max-width-200">
+                                    <input name="cf_pwd_days_time" class="form-control date-picker" value="{{ form_password.cf_pwd_days_time.value }}" type="text" data-date-format="yyyy-mm-dd">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 ">
+                                <p class="help-block red">注：不能大于当前时间</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="nable_set">
+                        <td class="text-right">这些用户除外：</td>
+                        <td>
+                            <div class="row" style="position:relative;">
+
+                                <div class="col-xs-6 " style="padding-right:40px;">
+                                    <div class="">
+                                        <p class=""><span style="padding:3px 15px;border-bottom:2px solid #5090c1;color:#000;">选择帐号</span></p>
+                                    </div>
+                                    <div class="widget-box widget-color-blue2" style="border-color:#E0E0E0;">
+                                        <div class="">
+                                            <p class="" style="padding:10px;padding-bottom:0;">
+                                                <input type="text" class="select_search form-control" placeholder="输入关键字搜索...">
+                                            </p>
+                                        </div>
+                                        <div class="widget-body" style="padding-left:12px">
+                                            <div class="widget-main padding-8">
+                                                <ul id="tree_add" class="tree_left"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="checkbox" style="margin-top:0;">
+                                        <label style="padding-left:10px;">
+                                            <input name="select_all" type="checkbox" class="ace select_all">
+                                            <span class="lbl"> 所有帐号 </span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-6 " style="padding-left:40px;">
+                                    <div class="">
+                                        <p class=""><span style="padding:3px 15px;border-bottom:2px solid #5090c1;color:#000;">已选帐号</span></p>
+                                    </div>
+                                    <div class="widget-box widget-color-blue2" style="border-color:#E0E0E0;">
+                                        <div class="">
+                                            <p class="" style="padding:10px;padding-bottom:0;">
+                                                <span>已选数量：<b class="selected_count">0</b></span>
+                                                <input type="text" class="selected_search form-control" placeholder="输入关键字搜索...">
+                                            </p>
+                                        </div>
+                                        <div class="widget-body" style="padding-left:12px;">
+                                            <div class="widget-main padding-8" style="height: 300px;">
+                                                <ul id="tree_add_copy" class="tree_right"></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <a href="#" class="blue remove_all">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                            移除全部
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="center middle" style="position:absolute;left:50%;top:38%;width:70px;margin-left:-35px;">
+                                    <button type="button" class="btn  btn-sm btn-success sure_btn">添加
+                                        <i class="glyphicon glyphicon-arrow-right"></i>
+                                    </button>
+                                    <div class="space-8"></div>
+                                    <button type="button" class="cancel_btn btn  btn-sm btn-danger ">取消
+                                        <i class="glyphicon glyphicon-arrow-left"></i>
+                                    </button>
+
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">首次登录修改密码：</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="cf_first_change_pwd" value="1" {% if form_password.cf_first_change_pwd.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">密码组成字符种类：</td>
+                        <td class="row">
+                            <div class="col-sm-4 no-padding">
+                                <select name="cf_pwd_type" class="form-control">
+                                    {% for v,name in form_password.PARAM_TYPE_LIMIT %}
+                                        <option value="{{ v }}" {% if v == form_password.cf_pwd_type.value %} selected {% endif %} > {{ name }} </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-sm-8">
+                                <p class="grey">密码组成字符包括四种：数字、大写字母、小写字母、特殊字符</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">其他密码规则设置：</td>
+                        <td class="">
+                            <div class="control-group">
+                                <!-- #section:custom/checkbox -->
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="len" value="1" type="checkbox" {% if form_password.pwdLen == "1" %} checked {% endif %} class="ace">
+                                        <span class="lbl">
+                                                <span class="">密码长度为</span>
+                                                <select name="len_value" class="">
+                                                    {% for v in form_password.PARAM_LEN_LIMIT %}
+                                                        <option value="{{ v }}" {% if v == form_password.pwdLenValue %} selected {% endif %} > {{ v }} </option>
+                                                    {% endfor %}
+                                                </select>
+                                                <span class="">至16位</span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="no_acct" value="1" type="checkbox" {% if form_password.pwdNoAcct == "1" %} checked {% endif %} class="ace">
+                                        <span class="lbl"> 密码不能包含账号 </span>
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="num_limit" value="1" type="checkbox" {% if form_password.pwdNumLimit == "1" %} checked {% endif %} class="ace">
+                                        <span class="lbl"> 连续3位及以上数字不能连号（例如：123、654） </span>
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="word_limit" value="1" type="checkbox" {% if form_password.pwdWordLimit == "1" %} checked {% endif %} class="ace">
+                                        <span class="lbl"> 连续3位及以上字母不能连号（例如：abc、cba） </span>
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="flag_limit" value="1" type="checkbox" {% if form_password.pwdFlagLimit == "1" %} checked {% endif %} class="ace">
+                                        <span class="lbl"> 密码不能包含连续3个及以上相同字符（例如：aaa、rrr） </span>
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="no_name" value="1" type="checkbox" {% if form_password.pwdNoName == "1" %} checked {% endif %} class="ace">
+                                        <span class="lbl"> 密码不能包含用户姓名大小写全拼 </span>
+                                    </label>
+                                </div>
+
+                                <!-- /section:custom/checkbox -->
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            <div class=" ">
+            <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+            <input type="hidden" value="password" name="action" id="action_password" />
+            </div>
+            <div class="center" style="background:#fafafa;">
+                <button class="btn btn-primary" type="button" onclick="clickSubmitButton('form_password')">确定</button>
+                <button class="btn btn-warning" type="reset">重置</button>
+            </div>
+        </form>
+            </div>
+        </div>
+
+        <div id="sub_sys_third">
+            <div class="table-header">
+                第三方对接
+            </div>
+        <form class="form-horizontal form_interface" role="form" name="form_interface" id="form_interface" action="" method="POST">
+                {% csrf_token %}
+            <table  class="table  table-bordered  table-striped">
+                <tr>
+                    <td class="text-right">第三方登录验证：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_auth_api" {% if form_interface.sw_auth_api.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#authapi">设置第三方登录验证接口</button>
+
+                        </div>
+
+                    </td>
+                </tr>
+                <tr >
+                    <td class="text-right">
+                        接口修改密码是否加密：
+                    </td>
+
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_api_pwd_encry" {% if form_interface.sw_api_pwd_encry.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <span>注：开启后php5.4版本及以上生效，加密密钥:6D9A39C1018F6783E545B0D1A9EB2E98</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">即时通讯软件集成：</td>
+                    <td class="row" style="padding:8px;">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_impush" {% if form_interface.sw_impush.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#impush">即时通讯软件集成接口设置</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">登录防止xss启用token验证：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_xss_token" {% if form_interface.sw_xss_token.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <span>注：开启后，单点登录接口对接请加入token参数（token：8a5da52ed126447d359e70c05721a8aa）方可正常登录</span>
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class=" ">
+            <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+            <input type="hidden" value="interface" name="action" id="action_interface" />
+            </div>
+            <div class="center" style="background:#fafafa;">
+                <button class="btn btn-primary" type="button" onclick="clickSubmitButton('form_interface')">确定</button>
+                <button class="btn btn-warning" type="reset">重置</button>
+            </div>
+        </form>
+        </div>
+        <div id="sub_sys_other">
+            <div class="table-header">
+                杂项设置
+            </div>
+        <form class="form-horizontal form_others" role="form" name="form_others" id="form_others" action="" method="POST">
+                {% csrf_token %}
+            <table  class="table  table-bordered table-striped">
+                <tr>
+                    <td class="text-right" style="width:312px;">邮箱容量满后拒绝接收邮件：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_full_reject" {% if form_others.sw_full_reject.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">邮箱空间定时清理功能：</td>
+                    <td class="row" style="padding:8px;">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_auto_clean" {% if form_others.sw_auto_clean.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#spaceclean">邮箱空间清理设置</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td  class="text-right">客户端在线附件开关：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_client_attach" {% if form_others.sw_client_attach.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <button type="button" class="btn btn-info btn-xs" data-toggle="modal" data-target="#custom_set">客户端在线附件设置</button>
+                        </div>
+                        <!--<div class="col-sm-4 no-padding">-->
+                        <!--<div class="input-group no-padding" >-->
+                        <!--<span class="input-group-addon">转存附件大小</span>-->
+                        <!--<input type="text" class="form-control" value="50">-->
+                        <!--<span class="input-group-addon">M</span>-->
+                        <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="col-sm-4 ">-->
+                        <!--<div class="input-group">-->
+                        <!--<span class="input-group-addon">附件下载地址</span>-->
+                        <!--<input type="text" value="http://www.baidu.com" class="form-control" >-->
+                        <!--</div>-->
+                        <!--</div>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right" >登录默认打开收件箱：</td>
+                    <td >
+                        <label class="inline" >
+                            <input name="sw_auto_inbox" {% if form_others.sw_auto_inbox.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">收件时是否过滤重复邮件：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_filter_duplicate_mail" {% if form_others.sw_filter_duplicate_mail.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right" >邮件列表发来邮件显示邮件列表名称：</td>
+                    <td >
+                        <label class="inline" >
+                            <input name="sw_display_list" {% if form_others.sw_display_list.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right" >短信通知功能：</td>
+                    <td >
+                        <label class="inline" >
+                            <input name="sw_smscode" {% if form_others.sw_smscode.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+
+                </tr>
+            </table>
+            <div class=" ">
+            <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+            <input type="hidden" value="others" name="action" id="action_others" />
+            </div>
+            <div class="center" style="background:#fafafa;">
+                <button class="btn btn-primary" type="button" onclick="clickSubmitButton('form_others')">确定</button>
+                <button class="btn btn-warning" type="reset">重置</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="authapi" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">第三方登录验证接口设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form_auth_api">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">接口地址：</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="cf_auth_api" value="{{ form_auth_api.cf_auth_api.value }}" class="form-control"  placeholder="接口地址">
+                        </div>
+                    </div>
+                    <div class=" ">
+                    <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+                    <input type="hidden" value="auth_api" name="action" id="auth_api" />
+                    </div>
+                    <div class="center" style="background:#fafafa;">
+                        <button type="button" class="btn btn-success" onclick="clickSubmitButton('form_auth_api')">确定</button>
+                        <button type="button" data-dismiss="modal" class="btn btn-warning">关闭</button>
+                    </div>
+                </form>
+                <ul class="alert-warning" style="padding:4px;">
+                    <li><p class="red">备注：</p>
+                        接口的具体使用方法请参考“接口文档”。
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="spaceclean" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">邮件域 <b>test.com</b> 邮箱空间清理设置</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">
+                    邮箱空间清理设置
+                </div>
+                <form class="form-horizontal form_space_clean">
+                <table class="table  table-bordered ">
+
+                    <tbody>
+                    <tr >
+                        <td  rowspan="5" style="width:5%;vertical-align: middle;font-weight: bold;">
+                            邮<br>件<br>保<br>留<br>时<br>间：
+                        </td>
+
+                        <td style="width:75%;">
+                            <div class="input-group">
+                                <span class="input-group-addon">普通邮件保留</span>
+                                <input type="text" name="general_keep_time" class="form-control" value="{{ form_space_clean.general_keep_time }}">
+                                <span class="input-group-addon">天</span>
+                            </div>
+                            <p class="help-block">
+                                <span class="red">注：</span>除“发件箱”、“垃圾箱”和“废件箱”外的其它邮箱中的邮件
+                            </p>
+                        </td>
+                        <td rowspan="5" style="width:20%;vertical-align: middle">
+                            <span class="red">注：</span>
+                            设置用户各类邮件的保留时间，超过设置时间的邮件会被自动删除；设置为“0”时会永久保留用户邮件；系统会在每天凌晨 03:50 分自动进行清理；
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">发件箱邮件保留</span>
+                                <input type="text" name="sent_keep_time" class="form-control" value="{{ form_space_clean.sent_keep_time }}">
+                                <span class="input-group-addon">天</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">垃圾箱邮件保留</span>
+                                <input type="text" name="spam_keep_time" class="form-control" value="{{ form_space_clean.spam_keep_time }}">
+                                <span class="input-group-addon">天</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-group">
+                                <span class="input-group-addon">废件箱邮件保留</span>
+                                <input type="text" name="trash_keep_time" class="form-control" value="{{ form_space_clean.trash_keep_time }}">
+                                <span class="input-group-addon">天</span>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div class="hr hr-18 dotted hr-double"></div>
+                <div class="table-header">
+                    警告邮件格式
+                </div>
+                <table class="table  table-bordered">
+                    <tr>
+                        <td class="text-right">邮件主题：</td>
+                        <td>
+                            <input type="text" name="subject" class="form-control" value="{{ form_space_clean.subject }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">当空间不足百分比警告阀值：</td>
+                        <td>
+                            <div class="input-group">
+                                <input type="text" name="warn_rate" value="{{ form_space_clean.warn_rate }}" class="form-control">
+                                <span class="input-group-addon">%</span>
+                            </div>
+                            <p class="help-block">
+                                <span class="red">说明：</span>
+                                邮箱空间清理设置 设置发送“空间不足”警告邮件的阀值；设置范围在“0-100”之间，当用户邮箱的空间使用率达到设定值时会发送警告邮件；设置为“0”时表示不发送警告邮件；
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">邮件内容：</td>
+                        <td>
+                            <textarea name="content"  rows="8" class="form-control">
+                                {{ form_space_clean.content }}
+                            </textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">变量说明：</td>
+                        <td>
+                            <p>{MAIL_ADDRESS}：收件人邮件地址</p>
+                            <p>{USE_SIZE}：收件人邮件地址</p>
+                            <p>{TOTAL_SIZE}：管理员分配的邮箱大小</p>
+                        </td>
+                    </tr>
+                </table>
+                <div class=" ">
+                <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+                <input type="hidden" value="space_clean" name="action" id="space_clean" />
+                </div>
+                <div class="center" style="background:#fafafa;">
+                    <button type="button" class="btn btn-success" onclick="clickSubmitButton('form_space_clean')">确定</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-warning">关闭</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="impush" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">即时通讯软件集成设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form_im_api">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">接口地址：</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="cf_impush_api" value="{{ form_im_api.cf_impush_api.value }}" class="form-control"  placeholder="接口地址">
+                        </div>
+                    </div>
+                    <div class=" ">
+                    <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+                    <input type="hidden" value="{{ domain.domain }}" name="domain" id="domain" />
+                    <input type="hidden" value="im_api" name="action" id="im_api" />
+                    </div>
+                    <div class="modal-footer center">
+                        <button type="button" class="btn btn-success" onclick="clickSubmitButton('form_im_api')">提交</button>
+                        <button type="button"  class="btn btn-warning">重置</button>
+                    </div>
+                </form>
+                <ul class="alert-warning" style="padding:4px;">
+                    <li><span class="red">备注：</span>
+                        接口的具体使用方法请参考“接口文档”；
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit_pwd_modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改密码通知信</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form_security_letter">
+                    <table class="table  table-bordered">
+                        <tr>
+                            <td class="text-right" style="width:100px;">通知邮件主题：</td>
+                            <td>
+                                <input type="text" name="subject" class="form-control" value="{{ form_security_letter.subject }}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">通知邮件内容：</td>
+                            <td>
+                                <div name="content" class="wysiwyg-editor" id="editor_changepwd">
+                                    {{ form_security_letter.content }}
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class=" ">
+                    <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+                    <input type="hidden" value="{{ domain.domain }}" name="domain" id="domain" />
+                    <input type="hidden" value="security_letter" name="action" id="security_letter" />
+                    </div>
+                    <div class="modal-footer center">
+                        <button type="button" class="btn btn-success" onclick="clickSubmitButton('form_security_letter')">提交</button>
+                        <button type="button"  class="btn btn-warning">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="custom_set" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">客户端在线附件设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form_client_attach">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">转存附件大小：</label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="text" name="cf_client_size" value="{{ form_client_attach.cf_client_size.value }}" class="form-control"  placeholder="转存附件大小">
+                                <span class="input-group-addon">M</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">附件下载地址：</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="cf_client_url" value="{{ form_client_attach.cf_client_url.value }}" class="form-control"  placeholder="附件下载地址">
+                        </div>
+                    </div>
+                    <div class=" ">
+                    <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+                    <input type="hidden" value="{{ domain.domain }}" name="domain" id="domain" />
+                    <input type="hidden" value="client_attach" name="action" id="client_attach" />
+                    </div>
+                    <div class="modal-footer center">
+                        <button type="button" class="btn btn-success" onclick="clickSubmitButton('form_client_attach')">提交</button>
+                        <button type="button"  class="btn btn-warning">重置</button>
+                    </div>
+                </form>
+                <div class=" alert-warning" style="padding:6px;">
+                    <div class=" red " style="width:50px;float:left;">备注：</div>
+                    <div class="" style="padding-left:56px;width:100%;">
+                        <p>1、开关设置为开启并设置了转存附件的大小后，发送邮件时，若邮件大于设置的值，会自动将邮件里面的附件替换成下载链接，附件转存到用户网盘；</p>
+                        <p>2、转存到网盘的附件会占用用户的网盘空间，有效期为60天，过期无法下载；</p>
+                        <p>3、若用户在自己的网络硬盘操作删除了该转存的附件，也会导致外部下载附件失败；</p>
+                        <p>4、附件下载地址一般不需要自己修改，需要自定义外部访问域名的用户，需要考虑是否修改这里；</p>
+                        <p>5、内网IP登录的用户，若地址栏显示的是诸如 '10.x.x.x' 、 '172.16.x.x至172.31.x.x' 、 '192.168.x.x' 这些地址，则必须换成外部能访问到的域名地址，如'mail.example.com'；</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="allow_send_email_dress" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设置发送的外域邮件地址</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">例外地址</div>
+                <div>
+                    <form class="form-horizontal form_send_limit_white" role="form" name="form_send_limit_white" action="" method="POST">
+                        {% csrf_token %}
+                        <table class="table table-bordered table-center">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>邮件地址</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for num,id,mailbox,disabled in form_send_limit_white.getSendLimitWhiteList %}
+                                <tr id="id_send_row_{{ num }}">
+                                    <td> {{ num }} </td>
+                                    <td> {{ mailbox }} </td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="send_{{ mailbox }}_disabled" value="-1" {% if disabled == "-1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                <td>
+                                    <button class="btn btn-xs btn-danger" type="button" onclick="clickLimitDelete('send', '{{ num }}')">删除</button>
+                                </td>
+                                <input type="hidden" value="{{ id }}" name="send_{{ mailbox }}_id" id="id_send_id_{{ num }}" />
+                                <input type="hidden" value="-1" name="send_{{ mailbox }}_delete" id="id_send_delete_{{ num }}" />
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <div class="input-group margin-bottom-8">
+                                    <span class="input-group-addon">邮件地址：</span>
+                                    <input type="text" name="new_mailbox" class="form-control">
+                                </div>
+                                <div class="margin-bottom-8">
+                                    <textarea class="form-control" name="new_mailbox_list" rows="5" placeholder="批量例外邮箱地址，格式 @126.com|@sina.com|@qq.com"></textarea>
+                                </div>
+                                <p class="alert alert-warning"><b class="red">注：</b>当对象为邮箱时请在“地址”里填写邮件地址，对象为域时请在“地址”中填写“@域名”，如“@test.com”。</p>
+                            </div>
+                        </div>
+                        <div class=" ">
+                        <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+                        <input type="hidden" value="send_limit_white" name="action" id="send_limit_white" />
+                        </div>
+                        <div class="center" style="background:#fafafa;">
+                            <button class="btn btn-primary" type="button" onclick="clickSubmitButton('form_send_limit_white')">确定</button>
+                            <button class="btn btn-warning" type="reset">重置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="allow_rec_email_dress" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设置接收的外域邮件地址</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">例外地址</div>
+                <div>
+                    <form class="form-horizontal form_recv_limit_white" role="form" name="form_recv_limit_white" action="" method="POST">
+                        {% csrf_token %}
+                        <table class="table table-bordered table-center">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>邮件地址</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for num,id,mailbox,disabled in form_recv_limit_white.getRecvLimitWhiteList %}
+                                <tr id="id_recv_row_{{ num }}">
+                                    <td> {{ num }} </td>
+                                    <td> {{ mailbox }} </td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="recv_{{ mailbox }}_disabled" value="-1" {% if disabled == "-1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                <td>
+                                    <button class="btn btn-xs btn-danger" type="button" onclick="clickLimitDelete('recv', '{{ num }}')">删除</button>
+                                </td>
+                                <input type="hidden" value="{{ id }}" name="recv_{{ mailbox }}_id" id="id_recv_id_{{ num }}" />
+                                <input type="hidden" value="-1" name="recv_{{ mailbox }}_delete" id="id_recv_delete_{{ num }}" />
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <div class="input-group margin-bottom-8">
+                                    <span class="input-group-addon">邮件地址：</span>
+                                    <input type="text" name="new_mailbox" class="form-control">
+                                </div>
+                                <div class="margin-bottom-8">
+                                    <textarea class="form-control" name="new_mailbox_list" rows="5" placeholder="批量例外邮箱地址，格式 @126.com|@sina.com|@qq.com"></textarea>
+                                </div>
+                                <p class="alert alert-warning"><b class="red">注：</b>当对象为邮箱时请在“地址”里填写邮件地址，对象为域时请在“地址”中填写“@域名”，如“@test.com”。</p>
+                            </div>
+                        </div>
+                        <div class=" ">
+                        <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+                        <input type="hidden" value="recv_limit_white" name="action" id="recv_limit_white" />
+                        </div>
+                        <div class="center" style="background:#fafafa;">
+                            <button class="btn btn-primary" type="button" onclick="clickSubmitButton('form_recv_limit_white')">确定</button>
+                            <button class="btn btn-warning" type="reset">重置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!--<div class="modal-footer center">-->
+                <!--<button type="button" class="btn  btn-success">添加</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $( "#sub_sys_tabs" ).tabs();
+    initEditor('#editor_changepwd');
+    if($("[name='sw_pwd_timeout']").prop("checked")){
+        $('.nable_set').show();
+    }else{
+        $('.nable_set').hide();
+    }
+    $("[name='sw_pwd_timeout']").on('click', function(){
+        if($(this).prop('checked')){
+            $('.nable_set').show();
+        }else{
+            $('.nable_set').hide();
+        }
+    });
+
+    $('.limit_send_select').change(function(){
+        if($(this).val()=='3'){
+            $(this).next().show();
+        }else{
+            $(this).next().hide();
+        }
+    })
+
+    var deptArr = [];
+    var mailboxArr = [];
+    $.ajax({
+        url:"http://127.0.0.1:8069/operation/core/mbox/ch/",
+        type:'POST',
+//        data:"domain_id=x&action=all",
+        success:function(data){
+            console.log(11111111112222222222);
+            console.log(data);
+            deptArr = data.dept;
+            mailboxArr = data.mailbox;
+            var sampleData = initiateDemoData(deptArr,mailboxArr);
+            $('.tree_left').ace_tree({
+                dataSource: sampleData['dataSource1'],
+                multiSelect: true,
+                loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+                'open-icon' : 'ace-icon tree-minus hide',
+                'close-icon' : 'ace-icon tree-plus hide',
+                'selectable' : true,
+                'selected-icon' : 'ace-icon fa fa-check',
+                'unselected-icon' : 'ace-icon fa fa-times',
+                'cacheItems': true,
+                'folderSelect': true,
+                'folder-open-icon' : 'ace-icon tree-plus',
+                'folder-close-icon' : 'ace-icon tree-minus'
+            });
+        }
+    })
+    function initiateDemoData(deptArr,mailboxArr){
+        var tree_data = {
+
+        }
+        for(var i=0;i<deptArr.length;i++){
+            if(deptArr[i].parent<=1){
+                var str = deptArr[i].child?"folder":"item";
+                tree_data[deptArr[i].name] = {text:deptArr[i].name,type:str,id:deptArr[i].id};
+                if(str == "folder"){
+                    tree_data[deptArr[i].name]['additionalParameters']={"children":getSubDate(deptArr[i].id)};
+                }
+            }
+        }
+        for(var i=0;i<mailboxArr.length;i++){
+            if(mailboxArr[i].dept_id<=0){
+                tree_data[mailboxArr[i].box] = {text:mailboxArr[i].box,type:'item',id:mailboxArr[i].id}
+            }
+        }
+
+
+        function getSubDate(pid){
+            var obj = {};
+            for(var i=0;i<deptArr.length;i++){
+                if(deptArr[i].parent == pid){
+                    var str = deptArr[i].child?"folder":"item";
+                    obj[deptArr[i].name] = {text:deptArr[i].name,type:str,id:deptArr[i].id}
+                }
+            }
+            for(var i=0;i<mailboxArr.length;i++){
+                if(mailboxArr[i].dept_id == pid){
+                    obj[mailboxArr[i].box] = {text:mailboxArr[i].box,type:'item',id:mailboxArr[i].id}
+                }
+            }
+        }
+        for(var i=0;i<tree_data.length;i++){
+            console.log(1);
+            if(tree_data[i]['type']=="folder"){
+                console.log(tree_data[i])
+                tree_data[i]['additionalParameters']={"children":getSubDate(tree_data[i]['id'])};
+            }
+        }
+        console.log(tree_data);
+
+//        tree_data['rentals']['additionalParameters'] = {
+//            'children' : {
+//                'apartments-rentals' : {text: 'Apartments', type: 'item'},
+//                'office-space-rentals' : {text: 'Office Space', type: 'item'},
+//                'vacation-rentals' : {text: 'Vacation Rentals', type: 'item'}
+//            }
+//        }
+//        tree_data['real-estate']['additionalParameters'] = {
+//            'children' : {
+//                'apartments' : {text: 'Apartments', type: 'item'},
+//                'villas' : {text: 'Villas', type: 'item'},
+//                'plots' : {text: 'Plots', type: 'item'}
+//            }
+//        }
+//        tree_data['pets']['additionalParameters'] = {
+//            'children' : {
+//                'cats' : {text: 'Cats', type: 'item'},
+//                'dogs' : {text: 'Dogs', type: 'item'},
+//                'horses' : {text: 'Horses', type: 'item'},
+//                'reptiles' : {text: 'Reptiles', type: 'item'}
+//            }
+//        }
+
+        var dataSource1 = function(options, callback){
+            var $data = null
+            console.log(11123213123);
+            console.log(options);
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data;//the root tree
+                callback({ data: $data });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+            console.log($data);
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                callback({ data: $data });
+//                setTimeout(function(){} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+        return {'dataSource1': dataSource1}
+    }
+
+//    $('.tree_right').ace_tree({
+//        dataSource: sampleData['dataSource_copy'],
+//        multiSelect: true,
+//        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+//        'open-icon' : 'ace-icon tree-minus hide',
+//        'close-icon' : 'ace-icon tree-plus hide',
+//        'selectable' : true,
+//        'selected-icon' : 'ace-icon fa fa-check',
+//        'unselected-icon' : 'ace-icon fa fa-times',
+//        'cacheItems': true,
+//        'folderSelect': true,
+//        'folder-open-icon' : 'ace-icon tree-plus',
+//        'folder-close-icon' : 'ace-icon tree-minus'
+//    });
+
+//    $('.tree_left>li>.icon-caret.ace-icon.tree-plus').trigger('click');
+//    $('.tree_left>li>.icon-caret.ace-icon.tree-minus').trigger('click');
+
+
+    var data_copy = [];
+    var hash=[];
+    function changeData(data_copy){
+        var tree_data = {
+        };
+        for(var key in data_copy){
+            tree_data[data_copy[key]]={text: data_copy[key], type: 'item'}
+        }
+
+
+        var dataSource1 = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data;//the root tree
+                callback({ data: $data });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+            console.log($data);
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+
+
+        return {'dataSource1': dataSource1}
+    }
+    //    var sampleData1 = changeData(data_copy);
+    $('#pwd_rule .sure_btn').click(function(){
+//        $('#tree_copy').empty();
+        var arrStr=[];
+        $('#pwd_rule .tree_left .tree-item.tree-selected .icon-item.ace-icon.fa.fa-check').next().each(function(i,dom){
+            arrStr.push('<option>'+$(dom).html()+'</option>');
+            var str = $(dom).html();
+            if(str&&!hash[str]){
+                data_copy.push(str);
+                hash[str]=1;
+            }
+        })
+//        $('#bootstrap-duallistbox-selected-list_duallistbox').append(arrStr.join(' '));
+        $('#pwd_rule .selected_count').html(data_copy.length);
+        $(".tree_right").removeData("fu.tree");
+        $(".tree_right").unbind('click.fu.tree');
+        $('.tree_right').ace_tree({
+            dataSource: changeData(data_copy)['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
+    })
+    $('#pwd_rule .cancel_btn').click(function(){
+        $('#pwd_rule .tree_right .tree-item.tree-selected .tree-label').each(function(i,dom){
+            for(var i =0;i<data_copy.length;i++){
+                if($(dom).html()==data_copy[i]){
+                    data_copy.splice(i,1);
+                    hash[$(dom).html()]=0;
+                    break;
+                }
+            }
+        })
+        $('#pwd_rule .selected_count').html(data_copy.length);
+        $(".tree_right").removeData("fu.tree");
+        $(".tree_right").unbind('click.fu.tree');
+        $('.tree_right').ace_tree({
+            dataSource: changeData(data_copy)['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
+    })
+    $('#pwd_rule .remove_all').click(function(e){
+        e.preventDefault();
+        if(confirm('确定移除全部邮箱？')){
+            data_copy=[];
+            hash=[];
+            $('#pwd_rule .selected_count').html(data_copy.length);
+            $(".tree_right").removeData("fu.tree");
+            $(".tree_right").unbind('click.fu.tree');
+            $('.tree_right').ace_tree({
+                dataSource: changeData(data_copy)['dataSource1'],
+                multiSelect: true,
+                loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+                'open-icon' : 'ace-icon tree-minus hide',
+                'close-icon' : 'ace-icon tree-plus hide',
+                'selectable' : true,
+                'selected-icon' : 'ace-icon fa fa-check',
+                'unselected-icon' : 'ace-icon fa fa-times',
+                'cacheItems': true,
+                'folderSelect': true,
+                'folder-open-icon' : 'ace-icon tree-plus',
+                'folder-close-icon' : 'ace-icon tree-minus'
+            });
+        }
+    })
+    $('#pwd_rule .select_all').click(function(){
+        if($(this).prop('checked')){
+            $('.tree_left .tree-item').addClass('tree-selected');
+            $('.tree_left .tree-branch').addClass('tree-selected');
+            $('.tree_left .icon-item.ace-icon').removeClass('fa-times').addClass('fa-check');
+        }else{
+            $('.tree_left .tree-item').removeClass('tree-selected');
+            $('.tree_left .tree-branch').removeClass('tree-selected');
+            $('.tree_left .icon-item.ace-icon').addClass('fa-times').removeClass('fa-check');
+        }
+    })
+
+    var initArr = ["Appliances", "Arts & Crafts", "Clothing", "Computers", "Jewelry", "Office & Business", "Sports & Fitness", "Apartments", "Office Space", "Vacation Rentals", "Villas", "Plots", "Cats", "Dogs", "Horses", "Reptiles"];
+    function search(input,initArr,ele){
+        var keyWords = $(input).val();
+        var reg = new RegExp(keyWords, 'i');
+
+        var arr = [];
+
+        for(var key in initArr){
+            if(initArr[key].match(reg)){
+                arr.push(initArr[key]);
+            }
+        }
+        $(ele).removeData("fu.tree");
+        $(ele).unbind('click.fu.tree');
+        $(ele).ace_tree({
+            dataSource: changeData(arr)['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
+    }
+    $('#pwd_rule .select_search').keyup(function(){
+        if($(this).val().length==0){
+            $('.tree_left').removeData("fu.tree");
+            $('.tree_left').unbind('click.fu.tree');
+            $('.tree_left').ace_tree({
+                dataSource: sampleData['dataSource1'],
+                multiSelect: true,
+                loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+                'open-icon' : 'ace-icon tree-minus hide',
+                'close-icon' : 'ace-icon tree-plus hide',
+                'selectable' : true,
+                'selected-icon' : 'ace-icon fa fa-check',
+                'unselected-icon' : 'ace-icon fa fa-times',
+                'cacheItems': true,
+                'folderSelect': true,
+                'folder-open-icon' : 'ace-icon tree-plus',
+                'folder-close-icon' : 'ace-icon tree-minus'
+            });
+            $('.tree_left>li>.icon-caret.ace-icon.tree-plus').trigger('click');
+            $('.tree_left>li>.icon-caret.ace-icon.tree-minus').trigger('click');
+        }else{
+            search(this,initArr,".tree_left");
+        }
+    })
+    $('#pwd_rule .selected_search').keyup(function(){
+        search(this,data_copy,".tree_right");
+    })
+
+    function clickSubmitButton(form_name){
+        var str = $("."+form_name).serialize();
+        //console.log(str);
+        //console.log(form_name);
+        $.ajax({
+            url:"{% url 'domain_sys' %}",
+            type:"POST",
+            data:str,
+            success:function(data){
+                $('#domain_sys').html('<div>保存中...</div>');
+                                setTimeout(function(){
+                                    $('#domain_sys').html(data);
+                                    $('.modal-backdrop').remove();
+                                },100)
+                //console.log(data);
+            }
+        })
+    }
+
+    function clickLimitDelete(type, num){
+        console.log(type);
+        console.log(num);
+        var entry = "id_" + type + "_row_" + num;
+        var entry_val = "id_" + type + "_delete_" + num;
+        $("#"+entry_val).val("1");
+        $("#"+entry).remove();
+    }
+
+</script>

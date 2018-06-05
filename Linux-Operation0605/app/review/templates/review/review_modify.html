@@ -1,0 +1,247 @@
+
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% if form.instance %} {% trans "修改审核人" %}  {% else %} {% trans "添加审核人" %} {% endif %}{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "审核管理" %}</a> </li>
+    <li class="active">{% if form.instance %} {% trans "修改审核人" %}  {% else %} {% trans "添加审核人" %} {% endif %}</li>
+{% endblock %}
+
+{% block page-content %}
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>{% if form.instance %} {% trans "修改审核人" %}  {% else %} {% trans "添加审核人" %} {% endif %}
+                    <small>
+                        <i class="ace-icon fa fa-angle-double-right"></i>
+                        {{ form.name.value }}
+                    </small>
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form-horizontal" role="form" action="" method="POST" id="id_Form">
+                {% csrf_token %}
+
+                <div class="form-group {% if form.name.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_name"> 审核名称 </label>
+                    <div class="col-sm-9">
+                        <input type="text" name="name" id="id_name" value="{{ form.name.value }}" maxlength="250" class="col-xs-10 col-sm-5" required/>
+                        {% if form.name.error %}
+                            <div style="clear: both">
+                                <p class="errornote txt-color-red">{{ form.name.error }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_review_id"> 选择下一级审核 </label>
+
+                    {% if form.instance %}
+                        <div class="col-sm-9">
+                            <select class="col-xs-10 col-sm-5" id="id_next_id" name="next_id">
+                                <option value="0" {% if form.next_id.value == 0 %}selected{% endif %}>------</option>
+                                {% for exc_obj in form.instance.foundWithoutEcludeIDs %}
+                                    <option value="{{ exc_obj.id }}" {% if exc_obj.id == form.next_id.value %}selected{% endif %}>{{ exc_obj.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                    {% else %}
+
+                        <div class="col-sm-9">
+                            <input type="hidden" value="{{ form.next_id.value }}" id="id_review_id" name="next_id">
+                            <div class="input-group col-xs-10 col-sm-5">
+                                <input type="text" name="review_name" id="id_review_name" value="{{ form.next_id.extra }}" readonly="readonly" class="col-xs-10 col-sm-4 form-control" onclick="Javascript: onclickReview()"/>
+							<span class="input-group-btn">
+                                <a data-toggle="modal" data-target="#MyReviwModal" data-whatever=""
+                                   href="#" class="btn btn-sm btn-default" type="button" title="选择审核人" id="id_review_model">
+                                    <i class="ace-icon fa fa-users bigger-110 green"></i>选择
+                                </a>
+                                <a class="btn btn-sm btn-grey" type="button" title="清空审核人" href="Javascript: clearReview()">清空</a>
+                            </span>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="form-group {% if form.master_review_id.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_master_review_id"> 主审 </label>
+                    <div class="col-sm-9">
+                        <select class="chosen-select col-xs-10 col-sm-5" id="id_master_review_id" name="master_review_id">
+                            <option value="0">------</option>
+                            {% for mailbox in mailboxLists %}
+                                <option value="{{ mailbox.id }}" {% if form.master_review_id.value == mailbox.id %} selected {% endif %}>{{ mailbox.mailbox }}</option>
+                            {% endfor %}
+                        </select>
+                        {% if form.master_review_id.error %}
+                            <div style="clear: both">
+                                <p class="errornote txt-color-red">{{ form.master_review_id.error }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group {% if form.assist_review_id.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_assist_review_id"> 副审 </label>
+                    <div class="col-sm-9">
+                        <select class="chosen-select col-xs-10 col-sm-5" id="id_assist_review_id" name="assist_review_id">
+                            <option value="0">------</option>
+                            {% for mailbox in mailboxLists %}
+                                <option value="{{ mailbox.id }}" {% if form.assist_review_id.value == mailbox.id %} selected {% endif %}>{{ mailbox.mailbox }}</option>
+                            {% endfor %}
+                        </select>
+                        {% if form.assist_review_id.error %}
+                            <div style="clear: both">
+                                <p class="errornote txt-color-red">{{ form.assist_review_id.error }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+                <div class="form-group {% if form.wait_next_time.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_wait_next_time"> 自动转换等待时间 </label>
+                    <div class="col-sm-9">
+                        <input type="number" id="id_wait_next_time" name="wait_next_time" value="{{ form.wait_next_time.value }}" class="col-xs-10 col-sm-5" required/>
+                        {% if form.wait_next_time.error %}
+                            <div style="clear: both">
+                                <p class="errornote txt-color-red">{{ form.wait_next_time.error }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <span class="help-inline col-xs-9 col-sm-7">
+                            <span class="middle text-success">自动把副审转换为审核人的等待时间，单位为分钟，若为0则永不转移</span>
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="button" class="btn btn-info" id="id_save_button">
+                            <i class="ace-icon fa fa-check bigger-110"></i>{% trans "保存" %}
+                        </button>
+
+                        <button class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>重置
+                        </button>
+
+                        <a type="button" class="btn btn-link" href="{% url 'review_list' %}">取消</a>
+                    </div>
+                </div>
+            </form>
+
+
+        </div><!-- /.span -->
+    </div><!-- /.row -->
+
+
+    <div class="modal fade " id="MyReviwModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="margin:120px auto; width: 1000px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">加载中</h4>
+                </div>
+                <div class="modal-body">
+                    页面加载中
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'otreetable1.0/otreetable.css' %}" />
+    <link rel="stylesheet" href="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.css' %}" />
+    <link rel="stylesheet" href="{% static 'components/chosen/chosen.css' %}" />
+    <style>
+        .chosen-container-single .chosen-single span {
+            padding: 3px 4px;
+        }
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script type="text/javascript" src="{% static 'otreetable1.0/otreetable.js' %}"></script>
+    <script src="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.js' %}"></script>
+    <script src="{% static 'components/jqueryui-touch-punch/jquery.ui.touch-punch.js' %}"></script>
+    <script src="{% static 'components/chosen/chosen.jquery.js' %}"></script>
+    <script>
+
+
+
+        $(function () {
+
+            if(!ace.vars['touch']) {
+                $('.chosen-select').chosen({
+                    allow_single_deselect:true,
+                    search_contains: true,
+
+                });
+                //resize the chosen on window resize
+
+                $(window).off('resize.chosen').on('resize.chosen', function() {
+
+                    $('.chosen-select').each(function() {
+                        var $this = $(this);
+                        $this.next().css({'width': "41.67%", 'border-radius': "0"});
+                        $(".chosen-single").css({'border-radius': "0", "height": "30px"})
+                        // $this.next().css({'width': $this.parent().width()});
+                    })
+                }).trigger('resize.chosen');
+                //resize chosen on sidebar collapse/expand
+                $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                    if(event_name != 'sidebar_collapsed') return;
+                    $('.chosen-select').each(function() {
+                        var $this = $(this);
+                        alert(111);
+                        $this.next().css({'width': $this.parent().width()});
+                    })
+                });
+
+            }
+
+            // 防止重复提交
+            saveButtonRemove();
+            $("#id_save_button").click(function(){
+                saveButtonAdd();
+                $("#id_Form").submit();
+            });
+
+            /** 模型弹出框 **/
+            $('#MyReviwModal').on('show.bs.modal', function (event) {
+                $(this).removeData('bs.modal');
+            })
+
+            $("#id_review_model").click(function(){
+                var review_id = $("#id_review_id").val();
+                $("#id_review_model").attr('href', '{% url 'choose_review_list' %}?model_review_id=' + review_id);
+            });
+
+        });
+
+        function saveButtonAdd(){$("#id_save_button").attr("disabled", "disabled").addClass('disabled');}
+        function saveButtonRemove(){$("#id_save_button").removeAttr("disabled").removeClass('disabled');}
+
+        function onclickReview() {$("#id_review_model").click();}
+        function clearReview(){$("#id_review_id").val(0);$("#id_review_name").val("");}
+
+    </script>
+
+{% endblock %}

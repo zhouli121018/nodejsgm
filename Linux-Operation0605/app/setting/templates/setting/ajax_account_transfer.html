@@ -1,0 +1,24 @@
+<td>{{ number }}</td>
+<td>{{ d.mailbox|default_if_none:'' }}</td>
+<td>{{ d.mailbox_to|default_if_none:'' }}</td>
+<td>{{ d.get_status_display }}</td>
+<td>{{ d.desc_msg|default_if_none:'' }}</td>
+<td>{{ d.last_update|date:"Y-m-d H:i" }}</td>
+<td>
+    {% if d.succ_del == 1 %}
+        <span class="label label-xlg label-success arrowed-in arrowed-in-right">是</span>
+    {% else %}
+        <span class="label label-xlg label-light arrowed-in arrowed-in-right">否</span>
+    {% endif %}
+</td>
+<td>
+    {% if d.disabled == 1 %}
+        <span class="label label-xlg label-light arrowed-in arrowed-in-right">停止</span>
+    {% else %}
+        <span class="label label-xlg label-success arrowed-in arrowed-in-right">开始</span>
+    {% endif %}
+</td>
+<td>
+    <a type="button" class="btn btn-minier btn-primary" href="{% url 'account_transfer_mdf' d.id %}">修改</a>
+    <a type="button" class="btn btn-minier btn-danger" href="Javascript: setStatus({{ d.id }}, 'delete')">删除</a>
+</td>

@@ -1,0 +1,293 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% if form.instance %} {% trans "修改" %}  {% else %} {% trans "添加" %} {% endif %}{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "内网邮件代发" %}</a> </li>
+    <li class="active">{% if form.instance %} {% trans "修改" %}  {% else %} {% trans "添加" %} {% endif %}</li>
+{% endblock %}
+
+{% block page-content %}
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>{% if form.instance %} {% trans "修改" %}  {% else %} {% trans "添加" %} {% endif %}
+                    <small>
+                        <i class="ace-icon fa fa-angle-double-right"></i>
+                        {{ form.mailbox.value }}
+                    </small>
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form-horizontal" role="form" action="" method="POST" id="id_Form">
+                {% csrf_token %}
+
+                <div class="form-group {% if form.mailbox.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_mailbox"> 本地帐号 </label>
+                    <div class="col-sm-9">
+                        <select class="chosen-select col-xs-10 col-sm-5" id="id_mailbox" name="mailbox">
+                            <option value="">请选择邮箱</option>
+                            {% for mailbox in form.mailboxLists %}
+                                <option value="{{ mailbox.mailbox }}" {% if form.mailbox.value == mailbox.mailbox %} selected {% endif %}>{{ mailbox.mailbox }}</option>
+                            {% endfor %}
+                        </select>
+                        {% if form.mailbox.error %}
+                            <div style="clear: both">
+                                <p class="errornote txt-color-red">{{ form.mailbox.error }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group {% if form.account.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_account"> 远程登录帐号 </label>
+                    <div class="col-sm-9">
+                    <input type="text" name="account" id="id_account" value="{{ form.account.value }}" maxlength="200" class="col-xs-10 col-sm-5" />
+                        {% if form.account.error %}
+                            <div style="clear: both">
+                                <p class="errornote txt-color-red">{{ form.account.error }}</p>
+                            </div>
+                        {% endif %}
+                        <div style="clear: both">
+                            <span class="middle text-success ">
+                            <li>
+                            若没有设置"远程登录帐号"，默认会使用“默认登录帐号”里面设置的帐号登录。
+                            </li>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group {% if form.password.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_password"> 密码 </label>
+                    <div class="col-sm-9">
+                    <input type="password" name="password" id="id_password" value="{{ form.password.value }}" maxlength="200" class="col-xs-10 col-sm-5" />
+                    </div>
+                </div>
+
+                <div class="form-group {% if form.server.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_server"> 远程服务器 </label>
+                    <div class="col-sm-9">
+                    <input type="text" name="server" id="id_server" value="{{ form.server.value }}" maxlength="200" class="col-xs-10 col-sm-5" />
+                        <div style="clear: both">
+                            <span class="middle text-success ">
+                            <li>
+                            若“远程服务器”使用的域名与本服务器一致，应尽量输入IP地址，
+                            </li>
+                            <li>
+                            以避免DNS错误解析为本服务器IP地址。
+                            </li>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group {% if form.recipient.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_recipient"> 远程收件帐号 </label>
+                    <div class="col-sm-9">
+                    <input type="text" name="recipient" id="id_recipient" value="{{ form.recipient.value }}" maxlength="200" class="col-xs-10 col-sm-5" />
+                        {% if form.recipient.error %}
+                            <div style="clear: both">
+                                <p class="errornote txt-color-red">{{ form.recipient.error }}</p>
+                            </div>
+                        {% endif %}
+                        <div style="clear: both">
+                            <span class="middle text-success ">
+                            <li>
+                            “远程收件帐号”与“远程登录帐号”的关系为：
+                            </li>
+                            <li>
+                            以“远程登录帐号”登录“远程服务器”，然后将邮件转发到“远程收件帐号”这个邮箱；
+                            </li>
+                            <li>
+                            “远程收件帐号”输入为空时，默认投递到“远程登录帐号”。
+                            </li>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_for_ssl" > SSL登录 </label>
+                    <div class="col-sm-9">
+                        <select class="col-xs-10 col-sm-5" id="id_ssl" name="ssl" ">
+                            <option value="1" {% if form.ssl.value == '1' %} selected {% endif %} > 是 </option>
+                            <option value="-1" {% if form.ssl.value != '1' %} selected {% endif %} > 否 </option>
+                        </select>
+                        {% if form.ssl.error %}
+                            <div style="clear: both"><p class="errornote txt-color-red">{{ form.ssl.error }}</p></div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_for_auth" > 需要验证 </label>
+                    <div class="col-sm-9">
+                        <select class="col-xs-10 col-sm-5" id="id_auth" name="auth"">
+                            <option value="-1" {% if form.auth.value == -1 %} selected {% endif %} > 否 </option>
+                            <option value="1" {% if form.auth.value != -1 %} selected {% endif %} > 是 </option>
+                        </select>
+                        {% if form.ssl.error %}
+                            <div style="clear: both"><p class="errornote txt-color-red">{{ form.auth.error }}</p></div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_fail_report" id="id_fail_report" > 警告邮件接收地址 </label>
+                    <div class="col-sm-9 no-padding-right">
+                            <input type="text" name="fail_report" id="id_alert_address"
+                                value="{{ form.fail_report.value }}" class="col-xs-10 col-sm-5"/>
+                            {% if form.fail_report.error %}
+                                <div style="clear: both"><p class="errornote txt-color-red">{{ form.fail_report.error }}</p></div>
+                            {% endif %}
+                            <div style="clear: both">
+                            <span class="middle text-success ">
+                            <li>
+                            若设置的帐号无法完成邮件投递，则会发送通知邮件到这里设置的邮箱地址中；
+                            </li>
+                            <li>
+                            多个帐号之间用','分隔，不可输入外域邮箱；
+                            </li>
+                            <li>
+                            警告邮件投递时间间隔为每10分钟一次。
+                            </li>
+                            </span>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_disabled"> 激活状态 </label>
+                    <div class="col-sm-9">
+                        <label class="radio radio-inline padding-top-0 margin-top-0 form-inline">
+                            <label>
+                                <input type="radio" name="disabled" value="-1" {% if form.disabled.value == '-1'  %} checked="" {% endif %}><span>启用</span>
+                            </label>
+                            <label>
+                                <input type="radio" name="disabled" value="1" {% if form.disabled.value != '-1'  %} checked="" {% endif %}><span>禁用</span>
+                            </label>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="button" class="btn btn-info" id="id_save_button" onClick="clickSave()">
+                            <i class="ace-icon fa fa-check bigger-110"></i>{% trans "保存" %}
+                        </button>
+
+                        <button class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>重置
+                        </button>
+
+                        <a type="button" class="btn btn-link" href="{% url 'mail_moving' %}">取消</a>
+                    </div>
+                </div>
+            </form>
+
+
+        </div><!-- /.span -->
+    </div><!-- /.row -->
+
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.css' %}" />
+    <link rel="stylesheet" href="{% static 'components/chosen/chosen.css' %}" />
+    <style>
+        .chosen-container-single .chosen-single span {
+            padding: 3px 4px;
+        }
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.js' %}"></script>
+    <script src="{% static 'components/jqueryui-touch-punch/jquery.ui.touch-punch.js' %}"></script>
+    <script src="{% static 'components/chosen/chosen.jquery.js' %}"></script>
+    <script>
+
+        function clickSave(){
+            server = $("#id_server").val();
+            account = $("#id_account").val();
+            password = $("#id_password").val();
+            ssl = $("#id_ssl").val();
+            auth = $("#id_auth").val();
+
+            if( !server || !account ){
+                $("#id_Form").submit();
+                saveButtonAdd();
+                return true;
+            }
+
+            var ajax_url = "{% url 'ajax_smtpcheck' %}";
+            $.post(ajax_url,
+                {
+                    server:server,
+                    account:account,
+                    password:password,
+                    ssl:ssl,
+                    auth:auth,
+                },
+                function(data)
+                {
+                    if(data.status == 'OK'){
+                        alert('邮件服务器验证通过');
+                        $("#id_Form").submit();
+                        saveButtonAdd();
+                        return true;
+                    }
+                    else{
+                        alert(data.msg);
+                    }
+                },
+            'json');
+        }
+
+        $(function () {
+            // 防止重复提交
+            saveButtonRemove();
+
+            if(!ace.vars['touch']) {
+                $('.chosen-select').chosen({
+                    allow_single_deselect:true,
+                    search_contains: true,
+
+                });
+                //resize the chosen on window resize
+
+                $(window).off('resize.chosen').on('resize.chosen', function() {
+
+                    $('.chosen-select').each(function() {
+                        var $this = $(this);
+                        $this.next().css({'width': "41.67%", 'border-radius': "0"});
+                        $(".chosen-single").css({'border-radius': "0", "height": "30px"})
+                        // $this.next().css({'width': $this.parent().width()});
+                    })
+                }).trigger('resize.chosen');
+                //resize chosen on sidebar collapse/expand
+                $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                    if(event_name != 'sidebar_collapsed') return;
+                    $('.chosen-select').each(function() {
+                        var $this = $(this);
+                        alert(111);
+                        $this.next().css({'width': $this.parent().width()});
+                    })
+                });
+            }
+        });
+
+        function saveButtonAdd(){$("#id_save_button").attr("disabled", "disabled").addClass('disabled');}
+        function saveButtonRemove(){$("#id_save_button").removeAttr("disabled").removeClass('disabled');}
+
+    </script>
+
+{% endblock %}

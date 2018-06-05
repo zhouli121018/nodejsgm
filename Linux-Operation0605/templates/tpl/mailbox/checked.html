@@ -1,0 +1,103 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue">已审核列表</h3>
+    <div id="tabs">
+        <ul>
+            <li>
+                <a href="#tabs_title">审核通过列表</a>
+            </li>
+            <li>
+                <a href="#tabs_logo">拒绝通过列表</a>
+            </li>
+            <li>
+                <a href="#tabs_login">已注销列表</a>
+            </li>
+        </ul>
+        <div id="tabs_title">
+            <div class="table-header">
+                审核通过列表
+            </div>
+            <div>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="center">序号</th>
+                            <th>账号名称</th>
+                            <th>姓名</th>
+                            <th>员工代码（工号、警号等）</th>
+                            <th>部门</th>
+                            <th>状态</th>
+                            <th>备注</th>
+                            <th>申请日期</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-body">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tabs_logo">
+
+        </div>
+        <div id="tabs_login">
+
+        </div>
+    </div>
+</div>
+<script>
+
+    var myTable;
+    function initDate(p){
+        for(var i= 0,html='';i<p;i++){
+            html+=`<tr class="">
+                        <td class="center middle">${i+1}</td>
+                        <td>emailname</td>
+                        <td>username</td>
+                        <td>15648892</td>
+                        <td>department</td>
+                        <td>审核通过</td>
+                        <td>333</td>
+                        <td>2018-01-02 17:15:20</td>
+                    </tr>`
+        }
+        $('#data-body').html(html);
+            myTable =
+                $('#dynamic-table')
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                null,
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                null
+                            ],
+                            "aaSorting": [],
+
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                } );
+    }
+    initDate(28);
+</script>

@@ -1,0 +1,9 @@
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+<td>{{ d.address }}</td>
+<td>{{ d.name }}</td>
+<td><input value="{{ d.remark|default_if_none:'' }}" type="text" maxlength="200" id="id_remark_{{ d.id }}"></td>
+<td>
+    <a type="button" class="red delete btn btn-white btn-info btn-xs" href="Javascript: ModefyRemark('{{ d.id }}')">修改备注</a>
+    <a type="button" class="red delete btn btn-white btn-danger btn-xs" href="Javascript: Delete({{ d.id }}, '{{ d.address }}')">删除</a>
+</td>

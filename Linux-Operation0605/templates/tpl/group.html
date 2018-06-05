@@ -1,0 +1,2009 @@
+
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue">组权限管理
+
+    </h3>
+
+    <div class="row margin-bottom-8">
+        <div class="col-sm-12 text-right">
+            <button type="button" data-toggle="modal" data-target="#add_group" class="btn btn-success btn-sm" >
+                添加组
+            </button>
+        </div>
+    </div>
+    <div class="table-header">
+        组权限管理
+    </div>
+
+    <!-- div.table-responsive -->
+
+    <!-- div.dataTables_borderWrap -->
+    <div>
+        <table id="dynamic-table" class="table table-striped table-bordered table-hover table-center">
+            <thead>
+            <tr>
+                <th class="center">序号</th>
+                <th>组名称</th>
+                <th>
+
+                    说明信息
+                </th>
+                <th>成员数</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="data-body">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="edit_group">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">组配置</h4>
+            </div>
+            <div class="modal-body">
+                <div id="member_manage_tabs">
+                    <ul>
+                        <li>
+                            <a href="#group_info">组信息</a>
+                        </li>
+                        <li>
+                            <a href="#normal_set">常规设置</a>
+                        </li>
+                        <li>
+                            <a href="#login_style">登录方式限制</a>
+                        </li>
+                        <li>
+                            <a href="#about_secret">密码规则</a>
+                        </li>
+                        <li>
+                            <a href="#no_rubbish_set">反垃圾/反病毒</a>
+                        </li>
+                        <li>
+                            <a href="#account_set">账号设置界面</a>
+                        </li>
+                        <li>
+                            <a href="#account_secret_grade">账号密级</a>
+                        </li>
+                    </ul>
+                    <div id="group_info">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">
+                                    <span class="red">*</span>组名称：
+                                </label>
+                                <div class="col-sm-4">
+                                    <input type="text" class="form-control" value="11111111">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2">
+                                    组描述：
+                                </label>
+                                <div class="col-sm-8">
+                                    <textarea  rows="8" class="form-control">许多许多的</textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="normal_set">
+                        <div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="text-right">邮箱空间：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control">
+                                                <span class="input-group-addon">MB</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">网络硬盘空间：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control">
+                                                <span class="input-group-addon">MB</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">允许外发附件大小：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control">
+                                                <span class="input-group-addon">MB</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><span class="red bold">*</span>发信功能限制：</td>
+                                    <td class="">
+                                        <div class=" ">
+                                            <select class="limit_send_select" name="limit_send" style="width:162px;">
+                                                <option value="-1" selected>不限制邮件发送</option>
+                                                <option value="1">禁止发送所有邮件</option>
+                                                <option value="2">只发送本地域邮件</option>
+                                                <option value="3">可发送指定外域邮件</option>
+                                                <option value="4">可发送本地所有域邮件</option>
+                                            </select>
+                                            <button type="button" class="btn btn-xs btn-info" style="display:none;" data-toggle="modal" data-target="#allow_send_email_dress">设置允许名单</button>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right"><span class="red bold">*</span>收信功能限制：</td>
+                                    <td class="">
+                                        <div class=" ">
+                                            <select class="limit_send_select" name="limit_recv" style="width:162px;">
+                                                <option value="-1" selected>不限制邮件接收</option>
+                                                <option value="1">禁此接收所有邮件</option>
+                                                <option value="2">只接收本地域邮件</option>
+                                                <option value="3">可接收指定外域邮件</option>
+                                            </select>
+                                            <button type="button" class="btn btn-xs btn-info" style="display:none;" data-toggle="modal" data-target="#allow_rec_email_dress">设置允许名单</button>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">限制发送频率：</td>
+                                    <td>
+                                        <label class="inline">
+                                            <input type="checkbox" checked class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="login_style">
+                        <div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="text-right" style="width:300px;">POP/POPS邮箱收取功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="pop-rec" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">SMTP/SMTPS客户端邮件发送功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="smtp-rec" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">IMAP/IMAPS客户端邮件收发功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="imap-rec" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="about_secret">
+                        <div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="text-right" style="width:144px;">定期密码修改设置：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="nable_set_switch" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="nable_set">
+                                    <td class="text-right" style="width:120px;">密码有效期：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <div class="input-group">
+                                                <input type="number" value="365" class="form-control" placeholder="密码有效期">
+                                                <span class="input-group-addon">天</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8 ">
+                                            <p class="help-block green">0代表永远有效，大于0代表多少天密码过期后会强制用户修改密码</p>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="nable_set">
+                                    <td class="text-right">密码有效开始时间：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <div class="input-group">
+                                                <input class="form-control date-picker" type="text" data-date-format="yyyy-mm-dd">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8 ">
+                                            <p class="help-block red">注：不能大于当前时间</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="nable_set">
+                                    <td class="text-right">这些用户除外：</td>
+                                    <td>
+                                        <!--<select multiple size="5" class="select2 form-control">-->
+                                            <!--<option value="1" selected>1@test.com</option>-->
+                                            <!--<option value="2">2@test.com</option>-->
+                                            <!--<option value="3" selected>3@test.com</option>-->
+                                            <!--<option value="4">4@test.com</option>-->
+                                            <!--<option value="5">5@test.com</option>-->
+                                            <!--<option value="6">6@test.com</option>-->
+                                            <!--<option value="11">11@test.com</option>-->
+                                            <!--<option value="21">21@test.com</option>-->
+                                            <!--<option value="31">31@test.com</option>-->
+                                            <!--<option value="41">41@test.com</option>-->
+                                            <!--<option value="51">51@test.com</option>-->
+                                            <!--<option value="61">61@test.com</option>-->
+                                            <!--<option value="12">12@test.com</option>-->
+                                            <!--<option value="22">22@test.com</option>-->
+                                            <!--<option value="32">32@test.com</option>-->
+                                            <!--<option value="42">42@test.com</option>-->
+                                            <!--<option value="52">52@test.com</option>-->
+                                            <!--<option value="62">62@test.com</option>-->
+                                        <!--</select>-->
+                                        <div class="row" style="position:relative;">
+                                            <!--<div class="col-sm-12">-->
+                                            <!--<select multiple="multiple" style="height:200px;" name="duallistbox" id="duallist">-->
+                                            <!--<option value="1">1</option>-->
+                                            <!--<option value="2">2</option>-->
+                                            <!--<option value="3">3</option>-->
+                                            <!--<option value="4">4</option>-->
+                                            <!--<option>Apartments</option> <option>Villas</option> <option>Plots</option> <option>Tickets</option> <option>Services</option> <option>Personals</option>-->
+                                            <!--</select>-->
+                                            <!--<div class="hr"></div>-->
+                                            <!--</div>-->
+                                            <div class="col-xs-6 " style="padding-right:40px;">
+                                                <div class="">
+                                                    <p class=""><span style="padding:3px 15px;border-bottom:2px solid #5090c1;color:#000;">选择帐号</span></p>
+                                                </div>
+                                                <div class="widget-box widget-color-blue2" style="border-color:#E0E0E0;">
+                                                    <div class="">
+                                                        <p class="" style="padding:10px;padding-bottom:0;">
+                                                            <input type="text" class="form-control select_search" placeholder="输入关键字搜索..."></p>
+                                                    </div>
+                                                    <div class="widget-body" style="padding-left:12px">
+                                                        <div class="widget-main padding-8">
+                                                            <ul id="tree1"></ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="checkbox" style="margin-top:0;">
+                                                    <label style="padding-left:10px;">
+                                                        <input name="select_all" type="checkbox" class="ace select_all">
+                                                        <span class="lbl"> 所有帐号 </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xs-6 " style="padding-left:40px;">
+                                                <div class="">
+                                                    <p class=""><span style="padding:3px 15px;border-bottom:2px solid #5090c1;color:#000;">已选帐号</span></p>
+                                                </div>
+                                                <div class="widget-box widget-color-blue2" style="border-color:#E0E0E0;">
+                                                    <div class="">
+                                                        <p class="" style="padding:10px;padding-bottom:0;">
+                                                            <span>已选数量：<b class="selected_count">0</b></span>
+                                                            <input type="text" class="form-control selected_search" placeholder="输入关键字搜索...">
+                                                        </p>
+                                                    </div>
+                                                    <div class="widget-body" style="padding-left:12px;">
+                                                        <div class="widget-main padding-8" style="height: 300px;">
+                                                            <ul id="tree_copy"></ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-right">
+                                                    <a href="#" class="blue remove_all">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                        移除全部
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="center middle" style="position:absolute;left:50%;top:38%;width:70px;margin-left:-35px;">
+                                                <button type="button" class="btn  btn-sm btn-success sure_btn">添加
+                                                    <i class="glyphicon glyphicon-arrow-right"></i>
+                                                </button>
+                                                <div class="space-8"></div>
+                                                <button type="button" class="cancel_btn btn  btn-sm btn-danger ">取消
+                                                    <i class="glyphicon glyphicon-arrow-left"></i>
+                                                </button>
+
+                                                <!--<button type="button" class="cancel_add_member btn  btn-sm btn-danger ">取消-->
+                                                <!--<i class="glyphicon glyphicon-arrow-left"></i>-->
+                                                <!--</button>-->
+                                            </div>
+                                            <!--<div class="col-sm-5 no-padding">-->
+                                            <!--<select multiple  class="select2 form-control"  data-placeholder="选择账号,可多选">-->
+                                            <!--<option value="">选择添加邮箱账号,可多选</option>-->
+                                            <!--<option value="2">成员测试2</option>-->
+                                            <!--<option value="3">成员测试3</option>-->
+                                            <!--<option value="4">成员测试4</option>-->
+                                            <!--<option value="5">成员测试5</option>-->
+                                            <!--<option value="6">成员测试6</option>-->
+                                            <!--</select>-->
+                                            <!--</div>-->
+                                            <div class="col-sm-12">
+
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">首次登录修改密码：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">密码组成字符种类：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <select class="form-control">
+                                                <option value="2">必须包含两种字符</option>
+                                                <option value="3" selected>必须包含三种字符</option>
+                                                <option value="4">必须包含四种字符</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <p class="grey">密码组成字符包括四种：数字、大写字母、小写字母、特殊字符</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">其他密码规则设置：</td>
+                                    <td class="">
+                                        <div class="control-group">
+                                            <!-- #section:custom/checkbox -->
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" checked class="ace">
+                                                    <span class="lbl">
+                                                            <span class="">密码长度为</span>
+                                                            <select class="">
+                                                                <option value="8" selected>8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+                                                                <option value="11">11</option>
+                                                                <option value="12">12</option>
+                                                                <option value="13">13</option>
+                                                                <option value="14">14</option>
+                                                                <option value="15">15</option>
+                                                                <option value="16">16</option>
+                                                            </select>
+                                                            <span class="">至16位</span>
+
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" checked class="ace">
+                                                    <span class="lbl"> 密码不能包含账号 </span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" checked class="ace">
+                                                    <span class="lbl"> 连续3位及以上数字不能连号（例如：123、654） </span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <span class="lbl"> 连续3位及以上字母不能连号（例如：abc、cba） </span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <span class="lbl"> 密码不能包含连续3个及以上相同字符（例如：aaa、rrr） </span>
+                                                </label>
+                                            </div>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input name="form-field-checkbox" type="checkbox" class="ace">
+                                                    <span class="lbl"> 密码不能包含用户姓名大小写全拼 </span>
+                                                </label>
+                                            </div>
+
+                                            <!-- /section:custom/checkbox -->
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="no_rubbish_set">
+                        <div>
+                            <table class="table table-bordered table-striped">
+                                <tbody>
+                                <tr>
+                                    <td class="text-right" style="width:200px;">反病毒功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="no_anti" checked type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">反垃圾功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="sw_antivirus" checked type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right" >SPF检测：
+                                    </td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="spf"  type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl middle"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right">灰名单检测：
+                                    </td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="grey_name"  type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right">检查附件：
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label style="margin-right:20px;">
+                                                <input name="low_risk_attachment" type="checkbox" checked class="ace">
+                                                <span class="lbl"> 小危附件 </span>
+                                            </label>
+                                            <label>
+                                                <input name="high_risk_attachment" type="checkbox" checked class="ace">
+                                                <span class="lbl"> 高危附件 </span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right"> 匹配黑名单：
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label style="margin-right:20px;">
+                                                <input name="sender_blacklist" type="checkbox" checked class="ace">
+                                                <span class="lbl"> 发件人黑名单 </span>
+                                            </label>
+                                            <label style="margin-right:20px;">
+                                                <input name="subject_blacklist" type="checkbox" checked class="ace">
+                                                <span class="lbl"> 主题黑名单 </span>
+                                            </label>
+                                            <label style="margin-right:20px;">
+                                                <input name="content_blacklist" type="checkbox" checked class="ace">
+                                                <span class="lbl"> 内容黑名单 </span>
+                                            </label>
+                                            <label>
+                                                <input name="content_blacklist" type="checkbox" checked class="ace">
+                                                <span class="lbl"> 附件黑名单 </span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right">反垃圾引擎：</td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label style="margin-right:20px;">
+                                                <input name="dspam" type="checkbox" checked class="ace">
+                                                <span class="lbl"> Dspam </span>
+                                            </label>
+                                            <label>
+                                                <input name="spamassassin" type="checkbox" checked class="ace">
+                                                <span class="lbl"> Spamassassion </span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right"> 检查发件人格式：
+                                    </td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <label class="inline" >
+                                                <input name="format" checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8 no-padding">
+                                            <span class="middle text-success "><strong style="color: red">注：</strong> 此选项不会作用于“本域进站邮件” </span>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right"> 垃圾邮件投递位置：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <select class="form-control" id="id_spam_folder" name="spam_folder" style="max-width:200px;">
+                                                <option value="Spam"> 垃圾箱 </option>
+                                                <option value="Sequester"> 隔离队列 </option>
+                                                <option value="INBOX" selected=""> 收件箱 </option>
+                                            </select>
+                                        </div>
+
+
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right" >
+                                        垃圾邮件主题标识：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <input type="text" name="spam_flag"  value="[***SPAM***]" class="form-control" style="max-width:200px;">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right">隔离邮件保存天数：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <input type="number" name="save_days" id="id_save_days" value="15" style="max-width:200px;" class="form-control">
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right">发送隔离报告：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="is_report" checked type="checkbox" class="ace ace-switch ace-switch-5">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right">隔离报告发件人：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <input type="text" name="spam_report" id="id_spam_report" style="max-width:200px;" value="spamreporter" class="form-control">
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right">隔离报告链接地址：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <input type="text" name="host" id="id_host" value="http://mail.test.com" class="form-control" style="max-width:200px;">
+
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <div style="clear: both">
+                                                <span class="middle text-success "><strong style="color: red">注：</strong> “链接地址”必须为类似"mail.example.com"或"114.114.114.114"这种可以通过外网点击访问的地址。如果是"127.0.0.1","192.168.xx.xx"这种地址，会导致外网登录的用户无法通过链接操作隔离邮件。 </span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus">
+                                    <td class="text-right">检测对象：
+                                    </td>
+                                    <td>
+                                        <div class="checkbox">
+                                            <label style="margin-right:20px;">
+                                                <input name="spam_check_local" type="checkbox" checked class="ace">
+                                                <span class="lbl"> 本域进站邮件 </span>
+                                            </label>
+                                            <label>
+                                                <input name="spam_check_outside" type="checkbox" checked class="ace">
+                                                <span class="lbl"> 外域进站邮件 </span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="sw_antivirus" id="id_spam_local_set">
+                                    <td class="text-right">本域进站邮件：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <div class="checkbox">
+                                                <label style="margin-right:20px;">
+                                                    <input name="spam_check_local_spam" type="checkbox" checked class="ace">
+                                                    <span class="lbl"> 开启反垃圾 </span>
+                                                </label>
+                                                <label>
+                                                    <input name="spam_check_local_virus" type="checkbox" checked class="ace">
+                                                    <span class="lbl"> 开启反病毒 </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <span class="middle text-success "><strong style="color: red">注：</strong> “反垃圾功能”和“反病毒功能”开启后，这里对应的勾选框才会生效 </span>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="id_spam_outside_set" class="sw_antivirus">
+                                    <td class="text-right">外域进站邮件：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <div class="checkbox">
+                                                <label style="margin-right:20px;">
+                                                    <input name="spam_check_outside_spam" type="checkbox" checked class="ace">
+                                                    <span class="lbl"> 开启反垃圾 </span>
+                                                </label>
+                                                <label>
+                                                    <input name="spam_check_outside_virus" type="checkbox" checked class="ace">
+                                                    <span class="lbl"> 开启反病毒 </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            <span class="middle text-success "><strong style="color: red">注：</strong> “反垃圾功能”和“反病毒功能”开启后，这里对应的勾选框才会生效 </span>
+
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="account_set">
+                        <div>
+                            <table class="table table-bordered table-striped">
+                                <tr>
+                                    <td class="text-right" style="width:200px;">个人资料功能：</td>
+                                    <td class="row" style="padding:8px;">
+                                        <div class="col-sm-4 no-padding">
+                                            <label class="inline" >
+                                                <input name="user-info" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8 no-padding">
+                                            注：关闭此功能后用户无法修改个人资料；
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-right">密码修改功能：</td>
+                                    <td class="row" style="padding:8px;">
+                                        <div class="col-sm-4 no-padding">
+                                            <label class="inline" >
+                                                <input name="reset-pwd" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8 no-padding">
+                                            注：关闭此功能后用户无法修改邮箱密码；；
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right" >参数设置功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="wsw_options" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-right" >邮件签名功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="wsw_signature" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-right">自动回复功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="auto-reply" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">自动转发功能：</td>
+                                    <td class="row" style="padding:8px;">
+                                        <div class="col-sm-4 no-padding">
+                                            <label class="inline" >
+                                                <input name="auto-transmit" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8 no-padding">
+                                            <span> 注：全局自动转发开闭开关，除此之外，每个邮箱用户也有单独开启自动转发开关，在邮箱账号管理中设置；</span>
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-right">黑白名单功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="black-white" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-right" >设置自动转发默认值：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <label class="inline" >
+                                                <input name="wsw_autoforward_visible" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8 no-padding">
+                                            注：选择“是”，在后台邮件账户管理中，用户是否可以自行设置自动转发的默认值是“是”，否则为“否”；
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right" >邮箱搬家功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="wsw_mailboxmove" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td class="text-right">邮箱意见反馈功能：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <label class="inline" >
+                                                <input name="wsw_feedback" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8 no-padding">
+                                            注：Webmail 配置中意见反馈功能开关；
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">邮件召回记录查看：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="wsw_zhaohui" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">邮件过滤功能：</td>
+                                    <td>
+                                        <label class="inline" >
+                                            <input name="wsw_cfilter" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">SMTP外发邮件中转：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <label class="inline" >
+                                                <input name="sw_smtptransfer_visible" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                                <span class="lbl"></span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-8 no-padding">
+                                            注：开启本开关后，umail将作为邮件客户端，将外发邮件投递到用户设置的邮件服务器
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="account_secret_grade">
+                        <div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td class="text-right" style="width:200px;">账号密级：</td>
+                                    <td class="row">
+                                        <div class="col-sm-4 no-padding">
+                                            <select class="form-control">
+                                                <option value="1">秘密</option>
+                                                <option value="2">机密</option>
+                                                <option value="3">绝密</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-primary ">确定</button>
+                <button type="button" class="btn btn-danger ">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="test_group">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" modal-transclude=""><div class="select-account-dialog ng-scope"><div class="modal-header"><div class="modal-title ng-binding">选择部门</div><span class="select-close" ng-click="ctrl.cancel();" role="button" tabindex="0"></span></div><div class="modal-body"><div class="row"><div class="col-xs-6"><div class="select-header"><div class="ng-isolate-scope">
+            <ul class="nav nav-tabs" ng-class="{'nav-stacked': vertical, 'nav-justified': justified}" ng-transclude=""><!-- ngRepeat: tab in ctrl.tabs --><li ng-class="{active: active, disabled: disabled}" ng-repeat="tab in ctrl.tabs" select="ctrl.selectTab(tab)" active="tab.active" class="ng-isolate-scope active">
+                <a href="#" ng-click="$event.preventDefault(); select()" tab-heading-transclude="" class="ng-binding" tabindex="0"><tab-heading class="ng-binding ng-scope">选择部门</tab-heading></a>
+            </li><!-- end ngRepeat: tab in ctrl.tabs --></ul>
+            <div class="tab-content">
+                <!-- ngRepeat: tab in tabs --><div class="tab-pane ng-scope active" ng-repeat="tab in tabs" ng-class="{active: tab.active}" tab-content-transclude="tab">
+            </div><!-- end ngRepeat: tab in tabs -->
+            </div>
+        </div></div><!--   部门树  开始   --><div ng-show="ctrl.currentTab === 'unit'" aria-hidden="false"><div class="half-box"><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.keyword" ng-change="ctrl.searchUnits()" tabindex="0" aria-invalid="false"></div><div class="select-body"><div ng-show="ctrl.keyword.length === 0" aria-hidden="false"><div id="unitTreeContainer" class="monaco-tree" style="height: 300px;"><ul class="monaco-tree-wrap" style="height: 66px;"><li class="monaco-tree-item" title="技术支持部" style="padding-left: 0px; top: 0px;">            <label class="monaco-tree-group"><span class="icon js-folder icon-tree-plus"></span>              <span class="icon js-check icon-check-empty"></span><span class="monaco-tree-text">技术支持部</span>            </label>          </li><li class="monaco-tree-item" title="销售部" style="padding-left: 0px; top: 22px;">            <label class="monaco-tree-group"><span class="icon js-folder icon-tree-plus"></span>              <span class="icon js-check icon-check-empty"></span><span class="monaco-tree-text">销售部</span>            </label>          </li><li class="monaco-tree-item" title="默认部门" style="padding-left: 0px; top: 44px;">            <label class="monaco-tree-group"><span class="icon js-folder icon-tree-plus"></span>              <span class="icon js-check icon-check-empty"></span><span class="monaco-tree-text">默认部门</span>            </label>          </li></ul></div></div><div id="searchUnitTreeContainer" ng-hide="ctrl.keyword.length === 0" aria-hidden="true" class="ng-hide" style=""></div></div></div><div class="select-action"><div class="checkbox"><label><input type="checkbox" ng-model="ctrl.selectUnits" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">所有部门</label></div></div></div><!--结束--><!--   部门-帐号树  开始  --><div ng-show="ctrl.currentTab === 'account'" aria-hidden="true" class="ng-hide" style=""><div class="half-box"><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.keyword" ng-change="ctrl.searchAccounts()" tabindex="0" aria-invalid="false"></div><div class="select-body" ng-class="{'f-margin-bottom-25 f-height-275':ctrl.options.manualInput}"><div ng-show="ctrl.keyword.length === 0" aria-hidden="false"><div id="accountTreeContainer"></div></div><div id="searchAccountTreeContainer" ng-hide="ctrl.keyword.length === 0" aria-hidden="true" class="ng-hide" style=""></div></div><div class="select-input ng-hide" ng-show="ctrl.options.manualInput" aria-hidden="true" style=""><input type="text" class="input ng-pristine ng-untouched ng-valid" name="email" placeholder="输入要添加的外域邮箱" ng-model="ctrl.manualEmail" tabindex="0" aria-invalid="false"> <button class="btn btn-default pull-left" ng-click="ctrl.addManualEmail()" tabindex="0">添加</button><div class="emailsError ng-binding" ng-class="{'emailsErrorShow':ctrl.emailsErrorText}"><span class="arrow"></span> <span class="icon icon-exclamation-sign"></span> </div></div></div><div class="select-action"><div class="checkbox"><label><input type="checkbox" ng-model="ctrl.selectAccounts" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">所有帐号</label></div></div></div><!--结束--><!--   公共联系人分组树  开始   --><div ng-show="ctrl.currentTab === 'group'" aria-hidden="true" class="ng-hide" style=""><div class="half-box"><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.keyword" ng-change="ctrl.searchGroups()" tabindex="0" aria-invalid="false"></div><div class="select-body"><div ng-show="ctrl.keyword.length === 0" aria-hidden="false"><div id="groupTreeContainer"></div></div><div id="searchGroupTreeContainer" ng-hide="ctrl.keyword.length === 0" aria-hidden="true" class="ng-hide" style=""></div></div></div><div class="select-action"><div class="checkbox"><label><input type="checkbox" ng-model="ctrl.selectGroups" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">所有通讯录</label></div></div></div><!--结束--><!--   公共联系人分组-地址树  开始  --><div ng-show="ctrl.currentTab === 'address'" aria-hidden="true" class="ng-hide" style=""><div class="half-box"><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.keyword" ng-change="ctrl.searchAddresses()" tabindex="0" aria-invalid="false"></div><div class="select-body"><div ng-show="ctrl.keyword.length === 0" aria-hidden="false"><div id="addressTreeContainer"></div></div><div id="searchAddressTreeContainer" ng-hide="ctrl.keyword.length === 0" aria-hidden="true" class="ng-hide" style=""></div></div></div><div class="select-action"><div class="checkbox"><label><input type="checkbox" ng-model="ctrl.selectAddresses" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">所有联系人</label></div></div></div><!--结束--></div><div class="col-xs-6"><div class="select-header"><div class="ng-isolate-scope">
+            <ul class="nav nav-tabs" ng-class="{'nav-stacked': vertical, 'nav-justified': justified}" ng-transclude=""><!-- ngRepeat: tab in ctrl.tabs --><li ng-class="{active: active, disabled: disabled}" ng-repeat="tab in ctrl.tabs" select="ctrl.selectTab(tab)" active="tab.active" class="ng-isolate-scope active">
+                <a href="#" ng-click="$event.preventDefault(); select()" tab-heading-transclude="" class="ng-binding" tabindex="0"><tab-heading class="ng-binding ng-scope">已选部门</tab-heading></a>
+            </li><!-- end ngRepeat: tab in ctrl.tabs --></ul>
+            <div class="tab-content">
+                <!-- ngRepeat: tab in tabs --><div class="tab-pane ng-scope active" ng-repeat="tab in tabs" ng-class="{active: tab.active}" tab-content-transclude="tab">
+            </div><!-- end ngRepeat: tab in tabs -->
+            </div>
+        </div></div><!--   部门树  开始   --><div ng-show="ctrl.currentTab === 'unit'" aria-hidden="false"><div class="half-box"><div class="select-header"><span class="text-muted text-count ng-binding">已选数量：0</span></div><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.selectedKeyword" ng-change="ctrl.selectedSearchUnits()" tabindex="0" aria-invalid="false"></div><div class="select-body select-body-right"><div id="selectedUnitTreeContainer" class="monaco-list" style="height: 265px;"><ul class="monaco-list-wrap" style="height: 0px; padding-top: 0px;"></ul></div></div></div><div class="select-action"><div class="checkbox f-inline-block ng-hide" ng-show="ctrl.options.adjust" aria-hidden="true" style=""><label><input type="checkbox" ng-model="ctrl.remain" name="remain" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">在原部门保留</label></div><button class="btn btn-link clear-btn pull-right" type="button" ng-click="ctrl.clearAllSelectedUnits();" tabindex="0"><span class="icon icon-trash"></span> 移除全部</button></div></div><!--   部门-帐号树  开始  --><div ng-show="ctrl.currentTab === 'account'" aria-hidden="true" class="ng-hide" style=""><div class="half-box"><div class="select-header"><span class="text-muted text-count ng-binding">已选数量：0</span></div><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.selectedKeyword" ng-change="ctrl.selectedSearchAccounts()" tabindex="0" aria-invalid="false"></div><div class="select-body select-body-right"><div id="selectedAccountTreeContainer"></div></div></div><div class="select-action"><button class="btn btn-link clear-btn pull-right" type="button" ng-click="ctrl.clearAllSelectedAccounts();" tabindex="0"><span class="icon icon-trash"></span> 移除全部</button></div></div><!--   公共联系人分组树  开始   --><div ng-show="ctrl.currentTab === 'group'" aria-hidden="true" class="ng-hide" style=""><div class="half-box"><div class="select-header"><span class="text-muted text-count ng-binding">已选分组：0</span></div><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.selectedKeyword" ng-change="ctrl.selectedSearchGroups()" tabindex="0" aria-invalid="false"></div><div class="select-body select-body-right"><div id="selectedGroupTreeContainer"></div></div></div><div class="select-action"><div class="checkbox f-inline-block ng-hide" ng-show="ctrl.options.adjust" aria-hidden="true" style=""><label><input type="checkbox" ng-model="ctrl.remain" name="remain" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">在原分组保留</label></div><button class="btn btn-link clear-btn pull-right" type="button" ng-click="ctrl.clearAllSelectedGroups();" tabindex="0"><span class="icon icon-trash"></span> 移除全部</button></div></div><!--   公共联系人分组-地址树  开始  --><div ng-show="ctrl.currentTab === 'address'" aria-hidden="true" class="ng-hide" style=""><div class="half-box"><div class="select-header"><span class="text-muted text-count ng-binding">已选数量：0</span></div><div class="select-header"><span class="search"></span> <input type="text" placeholder="输入关键字搜索..." class="input search-ipt ng-pristine ng-untouched ng-valid" ng-model="ctrl.selectedKeyword" ng-change="ctrl.selectedSearchAddresses()" tabindex="0" aria-invalid="false"></div><div class="select-body select-body-right"><div id="selectedAddressTreeContainer"></div></div></div><div class="select-action"><button class="btn btn-link clear-btn pull-right" type="button" ng-click="ctrl.clearAllSelectedAddresses();" tabindex="0"><span class="icon icon-trash"></span> 移除全部</button></div></div></div><button class="btn btn-link btn-arrow-right" type="button" ng-click="ctrl.addCheckedUnits();" ng-show="ctrl.currentTab === 'unit'" tabindex="0" aria-hidden="false">添加<span class="icon icon-right"></span></button> <button class="btn btn-link btn-arrow-right ng-hide" type="button" ng-click="ctrl.addCheckedAccounts();" ng-show="ctrl.currentTab === 'account'" tabindex="0" aria-hidden="true" style="">添加<span class="icon icon-right"></span></button> <button class="btn btn-link btn-arrow-right ng-hide" type="button" ng-click="ctrl.addCheckedGroups();" ng-show="ctrl.currentTab === 'group'" tabindex="0" aria-hidden="true" style="">添加<span class="icon icon-right"></span></button> <button class="btn btn-link btn-arrow-right ng-hide" type="button" ng-click="ctrl.addCheckedAddresses();" ng-show="ctrl.currentTab === 'address'" tabindex="0" aria-hidden="true" style="">添加<span class="icon icon-right"></span></button></div></div><div class="modal-footer"><button class="btn btn-success ng-binding" ng-click="ctrl.ok()" tabindex="0">确定</button> <button class="btn btn-default ng-binding" ng-click="ctrl.cancel()" tabindex="0">取消</button></div></div></div>
+    </div>
+</div>
+<div class="modal fade" id="add_group">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加组信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">
+                            <span class="red">*</span>组名称：
+                        </label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">
+                            组描述：
+                        </label>
+                        <div class="col-sm-8">
+                            <textarea  rows="8" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-primary ">确定</button>
+                <button type="button" class="btn btn-danger ">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="member_manage">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">成员管理</h4>
+            </div>
+            <div class="modal-body">
+                <div class="margin-bottom-8 text-right" >
+                    <button type="button" class="add_member btn  btn-sm btn-success "><i class="glyphicon glyphicon-plus"></i>添加组成员</button>
+                </div>
+                <div class="add_member_box">
+                    <div class="table-header margin-bottom-8">
+                        添加组成员
+                    </div>
+                    <div class="row" style="position:relative;">
+                        <!--<div class="col-sm-12">-->
+                            <!--<select multiple="multiple" style="height:200px;" name="duallistbox" id="duallist">-->
+                                <!--<option value="1">1</option>-->
+                                <!--<option value="2">2</option>-->
+                                <!--<option value="3">3</option>-->
+                                <!--<option value="4">4</option>-->
+                                <!--<option>Apartments</option> <option>Villas</option> <option>Plots</option> <option>Tickets</option> <option>Services</option> <option>Personals</option>-->
+                            <!--</select>-->
+                            <!--<div class="hr"></div>-->
+                        <!--</div>-->
+                        <div class="col-xs-6 " style="padding-right:40px;">
+                            <div class="">
+                                <p class=""><span style="padding:3px 15px;border-bottom:2px solid #5090c1;color:#000;">选择帐号</span></p>
+                            </div>
+                            <div class="widget-box widget-color-blue2" style="border-color:#E0E0E0;">
+                                <div class="">
+                                    <p class="" style="padding:10px;padding-bottom:0;">
+                                        <input type="text" class="select_search form-control" placeholder="输入关键字搜索...">
+                                    </p>
+                                </div>
+                                <div class="widget-body" style="padding-left:12px">
+                                    <div class="widget-main padding-8">
+                                        <ul id="tree_add" class="tree_left"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="checkbox" style="margin-top:0;">
+                                <label style="padding-left:10px;">
+                                    <input name="select_all" type="checkbox" class="ace select_all">
+                                    <span class="lbl"> 所有帐号 </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6 " style="padding-left:40px;">
+                            <div class="">
+                                <p class=""><span style="padding:3px 15px;border-bottom:2px solid #5090c1;color:#000;">已选帐号</span></p>
+                            </div>
+                            <div class="widget-box widget-color-blue2" style="border-color:#E0E0E0;">
+                                <div class="">
+                                    <p class="" style="padding:10px;padding-bottom:0;">
+                                        <span>已选数量：<b class="selected_count">0</b></span>
+                                        <input type="text" class="selected_search form-control" placeholder="输入关键字搜索...">
+                                    </p>
+                                </div>
+                                <div class="widget-body" style="padding-left:12px;">
+                                    <div class="widget-main padding-8" style="height: 300px;">
+                                        <ul id="tree_add_copy" class="tree_right"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <a href="#" class="blue remove_all">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                    移除全部
+                                </a>
+                            </div>
+                        </div>
+                        <div class="center middle" style="position:absolute;left:50%;top:38%;width:70px;margin-left:-35px;">
+                            <button type="button" class="btn  btn-sm btn-success sure_btn">添加
+                                <i class="glyphicon glyphicon-arrow-right"></i>
+                            </button>
+                            <div class="space-8"></div>
+                            <button type="button" class="cancel_btn btn  btn-sm btn-danger ">取消
+                                <i class="glyphicon glyphicon-arrow-left"></i>
+                            </button>
+
+                            <!--<button type="button" class="cancel_add_member btn  btn-sm btn-danger ">取消-->
+                            <!--<i class="glyphicon glyphicon-arrow-left"></i>-->
+                            <!--</button>-->
+                        </div>
+                        <!--<div class="col-sm-5 no-padding">-->
+                            <!--<select multiple  class="select2 form-control"  data-placeholder="选择账号,可多选">-->
+                                <!--<option value="">选择添加邮箱账号,可多选</option>-->
+                                <!--<option value="2">成员测试2</option>-->
+                                <!--<option value="3">成员测试3</option>-->
+                                <!--<option value="4">成员测试4</option>-->
+                                <!--<option value="5">成员测试5</option>-->
+                                <!--<option value="6">成员测试6</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                        <div class="col-sm-12">
+
+
+                        </div>
+                    </div>
+                    <div class="hr"></div>
+                </div>
+                <div class="table-header">组成员列表</div>
+                <div>
+                    <table id="member_table" class="table table-bordered table-center">
+                        <thead>
+                        <tr>
+                            <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                                <label class="pos-rel">
+                                    <input type="checkbox" class="ace">
+                                    <span class="lbl"></span>
+                                </label>
+                            </th>
+                            <th>序号</th>
+                            <th>姓名</th>
+                            <th>职位</th>
+                            <th>邮箱</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id="data_body_member">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--<div class="modal-footer center">-->
+                <!--<button type="button" class="btn btn-primary ">确定</button>-->
+                <!--<button type="button" class="btn btn-danger ">返回</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="allow_send_email_dress" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设置发送的外域邮件地址</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">例外地址</div>
+                <div>
+                    <table class="table table-bordered table-center">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>邮件地址</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>@test.com</td>
+                            <td>
+                                <label class="inline" >
+                                    <input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                    <span class="lbl"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <button class="btn btn-xs btn-danger" type="button">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <div class="input-group margin-bottom-8">
+                                <span class="input-group-addon">邮件地址：</span>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="margin-bottom-8">
+                                <textarea class="form-control"  rows="5" placeholder="批量例外邮箱地址，格式 @126.com|@sina.com|@qq.com"></textarea>
+                            </div>
+                            <p class="alert alert-warning"><b class="red">注：</b>当对象为邮箱时请在“地址”里填写邮件地址，对象为域时请在“地址”中填写“@域名”，如“@test.com”。</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn  btn-success">添加</button>
+                <!--<button type="button" class="btn btn-sm btn-danger">返回</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="allow_rec_email_dress" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">设置接收的外域邮件地址</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-header">例外地址</div>
+                <div>
+                    <table class="table table-bordered table-center">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>邮件地址</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>@aaa.com</td>
+                            <td>
+                                <label class="inline" >
+                                    <input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">
+                                    <span class="lbl"></span>
+                                </label>
+                            </td>
+                            <td>
+                                <button class="btn btn-xs btn-danger" type="button">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-sm-10 col-sm-offset-1">
+                            <div class="input-group margin-bottom-8">
+                                <span class="input-group-addon">邮件地址：</span>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="margin-bottom-8">
+                                <textarea class="form-control"  rows="5" placeholder="批量例外邮箱地址，格式 @126.com|@sina.com|@qq.com"></textarea>
+                            </div>
+                            <p class="alert alert-warning"><b class="red">注：</b>当对象为邮箱时请在“地址”里填写邮件地址，对象为域时请在“地址”中填写“@域名”，如“@test.com”。</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn  btn-success">添加</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#member_manage_tabs').tabs();
+
+    $("[name='nable_set_switch']").on('click', function(){
+        if($(this).prop('checked')){
+            $('.nable_set').show();
+        }else{
+            $('.nable_set').hide();
+        }
+    });
+    $("[name='sw_antivirus']").on('click', function(){
+        if($(this).prop('checked')){
+            $('.sw_antivirus').show();
+        }else{
+            $('.sw_antivirus').hide();
+        }
+    });
+
+    $('.select2').select2();
+    var demo1 = $('select[name="duallistbox"]').bootstrapDualListbox(
+            {infoTextFiltered: '',//<span class="label label-purple label-lg">查询结果</span>
+                nonSelectedListLabel:"选择成员",
+                selectedListLabel:"已选成员",
+                moveOnSelect: false,
+                moveAllLabel:'添加全部',
+                moveSelectedLabel:'添加',
+                filterTextClear:'显示所有',
+                removeSelectedLabel:'移除',
+                removeAllLabel:'移除所有',
+            }
+    );
+    var container1 = demo1.bootstrapDualListbox('getContainer');
+    container1.find('.btn').addClass('btn-white btn-info btn-bold');
+
+    $('.limit_send_select').change(function(){
+        if($(this).val()=='3'){
+            $(this).next().show();
+        }else{
+            $(this).next().hide();
+        }
+    })
+    var myTable;
+    function initDate(p){
+        for(var i= 0,html='';i<p;i++){
+            if(i==0){
+                html+='<tr class="">' +
+                        '<td class="center middle">'+(i+1)+'</td>' +
+                        '<td><span class="label label-success">组名称</span></td>' +
+                        '<td>说明信息说明信息</td>' +
+                        '<td>成员数${100+1}</td>' +
+                        '<td>' +
+                        '<div class="">' +
+                        '<a class="btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_group">组配置</a>' +
+                        ' <a class="btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#member_manage">成员管理</a>' +
+                        ' <a class="red delete btn btn-white btn-danger btn-xs" disabled href="#">删除</a>' +
+                        '</div>' +
+                        '</td></tr>'
+            }else{ 
+                html+='<tr class="">' +
+                        '<td class="center middle">'+(i+1)+'</td>' +
+                        '<td><span class="label label-success">组名称</span></td>' +
+                        '<td>说明信息说明信息</td>' +
+                        '<td>成员数'+(i+1)+'</td>' +
+                        '<td>' +
+                        '<div class="">' +
+                        '<a class="btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#edit_group">组配置</a>' +
+                        ' <a class="btn btn-white btn-success btn-xs" href="#" data-toggle="modal" data-target="#member_manage">成员管理</a>' +
+                        ' <a class="red delete btn btn-white btn-danger btn-xs" href="#">删除</a>' +
+                        '</div></td></tr>'
+            }
+
+        }
+        $('#data-body').html(html);
+            myTable =
+                $('#dynamic-table')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }, null,
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                } );
+    }
+    initDate(28);
+    $('.select2').css('width','100%').select2();
+    $('#search-btn').click(function(){
+        myTable.destroy();
+        initDate(8);
+    })
+
+    $('.delete').click(function(e){
+        e.preventDefault();
+        confirm('确认删除组？');
+    })
+    $('.date-picker').datepicker({
+                autoclose: true,
+                todayHighlight: true
+            })
+            //show datepicker when clicking on the icon
+            .next().on(ace.click_event, function(){
+        $(this).prev().focus();
+    });
+
+    var myTable_member;
+    function initDate_member(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr role="row">' +
+                    '<td class="center">' +
+                    '<label class="pos-rel">' +
+                    '<input type="checkbox" class="ace">' +
+                    '<span class="lbl"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td>'+(i+1)+'</td>' +
+                    '<td><span class="label label-success">姓名'+i+'</span></td>' +
+                    '<td><input type="text" value="dfdsfsd"></td>' +
+                    '<td>asdf@test.com</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs">修改职位</a>' +
+                    ' <a class="red btn btn-white btn-danger btn-xs"> 删除</a>' +
+                    '</div></td></tr>'
+        }
+        /*<!--<td class="hidden-480">-->
+         <!--<span class="label label-sm label-warning">Expiring</span>-->
+         <!--</td>-->*/
+        $('#data_body_member').html(html);
+
+        myTable_member =
+                $('#member_table')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                null,
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 5,
+                            "lengthMenu":  [5,10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+        myTable_member.on( 'select', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable_member.row( index ).node() ).find('input:checkbox:eq(0)').prop('checked', true);
+            }
+        } );
+        myTable_member.on( 'deselect', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable_member.row( index ).node() ).find('input:checkbox:eq(0)').prop('checked', false);
+            }
+        } );
+        /////////////////////////////////
+        //table checkboxes
+        $('#member_table th input[type=checkbox]:eq(0),#member_table td input[type=checkbox]:eq(0)').prop('checked', false);
+
+        //select/deselect all rows according to table header checkbox
+        $('#member_table > thead > tr > th input[type=checkbox], #member_table_wrapper input[type=checkbox]').eq(0).on('click', function(){
+            var th_checked = this.checked;//checkbox inside "TH" table header
+
+            $('#member_table').find('tbody > tr').each(function(){
+                var row = this;
+                if(th_checked) myTable_member.row(row).select();
+                else  myTable_member.row(row).deselect();
+            });
+        });
+
+        //select/deselect a row when the checkbox is checked/unchecked
+        $('#member_table').on('click', 'td .pos-rel input[type=checkbox]' , function(){
+            var row = $(this).closest('tr').get(0);
+            if(this.checked) myTable_member.row(row).deselect();
+            else myTable_member.row(row).select();
+        });
+
+        /********************************/
+        //add tooltip for small view action buttons in dropdown menu
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+        //tooltip placement on right or left
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            //var w2 = $source.width();
+
+            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+            return 'left';
+        }
+        /***************/
+        $('.show-details-btn').on('click', function(e) {
+            e.preventDefault();
+            $(this).closest('tr').next().toggleClass('open');
+            $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+        });
+
+
+
+    }
+    initDate_member(12);
+
+    function initiateDemoData(){
+        var tree_data = {
+            'for-sale' : {text: 'For Sale', type: 'folder',
+                additionalParameters:{
+                    'children' : {
+                        'appliances': {text: 'Appliances', type: 'item'},
+                        'arts-crafts': {text: 'Arts & Crafts', type: 'item'},
+                        'clothing': {text: 'Clothing', type: 'item'},
+                        'computers': {text: 'Computers', type: 'item'},
+                        'jewelry': {text: 'Jewelry', type: 'item'},
+                        'office-business': {text: 'Office & Business', type: 'item'},
+                        'sports-fitness': {text: 'Sports & Fitness', type: 'item'}
+                    }
+                }
+            }	,
+            'rentals' : {text: 'Rentals', type: 'folder'}	,
+            'real-estate' : {text: 'Real Estate', type: 'folder'}	,
+            'pets' : {text: 'Pets', type: 'folder'}
+//            'tickets' : {text: 'Tickets', type: 'item'}	,
+//            'services' : {text: 'Services', type: 'item'}	,
+//            'personals' : {text: 'Personals', type: 'item'}
+        }
+        var tree_data_copy = {
+
+        }
+
+
+        tree_data['rentals']['additionalParameters'] = {
+            'children' : {
+                'apartments-rentals' : {text: 'Apartments', type: 'item'},
+                'office-space-rentals' : {text: 'Office Space', type: 'item'},
+                'vacation-rentals' : {text: 'Vacation Rentals', type: 'item'}
+            }
+        }
+        tree_data['real-estate']['additionalParameters'] = {
+            'children' : {
+                'apartments' : {text: 'Apartments', type: 'item'},
+                'villas' : {text: 'Villas', type: 'item'},
+                'plots' : {text: 'Plots', type: 'item'}
+            }
+        }
+        tree_data['pets']['additionalParameters'] = {
+            'children' : {
+                'cats' : {text: 'Cats', type: 'item'},
+                'dogs' : {text: 'Dogs', type: 'item'},
+                'horses' : {text: 'Horses', type: 'item'},
+                'reptiles' : {text: 'Reptiles', type: 'item'}
+            }
+        }
+
+        var dataSource1 = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data;//the root tree
+                callback({ data: $data });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+            console.log($data);
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                callback({ data: $data });
+//                setTimeout(function(){} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+        var data_copy = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data_copy;//the root tree
+                callback({ data: tree_data_copy });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+            console.log($data);
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+
+
+
+
+        var tree_data_2 = {
+            'pictures' : {text: 'Pictures', type: 'folder', 'icon-class':'red'}	,
+            'music' : {text: 'Music', type: 'folder', 'icon-class':'orange'}	,
+            'video' : {text: 'Video', type: 'folder', 'icon-class':'blue'}	,
+            'documents' : {text: 'Documents', type: 'folder', 'icon-class':'green'}	,
+            'backup' : {text: 'Backup', type: 'folder'}	,
+            'readme' : {text: '<i class="ace-icon fa fa-file-text grey"></i> ReadMe.txt', type: 'item'},
+            'manual' : {text: '<i class="ace-icon fa fa-book blue"></i> Manual.html', type: 'item'}
+        }
+        tree_data_2['music']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-music blue"></i> song1.ogg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-music blue"></i> song2.ogg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-music blue"></i> song3.ogg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-music blue"></i> song4.ogg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-music blue"></i> song5.ogg', type: 'item'}
+            ]
+        }
+        tree_data_2['video']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie1.avi', type: 'item'},
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie2.avi', type: 'item'},
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie3.avi', type: 'item'},
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie4.avi', type: 'item'},
+                {text: '<i class="ace-icon fa fa-film blue"></i> movie5.avi', type: 'item'}
+            ]
+        }
+        tree_data_2['pictures']['additionalParameters'] = {
+            'children' : {
+                'wallpapers' : {text: 'Wallpapers', type: 'folder', 'icon-class':'pink'},
+                'camera' : {text: 'Camera', type: 'folder', 'icon-class':'pink'}
+            }
+        }
+        tree_data_2['pictures']['additionalParameters']['children']['wallpapers']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> wallpaper1.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> wallpaper2.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> wallpaper3.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> wallpaper4.jpg', type: 'item'}
+            ]
+        }
+        tree_data_2['pictures']['additionalParameters']['children']['camera']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo1.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo2.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo3.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo4.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo5.jpg', type: 'item'},
+                {text: '<i class="ace-icon fa fa-picture-o green"></i> photo6.jpg', type: 'item'}
+            ]
+        }
+
+
+        tree_data_2['documents']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-file-text red"></i> document1.pdf', type: 'item'},
+                {text: '<i class="ace-icon fa fa-file-text grey"></i> document2.doc', type: 'item'},
+                {text: '<i class="ace-icon fa fa-file-text grey"></i> document3.doc', type: 'item'},
+                {text: '<i class="ace-icon fa fa-file-text red"></i> document4.pdf', type: 'item'},
+                {text: '<i class="ace-icon fa fa-file-text grey"></i> document5.doc', type: 'item'}
+            ]
+        }
+
+        tree_data_2['backup']['additionalParameters'] = {
+            'children' : [
+                {text: '<i class="ace-icon fa fa-archive brown"></i> backup1.zip', type: 'item'},
+                {text: '<i class="ace-icon fa fa-archive brown"></i> backup2.zip', type: 'item'},
+                {text: '<i class="ace-icon fa fa-archive brown"></i> backup3.zip', type: 'item'},
+                {text: '<i class="ace-icon fa fa-archive brown"></i> backup4.zip', type: 'item'}
+            ]
+        }
+        var dataSource2 = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data_2;//the root tree
+                callback({ data: $data });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+
+
+        return {'dataSource1': dataSource1 , 'dataSource2' : dataSource2,'dataSource_copy':data_copy}
+    }
+    var sampleData = initiateDemoData();
+    $('#tree1').ace_tree({
+        dataSource: sampleData['dataSource1'],
+        multiSelect: true,
+        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+    'open-icon' : 'ace-icon tree-minus hide',
+    'close-icon' : 'ace-icon tree-plus hide',
+    'selectable' : true,
+    'selected-icon' : 'ace-icon fa fa-check',
+    'unselected-icon' : 'ace-icon fa fa-times',
+    'cacheItems': true,
+    'folderSelect': true,
+    'folder-open-icon' : 'ace-icon tree-plus',
+    'folder-close-icon' : 'ace-icon tree-minus'
+    });
+    $('#tree_add').ace_tree({
+        dataSource: sampleData['dataSource1'],
+        multiSelect: true,
+        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+        'open-icon' : 'ace-icon tree-minus hide',
+        'close-icon' : 'ace-icon tree-plus hide',
+        'selectable' : true,
+        'selected-icon' : 'ace-icon fa fa-check',
+        'unselected-icon' : 'ace-icon fa fa-times',
+        'cacheItems': true,
+        'folderSelect': true,
+        'folder-open-icon' : 'ace-icon tree-plus',
+        'folder-close-icon' : 'ace-icon tree-minus'
+    });
+    var tree_copy0 = $('#tree_copy').ace_tree({
+        dataSource: sampleData['dataSource_copy'],
+        multiSelect: true,
+        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+        'open-icon' : 'ace-icon tree-minus hide',
+        'close-icon' : 'ace-icon tree-plus hide',
+        'selectable' : true,
+        'selected-icon' : 'ace-icon fa fa-check',
+        'unselected-icon' : 'ace-icon fa fa-times',
+        'cacheItems': true,
+        'folderSelect': true,
+        'folder-open-icon' : 'ace-icon tree-plus',
+        'folder-close-icon' : 'ace-icon tree-minus'
+    });
+    $('#tree_add_copy').ace_tree({
+        dataSource: sampleData['dataSource_copy'],
+        multiSelect: true,
+        loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+        'open-icon' : 'ace-icon tree-minus hide',
+        'close-icon' : 'ace-icon tree-plus hide',
+        'selectable' : true,
+        'selected-icon' : 'ace-icon fa fa-check',
+        'unselected-icon' : 'ace-icon fa fa-times',
+        'cacheItems': true,
+        'folderSelect': true,
+        'folder-open-icon' : 'ace-icon tree-plus',
+        'folder-close-icon' : 'ace-icon tree-minus'
+    });
+
+    $('#tree1>li>.icon-caret.ace-icon.tree-plus').trigger('click');
+    $('#tree_add>li>.icon-caret.ace-icon.tree-plus').trigger('click');
+    $('#tree1>li>.icon-caret.ace-icon.tree-minus').trigger('click');
+    $('#tree_add>li>.icon-caret.ace-icon.tree-minus').trigger('click');
+
+    $('#tree2').ace_tree({
+        dataSource: sampleData['dataSource1'],
+        multiSelect: true,
+        cacheItems: false,
+        'open-icon' : 'ace-icon tree-minus',
+        'close-icon' : 'ace-icon tree-plus',
+        'itemSelect' : true,
+        'folderSelect': false,
+        'selected-icon' : 'ace-icon fa fa-check',
+        'unselected-icon' : 'ace-icon fa fa-times',
+        loadingHTML : '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>'
+    });
+
+    $('.add_member').click(function(){
+        $('.add_member_box').show();
+    })
+    $('.cancel_add_member').click(function(){
+        $('.add_member_box').hide();
+    })
+    var data_copy = [];
+    var data_add_copy = [];
+    var hash=[];
+    var hash_add=[];
+    function changeData(data_copy){
+        var tree_data = {
+        }
+        for(var key in data_copy){
+            tree_data[data_copy[key]]={text: data_copy[key], type: 'item'}
+        }
+
+
+        var dataSource1 = function(options, callback){
+            var $data = null
+            if(!("text" in options) && !("type" in options)){
+                $data = tree_data;//the root tree
+                callback({ data: $data });
+                return;
+            }
+            else if("type" in options && options.type == "folder") {
+                if("additionalParameters" in options && "children" in options.additionalParameters)
+                    $data = options.additionalParameters.children || {};
+                else $data = {}//no data
+            }
+            console.log($data);
+            if($data != null)//this setTimeout is only for mimicking some random delay
+                setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+            //we have used static data here
+            //but you can retrieve your data dynamically from a server using ajax call
+            //checkout examples/treeview.html and examples/treeview.js for more info
+        }
+
+
+        return {'dataSource1': dataSource1}
+    }
+//    var sampleData1 = changeData(data_copy);
+    $('#about_secret .sure_btn').click(function(){
+//        $('#tree_copy').empty();
+        var arrStr=[];
+        $('#tree1 .tree-item.tree-selected .icon-item.ace-icon.fa.fa-check').next().each(function(i,dom){
+
+            arrStr.push('<option>'+$(dom).html()+'</option>');
+            var str = $(dom).html();
+            if(str&&!hash[str]){
+                data_copy.push(str);
+                hash[str]=1;
+            }
+        })
+//        $('#bootstrap-duallistbox-selected-list_duallistbox').append(arrStr.join(' '));
+        $('#about_secret .selected_count').html(data_copy.length);
+        $("#tree_copy").removeData("fu.tree");
+        $("#tree_copy").unbind('click.fu.tree');
+        $('#tree_copy').ace_tree({
+            dataSource: changeData(data_copy)['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
+
+
+    })
+    $('#about_secret .cancel_btn').click(function(){
+        $('#tree_copy .tree-item.tree-selected .tree-label').each(function(i,dom){
+            for(var i =0;i<data_copy.length;i++){
+                if($(dom).html()==data_copy[i]){
+                    data_copy.splice(i,1);
+                    hash[$(dom).html()]=0;
+                    break;
+                }
+            }
+        })
+        $('#about_secret .selected_count').html(data_copy.length);
+        $("#tree_copy").removeData("fu.tree");
+        $("#tree_copy").unbind('click.fu.tree');
+        $('#tree_copy').ace_tree({
+            dataSource: changeData(data_copy)['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
+    })
+    $('#about_secret .remove_all').click(function(e){
+        e.preventDefault();
+        if(confirm('确定移除全部邮箱？')){
+            data_copy=[];
+            hash=[];
+            $('#about_secret .selected_count').html(data_copy.length);
+            $("#tree_copy").removeData("fu.tree");
+            $("#tree_copy").unbind('click.fu.tree');
+            $('#tree_copy').ace_tree({
+                dataSource: changeData(data_copy)['dataSource1'],
+                multiSelect: true,
+                loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+                'open-icon' : 'ace-icon tree-minus hide',
+                'close-icon' : 'ace-icon tree-plus hide',
+                'selectable' : true,
+                'selected-icon' : 'ace-icon fa fa-check',
+                'unselected-icon' : 'ace-icon fa fa-times',
+                'cacheItems': true,
+                'folderSelect': true,
+                'folder-open-icon' : 'ace-icon tree-plus',
+                'folder-close-icon' : 'ace-icon tree-minus'
+            });
+        }
+    })
+    $('#about_secret .select_all').click(function(){
+        if($(this).prop('checked')){
+            $('#tree1 .tree-item').addClass('tree-selected');
+            $('#tree1 .tree-branch').addClass('tree-selected');
+            $('#tree1 .icon-item.ace-icon').removeClass('fa-times').addClass('fa-check');
+        }else{
+            $('#tree1 .tree-item').removeClass('tree-selected');
+            $('#tree1 .tree-branch').removeClass('tree-selected');
+            $('#tree1 .icon-item.ace-icon').addClass('fa-times').removeClass('fa-check');
+        }
+    })
+
+    $('#member_manage .sure_btn').click(function(){
+//        $('#tree_copy').empty();
+        var arrStr=[];
+        $('#tree_add .tree-item.tree-selected .icon-item.ace-icon.fa.fa-check').next().each(function(i,dom){
+
+            arrStr.push('<option>'+$(dom).html()+'</option>');
+            var str = $(dom).html();
+            if(str&&!hash_add[str]){
+                data_add_copy.push(str);
+                hash_add[str]=1;
+            }
+        })
+//        $('#bootstrap-duallistbox-selected-list_duallistbox').append(arrStr.join(' '));
+        $('#member_manage .selected_count').html(data_add_copy.length);
+        $("#tree_add_copy").removeData("fu.tree");
+        $("#tree_add_copy").unbind('click.fu.tree');
+        $('#tree_add_copy').ace_tree({
+            dataSource: changeData(data_add_copy)['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
+
+
+    })
+    $('#member_manage .cancel_btn').click(function(){
+        $('#tree_add_copy .tree-item.tree-selected .tree-label').each(function(i,dom){
+            for(var i =0;i<data_add_copy.length;i++){
+                if($(dom).html()==data_add_copy[i]){
+                    data_add_copy.splice(i,1);
+                    hash_add[$(dom).html()]=0;
+                    break;
+                }
+            }
+        })
+        $('#member_manage .selected_count').html(data_add_copy.length);
+        $("#tree_add_copy").removeData("fu.tree");
+        $("#tree_add_copy").unbind('click.fu.tree');
+        $('#tree_add_copy').ace_tree({
+            dataSource: changeData(data_add_copy)['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
+    })
+    $('#member_manage .remove_all').click(function(e){
+        e.preventDefault();
+        if(confirm('确定移除全部邮箱？')){
+            data_add_copy=[];
+            hash_add=[];
+            $('#member_manage .selected_count').html(data_add_copy.length);
+            $("#tree_add_copy").removeData("fu.tree");
+            $("#tree_add_copy").unbind('click.fu.tree');
+            $('#tree_add_copy').ace_tree({
+                dataSource: changeData(data_add_copy)['dataSource1'],
+                multiSelect: true,
+                loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+                'open-icon' : 'ace-icon tree-minus hide',
+                'close-icon' : 'ace-icon tree-plus hide',
+                'selectable' : true,
+                'selected-icon' : 'ace-icon fa fa-check',
+                'unselected-icon' : 'ace-icon fa fa-times',
+                'cacheItems': true,
+                'folderSelect': true,
+                'folder-open-icon' : 'ace-icon tree-plus',
+                'folder-close-icon' : 'ace-icon tree-minus'
+            });
+        }
+    })
+    $('#member_manage .select_all').click(function(){
+        if($(this).prop('checked')){
+            $('#tree_add .tree-item').addClass('tree-selected');
+            $('#tree_add .tree-branch').addClass('tree-selected');
+            $('#tree_add .icon-item.ace-icon').removeClass('fa-times').addClass('fa-check');
+        }else{
+            $('#tree_add .tree-item').removeClass('tree-selected');
+            $('#tree_add .tree-branch').removeClass('tree-selected');
+            $('#tree_add .icon-item.ace-icon').addClass('fa-times').removeClass('fa-check');
+        }
+    })
+
+    var initArr = ["Appliances", "Arts & Crafts", "Clothing", "Computers", "Jewelry", "Office & Business", "Sports & Fitness", "Apartments", "Office Space", "Vacation Rentals", "Villas", "Plots", "Cats", "Dogs", "Horses", "Reptiles"]
+    function search(input,initArr,ele){
+        var keyWords = $(input).val()
+        var reg = new RegExp(keyWords, 'i');
+        var arr = [];
+        for(var key in initArr){
+            if(initArr[key].match(reg)){
+                arr.push(initArr[key]);
+            }
+        }
+        $(ele).removeData("fu.tree");
+        $(ele).unbind('click.fu.tree');
+        $(ele).ace_tree({
+            dataSource: changeData(arr)['dataSource1'],
+            multiSelect: true,
+            loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+            'open-icon' : 'ace-icon tree-minus hide',
+            'close-icon' : 'ace-icon tree-plus hide',
+            'selectable' : true,
+            'selected-icon' : 'ace-icon fa fa-check',
+            'unselected-icon' : 'ace-icon fa fa-times',
+            'cacheItems': true,
+            'folderSelect': true,
+            'folder-open-icon' : 'ace-icon tree-plus',
+            'folder-close-icon' : 'ace-icon tree-minus'
+        });
+    }
+    $('#member_manage .select_search').keyup(function(){
+        if($(this).val().length==0){
+            $('.tree_left').removeData("fu.tree");
+            $('.tree_left').unbind('click.fu.tree');
+            $('.tree_left').ace_tree({
+                dataSource: sampleData['dataSource1'],
+                multiSelect: true,
+                loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+                'open-icon' : 'ace-icon tree-minus hide',
+                'close-icon' : 'ace-icon tree-plus hide',
+                'selectable' : true,
+                'selected-icon' : 'ace-icon fa fa-check',
+                'unselected-icon' : 'ace-icon fa fa-times',
+                'cacheItems': true,
+                'folderSelect': true,
+                'folder-open-icon' : 'ace-icon tree-plus',
+                'folder-close-icon' : 'ace-icon tree-minus'
+            });
+            $('.tree_left>li>.icon-caret.ace-icon.tree-plus').trigger('click');
+            $('.tree_left>li>.icon-caret.ace-icon.tree-minus').trigger('click');
+        }else{
+            search(this,initArr,".tree_left");
+        }
+    })
+    $('#member_manage .selected_search').keyup(function(){
+        search(this,data_add_copy,".tree_right");
+    })
+    $('#about_secret .select_search').keyup(function(){
+        if($(this).val().length==0){
+            $('#tree1').removeData("fu.tree");
+            $('#tree1').unbind('click.fu.tree');
+            $('#tree1').ace_tree({
+                dataSource: sampleData['dataSource1'],
+                multiSelect: true,
+                loadingHTML: '<div class="tree-loading"><i class="ace-icon fa fa-refresh fa-spin blue"></i></div>',
+                'open-icon' : 'ace-icon tree-minus hide',
+                'close-icon' : 'ace-icon tree-plus hide',
+                'selectable' : true,
+                'selected-icon' : 'ace-icon fa fa-check',
+                'unselected-icon' : 'ace-icon fa fa-times',
+                'cacheItems': true,
+                'folderSelect': true,
+                'folder-open-icon' : 'ace-icon tree-plus',
+                'folder-close-icon' : 'ace-icon tree-minus'
+            });
+            $('#tree1>li>.icon-caret.ace-icon.tree-plus').trigger('click');
+            $('#tree1>li>.icon-caret.ace-icon.tree-minus').trigger('click');
+        }else{
+            search(this,initArr,"#tree1");
+        }
+    })
+    $('#about_secret .selected_search').keyup(function(){
+        search(this,data_copy,"#tree_copy");
+    })
+
+</script>

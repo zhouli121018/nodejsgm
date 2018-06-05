@@ -1,0 +1,553 @@
+<div id="module_made">
+    <div id="module_made_tabs">
+        <ul>
+            <li >
+                <a href="#tabs_webmail">首页区</a>
+            </li>
+            <li>
+                <a href="#send_mail_block">发邮件区</a>
+            </li>
+            <li >
+                <a href="#setting_block">设置区</a>
+            </li>
+            <li>
+                <a href="#other_block">杂项区</a>
+            </li>
+        </ul>
+
+        <div id="tabs_webmail">
+            <div class="table-header" >
+                首页区
+            </div>
+        <form class="form-horizontal form_home">
+            <table  class="table  table-bordered  table-striped">
+                <tbody>
+                    <tr>
+                    <td class="text-right" >商务小工具栏目：</td>
+                    <td>
+                        <div class="row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-8">
+                                <label class="inline" >
+                                    <small class="muted smaller-90 same_width">万 年 历:</small>
+                                    <input name="sw_wgt_cale" value="1" {% if form_home.sw_wgt_cale.value == "1" %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label class="inline" >
+                                    <input name="sw_business_tools" value="1" {% if form_home.sw_business_tools.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+                            <div class="col-sm-8">
+                                <label class="inline" >
+                                    <small class="muted smaller-90 same_width">万用计算器:</small>
+                                    <input name="sw_wgt_calc" value="1" {% if form_home.sw_wgt_calc.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-8">
+                                <label class="inline" >
+                                    <small class="muted smaller-90 same_width">城市地图:</small>
+                                    <input name="sw_wgt_maps" value="1" {% if form_home.sw_wgt_maps.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </td>
+
+                </tr>
+                    <tr>
+                        <td class="text-right" >
+                            邮箱容量查看功能：
+                        </td>
+                        <td class="row" style="padding:8px;">
+                            <div class="col-sm-4 no-padding">
+                                <label class="inline" >
+                                    <!--<small class="muted smaller-90">Border:</small>-->
+
+                                    <input name="sw_email_used_see"  value="1" {% if form_home.sw_email_used_see.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                    <span class="lbl middle"></span>
+                                </label>
+                            </div>
+                            <div class="col-sm-8 no-padding green">
+                                注：关闭此功能后无法查看用户已用邮箱容量；
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right">天气预报功能：</td>
+                        <td class="row" style="padding:8px;">
+                            <div class="col-sm-4 no-padding">
+                                <label class="inline" >
+                                    <input name="sw_weather" value="1" {% if form_home.sw_weather.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+                            <div class="col-sm-8 no-padding">
+                                <span class="green">注：Webmail 欢迎页天气预报功能开关；</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right" >企业通讯录功能：</td>
+                        <td class="row">
+                            <div class="col-sm-4 no-padding">
+                                <label class="inline" >
+
+                                    <input name="sw_oab" value="1" {% if form_home.sw_oab.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+                            <div class="col-sm-8 no-padding">
+                                <label class="inline" >
+                                    <small class="muted smaller-90">导出按钮开关：</small>
+                                    <input name="sw_oab_dumpbutton" value="1" {% if form_home.sw_oab_dumpbutton.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right" >公共通讯录功能：</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="sw_cab" value="1" {% if form_home.sw_cab.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right">其他域通讯录共享功能：</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="sw_oab_share" value="1" {% if form_home.sw_oab_share.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">企业通讯录域组合：</td>
+                        <td class="row">
+                            <div class="col-sm-4 no-padding">
+                                <label class="inline" >
+                                    <input name="sw_department_openall" value="1" {% if form_home.sw_department_openall.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+                            <div class="col-sm-8 no-padding green">
+                                注：用户在邮件系统中，可以开启企业通讯录域组合
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right" >父部门中是否显示子部门邮件账号：</td>
+                        <td class="row">
+                            <div class="col-sm-4 no-padding">
+                                <label class="inline" >
+                                    <input name="sw_dept_showall" value="1" {% if form_home.sw_dept_showall.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                    <span class="lbl"></span>
+                                </label>
+                            </div>
+                            <div class="col-sm-8 no-padding green">
+                                注：用户在邮件系统中，点击父部门的时候，是否显示所有子部门的邮箱
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">网络硬盘功能：</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="sw_netdisk" value="1" {% if form_home.sw_netdisk.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right" >日程功能：</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="sw_calendar" value="1" {% if form_home.sw_calendar.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td class="text-right">便签功能：</td>
+                        <td>
+                            <label class="inline" >
+                                <input name="sw_notes" value="1" {% if form_home.sw_notes.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class=" ">
+            <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success" onclick="clickSubmitButton('home','form_home')">提交</button>
+                <button type="button"  class="btn btn-warning">重置</button>
+            </div>
+            </form>
+        </div>
+        <div id="send_mail_block">
+            <div class="table-header">发邮件区</div>
+            <form class="form-horizontal form_mail">
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <td class="text-right" >保存草稿功能：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_drafts" value="1" {% if form_mail.sw_drafts.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right">发送邮件显示加密选项：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_mail_encryption" value="1" {% if form_mail.sw_mail_encryption.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">显示地址簿和信纸模块：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_show_add_paper" value="1" {% if form_mail.sw_show_add_paper.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            注：开启此功能，在编辑邮件时，右侧地址簿和信纸功能会直接显示；
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">去掉信纸模块：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_mailpaper" value="1" {% if form_mail.sw_mailpaper.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            注：开启此功能，在编辑邮件时，右侧信纸功能会直接显示；
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right">自动发送回执功能：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_auto_receipt" value="1" {% if form_mail.sw_auto_receipt.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            注：开启此功能后收到有回执要求的邮件会自动发送回执；
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right" >添加Reply-To到邮件头：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_mail_in_reply_to" value="1" {% if form_mail.sw_mail_in_reply_to.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+
+                </tr>
+            </table>
+            <div class=" ">
+            <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success" onclick="clickSubmitButton('mail','form_mail')">提交</button>
+                <button type="button"  class="btn btn-warning">重置</button>
+            </div>
+            </form>
+        </div>
+        <div id="setting_block">
+            <div class="table-header">设置区</div>
+            <form class="form-horizontal form_set">
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <td class="text-right" >个人资料功能：</td>
+                    <td class="row" style="padding:8px;">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_change_userinfo" value="1" {% if form_set.sw_change_userinfo.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            注：关闭此功能后用户无法修改个人资料；
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right">密码修改功能：</td>
+                    <td class="row" style="padding:8px;">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_change_pass" value="1" {% if form_set.sw_change_pass.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            注：关闭此功能后用户无法修改邮箱密码；；
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right" >参数设置功能：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_options" value="1" {% if form_set.sw_options.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right" >邮件签名功能：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_signature" value="1" {% if form_set.sw_signature.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right">自动回复功能：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_auto_reply" value="1" {% if form_set.sw_auto_reply.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">自动转发功能：</td>
+                    <td class="row" style="padding:8px;">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_auto_forward" value="1" {% if form_set.sw_auto_forward.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <span> 注：全局自动转发开闭开关，除此之外，每个邮箱用户也有单独开启自动转发开关，在邮箱账号管理中设置；</span>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right">黑白名单功能：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_userbwlist" value="1" {% if form_set.sw_userbwlist.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right" >设置自动转发默认值：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_autoforward_visible" value="1" {% if form_set.sw_autoforward_visible.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            注：选择“是”，在后台邮件账户管理中，用户是否可以自行设置自动转发的默认值是“是”，否则为“否”；
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right" >邮箱搬家功能：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_mailboxmove" value="1" {% if form_set.sw_mailboxmove.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right">邮箱意见反馈功能：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_feedback" value="1" {% if form_set.sw_feedback.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            注：Webmail 配置中意见反馈功能开关；
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">邮件召回记录查看：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_zhaohui" value="1" {% if form_set.sw_zhaohui.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">邮件过滤功能：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_cfilter" value="1" {% if form_set.sw_cfilter.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">SMTP外发邮件中转：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_smtptransfer_visible" value="1" {% if form_set.sw_smtptransfer_visible.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            注：开启本开关后，umail将作为邮件客户端，将外发邮件投递到用户设置的邮件服务器
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div class=" ">
+            <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success" onclick="clickSubmitButton('set','form_set')">提交</button>
+                <button type="button"  class="btn btn-warning">重置</button>
+            </div>
+            </form>
+        </div>
+        <div id="other_block">
+            <div class="table-header">杂项区</div>
+            <form class="form-horizontal form_other">
+            <table  class="table  table-bordered  table-striped">
+                <tr>
+                    <td class="text-right">清空文件夹功能：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_folder_clean" value="1" {% if form_other.sw_folder_clean.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            注：开启此功能在邮件文件夹列表会出现清空文件夹功能按钮（废件箱文件夹已有清空废件箱功能按钮除外）；
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">代发邮件地址提醒：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_realaddress_alert" value="1" {% if form_other.sw_realaddress_alert.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            注：开启此功能，在阅读邮件内容时，如果真实发送邮件地址与发件人地址不一致，系统会进行提示；
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right" >邮件内容中时间显示：</td>
+                    <td>
+                        <!--<label class="inline" >-->
+                        <!--<input name="wsw_time_mode" checked  type="checkbox" class="ace ace-switch ace-switch-5 open">-->
+                        <!--<span class="lbl time"></span>-->
+                        <!--</label>-->
+                        <label style="margin-right:20px;">
+                            <input type="radio" value="1" {% if form_other.sw_time_mode.value == "1" %} checked {% endif %} name="sw_time_mode"> 12小时
+                        </label>
+                        <label>
+                            <input type="radio" value="-1" {% if form_other.sw_time_mode.value != "1" %} checked {% endif %} name="sw_time_mode"> 24小时
+                        </label>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right" >部门邮件列表：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_dept_maillist" value="1" {% if form_other.sw_dept_maillist.value == "1" %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <div class=" ">
+            <input type="hidden" value="{{ domain.id }}" name="domain_id"/>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success" onclick="clickSubmitButton('other','form_other')">提交</button>
+                <button type="button"  class="btn btn-warning">重置</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#module_made_tabs').tabs();
+
+    function clickSubmitButton(action, form_name){
+        var str = $("."+form_name).serialize();
+        var data = str;
+        data = data + '&action=' + action ;
+        $.ajax({
+            url:"{% url 'domain_module' %}",
+            type:"POST",
+            data:data,
+            success:function(data){
+                $('#domain_module').html('<div>保存中...</div>');
+                                setTimeout(function(){
+                                    $('#domain_module').html(data);
+                                },100)
+            }
+        })
+    }
+
+</script>

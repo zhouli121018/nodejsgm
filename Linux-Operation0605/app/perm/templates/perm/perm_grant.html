@@ -1,0 +1,98 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load perm_tags %}
+{% block title %} {% trans "授权" %} {% endblock %}
+{% block breadcrumb %}<li> <a href="#">{% trans "管理员管理" %}</a> </li><li class="active">{% trans "授权" %}</li>{% endblock %}
+{% block page-content %}
+    <div class="row">
+        <div class="space-12"></div>
+        <div class="col-xs-12">
+            <div class="page-header"><h1>授予权限/{% if request.GET.g_id %}<a href="{% url 'group_list' %}">用户组</a>{% endif %}({{ obj }})</h1></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <div class="dataTable_wrapper">
+                        <form id="id_form" action="" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" id="permission_id" name="ids" />
+                            <input type="hidden" id="action" name="action" />
+                            <div class="tree well">
+                                <ul>
+                                    {% for p in mypermissions %}
+                                        <li>
+                                            <span><i class="glyphicon {% if p.is_nav %}glyphicon-folder-open{% endif %}"></i> <a href="{{p.url}}">{{p.name}}({{p.nav_name}})</a></span>
+                                            <input type="checkbox" {% if p.per in myperms %} checked {% endif %} name="permission" value="{{ p.id }}" />
+                                            <ul>
+                                                {% for p_child in p.children.all|permission_order_by %}
+                                                    <li>
+                                                        <span><i class="glyphicon {% if p_child.is_nav %}glyphicon-folder-open{% endif %}"></i> <a href="{{p_child.url}}">{{p_child.name}}({{p_child.nav_name}})</a></span>
+                                                        <input type="checkbox" {% if p_child.per in myperms %} checked {% endif %} name="permission" value="{{ p_child.id }}" />
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <button type="button" onclick="Sumbit()" class="btn btn-primary">确认</button>
+                            <button type="button" class="btn btn-link" onclick="location.href='{% url 'user_list' %}'">{% trans "取消" %}</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.css' %}" />
+    <link href="{% static 'components/datatables/media/css/dataTables.bootstrap.css' %}">
+    <link href="{% static 'css/permtree.css' %}" rel="stylesheet">
+    <style>
+        .tree{ border: 0px solid #999 !important;margin-bottom: 0px;}
+        .tree li > ul {margin-left: 45px!important;}
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'components/datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'components/_mod/datatables/jquery.dataTables.bootstrap.js' %}"></script>
+    <script src="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.js' %}"></script>
+
+    <script>
+        $('.selectpicker').selectpicker();
+
+        $(function () {
+            $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+            $('.tree li.parent_li > span').on('click', function (e) {
+                var children = $(this).parent('li.parent_li').find(' > ul > li');
+                if (children.is(":visible")) {
+                    children.hide('fast');
+                    $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+                } else {
+                    children.show('fast');
+                    $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+                }
+                e.stopPropagation();
+            });
+        });
+
+        function Sumbit(){
+            var ids = '';
+            $("input[name='permission']:checked").each(function () {
+                ids += (this.value)+',';
+                $('#show').append(this.value + "  ");
+            });
+            $('#permission_id').val(ids);
+            $('#id_form').submit();
+        }
+    </script>
+
+{% endblock %}
+

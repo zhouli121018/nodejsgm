@@ -1,0 +1,86 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load perm_tags %}
+{% block title %} {% trans "权限管理" %} {% endblock %}
+{% block breadcrumb %}<li> <a href="#">{% trans "管理员管理" %}</a> </li><li class="active">{% trans "权限管理" %}</li>{% endblock %}
+{% block page-content %}
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-6">
+            <div class="page-header"><h1>{% trans "权限列表" %}</h1></div>
+        </div>
+        <div class="col-xs-6">
+            <div class="pull-right" style="margin-right:30px;"><a href="{% url 'perm_add' %}" class="btn btn-primary pull-right bottem margin-left-5">{% trans "添加权限" %}</a></div>
+        </div>
+    </div>
+    <div class="row"><div class="col-lg-12">
+        <table id="ajax-table" class="table table-striped table-bordered table-hover">
+            <form id="id_form" action="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" id="perm_id" name="perm_id" /><input type="hidden" id="action" name="action" /><div class="tree well">
+                <ul>
+                    {% for p in permlists %}
+                        <li>
+                            <span><i class="glyphicon {% if p.is_nav %}glyphicon-folder-open{% endif %}"></i> <a {% if p.url %}href="{{p.url}}{% endif %}">{{p.name}}({{p.nav_name}})</a></span>
+                            <a type="button" class="btn btn-white btn-primary btn-xs" href="{% url 'perm_modify' p.id %}">修改</a>
+                            <a type="button" class="red btn btn-white btn-danger btn-xs" href="Javascript: Delete({{ p.id }}, '{{ p.name }}')">删除</a>
+                            <ul>
+                                {% for p_child in p.children.all|permission_order_by %}
+                                    <li>
+                                        <span><i class="glyphicon {% if p_child.is_nav %}glyphicon-folder-open{% endif %}"></i> <a {% if p_child.url %} href="{{p_child.url}}"{% endif %}>{{p_child.name}}({{p_child.nav_name}})</a></span>
+                                        <a type="button" class="btn btn-white btn-primary btn-xs" href="{% url 'perm_modify' p_child.id %}">修改</a>
+                                        <a type="button" class="red btn btn-white btn-danger btn-xs" href="Javascript: Delete({{ p_child.id }}, '{{ p_child.name }}')">删除</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul></div></form></table></div></div>
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.css' %}" />
+    <link href="{% static 'components/datatables/media/css/dataTables.bootstrap.css' %}">
+    <link href="{% static 'css/permtree.css' %}" rel="stylesheet">
+    <style>
+        .tree{ border: 0px solid #999 !important;margin-bottom: 0px;}
+        .tree li > ul {margin-left: 45px!important;}
+        .btn-danger.btn-white {border-color: #e4393c;color: #e4393c !important;}
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'components/datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'components/_mod/datatables/jquery.dataTables.bootstrap.js' %}"></script>
+    <script src="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.js' %}"></script>
+
+    <script>
+        $('.selectpicker').selectpicker();
+        function Delete(id, name){
+            var str = '是否要删除权限 "%s"？';
+            str = str.replace(/%s/, name);
+            if(confirm(str)) {
+                $('#perm_id').val(id);
+                $('#action').val('delete');
+                $('#id_form').submit();
+            }
+            return;
+        }
+        $(function () {
+            $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+            $('.tree li.parent_li > span').on('click', function (e) {
+                var children = $(this).parent('li.parent_li').find(' > ul > li');
+                if (children.is(":visible")) {
+                    children.hide('fast');
+                    $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+                } else {
+                    children.show('fast');
+                    $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+                }
+                e.stopPropagation();
+            });
+        });
+    </script>
+{% endblock %}
+

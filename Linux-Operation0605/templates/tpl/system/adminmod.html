@@ -1,0 +1,61 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue">邮件域 <b>test.com</b> 后台模块设置</h3>
+    <div class="table-footer center" style="margin-top:6px;">
+        <button type="button" class="btn btn-info">提交</button>
+        <button type="button" class="btn btn-warning">重置</button>
+    </div>
+</div>
+<script>
+    var myTable;
+    function initDate(p){
+        for(var i= 0,html='';i<p;i++){
+            html+=`<tr class="">
+                        <td class="center middle">${i+1}</td>
+                        <td>部门机构管理</td>
+                        <td>
+                            <label class="radio-inline">
+                                <input type="radio" name="admin_mod${i}"  checked value="open"> 启用
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="admin_mod${i}" value="close"> 禁用
+                            </label>
+                        </td>
+                    </tr>`
+        }
+        $('#data-body').html(html);
+            myTable =
+                $('#dynamic-table')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                } );
+    }
+    initDate(28);
+
+</script>

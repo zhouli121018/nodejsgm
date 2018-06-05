@@ -1,0 +1,372 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue"><span class="red">外域邮件数据导入</span>
+
+    </h3>
+
+    <div class="text-right margin-bottom-8">
+        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#mail_moving_add" >添加</button>
+        <button class="btn btn-purple" type="button" data-toggle="modal" data-target="#mail_moving_add_lot" >批量添加</button>
+        <button class="btn btn-primary" type="button">全部启用</button>
+        <button class="btn btn-warning" type="button">全部禁用</button>
+        <button class="btn btn-danger" type="button">删除</button>
+    </div>
+    <div class="table-header">
+        邮件数据导入
+    </div>
+    <div>
+        <table id="dynamic-table" class="table table-bordered table-center">
+            <thead>
+            <tr>
+                <th class="center sorting_disabled" rowspan="1" colspan="1" aria-label="">
+                    <label class="pos-rel">
+                        <input type="checkbox" class="ace">
+                        <span class="lbl"></span>
+                    </label>
+                </th>
+                <th class="center">序号</th>
+                <th>本地帐号</th>
+                <th>远程帐号</th>
+                <th>远程服务器</th>
+                <th>SSL登录</th>
+                <th>任务状态</th>
+                <th>任务描述</th>
+                <th>最近更新</th>
+                <th>激活状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="data-body">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="mail_moving_add">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加邮件数据导入</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">本地帐号：</label>
+                        <div class="col-sm-6">
+                            <select class="chosen-select form-control" data-placeholder="本地帐号">
+                                <option value="">请选择邮箱</option>
+                                <option value="1">stress_test_1@tes.com</option>
+                                <option value="2">stress_test_2@tes.com</option>
+                                <option value="3">stress_test_3@tes.com</option>
+                                <option value="4">stress_test_4@tes.com</option>
+                                <option value="5">stress_test_5@tes.com</option>
+                                <option value="6">stress_test_6@tes.com</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">远程服务器：</label>
+                        <div class="col-sm-6">
+                            <input type="text" value="202.103.191.47" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">远程帐号：</label>
+                        <div class="col-sm-6">
+                            <input type="text" value="ubrabbit_1@test.com" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">远程帐号：</label>
+                        <div class="col-sm-6">
+                            <input type="password" value="123456" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">SSL访问：</label>
+                        <div class="col-sm-6">
+                            <select class="form-control">
+                                <option value="1">使用</option>
+                                <option value="2">不使用</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">保存</button>
+                <button type="button"  class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="mail_moving_edit">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改邮件数据导入</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">本地帐号：</label>
+                        <div class="col-sm-6">
+                            <select class="chosen-select form-control" data-placeholder="本地帐号">
+                                <option value="">选择本地帐号</option>
+                                <option value="1">stress_test_1@tes.com</option>
+                                <option value="2" selected>stress_test_2@tes.com</option>
+                                <option value="3">stress_test_3@tes.com</option>
+                                <option value="4">stress_test_4@tes.com</option>
+                                <option value="5">stress_test_5@tes.com</option>
+                                <option value="6">stress_test_6@tes.com</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">远程服务器：</label>
+                        <div class="col-sm-6">
+                            <input type="text" value="202.103.191.47" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">远程帐号：</label>
+                        <div class="col-sm-6">
+                            <input type="text" value="ubrabbit_1@test.com" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">远程帐号：</label>
+                        <div class="col-sm-6">
+                            <input type="password" value="123456" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">SSL访问：</label>
+                        <div class="col-sm-6">
+                            <select class="form-control">
+                                <option value="1">使用</option>
+                                <option value="2">不使用</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label">激活状态：</label>-->
+                        <!--<div class="col-sm-9">-->
+                            <!--<label class="inline" >-->
+                                <!--<input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">-->
+                                <!--<span class="lbl middle"></span>-->
+                            <!--</label>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">保存</button>
+                <button type="button"  class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="mail_moving_add_lot">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">批量添加</h4>
+            </div>
+            <div class="modal-body">
+                <p class="green">每行的格式如下:</p>
+                <p><span class="blue">'本地帐号'	'远程帐号'	'服务器地址'	'密码'	'SSL方式登录' </span>之间用'TAB'符号隔开，单次最多只允许插入1000条数据;</p>
+                <p class="green">批量插入的数据，不会验证输入的密码是否有效：</p>
+                <p>必须填写<span class="blue">'本地帐号'、'远程帐号','服务器地址','密码' </span>;</p>
+                <p><span class="blue">'SSL方式登录'</span>可不填，默认不启用：该列值为1时代表需要SSL登录，其它值或空代表不使用。</p>
+                <p class="green">举例：</p>
+
+                <textarea class="form-control" disabled rows="4">helo@local.com	address1@remote.com	remote.com	remote_password1	0
+helo233@local.com	address2@remote.com	remote.com	remote_password2	1</textarea>
+                <hr>
+                <textarea class="form-control" rows="10" placeholder="请在此处输入内容..."></textarea>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">保存</button>
+                <button type="button"  class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#switch-email').hide();
+    $(function(){
+        if(!ace.vars['touch']) {
+            $('.chosen-select').chosen({allow_single_deselect:true});
+
+            $(window)
+                    .off('resize.chosen')
+                    .on('resize.chosen', function() {
+                        $('.chosen-select').each(function() {
+                            var $this = $(this);
+                            $this.next().css({'width': $this.parent().width()});
+                        })
+                    }).trigger('resize.chosen');
+            $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                if(event_name != 'sidebar_collapsed') return;
+                $('.chosen-select').each(function() {
+                    var $this = $(this);
+                    $this.next().css({'width': $this.parent().width()});
+                })
+            });
+        }
+    })
+    var myTable;
+    function initDate(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr role="row">' +
+                    '<td class="center">' +
+                    '<label class="pos-rel">' +
+                    '<input type="checkbox" class="ace">' +
+                    '<span class="lbl"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td class="center">'+(i+1)+'</td>' +
+                    '<td><span class="label label-info arrowed arrowed-righ">abc@test.com</span></td>' +
+                    '<td><span class="label label-success arrowed-right">abv@test.com</span></td>' +
+                    '<td>202.103.191.47</td>' +
+                    '<td>' +
+                    '<span class="label label-warning arrowed-in arrowed-in-right">否</span>' +
+                    '</td>' +
+                    '<td> 迁移完毕</td>' +
+                    '<td>任务结束</td>' +
+                    '<td>2018-04-28 15:56</td>' +
+                    '<td >' +
+                    '<label class="inline" >' +
+                    '<input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">' +
+                    '<span class="lbl middle"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="red btn btn-white btn-purple btn-xs" href="#">收信</a>' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#mail_moving_edit">修改</a>' +
+                    '<a class="red btn btn-white btn-danger btn-xs" href="#">删除</a>' +
+                    '</div></td></tr>'
+        }
+        /*<!--<td class="hidden-480">-->
+         <!--<span class="label label-sm label-warning">Expiring</span>-->
+         <!--</td>-->*/
+        $('#data-body').html(html);
+
+        myTable =
+                $('#dynamic-table')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                { "bSortable": false },
+                                null,
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                null,
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                        } );
+
+
+        myTable.on( 'select', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable.row( index ).node() ).find('input:checkbox:eq(0)').prop('checked', true);
+            }
+        } );
+        myTable.on( 'deselect', function ( e, dt, type, index ) {
+            if ( type === 'row' ) {
+                $( myTable.row( index ).node() ).find('input:checkbox:eq(0)').prop('checked', false);
+            }
+        } );
+
+
+
+
+        /////////////////////////////////
+        //table checkboxes
+        $('th input[type=checkbox]:eq(0), td input[type=checkbox]:eq(0)').prop('checked', false);
+
+        //select/deselect all rows according to table header checkbox
+        $('#dynamic-table > thead > tr > th input[type=checkbox], #dynamic-table_wrapper input[type=checkbox]').eq(0).on('click', function(){
+            var th_checked = this.checked;//checkbox inside "TH" table header
+
+            $('#dynamic-table').find('tbody > tr').each(function(){
+                var row = this;
+                if(th_checked) myTable.row(row).select();
+                else  myTable.row(row).deselect();
+            });
+        });
+
+        //select/deselect a row when the checkbox is checked/unchecked
+        $('#dynamic-table').on('click', 'td .pos-rel input[type=checkbox]' , function(){
+            var row = $(this).closest('tr').get(0);
+            if(this.checked) myTable.row(row).deselect();
+            else myTable.row(row).select();
+        });
+        $(document).on('click', '#dynamic-table .dropdown-toggle', function(e) {
+            e.stopImmediatePropagation();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+
+        /********************************/
+        //add tooltip for small view action buttons in dropdown menu
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+
+        //tooltip placement on right or left
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            //var w2 = $source.width();
+
+            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+            return 'left';
+        }
+        /***************/
+        $('.show-details-btn').on('click', function(e) {
+            e.preventDefault();
+            $(this).closest('tr').next().toggleClass('open');
+            $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+        });
+
+
+
+    }
+    initDate(28);
+</script>

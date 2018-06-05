@@ -1,0 +1,155 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %} {% trans "邮件数据导入" %} {% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "邮件数据导入" %}</a> </li>
+    <li class="active"> {% trans "批量添加" %} </li>
+{% endblock %}
+
+{% block page-content %}
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1> {% trans "批量添加" %}
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form-horizontal" role="form" action="" method="POST" id="id_Form">
+                {% csrf_token %}
+
+                <div class="form-group">
+                        <div style="clear: both">
+                        <span class="middle text-success ">
+                        <li>
+                            每行的格式如下:
+                        </li>
+                        <li>
+                            <span style="color:blue"> '本地帐号'	'远程帐号'	'服务器地址'	'密码'	'SSL方式登录' </span> 之间用'TAB'符号隔开，单次最多只允许插入1000条数据：
+                        </li>
+                        <li>
+                            批量插入的数据，不会验证输入的密码是否有效：
+                        </li>
+                        <li>
+                            必须填写 <span style="color:blue"> '本地帐号'、'远程帐号','服务器地址','密码' </span> ：
+                        </li>
+                        <li>
+                            <span style="color:blue"> 'SSL方式登录' </span> 可不填，默认不启用：该列值为1时代表需要SSL登录，其它值或空代表不使用。
+                        </li>
+                        <li>
+                            举例：
+                        </li>
+                        <li>
+                            <textarea style="word-break: normal;width: 800px;" rows="2">
+helo@local.com	address1@remote.com	remote.com	remote_password1	0
+helo233@local.com	address2@remote.com	remote.com	remote_password2	1</textarea>
+                        </li>
+                        </span>
+                        </div>
+                </div>
+
+                <div class="form-group">
+                    {% if form.fail_list %}
+                        <div class="col-sm-9">
+                            <ul class="errornote txt-color-red"> 以下数据插入失败 </ul>
+                            {% for info in form.fail_list %}
+                                <li  class="errornote txt-color-red">{{ info }}</li>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <textarea class="" name="import_data" rows="25" cols="10" style="width:99% !important;"></textarea>
+                    </div>
+                </div>
+
+                <div class="clearfix form-actions">
+                    <div class="">
+                        <button type="button" class="btn btn-info" id="id_save_button" onClick="clickSave()">
+                            <i class="ace-icon fa fa-check bigger-110"></i>{% trans "添加" %}
+                        </button>
+
+                        <button class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>重置
+                        </button>
+
+                        <a type="button" class="btn btn-link" href="{% url 'mail_moving' %}">返回列表</a>
+                    </div>
+                </div>
+            </form>
+
+
+        </div><!-- /.span -->
+    </div><!-- /.row -->
+
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.css' %}" />
+    <link rel="stylesheet" href="{% static 'components/chosen/chosen.css' %}" />
+    <style>
+        .chosen-container-single .chosen-single span {
+            padding: 3px 4px;
+        }
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.js' %}"></script>
+    <script src="{% static 'components/jqueryui-touch-punch/jquery.ui.touch-punch.js' %}"></script>
+    <script src="{% static 'components/chosen/chosen.jquery.js' %}"></script>
+    <script>
+
+        function clickSave(){
+            $("#id_Form").submit();
+            saveButtonAdd();
+        }
+
+        $(function () {
+            // 防止重复提交
+            saveButtonRemove();
+
+            if(!ace.vars['touch']) {
+                $('.chosen-select').chosen({
+                    allow_single_deselect:true,
+                    search_contains: true,
+
+                });
+                //resize the chosen on window resize
+
+                $(window).off('resize.chosen').on('resize.chosen', function() {
+
+                    $('.chosen-select').each(function() {
+                        var $this = $(this);
+                        $this.next().css({'width': "41.67%", 'border-radius': "0"});
+                        $(".chosen-single").css({'border-radius': "0", "height": "30px"})
+                        // $this.next().css({'width': $this.parent().width()});
+                    })
+                }).trigger('resize.chosen');
+                //resize chosen on sidebar collapse/expand
+                $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                    if(event_name != 'sidebar_collapsed') return;
+                    $('.chosen-select').each(function() {
+                        var $this = $(this);
+                        alert(111);
+                        $this.next().css({'width': $this.parent().width()});
+                    })
+                });
+            }
+        });
+
+        function saveButtonAdd(){$("#id_save_button").attr("disabled", "disabled").addClass('disabled');}
+        function saveButtonRemove(){$("#id_save_button").removeAttr("disabled").removeClass('disabled');}
+
+    </script>
+
+{% endblock %}

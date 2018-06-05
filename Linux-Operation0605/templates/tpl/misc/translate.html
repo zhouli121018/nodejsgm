@@ -1,0 +1,167 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue"><span class="red">邮件头翻译</span>
+    </h3>
+    <div class="text-right margin-bottom-8">
+        <button class="btn btn-success" type="button" data-toggle="modal" data-target="#translate_add" >添加邮件头翻译</button>
+    </div>
+    <div class="table-header">
+        邮件头翻译
+    </div>
+    <div>
+        <table id="dynamic-table" class="table table-bordered table-striped table-center">
+            <thead>
+                <tr>
+                    <th class="center">序号</th>
+                    <th>域名</th>
+                    <th>类型</th>
+                    <th>被翻译值</th>
+                    <th>翻译目标值</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="data-body">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="translate_add" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">邮件头翻译添加</h4>
+            </div>
+            <div class="modal-body">
+                <form class="">
+                    <div class="form-group">
+                        <label class=" control-label">被翻译值 <--> 目标值：</label>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <textarea name="content_text" class="form-control" rows="10">测试测试测试测试测试</textarea>
+                            </div>
+                            <div class="col-sm-1">
+                                <-->
+                            </div>
+                            <div class="col-sm-5">
+                                <textarea name="content_text" class="form-control" rows="10">5555555555</textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+                <div class="alert-warning" style="padding:4px;">
+                    <ul>
+                        <li>1、注： 目前只会匹配邮件头中From、Sender、Subject字段所对应的内容。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">提交</button>
+                <button type="button"  class="btn btn-warning">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="translate_edit" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">邮件头翻译设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">被翻译值：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="被翻译值">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">目标值：</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="目标值">
+                        </div>
+                    </div>
+                </form>
+                <div class="alert-warning" style="padding:4px;">
+                    <ul>
+                        <li>1、注： 目前只会匹配邮件头中From、Sender、Subject字段所对应的内容。</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">提交</button>
+                <button type="button"  class="btn btn-warning">返回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var myTable;
+    function initDate(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td><span class="label  label-success">test.com</span></td>' +
+                    '<td>外发</td>' +
+                    '<td>ddd</td>' +
+                    '<td>111</td>' +
+                    '<td>' +
+                    '<label class="inline" >' +
+                    '<input name="" checked type="checkbox" class="ace ace-switch ace-switch-5"><span class="lbl"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#translate_edit">修改</a>' +
+                    '<a class="red btn btn-white btn-danger btn-xs" href="#">删除</a>' +
+                    '</div></td></tr>'
+        }
+        $('#data-body').html(html);
+            myTable =
+                $('#dynamic-table')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                null,
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                } );
+    }
+    initDate(28);
+
+    $('#search-btn').click(function(){
+        //myTable.destroy();
+        //initDate(8);
+    })
+</script>

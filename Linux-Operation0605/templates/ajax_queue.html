@@ -1,0 +1,19 @@
+{% load tags %}
+<td>{{l.key}}</td>
+<td>{{l.sender}}</td>
+<td>{{l.recipients}}</td>
+<td>{{l.senderip}}</td>
+<td>{{l.create_time|int2datetime}}</td>
+<td>
+    <div class="hidden-sm hidden-xs btn-group">
+        <a data-toggle="modal" class="btn btn-xs btn-success"href="{% url 'mail_read' %}?key={{ l.key }}&queue={{ queue }}" data-target="#myModal" data-whatever="{{ m.date_id }}">
+        <i class="ace-icon fa fa-check bigger-120"></i>
+        查看内容
+        </a>
+        <button class="btn btn-xs btn-danger"onclick="Delete('{{ l.key }}')">
+            <i class="ace-icon fa fa-trash-o bigger-120"></i>删除
+        </button>
+
+    </div>
+</td>
+

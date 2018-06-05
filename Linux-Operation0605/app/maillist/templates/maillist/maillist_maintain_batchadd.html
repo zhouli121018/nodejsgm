@@ -1,0 +1,109 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %} {% trans "邮件列表成员" %} {% endblock %}
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "邮件列表管理" %}</a></li>
+    <li class="active">{% trans "批量添加邮件列表" %} {{ lobj.address }} {% trans "成员" %}</li>
+{% endblock %}
+{% block page-content %}
+    <div class="row">
+        <div class="col-lg-12"><h1 class="page-header">{% trans "批量添加邮件列表" %} {{ lobj.address }} {% trans "成员" %}</h1></div>
+    </div>
+    <form role="form" action="" method="post">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2">
+                <div class="panel panel-default" style="margin-bottom: 0px!important;">
+                    <div class="panel-heading">{% trans "批量添加邮件列表" %} {{ lobj.address }} {% trans "成员" %}</div>
+                    <div class="panel-body">
+
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="control-label  " for="id_permit">地址权限</label>
+                            <div class=" ">
+                                <select name="permit" class=" form-control" id="id_permit">
+                                    <option value="1">收发</option>
+                                    <option value="-1" selected="">只发</option>
+                                    <option value="0">只收</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class=" ">
+                                <a data-toggle="modal" data-target="#tagModal" data-whatever="" class="btn btn-white btn-primary btn-xs" href="{% url 'maillist_maintain_select' %}">选择邮箱</a>
+                                <p class="help-block"> 选择邮箱添加到下面的输入框中进行添加邮箱</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label  " for="id_addresses">{% trans "添加数据" %}</label>
+                            <div class=" ">
+                                <textarea name="addresses" id="id_addresses" rows="10" cols="40" class=" form-control"></textarea>
+                                <p class="help-block">可以选择邮箱添加输入，也可以手动输入！<br><br>
+                                    <strong>注意：</strong>
+                                    一个邮箱地址占一行，其间不能有空格。<br>
+                                    用户名可以是字符、数字、上划线、下划线、点，但用户名的第一个字必须是数字或字母。<br>
+                                    如果输入的用户名是大写字母，系统将自动转为小写。<br>
+                                    如不填写邮箱后缀，将自动加上本域域名<br><br>
+
+                                    <strong>示例：</strong><br>
+                                    <span style="color: blue;">user1</span><br>
+                                    <span style="color: blue;">user2@domain.com</span><br>
+                                    <span style="color: blue;">user3@163.com</span><br>
+                                    <span style="color: blue;">user4@gmail.com</span><br>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix form-actions">
+            <div class="text-center">
+                <button class="btn btn-info" type="submit">
+                    <i class="ace-icon fa fa-check bigger-110"></i>{% trans "保存" %}</button>
+                <button class="btn" type="reset">
+                    <i class="ace-icon fa fa-undo bigger-110"></i>{% trans "重置" %}</button>
+                <button type="button" class="btn btn-link" onclick="location.href='{% url 'maillist_maintain' list_id %}'">{% trans "取消" %}</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="modal fade " id="tagModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg-self" style="margin:50px auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">加载中</h4>
+                </div>
+                <div class="modal-body">页面加载中
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.css' %}" />
+    <link href="{% static 'components/datatables/media/css/dataTables.bootstrap.css' %}">
+    <style>
+        .modal-lg-self{width: 1200px;}
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'components/datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'components/_mod/datatables/jquery.dataTables.bootstrap.js' %}"></script>
+    <script src="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.js' %}"></script>
+    <script>
+        $(function () {
+            $('#tagModal').on('show.bs.modal', function (event) {
+                $(this).removeData('bs.modal');
+            })
+        });
+    </script>
+{% endblock %}
+

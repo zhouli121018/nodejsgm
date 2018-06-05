@@ -1,0 +1,69 @@
+{% load i18n %}
+<div class="row">
+    <div class="col-xs-12">
+        <form class="form-horizontal" role="form" action="" method="POST" id="id_Form">
+            {% csrf_token %}
+
+            <div class="form-group {% if form.value.error %} has-error {% endif %}">
+                <label class="col-sm-3 control-label no-padding-right" for="id_config_value"> 新版审核开关 </label>
+                <div class="col-sm-9">
+                    <select class="col-xs-10 col-sm-5" id="id_config_value" name="sw_new_review_value">
+                        <option value="1" {% if form.value.value == '1' %}selected{% endif %}>开启</option>
+                        <option value="0" {% if form.value.value == '0' %}selected{% endif %}>关闭</option>
+                    </select>
+                    {% if form.value.error %}
+                        <div style="clear: both">
+                            <p class="errornote txt-color-red">{{ form.value.error }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group {% if form.value.error %} has-error {% endif %}">
+                <label class="col-sm-3 control-label no-padding-right" for="id_config_value2"> 审核结果邮件设置 </label>
+                <div class="col-sm-9">
+                    <select class="col-xs-10 col-sm-5" id="id_config_value2" name="review_notify_result">
+                        {% for option,name in form.select_result %}
+                            <option value={{ option }} {% if form.value_review_notify_result.value == option %}selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if form.value_review_notify_result.error %}
+                        <div style="clear: both">
+                            <p class="errornote txt-color-red">{{ form.value_review_notify_result.error }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group {% if form.value.error %} has-error {% endif %}">
+                <label class="col-sm-3 control-label no-padding-right" for="id_config_value3"> 审核人通知邮件设置 </label>
+                <div class="col-sm-9">
+                    <select class="col-xs-10 col-sm-5" id="id_config_value3" name="reviewer_no_mail">
+                        {% for option,name in form.select_notify %}
+                            <option value={{ option }} {% if form.value_reviewer_no_mail.value == option %}selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if form.value_reviewer_no_mail.error %}
+                        <div style="clear: both">
+                            <p class="errornote txt-color-red">{{ form.value_reviewer_no_mail.error }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="button" class="btn btn-info" id="id_save_button">
+                        <i class="ace-icon fa fa-check bigger-110"></i>{% trans "保存" %}
+                    </button>
+
+                    <button class="btn" type="reset">
+                        <i class="ace-icon fa fa-undo bigger-110"></i>重置
+                    </button>
+
+                    <a type="button" class="btn btn-link" href="{% url 'review_list' %}">取消</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

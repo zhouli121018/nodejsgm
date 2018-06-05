@@ -1,0 +1,87 @@
+{% load i18n %}
+
+{% if form.open %}
+    <form class="form-horizontal" role="form" action="" method="POST" id="id_Form">
+        {% csrf_token %}
+
+        <div class="form-group {% if form.config_data.error %} has-error {% endif %}">
+            <label class="col-sm-3 control-label no-padding-right" for="id_config_data"> 状态 </label>
+            <div class="col-sm-9">
+                <select class="col-xs-10 col-sm-5" id="id_config_data" name="config_data">
+                    <option value="1" {% if form.config_data.value == '1' %}selected{% endif %}>开启</option>
+                    <option value="0" {% if form.config_data.value == '0' %}selected{% endif %}>关闭</option>
+                </select>
+                {% if form.config_data.error %}
+                    <div style="clear: both">
+                        <p class="errornote txt-color-red">{{ form.config_data.error }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="form-group {% if form.pwd.error %} has-error {% endif %}">
+            <label class="col-sm-3 control-label no-padding-right" for="id_pwd"> 授权密码 </label>
+            <div class="col-sm-9">
+                <input type="password" name="pwd" id="id_pwd" value="{{ form.pwd.value }}" maxlength="128" class="col-xs-10 col-sm-5" required/>
+                {% if form.pwd.error %}
+                    <div style="clear: both">
+                        <p class="errornote txt-color-red">{{ form.pwd.error }}</p>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="">
+                <label class="col-sm-3 control-label no-padding-right"></label>
+                            <span class="help-inline col-xs-9 col-sm-7">
+                                <span class="middle text-success">授权密码长度8-20位，必须含有大小写字符和数字。</span>
+                            </span>
+            </div>
+        </div>
+
+        <div class="clearfix form-actions">
+            <div class="col-md-offset-3 col-md-9">
+                <button type="button" class="btn btn-info" id="id_save_button">
+                    <i class="ace-icon fa fa-check bigger-110"></i>{% trans "保存" %}
+                </button>
+
+                <button class="btn" type="reset">
+                    <i class="ace-icon fa fa-undo bigger-110"></i>重置
+                </button>
+
+                <a type="button" class="btn btn-link" href="{% url 'proxy_open_config' %}">取消</a>
+            </div>
+        </div>
+    </form>
+
+{% else %}
+
+    <div class="widget-body">
+        <dd class="widget-main">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-9">
+                <dl class="dl-horizontal" style="margin-bottom: 0;">
+                    <dt>状态</dt>
+                    <dd style="margin-bottom: 20px;">
+                        {% if form.instance.config_data == '1' %}
+                            <span class="badge badge-success">开启</span>
+                        {% else %}
+                            <span class="badge badge-grey">禁用</span>
+                        {% endif %}
+                    </dd>
+
+                    <dt>授权密码</dt>
+                    <dd>
+                        <span>********</span>
+                    </dd>
+                </dl>
+            </div>
+    </div>
+
+    <form class="form-horizontal" role="form" action="" method="POST">
+        <div class="form-group"></div>
+        <div class="clearfix form-actions">
+            <div class="col-md-offset-3 col-md-9">
+                <a type="button" class="btn btn-primary" href="{% url 'proxy_open_config' %}?open=1">修改</a>
+            </div>
+        </div>
+    </form>
+{% endif %}

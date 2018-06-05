@@ -1,0 +1,80 @@
+
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "功能开关" %} {% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "审核管理" %}</a> </li>
+    <li class="active">{% trans "功能开关" %}</li>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="page-header">
+        <h1>
+            {% trans "审核管理" %}
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                {% trans "功能开关" %}
+            </small>
+        </h1>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+
+                    <li>
+                        <a href="{% url 'review_list' %}"><i class="green ace-icon fa fa-home bigger-120"></i>{% trans "审核流程" %}</a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'reviewrule_list' %}">{% trans "审核规则" %}</a>
+                    </li>
+
+                    <li class="active">
+                        <a href="#">{% trans "功能开关" %}</a>
+                    </li>
+
+                </ul>
+
+                <div class="tab-content">
+
+                    <div class="tab-pane fade in active">
+                        {% include 'review/include/set.html' %}
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css_block %}
+{% endblock %}
+
+{% block my_jsblock %}
+    <script>
+
+        $(function () {
+
+            // 防止重复提交
+            saveButtonRemove();
+            $("#id_save_button").click(function(){
+                saveButtonAdd();
+                $("#id_Form").submit();
+            });
+
+        });
+
+        function saveButtonAdd(){$("#id_save_button").attr("disabled", "disabled").addClass('disabled');}
+        function saveButtonRemove(){$("#id_save_button").removeAttr("disabled").removeClass('disabled');}
+
+    </script>
+
+{% endblock %}

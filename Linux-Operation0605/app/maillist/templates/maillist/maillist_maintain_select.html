@@ -1,0 +1,170 @@
+{% load i18n %}
+{% load static %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 class="modal-title" id="myModalLabel" style="font-weight: 600">选择账号进行添加</h4>
+</div>
+<form action="" method="post" role="form" class="">
+    {% csrf_token %}
+    <div class="modal-body">
+        <div class="widget-body no-padding no-margin" style="border-color: #fff!important;">
+            <div class="form-horizontal">
+                <fieldset>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+
+                            <div class="dataTables_length" style="border-bottom: 1px solid #e0e0e0;background-color: #EFF3F8;padding: 6px 0px 0px 0px;">
+                                <label>
+                                    <button type="button" class="btn btn-link btn-sm no-padding-left" onclick="fnGetAll();">{% trans "全选" %}</button>/
+                                    <button type="button" class="btn btn-link btn-sm" onclick="fnGetReverse();">{% trans "取消" %}</button>
+                                </label>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="dynamic-table"  class="table table-striped table-bordered table-hover table-center" role="grid" >
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>序号</th>
+                                        <th>邮箱地址</th>
+                                        <th>昵称</th>
+                                        <th>部门</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="Javascript: ChooseSlected();">{% trans "确定选中的地址" %}</button>
+        <button id="modal_close" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+    </div>
+</form>
+<!--[if !IE]> -->
+<script src="{% static 'components/jquery/dist/jquery.js' %}"></script>
+
+<!-- <![endif]-->
+<!--[if IE]>
+    <script src="{% static 'components/jquery.1x/dist/jquery.js' %}"></script>
+    <![endif]-->
+<script src="{% static 'components/bootstrap/dist/js/bootstrap.js' %}"></script>
+<script src="{% static 'components/datatables/media/js/jquery.dataTables.js' %}"></script>
+<script src="{% static 'components/_mod/datatables/jquery.dataTables.bootstrap.js' %}"></script>
+<script src="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.js' %}"></script>
+<script>
+
+    var ajax_url = "{% url 'maillist_maintain_select_ajax' %}" + window.location.search;
+    $(function () {
+        ip_table =
+            $('#dynamic-table').dataTable({
+                "columnDefs": [ { "targets": [ 0 ], "visible": false, "searchable": false }],
+                "processing": true,
+                "serverSide": true,
+                "bAutoWidth": false,
+                "ajax": ajax_url,
+                "aaSorting": [],
+                "drawCallback": function( settings ) {
+                    $('#dynamic-table tr').click(function () {
+                        if ($(this).hasClass('selected'))
+                            $(this).removeClass('selected');
+                        else
+                            $(this).addClass('selected');
+                    });
+                },
+                select: { style : 'multi' },
+                "iDisplayLength": 10,
+                "lengthMenu": [10, 15, 20, 50, 100, 200],
+                "aaSorting": [[1, "desc"]],
+                "oLanguage": {
+                    "sLengthMenu": "{% blocktrans %}显示 _MENU_ 每页{% endblocktrans %}",
+                    "sZeroRecords": "{% blocktrans %}对不起! 信息筛选结果为空!{% endblocktrans %}",
+                    "sInfo": "{% blocktrans %}从 _START_ 到 _END_ 总计: _TOTAL_ 条记录{% endblocktrans %}",
+                    "sInfoEmpty": "{% blocktrans %}总计: 0 条记录{% endblocktrans %}",
+                    "sInfoFiltered": "{% blocktrans %}(从 _MAX_ 条记录筛选出){% endblocktrans %}",
+                    "sSearch": "{% blocktrans %}搜索部门或者邮箱: {% endblocktrans %}",
+                    "oPaginate": {
+                        "sFirst": " {% blocktrans %}第一页{% endblocktrans %} ",
+                        "sPrevious": " {% blocktrans %}上一页{% endblocktrans %} ",
+                        "sNext": " {% blocktrans %}下一页{% endblocktrans %} ",
+                        "sLast": " {% blocktrans %}最后一页{% endblocktrans %} "
+                    }
+                },
+            });
+    });
+
+    $.fn.dataTableExt.oApi.fnGetFilteredNodes = function ( oSettings )
+    {
+        var anRows = [];
+        //var length = oSettings._iDisplayLength > 0 ? oSettings._iDisplayLength: oSettings.aiDisplay.length;
+        var length = oSettings.aiDisplay.length;
+        for ( var i=0, iLen=length ; i<iLen ; i++ )
+        {
+            var nRow = oSettings.aoData[ oSettings.aiDisplay[i] ].nTr;
+            anRows.push( nRow );
+        }
+        return anRows;
+    };
+
+    function fnGetAll() {
+        var aTrs = ip_table.fnGetFilteredNodes();
+        for ( var i=0 ; i<aTrs.length ; i++ ) {
+            if ( !$(aTrs[i]).hasClass('selected') )
+                $(aTrs[i]).addClass('selected');
+        }
+    }
+
+    function fnGetReverse() {
+        var aTrs = ip_table.fnGetFilteredNodes();
+        for (var i=0 ; i<aTrs.length ; i++ ) {
+            if ( $(aTrs[i]).hasClass('selected') )
+            {
+                $(aTrs[i]).removeClass('selected');
+            }
+        }
+    }
+
+    function fnGetSelected() {
+        var aReturn = new Array();
+        var aTrs = ip_table.fnGetFilteredNodes();
+        for ( var i=0 ; i<aTrs.length ; i++ ) {
+            if ( $(aTrs[i]).hasClass('selected') )
+            {
+                var aData = ip_table.fnGetData( aTrs[i]);
+                var iId = aData[0];
+                aReturn.push( iId );
+            }
+        }
+        return aReturn;
+    }
+
+    function fnGetSelected2() {
+        var aReturn = new Array();
+        var aTrs = ip_table.fnGetFilteredNodes();
+        for ( var i=0 ; i<aTrs.length ; i++ ) {
+            if ( $(aTrs[i]).hasClass('selected') )
+            {
+                var aData = ip_table.fnGetData( aTrs[i]);
+                var iId = aData[2];
+                aReturn.push( iId );
+            }
+        }
+        return aReturn;
+    }
+
+    function ChooseSlected() {
+        var id_array = fnGetSelected2();
+        var arryStr = id_array.join("\n");
+        var addresses = $("#id_addresses").val();
+        addresses = addresses + '\n' + arryStr
+        $("#id_addresses").val(addresses);
+        $("#modal_close").click();
+    }
+
+</script>

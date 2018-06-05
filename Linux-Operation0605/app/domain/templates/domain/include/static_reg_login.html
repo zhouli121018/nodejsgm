@@ -1,0 +1,207 @@
+<div class="tabs2">
+    <div class="tab-pane fade in active">
+        <form class="form-horizontal reg_login_form" role="form" name="form_select" action="" method="POST">
+            {% csrf_token %}
+        <div id="tabs_reg_login">
+            <div class="table-header" style="cursor:pointer;">
+                用户注册
+            </div>
+            <table id="email-basic-table" class="table  table-bordered table-hover table-striped">
+                <tbody>
+                <tr>
+                    <td class="text-right" style="width:300px;">
+                        用户申请邮箱功能：
+                    </td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_user_reg" value="1" {% if form.sw_user_reg.value == '1' %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <label class="inline" >
+                                <small class="muted smaller-90">管理员审核开通:</small>
+                                <input name="sw_reg_ratify" value="1" {% if form.sw_reg_ratify.value == '1' %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl middle"></span>
+                            </label>
+                        </div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right" >管理员登陆链接显示在邮件系统登陆页：</td>
+                    <td>
+                        <label class="inline" >
+                            <input name="sw_link_admin" value="1" {% if form.sw_link_admin.value == '1' %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="text-right">新用户欢迎信功能：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_welcome_letter" value="1" {% if form.sw_welcome_letter.value == '1' %} checked {% endif %} type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                                <button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#wlcmletter">设置欢迎信内容</button>
+
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">用户注册协议：</td>
+                    <td class="row">
+                        <div class="col-sm-4 no-padding">
+                            <label class="inline" >
+                                <input name="sw_welcome_letter" value="1" {% if form.sw_welcome_letter.value == '1' %} checked {% endif %}  type="checkbox" class="ace ace-switch ace-switch-5 open">
+                                <span class="lbl"></span>
+                            </label>
+                        </div>
+                        <div class="col-sm-8 no-padding">
+                            <button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target="#reg_content">用户注册协议</button>
+                        </div>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class=" ">
+        <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+        <input type="hidden" value="setting" name="action" id="setting" />
+        </div>
+        <div class="center" style="background:#fafafa;">
+            <button class="btn btn-primary submit_btn" type="button">确定</button>
+            <button class="btn btn-warning" type="reset">重置</button>
+        </div>
+    </form>
+    </div>
+</div>
+
+
+<div class="modal fade" id="wlcmletter" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">新用户欢迎信设置</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal welcome_form" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">邮件主题：</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="subject" class="form-control" placeholder="邮件主题" value="{{ form_welcome.subject }}" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">邮件内容：</label>
+                        <div class="col-sm-10">
+                            <div class="wysiwyg-editor" name="content" id="editor1" style="width:100%;box-sizing: border-box;"> {{ form_welcome.content }} </div>
+                        </div>
+                    </div>
+                    <div class=" ">
+                    <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+                    <input type="hidden" value="{{ domain.domain }}" name="domain" id="domain" />
+                    <input type="hidden" value="welcome" name="action" id="welcome" />
+                    </div>
+                    <div class="modal-footer center">
+                        <button type="button" class="btn btn-success submit_welcome_btn">提交</button>
+                        <button type="button"  class="btn btn-warning">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reg_content" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">用户注册协议</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal agreement_form">
+                    {% csrf_token %}
+                     <div class="wysiwyg-editor" name="cf_agreement" id="reg_content_editor" style="width:100%;box-sizing: border-box;"> {{ form_agree.cf_agreement.value }} </div>
+                    <div class=" ">
+                    <input type="hidden" value="{{ domain.id }}" name="domain_id" id="domain_id" />
+                    <input type="hidden" value="{{ domain.domain }}" name="domain" id="domain" />
+                    <input type="hidden" value="agreement" name="action" id="agreement" />
+                    </div>
+                    <div class="modal-footer center">
+                        <button type="button" class="btn btn-success submit_agreement_btn">提交</button>
+                        <button type="button"  class="btn btn-warning">重置</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        var editor1_content = htmlDecodeByRegExp("{{form_welcome.content}}");
+        var reg_content_editor_content = htmlDecodeByRegExp("{{ form_agree.cf_agreement.value }}");
+        $('#editor1').html(editor1_content);
+        $('#reg_content_editor').html(reg_content_editor_content);
+        initEditor('#editor1');
+        initEditor('#reg_content_editor');
+    })
+
+    $('.submit_btn').click(function(){
+        var str = $(".reg_login_form").serialize();
+        $.ajax({
+            url:"{% url 'domain_reg_login' %}",
+            type:"POST",
+            data:str,
+            success:function(data){
+                $('#domain_reg_login').html('<div>保存中...</div>');
+                setTimeout(function(){
+                    $('#domain_reg_login').html(data);
+                },100)
+                //console.log(data);
+            }
+        })
+    })
+
+    $('.submit_welcome_btn').click(function(){
+        var str = $(".welcome_form").serialize();
+        var content = $("#editor1").html();
+        //console.log(str);
+        $.ajax({
+            url:"{% url 'domain_reg_login' %}",
+            type:"POST",
+            data:str+'&content='+content,
+            success:function(data){
+                $('#wlcmletter').modal('hide');
+            }
+        })
+    })
+
+    $('.submit_agreement_btn').click(function(){
+        var str = $(".agreement_form").serialize();
+        var cf_agreement = $("#reg_content_editor").html();
+        //console.log(str);
+        $.ajax({
+            url:"{% url 'domain_reg_login' %}",
+            type:"POST",
+            data:str+'&action=agreement&cf_agreement='+cf_agreement,
+            success:function(data){
+                $('#reg_content').modal('hide');
+            }
+        })
+    })
+
+</script>
+

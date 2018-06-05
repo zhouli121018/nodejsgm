@@ -1,0 +1,142 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "KKServer推送配置" %}{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'assets/css/jquery-ui.min.css' %}" />
+<style>
+    table tr td:nth-child(1),table tr td:nth-child(3){
+        text-align: right;
+    }
+    table tr td:nth-child(1) label,table tr td:nth-child(3) label{
+        text-align: right;
+        font-weight:bold;
+    }
+</style>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="{% url 'custom_kkserver' %}">{% trans "KKServer推送配置" %}</a> </li>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>{% trans "KKServer推送配置" %}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form-horizontal" role="form" name="form_select" action="" method="POST">
+                {% csrf_token %}
+
+                <table class="table table-bordered table-striped" >
+                    <tr>
+                        <td class="text-right"><label class="control-label no-padding-right" for="id_server" id="id_server" > 服务器地址 </label></td>
+                        <td class="row">
+                            <div class="col-sm-4">
+                                <input type="text" name="server" id="id_server"
+                                       value="{{ form.server.value }}" class=" form-control"/>
+                                {% if form.server.error %}
+                                <div style="clear: both"><p class="errornote txt-color-red">{{ form.server.error }}</p></div>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-8">
+                                <div style="clear: both">
+                                    <span class="middle text-success "><strong style="color: red">注：</strong> 输入"http://{kkserver-ip}:8001/serverj/push/pushServiceUser.ajax"的完整地址 </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><label class="control-label no-padding-right" for="id_corp" id="id_corp" > corp参数 </label></td>
+                        <td class="row">
+                            <div class="col-sm-4">
+                                <input type="text" name="corp" id="id_corp"
+                                       value="{{ form.corp.value }}" class=" form-control"/>
+                                {% if form.corp.error %}
+                                <div style="clear: both"><p class="errornote txt-color-red">{{ form.corp.error }}</p></div>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><label class="control-label no-padding-right" for="id_service" id="id_service" > service参数 </label></td>
+                        <td class="row">
+                            <div class="col-sm-4">
+                                <input type="text" name="service" id="id_service"
+                                       value="{{ form.service.value }}" class=" form-control"/>
+                                {% if form.service.error %}
+                                <div style="clear: both"><p class="errornote txt-color-red">{{ form.service.error }}</p></div>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><label class="control-label no-padding-right" for="id_loginurl" id="id_loginurl" > 邮件查看链接 </label></td>
+                        <td class="row">
+                            <div class="col-sm-4">
+                                <input type="text" name="loginurl" id="id_loginurl"
+                                       value="{{ form.loginurl.value }}" class=" form-control"/>
+                                {% if form.loginurl.error %}
+                                <div style="clear: both"><p class="errornote txt-color-red">{{ form.loginurl.error }}</p></div>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-8">
+                                <div style="clear: both">
+                                    <span class="middle text-success "><strong style="color: red">注：</strong> 请输入一个格式为"http://example.com"的域名或IP地址，以便用户能通过该地址登录邮箱并访问到具体邮件。 </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right"><label class="control-label no-padding-right" for="id_open" id="id_open" > 功能开关 </label></td>
+                        <td class="row">
+                            <div class="col-sm-4">
+                                <label class="radio radio-inline padding-top-0 margin-top-0 form-inline">
+                                    <label>
+                                        <input type="radio" name="open" value= '1' {% if form.open.value == '1'  %} checked="" {% endif %}><span>开启</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="open" value= '-1' {% if form.open.value != '1'  %} checked="" {% endif %}><span>关闭</span>
+                                    </label>
+                                </label>
+                                    {% if form.open.error %}
+                                    <div style="clear: both"><p class="errornote txt-color-red">{{ form.open.error }}</p></div>
+                                    {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="clearfix form-actions">
+                    <div class=" text-center">
+                        <button class="btn btn-info" type="submit">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            保存
+                        </button>
+                        <button class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            重置
+                        </button>
+
+                    </div>
+                </div>
+            </form>
+
+        </div><!-- /.span -->
+    </div><!-- /.row -->
+{% endblock %}
+
+{% block my_jsblock %}
+
+
+{% endblock %}
+
+

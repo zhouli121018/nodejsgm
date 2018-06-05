@@ -1,0 +1,38 @@
+{% load perm_tags %}
+{% for p in mypermissions %}
+    {% if p.per in perms %}
+        <li class="" id="nav_{{ p.name }}">
+            {% if p.url %}
+                <a href="{{ p.url }}" >
+                    <i class="menu-icon fa {{ class_list|get_index:forloop.counter0 }} fa-fw"></i>
+                    <span class="menu-text"> {{ p.nav_name }} </span>
+                </a>
+            {% else %}
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon fa {{ class_list|get_index:forloop.counter0 }} fa-fw"></i>
+                    <span class="menu-text"> {{ p.nav_name }} </span>
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+            {% endif %}
+            <b class="arrow"></b>
+            <ul class="submenu">
+                {% for p_child in p.nav_children|permission_order_by %}
+                    {% if p_child.per in perms %}
+                        <li class="">
+                            <a href="{{ p_child.url }}">{{ p_child.nav_name }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
+    <script>
+        $(function(){
+            var path = window.location.pathname;
+            $('#sidebar').find('[href="'+path+'"]').parent().first().addClass('active');
+            if (path.indexOf('/operation/{{ p.name }}/')==0){
+                $('#nav_{{ p.name }}').addClass('active open');
+            };
+        });
+    </script>
+{% endfor %}

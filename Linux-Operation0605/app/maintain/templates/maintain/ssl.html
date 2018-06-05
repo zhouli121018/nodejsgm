@@ -1,0 +1,190 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %} {% trans "SSL加密" %} {% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "系统维护" %}</a> </li>
+    <li class="active">{% trans "SSL加密" %}</li>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row">
+        <div class="space-12"></div>
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1 style="font-weight: bold;">{% trans "SSL加密设置" %}</h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- SSL加密功能开关 -->
+    {% include 'maintain/include/sslen.html' %}
+
+    <!-- 步骤1：设置私钥 -->
+    {% include 'maintain/include/sslkey.html' %}
+
+    <!-- 步骤2：生成证书签名请求 -->
+    {% include 'maintain/include/sslsig.html' %}
+
+    <!-- 步骤3：设置证书 -->
+    {% include 'maintain/include/sslcert.html' %}
+
+
+    <form id="id_mainform" action="" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="name" id="name" />
+        <input type="hidden" name="status" id="status" />
+    </form>
+
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.css' %}" />
+    <link href="{% static 'components/datatables/media/css/dataTables.bootstrap.css' %}">
+    <style>
+        .sig-span-width{width: 80px;}
+        .sig-p-margin{margin-bottom: 0; margin-left: 80px;}
+        .sig-input-width{width: 250px;}
+        .sig-div-bottom{margin-bottom: 7px;}
+        .margin-left-7{margin-left: 7px;}
+
+        .tb_clear {
+            border: 0;
+            padding: 0;
+        }
+        .tb_clear tr {
+            height: 2.4em;
+        }
+        .tb_clear td {
+            background: #FFFFFF;
+            border-top: 1px solid #CFCFCF;
+            padding: 0 5px;
+        }
+        .tb_clear th {
+
+            background: #FFFFFF;
+            border-top: 1px solid #CFCFCF;
+            /* border-right: 1px solid #CFCFCF; */
+            color: #003663;
+            font-weight: normal;
+            padding: 0 5px;
+            text-align: right;
+        }
+        .c_red {  color: red;  }
+        div.page-header{
+            border-bottom:none;
+        }
+        .table .text-right{
+            white-space: nowrap;
+        }
+        .no-left-b{
+            border-right:1px solid #ddd;
+        }
+        .two-border{
+            border-left:1px solid #ddd;
+            border-right:1px solid #ddd;
+        }
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'components/datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'components/_mod/datatables/jquery.dataTables.bootstrap.js' %}"></script>
+    <script src="{% static 'components/_mod/jquery-ui.custom/jquery-ui.custom.js' %}"></script>
+
+    <script>
+
+        function sslPrivatekey(status){
+            if ( status == "import" ){
+                // 导入私钥
+                $("#id_ssl_privatekey_import").removeClass("display-none");
+            } else if ( status == "import-cancel" ){
+                $("#id_ssl_privatekey_import").addClass("display-none");
+            } else if ( status == "export" ){
+                // 导出私钥
+                $("#id_ssl_privatekey_export").removeClass("display-none");
+            } else if ( status == "export-cancel" ){
+                $("#id_ssl_privatekey_export").addClass("display-none");
+            } else {
+                $('#status').val(status);
+                $('#id_mainform').submit();
+            }
+
+            /*
+             else if ( status == "generate" ){
+             // 生成私钥
+             $('#status').val(status);
+             $('#id_mainform').submit();
+             return;
+             } else if ( status == "clear" ){
+             // 清除私钥
+             $('#status').val(status);
+             $('#id_mainform').submit();
+             return;
+             } else if ( status == "export-signature" ){
+             // 导出签名请求
+             $('#status').val(status);
+             $('#id_mainform').submit();
+             return;
+             } else if ( status == "clear-signature" ){
+             // 清除签名请求
+             $('#status').val(status);
+             $('#id_mainform').submit();
+             return;
+             } else if ( status == "cert-export" ){
+             // 导出证书
+             $('#status').val(status);
+             $('#id_mainform').submit();
+             return;
+             } else if ( status == "cert-clear" ){
+             // 清除证书
+             $('#status').val(status);
+             $('#id_mainform').submit();
+             return;
+             }
+             */
+        }
+
+        function sslkeySubmit(status){
+            if ( status == "import" ){
+                // 导入私钥提交
+                $('#sslkey_status').val(status);
+                $('#id_sslkeyFrom').submit();
+                return;
+            } else if ( status == "export" ){
+                // 导出私钥提交
+                $('#sslkey_status').val(status);
+                $('#id_sslkeyFrom').submit();
+                return;
+            }
+        }
+
+        function signatureSubmit(){
+            var form = document.getElementById('id_sigForm');
+            //参数检测
+            if (form.sig_domain.value == '') {
+                alert('请填写“域名”！');
+                return false;
+            }
+            if (form.sig_organization.value == '') {
+                alert('请填写“单位/组织”！');
+                return false;
+            }
+            if (form.sig_province.value == '') {
+                alert('请填写“省/市/自治区”！');
+                return false;
+            }
+            if (form.sig_locale.value == '') {
+                alert('请填写“所在地”！');
+                return false;
+            }
+            form.submit();
+            return true;
+        }
+
+    </script>
+
+{% endblock %}

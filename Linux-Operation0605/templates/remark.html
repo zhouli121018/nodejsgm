@@ -1,0 +1,31 @@
+{% load static %}
+
+<div class="hr hr-double hr-dotted hr18"></div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <form role="form" action="" method="post">
+            {% csrf_token %}
+            <div class="">
+                <div id="id_base_site_remark_label_div" class="col-sm-10">
+                    <div style="font-weight: normal; display: inline-block; white-space: pre-wrap; word-wrap: break-word;" id="id_base_site_remark_label"></div>
+                </div>
+                <div id="id_base_site_remark_div" class="col-sm-10">
+                    <textarea style="display: none;" class=" form-control" cols="40" id="id_base_site_remark" name=" " rows="10"></textarea>
+                </div>
+
+                {% if request.user.enable_remark %}
+                <div class="col-sm-2">
+                    <input type="button" class="btn btn-primary" value="编辑" onclick="edit_remark_base()" id="id_base_site_remark_button_edit">
+                    <input type="button" class="btn btn-primary" value="保存" onclick="save_remark_base()" id="id_base_site_remark_button_save">
+                </div>
+                {% endif %}
+
+            </div>
+        </form>
+
+    </div>
+</div>
+
+

@@ -1,0 +1,1290 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue"><span class="red">内容过滤器</span>
+
+    </h3>
+
+    <div style="min-height:200px;">
+        <!--从“运维后台-系统功能设置-内容过滤器”迁移至此-->
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-sm-2">规则名称：</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+            <div class="hr"></div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">条件：</label>
+                <div class="col-sm-8">
+                    <div id="faq-tab-3" class="tab-pane fade active in">
+                        <h4 class="blue">
+                            <i class="green ace-icon fa fa-user bigger-110"></i>
+                            条件
+                        </h4>
+
+                        <div class="space-8"></div>
+                        <div >
+                                <span>条件间关系：</span>
+                                <div class="radio inline">
+                                    <label>
+                                        <input name="form-field-radio-p" type="radio" checked class="ace">
+                                        <span class="lbl"> 满足所有条件</span>
+                                    </label>
+                                </div>
+                                <div class="radio inline">
+                                    <label>
+                                        <input name="form-field-radio-p" type="radio" class="ace">
+                                        <span class="lbl middle"> 满足一条即可</span>
+                                    </label>
+                                </div>
+                            <button type="button" data_count="1" class="btn btn-sm btn-success pull-right add_condition"><i class="glyphicon glyphicon-plus"></i>新增条件</button>
+                        </div>
+                        <div class="hr"></div>
+                        <div id="faq-list-3" class="panel-group accordion-style1 accordion-style2 condition_box">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+
+                                    <a href="#faq-1" data-toggle="collapse" class="accordion-toggle">
+                                        <i class="smaller-80 ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down align-top" data-icon-show="ace-icon fa fa-chevron-right"></i>&nbsp;
+                                        <b>条件1</b>
+                                    </a>
+                                </div>
+
+                                <div class="panel-collapse collapse in" id="faq-1">
+                                    <div class="panel-body">
+                                        <div >
+                                            <span>子条件间关系：</span>
+                                            <div class="radio inline">
+                                                <label>
+                                                    <input name="form-field-radio" type="radio" checked class="ace">
+                                                    <span class="lbl"> 满足所有</span>
+                                                </label>
+                                            </div>
+                                            <div class="radio inline">
+                                                <label>
+                                                    <input name="form-field-radio" type="radio" class="ace">
+                                                    <span class="lbl middle"> 满足任意</span>
+                                                </label>
+                                            </div>
+                                            <button type="button" class="btn btn-xs btn-info pull-right add_sub_condition" data_count="1"><i class="glyphicon glyphicon-plus"></i>新增子条件</button>
+                                        </div>
+                                        <ul>
+                                            <li class="condition_item">
+                                                <div class="hr"></div>
+                                                <div class="row">
+                                                    <div class="col-sm-2 control-label">
+                                                        子条件1：
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <div class="row">
+                                                            <div class="col-sm-4">
+                                                                <select class="select2 form-control"  name="option_suboption0--"  style="height: 34px;">
+
+                                                                    <option value="all_mail" selected="">所有邮件</option>
+                                                                    <option value="has_attach">有附件</option>
+                                                                    <option value="no_attach">没有附件</option>
+                                                                    <option value="attach_name">附件名 </option>
+                                                                    <option value="sender">发信人</option>
+
+                                                                    <option value="cc">抄送人</option>
+
+                                                                    <option value="recipient">收信人</option>
+
+                                                                    <option value="subject">主题</option>
+
+                                                                    <option value="body">邮件内容</option>
+                                                                    <option value="mail_header">邮件头Received </option>
+
+                                                                    <option value="sender_dept">发信人部门</option>
+
+                                                                    <option value="cc_dept">抄送人部门</option>
+
+                                                                    <option value="rcpt_dept">收信人部门</option>
+
+                                                                    <option value="mail_size">邮件大小</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-8 no-padding input_some">
+                                                                <div class="col-sm-6">
+                                                                    <select class="form-control" name="option_action_disabled0--"  style="height: 34px;">
+                                                                        <option value="">包含</option>
+                                                                        <option value="">不包含</option>
+                                                                        <option value="==">等于</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="text" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-8 no-padding belong_department">
+                                                                <div class="col-sm-6">
+                                                                    <select class="form-control" name="option_action_disabled0--"  style="height: 34px;">
+
+                                                                        <option value="==">属于</option>
+                                                                        <option value="==">不属于</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <select class="select2 form-control" name="option_value_dpt0--"  style="height: 34px;">
+
+                                                                        <option value="1">四合院事业部</option>
+
+                                                                        <option value="2">花木区</option>
+
+                                                                        <option value="3">职能财务中心财务部</option>
+
+                                                                        <option value="4">陆家嘴中央公寓店</option>
+
+                                                                        <option value="5">北九区</option>
+
+                                                                        <option value="6">职能人力资源中心人事部</option>
+
+                                                                        <option value="7">碧云别墅区</option>
+
+                                                                        <option value="8">职能</option>
+
+                                                                        <option value="9">陆家嘴滨江店B组</option>
+
+                                                                        <option value="10">陆家嘴滨江店C组</option>
+
+                                                                        <option value="11">陆家嘴滨江店</option>
+
+                                                                        <option value="12">陆家嘴滨江店A组</option>
+
+                                                                        <option value="13">太阳宫旗舰店E组</option>
+
+                                                                        <option value="14">太阳宫旗舰店D组</option>
+
+                                                                        <option value="15">太阳宫旗舰店F组</option>
+
+                                                                        <option value="16">太阳宫旗舰店A组</option>
+
+                                                                        <option value="17">太阳宫旗舰店</option>
+
+                                                                        <option value="18">太阳宫旗舰店C组</option>
+
+                                                                        <option value="19">太阳宫旗舰店B组</option>
+
+                                                                        <option value="20">西山壹号院店A组</option>
+
+                                                                        <option value="21">西山壹号院店</option>
+
+                                                                        <option value="22">西山壹号院店C组</option>
+
+                                                                        <option value="23">西山壹号院店B组</option>
+
+                                                                        <option value="24">西山壹号院店E组</option>
+
+                                                                        <option value="25">西山壹号院店D组</option>
+
+                                                                        <option value="26">西山壹号院店F组</option>
+
+                                                                        <option value="27">保利东郡店B组</option>
+
+                                                                        <option value="28">南一区</option>
+
+                                                                        <option value="29">保利东郡店C组</option>
+
+                                                                        <option value="30">花木别墅区</option>
+
+                                                                        <option value="31">职能知识管理中心</option>
+
+                                                                        <option value="32">营销部A组</option>
+
+                                                                        <option value="33">营销部B组</option>
+
+                                                                        <option value="34">管家部D组</option>
+
+                                                                        <option value="35">山水文园店</option>
+
+                                                                        <option value="36">管家部B组</option>
+
+                                                                        <option value="37">管家部C组</option>
+
+                                                                        <option value="38">顶级豪宅部</option>
+
+                                                                        <option value="39">管家部A组</option>
+
+                                                                        <option value="40">渠道渠道中心店面拓展部</option>
+
+                                                                        <option value="41">营销部C组</option>
+
+                                                                        <option value="42">营销部D组</option>
+
+                                                                        <option value="43">润泽新店</option>
+
+                                                                        <option value="44">新城国际店A组</option>
+
+                                                                        <option value="45">职能信息科技中心产品部</option>
+
+                                                                        <option value="46">新城国际店B组</option>
+
+                                                                        <option value="47">新城国际店C组</option>
+
+                                                                        <option value="48">仁恒河滨城店A组</option>
+
+                                                                        <option value="49">仁恒河滨城店</option>
+
+                                                                        <option value="50">仁恒河滨城店C组</option>
+
+                                                                        <option value="51">渠道</option>
+
+                                                                        <option value="52">仁恒河滨城店E组</option>
+
+                                                                        <option value="53">仁恒河滨城店D组</option>
+
+                                                                        <option value="54">仁恒河滨城店H组</option>
+
+                                                                        <option value="55">仁恒河滨城店F组</option>
+
+                                                                        <option value="56">仁恒河滨城店G组</option>
+
+                                                                        <option value="57">万国城店</option>
+
+                                                                        <option value="58">万国城店A组</option>
+
+                                                                        <option value="59">万国城店B组</option>
+
+                                                                        <option value="60">万国城店C组</option>
+
+                                                                        <option value="61">万国城店D组</option>
+
+                                                                        <option value="62">紫玉新新店222222</option>
+
+                                                                        <option value="63">职能职能中心总经办</option>
+
+                                                                        <option value="64">管家部</option>
+
+                                                                        <option value="65">西区</option>
+
+                                                                        <option value="66">职能知识管理中心招聘部</option>
+
+                                                                        <option value="67">中央别墅区旗舰店D组</option>
+
+                                                                        <option value="68">中央别墅区旗舰店E组</option>
+
+                                                                        <option value="69">中央别墅区旗舰店F组</option>
+
+                                                                        <option value="70">陆家嘴中区</option>
+
+                                                                        <option value="71">中央别墅区旗舰店A组</option>
+
+                                                                        <option value="72">中央别墅区旗舰店B组</option>
+
+                                                                        <option value="73">中央别墅区旗舰店C组</option>
+
+                                                                        <option value="74">南区</option>
+
+                                                                        <option value="75">职能总裁办中心总裁办</option>
+
+                                                                        <option value="76">运营</option>
+
+                                                                        <option value="77">职能职能中心财务部</option>
+
+                                                                        <option value="78">西五区</option>
+
+                                                                        <option value="79">职能交易中心</option>
+
+                                                                        <option value="80">渠道渠道中心项目部</option>
+
+                                                                        <option value="81">渠道渠道中心项目部A组</option>
+
+                                                                        <option value="82">渠道渠道中心项目部B组</option>
+
+                                                                        <option value="83">渠道渠道中心项目部C组</option>
+
+                                                                        <option value="84">南三区</option>
+
+                                                                        <option value="85">棕榈泉店</option>
+
+                                                                        <option value="86">棕榈泉店A组</option>
+
+                                                                        <option value="87">棕榈泉店B组</option>
+
+                                                                        <option value="88">棕榈泉店C组</option>
+
+                                                                        <option value="89">棕榈泉店D组</option>
+
+                                                                        <option value="90">棕榈泉店E组</option>
+
+                                                                        <option value="91">职能职能中心人事部</option>
+
+                                                                        <option value="92">东区</option>
+
+                                                                        <option value="93">CBD旗舰店</option>
+
+                                                                        <option value="94">运营交易中心交易部</option>
+
+                                                                        <option value="95">职能运营支持中心运营支持部北区</option>
+
+                                                                        <option value="96">职能运营支持中心运营支持部</option>
+
+                                                                        <option value="97">职能运营支持中心运营支持部南区</option>
+
+                                                                        <option value="98">职能运营支持中心运营支持部东区</option>
+
+                                                                        <option value="99">职能运营支持中心运营支持部西区</option>
+
+                                                                        <option value="100">保利东郡店</option>
+
+                                                                        <option value="101">西山别墅区旗舰店A组</option>
+
+                                                                        <option value="102">西山别墅区旗舰店</option>
+
+                                                                        <option value="103">西山别墅区旗舰店C组</option>
+
+                                                                        <option value="104">西山别墅区旗舰店B组</option>
+
+                                                                        <option value="105">西山别墅区旗舰店E组</option>
+
+                                                                        <option value="106">西山别墅区旗舰店D组</option>
+
+                                                                        <option value="107">北四区</option>
+
+                                                                        <option value="108">东七区</option>
+
+                                                                        <option value="109">渠道</option>
+
+                                                                        <option value="110">新城国际店（禁用）</option>
+
+                                                                        <option value="111">新城国际店A组（禁用）</option>
+
+                                                                        <option value="112">新城国际店B组（禁用）</option>
+
+                                                                        <option value="113">新城国际店C组（禁用）</option>
+
+                                                                        <option value="114">新城国际店D组（禁用）</option>
+
+                                                                        <option value="115">东三区</option>
+
+                                                                        <option value="116">东五区</option>
+
+                                                                        <option value="117">星河湾店E组</option>
+
+                                                                        <option value="118">星河湾店B组</option>
+
+                                                                        <option value="119">星河湾店C组</option>
+
+                                                                        <option value="120">星河湾店</option>
+
+                                                                        <option value="121">星河湾店A组</option>
+
+                                                                        <option value="122">朝阳公园旗舰店E组</option>
+
+                                                                        <option value="123">朝阳公园旗舰店D组</option>
+
+                                                                        <option value="124">朝阳公园旗舰店G组</option>
+
+                                                                        <option value="125">朝阳公园旗舰店F组</option>
+
+                                                                        <option value="126">朝阳公园旗舰店A组</option>
+
+                                                                        <option value="127">朝阳公园旗舰店</option>
+
+                                                                        <option value="128">朝阳公园旗舰店C组</option>
+
+                                                                        <option value="129">朝阳公园旗舰店B组</option>
+
+                                                                        <option value="130">朝阳公园旗舰店I组</option>
+
+                                                                        <option value="131">朝阳公园旗舰店H组</option>
+
+                                                                        <option value="132">职能财务中心</option>
+
+                                                                        <option value="133">万柳旗舰店B组</option>
+
+                                                                        <option value="134">渠道渠道中心拓展部</option>
+
+                                                                        <option value="135">唐宁one店A组</option>
+
+                                                                        <option value="136">润泽新店D组</option>
+
+                                                                        <option value="137">新城国际店</option>
+
+                                                                        <option value="138">润泽新店A组</option>
+
+                                                                        <option value="139">润泽新店B组</option>
+
+                                                                        <option value="140">润泽新店C组</option>
+
+                                                                        <option value="141">北二区</option>
+
+                                                                        <option value="142">管家部F组</option>
+
+                                                                        <option value="143">御翠园店E组</option>
+
+                                                                        <option value="144">御翠园店F组</option>
+
+                                                                        <option value="145">御翠园店</option>
+
+                                                                        <option value="146">御翠园店A组</option>
+
+                                                                        <option value="147">御翠园店B组</option>
+
+                                                                        <option value="148">御翠园店C组</option>
+
+                                                                        <option value="149">凤凰城店A组</option>
+
+                                                                        <option value="150">南四区</option>
+
+                                                                        <option value="151">西四区</option>
+
+                                                                        <option value="152">北三区</option>
+
+                                                                        <option value="153">职能信息科技中心研发部</option>
+
+                                                                        <option value="154">联洋区</option>
+
+                                                                        <option value="155">海晟名苑店C组</option>
+
+                                                                        <option value="156">海晟名苑店B组</option>
+
+                                                                        <option value="157">海晟名苑店A组</option>
+
+                                                                        <option value="158">海晟名苑店</option>
+
+                                                                        <option value="159">东六区</option>
+
+                                                                        <option value="160">营销部</option>
+
+                                                                        <option value="161">职能人力资源中心</option>
+
+                                                                        <option value="162">CBD旗舰店A组</option>
+
+                                                                        <option value="163">紫玉新新店E组</option>
+
+                                                                        <option value="164">紫玉新新店D组</option>
+
+                                                                        <option value="165">紫玉新新店C组</option>
+
+                                                                        <option value="166">紫玉新新店B组</option>
+
+                                                                        <option value="167">紫玉新新店A组</option>
+
+                                                                        <option value="168">紫玉新新店</option>
+
+                                                                        <option value="169">职能总裁办中心业务管理部</option>
+
+                                                                        <option value="170">金融街店D组</option>
+
+                                                                        <option value="171">金融街店E组</option>
+
+                                                                        <option value="172">金融街店B组</option>
+
+                                                                        <option value="173">金融街店C组</option>
+
+                                                                        <option value="174">浦东区</option>
+
+                                                                        <option value="175">金融街店A组</option>
+
+                                                                        <option value="176">职能交易中心交易部</option>
+
+                                                                        <option value="177">职能运营支持中心运营支持部顶豪区</option>
+
+                                                                        <option value="178">东四区</option>
+
+                                                                        <option value="179">渠道渠道中心拓展部</option>
+
+                                                                        <option value="180">东五区（原）</option>
+
+                                                                        <option value="181">山水文园店C组</option>
+
+                                                                        <option value="182">运营管理部</option>
+
+                                                                        <option value="183">山水文园店A组</option>
+
+                                                                        <option value="184">管家部E组</option>
+
+                                                                        <option value="185">北区</option>
+
+                                                                        <option value="186">山水文园店D组</option>
+
+                                                                        <option value="187">职能职能中心</option>
+
+                                                                        <option value="188">渠道渠道中心国际部</option>
+
+                                                                        <option value="189">西三区</option>
+
+                                                                        <option value="190">南二区</option>
+
+                                                                        <option value="191">职能运营支持中心</option>
+
+                                                                        <option value="192">陆家嘴二区</option>
+
+                                                                        <option value="193">西六区</option>
+
+                                                                        <option value="194">公园大道店A组</option>
+
+                                                                        <option value="195">公园大道店</option>
+
+                                                                        <option value="196">公园大道店C组</option>
+
+                                                                        <option value="197">公园大道店B组</option>
+
+                                                                        <option value="198">公园大道店E组</option>
+
+                                                                        <option value="199">陆家嘴四区</option>
+
+                                                                        <option value="200">职能知识管理中心客服部</option>
+
+                                                                        <option value="201">远洋万和城店D组</option>
+
+                                                                        <option value="202">远洋万和城店</option>
+
+                                                                        <option value="203">远洋万和城店A组</option>
+
+                                                                        <option value="204">远洋万和城店B组</option>
+
+                                                                        <option value="205">公园大道店D组</option>
+
+                                                                        <option value="206">陆家嘴金融中心店B组</option>
+
+                                                                        <option value="207">陆家嘴金融中心店A组</option>
+
+                                                                        <option value="208">西一区</option>
+
+                                                                        <option value="209">陆家嘴金融中心店E组</option>
+
+                                                                        <option value="210">陆家嘴金融中心店D组</option>
+
+                                                                        <option value="211">新城国际店D组</option>
+
+                                                                        <option value="212">远洋万和城店C组</option>
+
+                                                                        <option value="213">大湖山庄店E组</option>
+
+                                                                        <option value="214">大湖山庄店D组</option>
+
+                                                                        <option value="215">大湖山庄店A组</option>
+
+                                                                        <option value="216">大湖山庄店</option>
+
+                                                                        <option value="217">大湖山庄店C组</option>
+
+                                                                        <option value="218">大湖山庄店B组</option>
+
+                                                                        <option value="219">望京金茂府店B组</option>
+
+                                                                        <option value="220">望京金茂府店C组</option>
+
+                                                                        <option value="221">望京金茂府店</option>
+
+                                                                        <option value="222">望京金茂府店A组</option>
+
+                                                                        <option value="223">望京金茂府店D组</option>
+
+                                                                        <option value="224">东一区</option>
+
+                                                                        <option value="225">顶豪区</option>
+
+                                                                        <option value="226">陆家嘴一区</option>
+
+                                                                        <option value="227">渠道渠道中心项目部</option>
+
+                                                                        <option value="228">仁恒河滨城店B组</option>
+
+                                                                        <option value="229">北八区</option>
+
+                                                                        <option value="230">万柳旗舰店C组</option>
+
+                                                                        <option value="231">保利东郡店A组</option>
+
+                                                                        <option value="232">万柳旗舰店A组</option>
+
+                                                                        <option value="233">万柳旗舰店</option>
+
+                                                                        <option value="234">万柳旗舰店F组</option>
+
+                                                                        <option value="235">万柳旗舰店E组</option>
+
+                                                                        <option value="236">万柳旗舰店D组</option>
+
+                                                                        <option value="237">陆家嘴旗舰店F组</option>
+
+                                                                        <option value="238">远洋万和公馆店D组</option>
+
+                                                                        <option value="239">远洋万和公馆店E组</option>
+
+                                                                        <option value="240">当代Moma店</option>
+
+                                                                        <option value="241">当代Moma店A组</option>
+
+                                                                        <option value="242">远洋万和公馆店</option>
+
+                                                                        <option value="243">远洋万和公馆店A组</option>
+
+                                                                        <option value="244">远洋万和公馆店B组</option>
+
+                                                                        <option value="245">远洋万和公馆店C组</option>
+
+                                                                        <option value="246">碧云店D组</option>
+
+                                                                        <option value="247">碧云店C组</option>
+
+                                                                        <option value="248">碧云店B组</option>
+
+                                                                        <option value="249">碧云店A组</option>
+
+                                                                        <option value="250">碧云店</option>
+
+                                                                        <option value="251">北一区</option>
+
+                                                                        <option value="252">凤凰城店B组</option>
+
+                                                                        <option value="253">凤凰城店C组</option>
+
+                                                                        <option value="254">凤凰城店</option>
+
+                                                                        <option value="255">陆家嘴三区</option>
+
+                                                                        <option value="256">职能信息科技中心产品运营部</option>
+
+                                                                        <option value="257">CBD旗舰店G组</option>
+
+                                                                        <option value="258">CBD旗舰店F组</option>
+
+                                                                        <option value="259">CBD旗舰店E组</option>
+
+                                                                        <option value="260">CBD旗舰店C组</option>
+
+                                                                        <option value="261">CBD旗舰店B组</option>
+
+                                                                        <option value="262">四合院事业部E组</option>
+
+                                                                        <option value="263">四合院事业部H组</option>
+
+                                                                        <option value="264">四合院事业部G组</option>
+
+                                                                        <option value="265">四合院事业部F组</option>
+
+                                                                        <option value="266">四合院事业部E组</option>
+
+                                                                        <option value="267">四合院事业部D组</option>
+
+                                                                        <option value="268">四合院事业部C组</option>
+
+                                                                        <option value="269">四合院事业部B组</option>
+
+                                                                        <option value="270">四合院事业部A组</option>
+
+                                                                        <option value="271">四合院事业部</option>
+
+                                                                        <option value="272">丽兹行集团</option>
+
+                                                                        <option value="273">陆家嘴金融中心店</option>
+
+                                                                        <option value="274">职能知识管理中心能力发展部</option>
+
+                                                                        <option value="275">顶级豪宅部</option>
+
+                                                                        <option value="276">裘马都店A组</option>
+
+                                                                        <option value="277">裘马都店</option>
+
+                                                                        <option value="278">裘马都店C组</option>
+
+                                                                        <option value="279">裘马都店B组</option>
+
+                                                                        <option value="280">北六区</option>
+
+                                                                        <option value="281">职能</option>
+
+                                                                        <option value="282">职能临时岗</option>
+
+                                                                        <option value="283">北京丽兹行房地产投资顾问有限公司</option>
+
+                                                                        <option value="284">集团本部</option>
+
+                                                                        <option value="285">丽都商圈旗舰店F组</option>
+
+                                                                        <option value="286">丽都商圈旗舰店D组</option>
+
+                                                                        <option value="287">丽都商圈旗舰店E组</option>
+
+                                                                        <option value="288">丽都商圈旗舰店B组</option>
+
+                                                                        <option value="289">丽都商圈旗舰店C组</option>
+
+                                                                        <option value="290">丽都商圈旗舰店</option>
+
+                                                                        <option value="291">交易中心</option>
+
+                                                                        <option value="292">运营</option>
+
+                                                                        <option value="293">渠道渠道中心</option>
+
+                                                                        <option value="294">陆家嘴中央公寓店D组</option>
+
+                                                                        <option value="295">陆家嘴中央公寓店A组</option>
+
+                                                                        <option value="296">北五区</option>
+
+                                                                        <option value="297">陆家嘴中央公寓店C组</option>
+
+                                                                        <option value="298">陆家嘴中央公寓店B组</option>
+
+                                                                        <option value="299">紫金长安店B组</option>
+
+                                                                        <option value="300">紫金长安店C组</option>
+
+                                                                        <option value="301">紫金长安店</option>
+
+                                                                        <option value="302">紫金长安店A组</option>
+
+                                                                        <option value="303">西山华府店D组</option>
+
+                                                                        <option value="304">西山华府店E组</option>
+
+                                                                        <option value="305">职能总裁办</option>
+
+                                                                        <option value="306">职能职能中心运营支持部</option>
+
+                                                                        <option value="307">职能职能中心运营支持部浦东区</option>
+
+                                                                        <option value="308">渠道渠道中心策划部</option>
+
+                                                                        <option value="309">广渠路金茂府店A组</option>
+
+                                                                        <option value="310">广渠路金茂府店</option>
+
+                                                                        <option value="311">广渠路金茂府店C组</option>
+
+                                                                        <option value="312">广渠路金茂府店B组</option>
+
+                                                                        <option value="313">广渠路金茂府店E组</option>
+
+                                                                        <option value="314">广渠路金茂府店D组</option>
+
+                                                                        <option value="315">新光天地旗舰店D组</option>
+
+                                                                        <option value="316">新光天地旗舰店E组</option>
+
+                                                                        <option value="317">新光天地旗舰店</option>
+
+                                                                        <option value="318">新光天地旗舰店A组</option>
+
+                                                                        <option value="319">新光天地旗舰店B组</option>
+
+                                                                        <option value="320">新光天地旗舰店C组</option>
+
+                                                                        <option value="321">职能运营支持中心总经办</option>
+
+                                                                        <option value="322">唐宁one店</option>
+
+                                                                        <option value="323">东二区</option>
+
+                                                                        <option value="324">唐宁one店B组</option>
+
+                                                                        <option value="325">唐宁one店C组</option>
+
+                                                                        <option value="326">唐宁one店D组</option>
+
+                                                                        <option value="327">唐宁one店E组</option>
+
+                                                                        <option value="328">陆家嘴旗舰店</option>
+
+                                                                        <option value="329">陆家嘴旗舰店A组</option>
+
+                                                                        <option value="330">陆家嘴旗舰店B组</option>
+
+                                                                        <option value="331">陆家嘴旗舰店C组</option>
+
+                                                                        <option value="332">陆家嘴旗舰店D组</option>
+
+                                                                        <option value="333">陆家嘴旗舰店E组</option>
+
+                                                                        <option value="334">职能职能中心能力发展部</option>
+
+                                                                        <option value="335">山水文园店B组</option>
+
+                                                                        <option value="336">陆家嘴世茂店D组</option>
+
+                                                                        <option value="337">丽都商圈旗舰店A组</option>
+
+                                                                        <option value="338">陆家嘴世茂店</option>
+
+                                                                        <option value="339">陆家嘴世茂店A组</option>
+
+                                                                        <option value="340">陆家嘴世茂店B组</option>
+
+                                                                        <option value="341">陆家嘴世茂店C组</option>
+
+                                                                        <option value="342">金融街店</option>
+
+                                                                        <option value="343">中央别墅区旗舰店</option>
+
+                                                                        <option value="344">运营管理部</option>
+
+                                                                        <option value="345">西山华府店B组</option>
+
+                                                                        <option value="346">西山华府店C组</option>
+
+                                                                        <option value="347">西山华府店</option>
+
+                                                                        <option value="348">西山华府店A组</option>
+
+                                                                        <option value="349">北七区</option>
+
+                                                                        <option value="350">亚奥旗舰店E组</option>
+
+                                                                        <option value="351">亚奥旗舰店D组</option>
+
+                                                                        <option value="352">亚奥旗舰店C组</option>
+
+                                                                        <option value="353">亚奥旗舰店B组</option>
+
+                                                                        <option value="354">亚奥旗舰店A组</option>
+
+                                                                        <option value="355">亚奥旗舰店</option>
+
+                                                                        <option value="356">职能信息科技中心</option>
+
+                                                                        <option value="357">西二区</option>
+
+                                                                        <option value="358">职能职能中心招聘部</option>
+
+                                                                        <option value="359">上海丽兹行房地产经纪有限公司</option>
+
+                                                                        <option value="360">渠道渠道中心</option>
+
+                                                                        <option value="361">南五区</option>
+
+                                                                        <option value="362">星河湾店C组</option>
+
+                                                                        <option value="363">星河湾店B组</option>
+
+                                                                        <option value="364">星河湾店A组</option>
+
+                                                                        <option value="365">星河湾店</option>
+
+                                                                        <option value="366">职能运营支持中心店面支持部</option>
+
+                                                                        <option value="367">财务部</option>
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-8 no-padding content_size">
+                                                                <div class="col-sm-6">
+                                                                    <select class="form-control" name="option_action_disabled0--"  style="height: 34px;">
+
+                                                                        <option value="">大于等于</option>
+                                                                        <option value="==">小于等于</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="input-group">
+                                                                        <input type="number" class="form-control">
+                                                                        <span class="input-group-addon">MB</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--<div class="col-sm-1">-->
+                                                        <!--<button type="button" class="delete_sub_condition btn btn-xs btn-danger">删除</button>-->
+                                                    <!--</div>-->
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hr"></div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">动作：</label>
+                <div class="col-sm-8">
+                    <div id="faq-tab-2" class="tab-pane fade active in">
+                        <h4 class="blue">
+                            <i class="green ace-icon fa fa-user bigger-110"></i>
+                            动作
+                        </h4>
+
+                        <div class="space-8"></div>
+
+                        <div id="faq-list-2" class="action_box panel-group accordion-style1 accordion-style2">
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <a href="#faq-2-3" data-parent="#faq-list-2" data-toggle="collapse" class="accordion-toggle">
+                                        <i class="middle smaller-80 ace-icon fa fa-chevron-down align-top" data-icon-hide="ace-icon fa fa-chevron-down align-top" data-icon-show="ace-icon fa fa-chevron-right"></i>&nbsp;
+                                        动作1
+                                    </a>
+                                </div>
+
+                                <div class="panel-collapse collapse in" id="faq-2-3">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <select class="select2 form-control" name="action_type0" id="action_type0" style="height: 34px;">
+
+                                                    <option value="break" selected="">中断执行规则</option>
+
+                                                    <option value="jump_to">跳过后面N个规则</option>
+
+                                                    <option value="flag">设置旗帜</option>
+
+                                                    <option value="delete">删除邮件</option>
+
+                                                    <option value="sequester">隔离邮件</option>
+
+                                                    <option value="move_to">移动邮件至文件夹</option>
+
+                                                    <option value="copy_to">复制邮件至文件夹</option>
+
+                                                    <option value="forward">转发</option>
+
+                                                    <option value="delete_header">删除邮件头</option>
+
+                                                    <option value="append_header">追加头部</option>
+
+                                                    <option value="append_body">追加邮件内容</option>
+
+                                                    <option value="mail">发送邮件</option>
+
+                                                    <option value="smtptransfer">SMTP转发</option>
+
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-8 hide">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">优先级</span>
+                                                    <input type="number" class="form-control" value="999" placeholder="优先级">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="col-sm-6">
+                                                    <input type="number" class="form-control">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">优先级</span>
+                                                        <input type="number" class="form-control" value="999" placeholder="优先级">
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hr"></div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">优先级：</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" value="999">
+                    <p class="help-block green">优先级越小级别越高</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">规则用于：</label>
+                <div class="col-sm-8">
+                    <div class="radio inline">
+                        <label>
+                            <input name="yongyu" type="radio"  class="ace">
+                            <span class="lbl"> 发送</span>
+                        </label>
+                    </div>
+                    <div class="radio inline">
+                        <label>
+                            <input name="yongyu" checked type="radio" class="ace">
+                            <span class="lbl middle"> 接收</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">状态：</label>
+                <div class="col-sm-8">
+                    <label class="label-inline">
+                        <input type="checkbox" checked class="ace ace-switch ace-switch-5">
+                        <span class="lbl"></span>
+                    </label>
+                </div>
+            </div>
+        </form>
+
+
+
+    </div>
+</div>
+<script>
+    $('#switch-email').hide();
+    $('.select2').css('width','100%').select2();
+    $('body').on('change','.condition_item .col-sm-4 select',function(){
+        $(this).parents('.condition_item').find('.col-sm-8').removeClass('active');
+        if($(this).val()=='sender'||$(this).val()=='cc'||$(this).val()=='attach_name'||$(this).val()=='mail_header'||$(this).val()=='recipient'||$(this).val()=='subject'||$(this).val()=='body'){
+            $(this).parents('.condition_item').find('.input_some').addClass('active');
+        }else if($(this).val()=='sender_dept'||$(this).val()=='cc_dept'||$(this).val()=='rcpt_dept'){
+            $(this).parents('.condition_item').find('.belong_department').addClass('active');
+        }else if($(this).val()=='mail_size'||$(this).val()=='cc_dept'||$(this).val()=='rcpt_dept'){
+            $(this).parents('.condition_item').find('.content_size').addClass('active');
+        }
+    })
+
+    function getCondition(i){
+        var con =  `<div class="panel panel-default">
+                                <div class="panel-heading" style="position:relative;">
+                                    <a href="#faq-${i+1}" data-toggle="collapse" class="accordion-toggle">
+                                        <i class="smaller-80 ace-icon fa fa-chevron-down" data-icon-hide="ace-icon fa fa-chevron-down align-top" data-icon-show="ace-icon fa fa-chevron-right"></i>&nbsp;
+                                        <b>条件${i+1}</b>
+                                    </a>
+                                    <button type="button" class="delete_condition btn btn-sm btn-danger pull-right" style="position:absolute;top:-0;right:0;">删除条件</button>
+                                </div>
+
+                                <div class="panel-collapse collapse in" id="faq-${i+1}">
+                                    <div class="panel-body">
+                                        <div >
+                                            <span>子条件间关系：</span>
+                                            <div class="radio inline">
+                                                <label>
+                                                    <input name="form-field-radio${i+1}" type="radio" checked class="ace">
+                                                    <span class="lbl"> 满足所有</span>
+                                                </label>
+                                            </div>
+                                            <div class="radio inline">
+                                                <label>
+                                                    <input name="form-field-radio${i+1}" type="radio" class="ace">
+                                                    <span class="lbl middle"> 满足任意</span>
+                                                </label>
+                                            </div>
+                                            <button type="button" class="btn btn-xs btn-info pull-right add_sub_condition" data_count="1"><i class="glyphicon glyphicon-plus"></i>新增子条件</button>
+                                        </div>
+                                        <ul>
+                                            <li class="condition_item">
+                                                <div class="hr"></div>
+                                                <div class="row">
+                                                    <div class="col-sm-2 control-label">
+                                                        子条件1：
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <div class="row">
+                                                            <div class="col-sm-4">
+                                                                <select class="chosen-select form-control"  name="option_suboption0--"  style="height: 34px;">
+
+                                                                    <option value="all_mail" selected="">所有邮件</option>
+                                                                    <option value="has_attach">有附件</option>
+                                                                    <option value="no_attach">没有附件</option>
+                                                                    <option value="attach_name">附件名 </option>
+                                                                    <option value="sender">发信人</option>
+
+                                                                    <option value="cc">抄送人</option>
+
+                                                                    <option value="recipient">收信人</option>
+
+                                                                    <option value="subject">主题</option>
+
+                                                                    <option value="body">邮件内容</option>
+                                                                    <option value="mail_header">邮件头Received </option>
+
+                                                                    <option value="sender_dept">发信人部门</option>
+
+                                                                    <option value="cc_dept">抄送人部门</option>
+
+                                                                    <option value="rcpt_dept">收信人部门</option>
+
+                                                                    <option value="mail_size">邮件大小</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-8 no-padding input_some">
+                                                                <div class="col-sm-6">
+                                                                    <select class="form-control" name="option_action_disabled0--"  style="height: 34px;">
+                                                                        <option value="">包含</option>
+                                                                        <option value="">不包含</option>
+                                                                        <option value="==">等于</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="text" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-8 no-padding belong_department">
+                                                                <div class="col-sm-6">
+                                                                    <select class="form-control" name="option_action_disabled0--"  style="height: 34px;">
+
+                                                                        <option value="==">属于</option>
+                                                                        <option value="==">不属于</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <select class="chosen-select form-control" name="option_value_dpt0--"  style="height: 34px;">
+
+                                                                        <option value="2">花木区</option>
+
+                                                                        <option value="3">职能财务中心财务部</option>
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-8 no-padding content_size">
+                                                                <div class="col-sm-6">
+                                                                    <select class="form-control" name="option_action_disabled0--"  style="height: 34px;">
+
+                                                                        <option value="">大于等于</option>
+                                                                        <option value="==">小于等于</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="input-group">
+                                                                        <input type="number" class="form-control">
+                                                                        <span class="input-group-addon">MB</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>`
+        return con;
+    }
+    function getHtml(i){
+        var html = `<li class="condition_item">
+                                                <div class="hr"></div>
+                                                <div class="row">
+                                                    <div class="col-sm-2 control-label">
+                                                        子条件${i+1}：
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <div class="row">
+                                                            <div class="col-sm-4">
+                                                                <select class="chosen-select${i} form-control"  name="option_suboption0--"  style="height: 34px;">
+
+                                                                    <option value="all_mail" selected="">所有邮件</option>
+                                                                    <option value="has_attach">有附件</option>
+                                                                    <option value="no_attach">没有附件</option>
+                                                                    <option value="attach_name">附件名 </option>
+                                                                    <option value="sender">发信人</option>
+
+                                                                    <option value="cc">抄送人</option>
+
+                                                                    <option value="recipient">收信人</option>
+
+                                                                    <option value="subject">主题</option>
+
+                                                                    <option value="body">邮件内容</option>
+                                                                    <option value="mail_header">邮件头Received </option>
+
+                                                                    <option value="sender_dept">发信人部门</option>
+
+                                                                    <option value="cc_dept">抄送人部门</option>
+
+                                                                    <option value="rcpt_dept">收信人部门</option>
+
+                                                                    <option value="mail_size">邮件大小</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-8 no-padding input_some">
+                                                                <div class="col-sm-6">
+                                                                    <select class="form-control" name="option_action_disabled0--"  style="height: 34px;">
+                                                                        <option value="">包含</option>
+                                                                        <option value="">不包含</option>
+                                                                        <option value="==">等于</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="text" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-8 no-padding belong_department">
+                                                                <div class="col-sm-6">
+                                                                    <select class="form-control" name="option_action_disabled0--"  style="height: 34px;">
+
+                                                                        <option value="==">属于</option>
+                                                                        <option value="==">不属于</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <select class="chosen-select${i} form-control" name="option_value_dpt0--"  style="height: 34px;">
+
+                                                                        <option value="1">四合院事业部</option>
+
+                                                                        <option value="363">星河湾店B组</option>
+
+                                                                        <option value="364">星河湾店A组</option>
+
+                                                                        <option value="365">星河湾店</option>
+
+                                                                        <option value="366">职能运营支持中心店面支持部</option>
+
+                                                                        <option value="367">财务部</option>
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-8 no-padding content_size">
+                                                                <div class="col-sm-6">
+                                                                    <select class="form-control" name="option_action_disabled0--"  style="height: 34px;">
+
+                                                                        <option value="">大于等于</option>
+                                                                        <option value="==">小于等于</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="input-group">
+                                                                        <input type="number" class="form-control">
+                                                                        <span class="input-group-addon">MB</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                        <button type="button" class="delete_sub_condition btn btn-xs btn-warning" title="删除此子条件"><i class="glyphicon glyphicon-trash"></i></button>
+                                                    </div>
+                                                </div>
+                                            </li>`
+        return html;
+    }
+
+    $('body').on('click','.add_sub_condition',function(){
+        var index = parseInt($(this).attr('data_count'));
+        $(this).parents('.panel-body').find('ul').append(getHtml(index));
+        $('.chosen-select'+index).css('width','100%').select2();
+        index++;
+        $(this).attr('data_count',index);
+    })
+    $('.add_condition').click(function(){
+        var index = parseInt($(this).attr('data_count'));
+        $(".condition_box").append(getCondition(index));
+        $('.chosen-select').css('width','100%').select2();
+        index++;
+        $(this).attr('data_count',index);
+    })
+    $('body').on('click','.delete_sub_condition',function(){
+        var index = $(this).parents('.panel.panel-default').find('.add_sub_condition').attr('data_count');
+        index--;
+        var $body = $(this).parents('.panel-body')
+        $(this).parents('.panel.panel-default').find('.add_sub_condition').attr('data_count',index);
+        $(this).parents('.condition_item').remove();
+        $body.find('.condition_item .col-sm-2.control-label').each(function(i,dom){
+            $(dom).html('子条件'+(i+1)+'：');
+        })
+    })
+    $('body').on('click','.delete_condition',function(){
+        var index = $('.add_condition').attr('data_count');
+        index--;
+        $('.add_condition').attr('data_count',index);
+        $(this).parents('.panel.panel-default').remove();
+        $("#faq-list-3 .panel-heading a b").each(function(i,dom){
+            $(dom).html('条件'+(i+1));
+        })
+    })
+
+</script>

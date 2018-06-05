@@ -1,0 +1,361 @@
+<div id="dynamic-div">
+    <h3 class="header smaller lighter blue"><span class="red">邮箱监控设置</span>
+
+    </h3>
+    <div class="row margin-bottom-8">
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-3" style="width:90px;">
+                    监控类型：
+                </div>
+                <div class="col-sm-6 no-padding" style="width:150px;">
+                    <select class="form-control chosen-select">
+                        <option value="1">所有</option>
+                        <option value="2">发信监控</option>
+                        <option value="3">收信监控</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-6 text-right">
+            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#monitor_add" >添加监控</button>
+
+        </div>
+    </div>
+    <div class="table-header">
+        邮箱监控列表
+    </div>
+    <div class="table-responsive">
+        <table id="dynamic-table" class="table table-bordered table-striped table-center">
+            <thead>
+            <tr>
+                <th class="center">序号</th>
+                <th>域名</th>
+                <th>监控邮箱</th>
+                <th>监控部门</th>
+                <th>接收邮箱</th>
+                <th>监控类型</th>
+                <th>通道</th>
+                <th>邮件搬家</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="data-body">
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="monitor_add" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加邮箱监控</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">选择监控类型：</label>
+                        <div class="col-sm-6">
+                            <select class="form-control">
+                                <option value="1">收信监控</option>
+                                <option value="2">发信监控</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">选择监控通道：</label>
+                        <div class="col-sm-6">
+                            <select class="form-control">
+                                <option value="1">所有</option>
+                                <option value="2">外网邮件</option>
+                                <option value="3">内网邮件</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">监控邮箱：</label>
+                        <div class="col-sm-8">
+                                <input type="text" class="form-control">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">监控部门：</label>
+                        <div class="col-sm-8" style="min-width:200px;">
+                                <select multiple class="chosen-select form-control" data-placeholder="选择部门">
+                                    <option value="">选择部门</option>
+                                    <option value="1">部门1</option>
+                                    <option value="2">部门2</option>
+                                    <option value="3">部门3</option>
+                                    <option value="4">部门4</option>
+                                    <option value="5">部门5</option>
+                                    <option value="">选择部门</option>
+                                    <option value="1">部门1</option>
+                                    <option value="2">部门2</option>
+                                    <option value="3">部门3</option>
+                                    <option value="4">部门4</option>
+                                    <option value="5">部门5</option>
+                                    <option value="">选择部门</option>
+                                    <option value="1">部门1</option>
+                                    <option value="2">部门2</option>
+                                    <option value="3">部门3</option>
+                                    <option value="4">部门4</option>
+                                    <option value="5">部门5</option>
+                                    <option value="">选择部门</option>
+                                    <option value="1">部门1</option>
+                                    <option value="2">部门2</option>
+                                    <option value="3">部门3</option>
+                                    <option value="4">部门4</option>
+                                    <option value="5">部门5</option>
+                                </select>
+
+                            <span class="help-block green" style="margin-bottom:0;">
+                                “监控邮箱”、“监控部门”两者为“或”的逻辑关系；
+                            </span>
+                            <span class="help-block green" style="margin-top:0;">
+
+                                若想监控整个部门，则“监控邮箱”可以为空。反之“监控部门”可为空。
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">接收邮箱：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">邮件搬家监控<br>IMAP/POP3</label>
+                        <div class="col-sm-8" style="padding-top: 14px;">
+                            <label class="inline" >
+                                <input name="" type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl middle"></span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">保存</button>
+                <button type="button"  class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="monitor_edit" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改邮箱监控</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">选择监控类型：</label>
+                        <div class="col-sm-6">
+                            <select class="form-control">
+                                <option value="1">收信监控</option>
+                                <option value="2">发信监控</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">选择监控通道：</label>
+                        <div class="col-sm-6">
+                            <select class="form-control">
+                                <option value="1">所有</option>
+                                <option value="2">外网邮件</option>
+                                <option value="3">内网邮件</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">监控邮箱：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="bai@test.com">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">监控部门：</label>
+                        <div class="col-sm-8" style="min-width:200px;">
+                            <select multiple class="chosen-select form-control" data-placeholder="选择部门">
+                                <option value="">选择部门</option>
+                                <option value="1">部门1</option>
+                                <option value="2" selected>部门2</option>
+                                <option value="3">部门3</option>
+                                <option value="4">部门4</option>
+                                <option value="5">部门5</option>
+                                <option value="">选择部门</option>
+                                <option value="1">部门1</option>
+                                <option value="2">部门2</option>
+                                <option value="3">部门3</option>
+                                <option value="4">部门4</option>
+                                <option value="5">部门5</option>
+                                <option value="">选择部门</option>
+                                <option value="1">部门1</option>
+                                <option value="2">部门2</option>
+                                <option value="3">部门3</option>
+                                <option value="4">部门4</option>
+                                <option value="5">部门5</option>
+                                <option value="">选择部门</option>
+                                <option value="1">部门1</option>
+                                <option value="2">部门2</option>
+                                <option value="3">部门3</option>
+                                <option value="4">部门4</option>
+                                <option value="5">部门5</option>
+                            </select>
+
+                            <span class="help-block green" style="margin-bottom:0;">
+                                “监控邮箱”、“监控部门”两者为“或”的逻辑关系；
+                            </span>
+                            <span class="help-block green" style="margin-top:0;">
+
+                                若想监控整个部门，则“监控邮箱”可以为空。反之“监控部门”可为空。
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">接收邮箱：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" value="aaa@test.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">邮件搬家监控<br>IMAP/POP3</label>
+                        <div class="col-sm-8" style="padding-top: 14px;">
+                            <label class="inline" >
+                                <input name="" type="checkbox" class="ace ace-switch ace-switch-5">
+                                <span class="lbl middle"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label">状态：</label>-->
+                        <!--<div class="col-sm-9">-->
+                            <!--<label class="inline" >-->
+                                <!--<input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">-->
+                                <!--<span class="lbl middle"></span>-->
+                            <!--</label>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </form>
+            </div>
+            <div class="modal-footer center">
+                <button type="button" class="btn btn-success">保存</button>
+                <button type="button"  class="btn btn-warning">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+//        var demo1 = $('select[name="duallistbox"]').bootstrapDualListbox(
+//                {infoTextFiltered: '<span class="label label-purple label-lg">筛选</span>',
+//                    nonSelectedListLabel:"未被监控的邮箱列表",
+//                    selectedListLabel:"被监控的邮箱列表"
+//                }
+//        );
+//        var container1 = demo1.bootstrapDualListbox('getContainer');
+//        container1.find('.btn').addClass('btn-white btn-info btn-bold');
+//
+//
+        if(!ace.vars['touch']) {
+            $('.chosen-select').chosen({allow_single_deselect:true});
+
+            $(window)
+                    .off('resize.chosen')
+                    .on('resize.chosen', function() {
+                        $('.chosen-select').each(function() {
+                            var $this = $(this);
+                            $this.next().css({'width': $this.parent().width()});
+                        })
+                    }).trigger('resize.chosen');
+            $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                if(event_name != 'sidebar_collapsed') return;
+                $('.chosen-select').each(function() {
+                    var $this = $(this);
+                    $this.next().css({'width': $this.parent().width()});
+                })
+            });
+        }
+    })
+    var myTable;
+    function initDate(p){
+        for(var i= 0,html='';i<p;i++){
+            html+='<tr class="">' +
+                    '<td class="center middle">'+(i+1)+'</td>' +
+                    '<td><span class="label  label-success">cs1@test.com</span></td>' +
+                    '<td>cs@test.com</td>' +
+                    '<td>部门</td>' +
+                    '<td>aaa@test.com</td>' +
+                    '<td>收信监控</td>' +
+                    '<td>所有</td>' +
+                    '<td>不监控</td>' +
+                    '<td>' +
+                    '<label class="inline" >' +
+                    '<input name=""  checked  type="checkbox" class="ace ace-switch ace-switch-5">' +
+                    '<span class="lbl"></span>' +
+                    '</label>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="">' +
+                    '<a class="green btn btn-white btn-primary btn-xs" href="#" data-toggle="modal" data-target="#monitor_edit">修改</a>' +
+                    '<a class="red btn btn-white btn-danger btn-xs" href="#">删除</a></div></td></tr>'
+        }
+        $('#data-body').html(html);
+            myTable =
+                $('#dynamic-table')
+                //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+                        .DataTable( {
+                            bAutoWidth: false,
+                            "aoColumns": [
+                                null,
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false },
+                                { "bSortable": false }
+                            ],
+                            "aaSorting": [],
+                            select: {
+                                style: 'multi'
+                            },
+                            "iDisplayLength": 20,
+                            "lengthMenu":  [10,15,20, 50, 100,200],
+                            "oLanguage": {
+//                                "sLengthMenu": ,
+                                "sLengthMenu": "显示 _MENU_ 条记录 / 页",
+                                "sZeroRecords": "对不起! 信息筛选结果为空!",
+                                "sInfo": "从 _START_ 到 _END_ 总计: _TOTAL_ 条记录",
+                                "sInfoEmpty": "总计: 0 条记录",
+                                "sInfoFiltered": "(从 _MAX_ 条记录筛选出)",
+                                "sSearch": "搜索: ",
+                                "oPaginate": {
+                                    "sFirst":    "第一页",
+                                    "sPrevious": "上一页",
+                                    "sNext":     "下一页",
+                                    "sLast":     "最后一页"
+                                }
+                            }
+                } );
+    }
+    initDate(28);
+
+//    $('#search-btn').click(function(){
+//        myTable.destroy();
+//        initDate(8);
+//    })
+
+
+</script>

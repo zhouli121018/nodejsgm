@@ -1,0 +1,21 @@
+<div class="row pull-right" id="switch-email">
+    <div class="col-sm-2" style="width:120px;"><span class="">切换当前域名：</span></div>
+    <div class="col-sm-10" style="width:200px;">
+        <select class="chosen-select form-control" onchange="set_domain_id(this.value)"  data-placeholder="切换当前域名">
+            {% for d in domain_list %}
+            <option value="{{ d.id }}" {% if domain_id == d.id %} selected {% endif %}>{{ d.domain }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
+<form id="id_set_domain_id_form" action="{% url 'set_domain_id' %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="domain_id" id="id_domain_id" />
+</form>
+
+<script>
+function set_domain_id(domain_id) {
+    $('#id_domain_id').val(domain_id);
+    $('#id_set_domain_id_form').submit();
+}
+</script>

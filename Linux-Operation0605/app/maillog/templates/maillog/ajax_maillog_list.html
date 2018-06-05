@@ -1,0 +1,22 @@
+<td>{{ number }}</td>
+<td>{{ d.get_time|default_if_none:'' }}</td>
+<td>{{ d.get_username|default_if_none:'' }}</td>
+<td>{{ d.get_type|default_if_none:'' }}</td>
+<td>{{ d.send_mail|default_if_none:'' }}</td>
+<td>{{ d.recv_mail|default_if_none:'' }}</td>
+<td>{{ d.senderip|default_if_none:'' }}</td>
+<td>{{ d.rcv_server|default_if_none:'' }}</td>
+<td>{{ d.subject|default_if_none:'' }}</td>
+<td>{{ d.attachment|default_if_none:'' }}</td>
+{% if d.get_attach_size > 0 %}
+        <td>{{ d.get_attach_size|default_if_none:'' }}MB</td>
+{% else %}
+        <td> 0 </td>
+{% endif %}
+<td> {{ d.folder|default_if_none:'' }} </td>
+{% if d.get_result == '1' %}
+        <td> <strong style="color: green"> 成功 </strong> </td>
+{% else %}
+        <td> <strong style="color: red"> 失败 </strong> </td>
+{% endif %}
+<td> <strong style="color: red"> {{ d.remark|default_if_none:'' }} </strong> </td>

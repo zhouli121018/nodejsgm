@@ -1,0 +1,131 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "动态屏蔽" %}{% endblock %}
+
+{% block breadcrumb %}
+<li> <a href="{% url 'fail2ban_home' %}">{% trans "动态屏蔽" %}</a> </li>
+<li class="active">{% trans "修改" %}</li>
+{% endblock %}
+
+{% block page-content %}
+
+<div class="row">
+    <div class="space-6"></div>
+    <div class="col-xs-12">
+        <div class="page-header">
+            <h1>{% trans "动态屏蔽" %}
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    修改 {{ name }}
+                </small>
+            </h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <form class="form-horizontal" role="form" action="" method="POST">
+            {% csrf_token %}
+            <!-- #section:elements.form -->
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="ip"> IP </label>
+                <div class="col-sm-9">
+                    <input type="text" name="ip" id="ip" value="{{ form.ip.value }}" class="col-xs-10 col-sm-5" />
+                {% if form.ip.error %}
+                <div style="clear: both"><p class="errornote txt-color-red">{{ form.ip.error }}</p></div>
+                {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="expire_time"> 失效时间 </label>
+                <div class="col-sm-9">
+                    <input type="text" name="expire_time" id="id_expire_time" value="{{ form.get_expire_time }}" readonly="" size="16" data-date-format="yyyy-mm-dd hh:ii:00" class="dateinput"  />
+                {% if form.expire_time.error %}
+                <div style="clear: both"><p class="errornote txt-color-red">{{ form.expire_time.error }}</p></div>
+                {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="name"> 备注 </label>
+                <div class="col-sm-9">
+                    <input type="text" name="name" id="name" value="{{ form.name.value }}" class="col-xs-10 col-sm-5" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="disabled"> 是否启用 </label>
+                <div class="col-sm-9">
+                    <select class="col-xs-10 col-sm-5" id="disabled" name="disabled">
+                        <option value="-1" {% if form.disabled.value == '-1' %}selected{% endif %}>启用</option>
+                        <option value="1" {% if form.disabled.value == '1' %}selected{% endif %}>禁用</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button class="btn btn-info" type="submit">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        保存
+                    </button>
+
+                    <button class="btn" type="reset">
+                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                        重置
+                    </button>
+
+                    <a type="button" class="btn btn-link" href="{% url 'fail2ban_home' %}">取消</a>
+                </div>
+            </div>
+        </form>
+
+
+    </div><!-- /.span -->
+</div><!-- /.row -->
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'otreetable1.0/otreetable.css' %}" />
+    <link href="{% static "components/datetimepiker/bootstrap-datetimepicker.min.css" %}" rel="stylesheet">
+<style>
+    #search_form th{
+        border-top:none;
+    }
+    #search_form th input,#search_form th select{
+        width:95%;
+    }
+    #search_form .text-right{
+        white-space: nowrap;
+    }
+    .sorting_asc:after{
+        content:"" !important;
+    }
+    .sorting_desc:after{
+        content:"" !important;
+    }
+</style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'components/datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'components/_mod/datatables/jquery.dataTables.bootstrap.js' %}"></script>
+    <script src="{% static "components/datetimepiker/bootstrap-datetimepicker.min.js" %}"></script>
+    <script src="{% static "components/datetimepiker/bootstrap-datetimepicker.zh-CN.js" %}"></script>
+
+    <script>
+        $('.dateinput').datetimepicker({
+                        format: 'yyyy-mm-dd hh:ii:00',
+                        language: 'zh-CN',
+                        weekStart: 1,
+                        todayBtn: 1,
+                        autoclose: 1,
+                        // minView: 2,
+                    });
+    </script>
+{% endblock %}
+

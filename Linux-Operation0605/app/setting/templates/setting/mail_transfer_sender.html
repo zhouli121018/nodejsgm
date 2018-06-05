@@ -1,0 +1,76 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "内网邮件代发" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "内网邮件代发" %}</a> </li>
+    <li class="active">{% trans "内网邮件代发" %}</li>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="page-header">
+        <h1>
+            {% trans "内网邮件代发" %}
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                {% trans "内网邮件代发" %}
+            </small>
+        </h1>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+
+                    <li>
+                        <a href="{% url 'mail_transfer' %}">
+                            <i class="green ace-icon fa fa-home bigger-120"></i>{% trans "内网邮件代发" %}
+                        </a>
+                    </li>
+
+                    <li class="active">
+                        <a href="{% url 'mail_transfer_sender' %}">{% trans "默认登录帐号" %}</a>
+                    </li>
+
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade in active">
+                        {% include 'setting/include/mail_transfer_sender.html' %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'otreetable1.0/otreetable.css' %}" />
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'components/datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'components/_mod/datatables/jquery.dataTables.bootstrap.js' %}"></script>
+    <script type="text/javascript" src="{% static 'otreetable1.0/otreetable.js' %}"></script>
+    <script>
+        var otb = new oTreeTable('otb', document.getElementById('basic-table'), {skin:'default',showIcon:true});
+        function expandAll(){ otb.expandAll(); }
+        function collapseAll(){ otb.collapseAll(); }
+
+        function setStatus(rule_id, status){
+            var str = '{% trans "是否确认此操作？" %}';
+            if(confirm(str)) {
+                $('#id').val(rule_id);
+                $('#status').val(status);
+                $('#id_form').submit();
+            }
+            return;
+        }
+    </script>
+{% endblock %}

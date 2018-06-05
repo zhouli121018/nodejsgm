@@ -1,0 +1,412 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% if form.instance %} {% trans "修改审核规则" %}  {% else %} {% trans "添加审核规则" %} {% endif %}{% endblock %}
+
+{% block breadcrumb %}
+    <li> <a href="#">{% trans "审核规则" %}</a> </li>
+    <li class="active">{% if form.instance %} {% trans "修改审核规则" %}  {% else %} {% trans "添加审核规则" %} {% endif %}</li>
+{% endblock %}
+
+{% block page-content %}
+    <div class="row">
+        <div class="space-6"></div>
+        <div class="col-xs-12">
+            <div class="page-header">
+                <h1>{% if form.instance %} {% trans "修改审核规则" %}  {% else %} {% trans "添加审核规则" %} {% endif %}
+                    <small>
+                        <i class="ace-icon fa fa-angle-double-right"></i>
+                        {{ form.name.value }}
+                    </small>
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <form class="form-horizontal" role="form" action="" method="POST" id="id_Form">
+                {% csrf_token %}
+
+                <div class="form-group {% if form.name.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_name"> 规则名称 </label>
+                    <div class="col-sm-9">
+                        <input type="text" name="name" id="id_name" value="{{ form.name.value }}" maxlength="250" class="col-xs-10 col-sm-5" required/>
+                        {% if form.name.error %}
+                            <div style="clear: both">
+                                <p class="errornote txt-color-red">{{ form.name.error }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group {% if form.review_id.error %} has-error {% endif %}">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_review_id"> 审核人 </label>
+                    <div class="col-sm-9">
+                        <input type="hidden" value="{{ form.review_id.value }}" id="id_review_id" name="review_id">
+                        <div class="input-group col-xs-10 col-sm-5">
+                            <input type="text" name="review_name" id="id_review_name" value="{{ form.review_id.extra }}" readonly="readonly" class="col-xs-10 col-sm-4 form-control" onclick="Javascript: onclickReview()"/>
+							<span class="input-group-btn">
+                                <a data-toggle="modal" data-target="#MyReviwModal" data-whatever=""
+                                   href="#" class="btn btn-sm btn-default" type="button" title="选择审核人" id="id_review_model">
+                                    <i class="ace-icon fa fa-users bigger-110 green"></i>选择
+                                </a>
+                                <a class="btn btn-sm btn-grey" type="button" title="清空审核人" href="Javascript: clearReview()">清空</a>
+                            </span>
+                        </div>
+                        {% if form.review_id.error %}
+                            <div style="clear: both">
+                                <p class="errornote txt-color-red">{{ form.review_id.error }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_workmode"> 审核类型 </label>
+                    <div class="col-sm-9">
+                        <select class="col-xs-10 col-sm-5" id="id_workmode" name="workmode">
+                            {% for k, v in form.reviewrule_workmodes %}
+                                <option value="{{ k }}" {% if form.workmode.value == k %} selected {% endif %}>{{ v }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_pre_action"> 审核预设 </label>
+                    <div class="col-sm-9">
+                        <select class="col-xs-10 col-sm-5" id="id_pre_action" name="pre_action">
+                            {% for k, v in form.reviewrule_preactions %}
+                                <option value="{{ k }}" {% if form.pre_action.value == k %} selected {% endif %}>{{ v }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_target_dept"> 发信人部门 </label>
+                    <div class="col-sm-9">
+                        <input type="hidden" value="{{ form.target_dept.value }}" id="id_target_dept" name="target_dept">
+                        <div class="input-group col-xs-10 col-sm-5">
+                            <input type="text" name="target_dept_name" id="id_target_dept_name" value="{{ form.target_dept.extra }}" readonly="readonly" class="col-xs-10 col-sm-4 form-control" onclick="Javascript: onclickDepart()"/>
+                            <span class="input-group-btn">
+                                <a data-toggle="modal" data-target="#MyReviwModal" data-whatever=""
+                                   href="#" class="btn btn-sm btn-default" type="button" title="选择审核人" id="id_department_model">
+                                    <i class="ace-icon fa fa-users bigger-110 green"></i>选择
+                                </a>
+                                 <a class="btn btn-sm btn-grey" type="button" title="清空部门" href="Javascript: clearDepart()">清空</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_sequence"> 权重 </label>
+                    <div class="col-sm-9">
+                        <input type="number" id="id_sequence" name="sequence" value="{{ form.sequence.value }}" class="col-xs-10 col-sm-5" required/>
+                    </div>
+                    <div class="">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <span class="help-inline col-xs-9 col-sm-7">
+                            <span class="middle text-success">数值越小优先级越高，数值相等时主键越小优先级越高</span>
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_disabled"> 状态 </label>
+                    <div class="col-sm-9">
+                        <select class="col-xs-10 col-sm-5" id="id_disabled" name="disabled">
+                            {% for k, v in form.reviewrule_disableds %}
+                                <option value="{{ k }}" {% if form.disabled.value == k %}selected{% endif %}>{{ v }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="id_cond_logic"> 条件关系 </label>
+                    <div class="col-sm-9">
+                        <select class="col-xs-10 col-sm-5" id="id_cond_logic" name="cond_logic">
+                            {% for k, v in form.reviewrule_logics %}
+                                <option value="{{ k }}" {% if form.cond_logic.value == k %} selected {% endif %}>{{ v }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group {% if form.option.error %} has-error {% endif %}">
+                    <div class="" id="id_options">
+
+                        {% for d in form.option.value %}
+                            <div id="id_option{{ d.id }}" class="">
+                                <input id="id_option_id{{ d.id }}" name="option_ids[]" value="{{ d.id }}" type="hidden">
+
+                                <label class="col-sm-3 control-label no-padding-right">
+                                    {% if forloop.counter == 1 %}
+                                        审核条件
+                                    {% endif %}
+                                </label>
+                                <div class="col-sm-9">
+
+                                    <select class="col-xs-1 col-sm-1" id="id_ruletype{{ d.id }}" name="ruletype{{ d.id }}" style="height: 34px;" onchange="onchangeRuletype(this.value, '{{ d.id }}')">
+                                        {% for k, v in form.reviewrule_option %}
+                                            <option value="{{ k }}" {% if k == d.type %} selected {% endif %}>{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <select class="col-xs-1 col-sm-1 {% if d.action not in form.reviewrule_option_action_contains %} display-none {% endif %}"
+                                            id="id_rule_action_contain{{ d.id }}" name="rule_action_contain{{ d.id }}" style="height: 34px;">
+                                        {% for k, v in form.reviewrule_option_condition_contains %}
+                                            <option value="{{ k }}" {% if d.action == k %} selected {% endif %}>{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <select class="col-xs-1 col-sm-1 {% if d.action in form.reviewrule_option_action_contains %} display-none {% endif %}"
+                                            id="id_rule_action_eq{{ d.id }}" name="rule_action_eq{{ d.id }}" style="height: 34px;">
+                                        {% for k, v in form.reviewrule_option_condition_eqs %}
+                                            <option value="{{ k }}" {% if d.action == k %} selected {% endif %}>{{ v }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <div class="input-group col-xs-3 col-sm-3">
+                                        <input type="text" name="rule_value_common{{ d.id }}" id="id_rule_value_common{{ d.id }}" value="{{ d.value }}" maxlength="300"
+                                               class="{% if d.type == 'attach_size' or d.type == 'mail_size' or d.type == 'date' or d.type == 'has_attach' or d.type == 'all_mail' %} display-none {% endif %} " style="width: 100%;"/>
+                                        <input type="number" name="rule_value_size{{ d.id }}" id="id_rule_value_size{{ d.id }}" value="{{ d.value }}"
+                                               class="{% if d.type != 'attach_size' or d.type != 'mail_size' %} display-none {% endif %}"  style="width: 100%;"/>
+                                        <input type="text" name="rule_value_date{{ d.id }}" id="id_rule_value_date{{ d.id }}" value="{{ d.value }}" readonly="" size="16" data-date-format="yyyy-mm-dd hh:ii:00"
+                                               class="dateinput{{ d.id }} {% if d.type != 'date' %} display-none {% endif %}"  style="width: 100%;"/>
+                                        {% if forloop.counter != 1 %}
+                                            <span class="input-group-btn">
+                                                <a class="btn btn-sm btn-danger" type="button" title="删除条件" href="Javascript: removeOptions('{{ d.id }}')">删除</a>
+                                            </span>
+                                        {% endif %}
+                                    </div>
+
+                                    {% if d.error %}
+                                        <div style="clear: both">
+                                            <p class="errornote txt-color-red">Error：{{ d.error }}</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <p style="padding: 15px;"></p>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                    <div class="">
+                        <label class="col-sm-3 control-label no-padding-right"></label>
+                        <span class="help-inline col-xs-9 col-sm-7">
+                            <div class="">
+                                <input value="{% trans "新增条件" %}" onclick="addOptions()" type="button" class="btn btn-primary btn-minier">
+                            </div>
+                            <div class="">
+                                <span class="middle text-success">邮件大小单位：MB。邮件时间请选择时间。</span>
+                            </div>
+                            <div class="">
+                                <span class="middle text-success">支持正则表达式符号'*'，如：*@example.com、hello*@example.com。</span>
+                            </div>
+                            <div class="">
+                                <span class="middle text-success">预设为'批准'、'拒绝'的规则，会作用于该审核人所审核的所有邮件。</span>
+                            </div>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="button" class="btn btn-info" id="id_save_button">
+                            <i class="ace-icon fa fa-check bigger-110"></i>{% trans "保存" %}
+                        </button>
+
+                        <button class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>重置
+                        </button>
+
+                        <a type="button" class="btn btn-link" href="{% url 'reviewrule_list' %}">取消</a>
+                    </div>
+                </div>
+            </form>
+
+
+        </div><!-- /.span -->
+    </div><!-- /.row -->
+
+
+    <div class="modal fade " id="MyReviwModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="margin:120px auto; width: 1000px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">加载中</h4>
+                </div>
+                <div class="modal-body">
+                    页面加载中
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'otreetable1.0/otreetable.css' %}" />
+    <link href="{% static "components/datetimepiker/bootstrap-datetimepicker.min.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block my_jsblock %}
+    <script type="text/javascript" src="{% static 'otreetable1.0/otreetable.js' %}"></script>
+
+    <script src="{% static "components/datetimepiker/bootstrap-datetimepicker.min.js" %}"></script>
+    <script src="{% static "components/datetimepiker/bootstrap-datetimepicker.zh-CN.js" %}"></script>
+    <script>
+
+
+        function saveButtonAdd(){$("#id_save_button").attr("disabled", "disabled").addClass('disabled');}
+        function saveButtonRemove(){$("#id_save_button").removeAttr("disabled").removeClass('disabled');}
+
+        $(function () {
+
+            // 防止重复提交
+            saveButtonRemove();
+            $("#id_save_button").click(function(){
+                saveButtonAdd();
+                $("#id_Form").submit();
+            });
+
+            /** 模型弹出框 **/
+            $('#MyReviwModal').on('show.bs.modal', function (event) {
+                $(this).removeData('bs.modal');
+            })
+
+            $("#id_review_model").click(function(){
+                var review_id = $("#id_review_id").val();
+                $("#id_review_model").attr('href', '{% url 'choose_review_list' %}?model_review_id=' + review_id);
+            });
+
+            $("#id_department_model").click(function(){
+                var department_id = $("#id_target_dept").val();
+                $("#id_department_model").attr('href', '{% url 'choose_department_list' %}?model_department_id=' + department_id);
+            });
+
+            $('.dateinput').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii:00',
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                // minView: 2,
+                pickerPosition: "top-right",
+            });
+
+            {% for d in form.option.value %}
+                $(function () {
+                    onchangeRuletype('{{ d.type }}', '{{ d.id }}');
+                });
+
+                $('.dateinput{{ d.id }}').datetimepicker({
+                    format: 'yyyy-mm-dd hh:ii:00',
+                    language: 'zh-CN',
+                    weekStart: 1,
+                    todayBtn: 1,
+                    autoclose: 1,
+                    // minView: 2,
+                    pickerPosition: "top-right",
+                });
+            {% endfor %}
+
+        });
+
+        function onclickReview() {
+            $("#id_review_model").click();
+        }
+
+        function clearReview(){
+            $("#id_review_id").val(0);
+            $("#id_review_name").val("");
+        }
+
+        function onclickDepart() {
+            $("#id_department_model").click();
+        }
+
+        function clearDepart(){
+            $("#id_target_dept").val(-1);
+            $("#id_target_dept_name").val("");
+        }
+
+        function onchangeRuletype(value, rule_id){
+            if ( value == 'date' ){
+                $("#id_rule_value_common"+rule_id).addClass("display-none");
+                $("#id_rule_value_size"+rule_id).addClass("display-none");
+                $("#id_rule_value_date"+rule_id).removeClass("display-none");
+                /** 动作 **/
+                $("#id_rule_action_contain"+rule_id).addClass("display-none");
+                $("#id_rule_action_eq"+rule_id).removeClass("display-none");
+            } else if ( value == 'attach_size' || value == 'mail_size' ){
+                $("#id_rule_value_common"+rule_id).addClass("display-none");
+                $("#id_rule_value_date"+rule_id).addClass("display-none");
+                $("#id_rule_value_size"+rule_id).removeClass("display-none");
+                /** 动作 **/
+                $("#id_rule_action_contain"+rule_id).addClass("display-none");
+                $("#id_rule_action_eq"+rule_id).removeClass("display-none");
+            } else if ( value == 'has_attach' || value =='all_mail' ){
+                $("#id_rule_value_common"+rule_id).addClass("display-none");
+                $("#id_rule_value_date"+rule_id).addClass("display-none");
+                $("#id_rule_value_size"+rule_id).addClass("display-none");
+                /** 动作 **/
+                $("#id_rule_action_contain"+rule_id).addClass("display-none");
+                $("#id_rule_action_eq"+rule_id).addClass("display-none");
+            } else {
+                $("#id_rule_value_date"+rule_id).addClass("display-none");
+                $("#id_rule_value_size"+rule_id).addClass("display-none");
+                $("#id_rule_value_common"+rule_id).removeClass("display-none");
+                /** 动作 **/
+                $("#id_rule_action_eq"+rule_id).addClass("display-none");
+                $("#id_rule_action_contain"+rule_id).removeClass("display-none");
+            }
+        }
+
+        function removeOptions(rule_id){
+            //$("#id_option_id"+rule_id).remove();
+            $("#id_option"+rule_id).remove();
+        }
+
+        function S4(){ return (((1+Math.random())*0x10000)|0).toString(16).substring(1); }
+        function GenerateGuid(){ return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4()); }
+        function addOptions(){
+            var rule_id = GenerateGuid();
+            var rule_html = '<div id="id_option'+rule_id+'" class=""><input id="id_option_id'+rule_id+'" name="option_ids[]" value="'+rule_id+'" type="hidden">' +
+                    '<label class="col-sm-3 control-label no-padding-right"></label><div class="col-sm-9">' +
+                    '<select class="col-xs-1 col-sm-1" id="id_ruletype'+rule_id+'" name="ruletype'+rule_id+'" style="height: 34px;" onchange="onchangeRuletype(this.value, \''+rule_id+'\')">' +
+                    {% for k, v in form.reviewrule_option %}
+                        '<option value="{{ k }}" {% if k == 'subject' %} selected {% endif %}>{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<select class="col-xs-1 col-sm-1" id="id_rule_action_contain'+rule_id+'" name="rule_action_contain'+rule_id+'" style="height: 34px;">' +
+                    {% for k, v in form.reviewrule_option_condition_contains %}
+                        '<option value="{{ k }}" {% if k == 'in' %} selected {% endif %}>{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<select class="col-xs-1 col-sm-1 display-none" id="id_rule_action_eq'+rule_id+'" name="rule_action_eq'+rule_id+'" style="height: 34px;">' +
+                    {% for k, v in form.reviewrule_option_condition_eqs %}
+                        '<option value="{{ k }}">{{ v }}</option>' +
+                    {% endfor %}
+                    '</select>' +
+                    '<div class="input-group col-xs-3 col-sm-3">' +
+                    '<input type="text" name="rule_value_common'+rule_id+'" id="id_rule_value_common'+rule_id+'" value="" maxlength="300" class="" style="width: 100%;"/>' +
+                    '<input type="number" name="rule_value_size'+rule_id+'" id="id_rule_value_size'+rule_id+'" value="" class="display-none"  style="width: 100%;"/>' +
+                    '<input type="text" name="rule_value_date'+rule_id+'" id="id_rule_value_date'+rule_id+'" value="" readonly="" size="16" data-date-format="yyyy-mm-dd hh:ii:00" class="dateinput'+rule_id+' display-none"  style="width: 100%;"/>' +
+                    '<span class="input-group-btn"><a class="btn btn-sm btn-danger" type="button" title="删除条件" href="Javascript: removeOptions(\''+rule_id+'\')">删除</a></span></div></div><p style="padding: 15px;"></p></div>' +
+                    '<script>$(".dateinput'+rule_id+'").datetimepicker({ format: \'yyyy-mm-dd hh:ii:00\', language: \'zh-CN\',weekStart: 1, todayBtn: 1,autoclose: 1, pickerPosition: \'top-right\',});<\/script>';
+            $("#id_options").append(rule_html);
+        }
+
+    </script>
+
+{% endblock %}

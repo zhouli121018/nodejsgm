@@ -398,6 +398,12 @@
         div#main-wysiwyg-area replacedbody{
             max-width:100%;
         }
+        #main-edit-area #main-wysiwyg-area:not(.isdragging):not(.isdraggingimg) .editable:hover .mo-blockselectionhelper{
+            box-shadow: 0 0 10px #000;
+        }
+        #main-edit-area #main-wysiwyg-area:not(.isdragging):not(.isdraggingimg) .editable.selected .mo-blockselectionhelper{
+            box-shadow: 0 0 5px #000;
+        }
     </style>
 </head>
 <body class="mo-standalone">
@@ -444,31 +450,31 @@
                 if(i==0){
                     $(this).attr('title','logo版块')
                 }else if(i==1){
-                    $(this).attr('title','分享板块')
-                }else if(i==2){
-                    $(this).attr('title','左右图文版块')
-                }else if(i==3){
-                    $(this).attr('title','上下图文版块')
-                }else if(i==4){
                     $(this).attr('title','标题版块')
-                }else if(i==5){
+                }else if(i==2){
                     $(this).attr('title','文字版块')
-                }else if(i==6){
-                    $(this).attr('title','三列上下图文版块')
-                }else if(i==7){
-                    $(this).attr('title','并列图文版块')
-                }else if(i==8){
-                    $(this).attr('title','分隔线版块')
-                }else if(i==9){
+                }else if(i==3){
                     $(this).attr('title','按钮版块')
-                }else if(i==10){
-                    $(this).attr('title','图片版块')
-                }else if(i==11){
-                    $(this).attr('title','两列图片版块')
-                }else if(i==12){
-                    $(this).attr('title','三列图片版块')
-                }else if(i==13){
+                }else if(i==4){
                     $(this).attr('title','间隔版块')
+                }else if(i==5){
+                    $(this).attr('title','分隔线版块')
+                }else if(i==6){
+                    $(this).attr('title','图片版块')
+                }else if(i==7){
+                    $(this).attr('title','两列图片版块')
+                }else if(i==8){
+                    $(this).attr('title','三列图片版块')
+                }else if(i==9){
+                    $(this).attr('title','左右图文版块')
+                }else if(i==10){
+                    $(this).attr('title','上下图文版块')
+                }else if(i==11){
+                    $(this).attr('title','并列图文版块')
+                }else if(i==12){
+                    $(this).attr('title','三列上下图文版块')
+                }else if(i==13){
+                    $(this).attr('title','分享板块')
                 }else if(i==14){
                     $(this).attr('title','社交媒体版块')
                 }

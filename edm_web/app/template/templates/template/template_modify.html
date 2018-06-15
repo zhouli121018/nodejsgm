@@ -1,0 +1,781 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap %}
+{% block title %}{% trans "模板" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "邮件模板管理" %}</li>
+    <li>{% if content_type_flag == 0 %}{% trans "添加模板" %}{% elif content_type_flag == 1 %}{% trans "修改模板" %}{% else %}{% trans "查看EML模板" %}{% endif %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-pencil-square-o fa-fw "></i>
+                {% if content_type_flag == 0 %}{% trans "添加模板" %}{% elif content_type_flag == 1 %}{% trans "修改模板" %}{% else %}{% trans "查看EML模板" %}{% endif %}
+            </h1>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6">
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget jarviswidget-color-magenta" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-hand-o-right"></i></span>
+                    <h2>{% trans "模板" %}</h2>
+                </header>
+
+                <div>
+                    <div class="jarviswidget-editbox"></div>
+                    <div class="widget-body no-padding">
+                        <form role="form" action="" method="post" id="id_templateForm" class="padding-gutter form-horizontal" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed" width="100%">
+                                <tbody>
+                                <!--<tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>-->
+                                <!--模板名称-->
+                                <tr>
+                                    <td class="no-border text-right myself-width-small {% if content_type_flag != 2 %}vertical-align-middle{% endif %}">
+                                        <label class="control-label">{% trans "模板名称" %}</label>
+                                    </td>
+                                    <td class="no-border">
+                                        <fieldset>
+                                            <div class="col-md-12 form-inline">
+                                                {% if content_type_flag == 2 %}
+                                                    <span class="form-control no-border">{{ template_obj.name|default_if_none:'' }}</span>
+                                                {% else %}
+                                                    <input class="form-control" id="id_name" name="name" maxlength="100" type="text" style="width: 50%;" value="{{ template_obj.name|default_if_none:'' }}">
+                                                {% endif %}
+                                            </div>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                                <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+                                {% if content_type_flag == 2 %}
+                                    <!--下载邮件-->
+                                    <tr>
+                                        <td class="no-border text-right myself-width-small vertical-align-middle">
+                                            {% trans "下载邮件" %}
+                                        </td>
+                                        <td class="no-border">
+                                            <fieldset>
+                                                <div class="col-md-12 form-inline">
+                                                    <a href="Javascript: template_preview()" class="form-control no-border"><span class="text-primary">{% trans "下载eml模板文件" %}</span></a>
+                                                </div>
+                                            </fieldset>
+                                        </td>
+                                    </tr>
+                                    <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+                                {% endif %}
+                                {% if content_type_flag != 2 %}
+                                <!--主题列表-->
+                                <tr>
+                                    <td class="no-border text-right myself-width-small vertical-align-middle">
+                                        <label class="control-label">{% trans "主题列表" %}</label>
+                                    </td>
+                                    <td class="no-border">
+                                        <fieldset>
+                                            <div class="col-md-12 form-inline">
+                                                <div id="id_subject_html">
+                                                    {% if subject_objs %}
+                                                        {% for d in subject_objs %}
+                                                            <div id="id_subject_div_{{ d.id }}" class="margin-top-5">
+                                                                <input class="form-control" id="id_subject_{{ d.id }}" name="subject_list[]" onblur="onblurSubjectAction();" value="{{ d.subject|default_if_none:'' }}" maxlength="150" type="text" style="width: 50%;">
+                                                                <div class="btn-group margin-left-negative3">
+                                                                    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">
+                                                                        <span class="margin-right-5">{% trans "插入变量" %}</span> <span class="caret"></span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu no-margin">
+                                                                        {% for k, v in subject_vars %}
+                                                                            <li><a href="#" onclick="InsertSubjectVarString('id_subject_{{ d.id }}', '{{ k }}');">{{ v }}</a></li>
+                                                                        {% endfor %}
+                                                                    </ul>
+                                                                </div>
+                                                                <input value="{% trans "删除" %}" onclick="deleteSubject('{{ d.id }}')" type="button" class="btn btn-outline btn-danger btn-xs margin-left-negative4">
+                                                            </div>
+                                                        {% endfor %}
+                                                    {% else %}
+                                                        <div id="id_subject_div_0" class="margin-top-5">
+                                                            <input class="form-control" id="id_subject_0" name="subject_list[]" onblur="onblurSubjectAction();" value="" maxlength="100" style="width: 50%;" type="text">
+                                                            <div class="btn-group margin-left-negative3">
+                                                                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">
+                                                                    <span class="margin-right-5">{% trans "插入变量" %}</span> <span class="caret"></span>
+                                                                </button>
+                                                                <ul class="dropdown-menu no-margin">
+                                                                    {% for k, v in subject_vars %}
+                                                                        <li><a href="#" onclick="InsertSubjectVarString('id_subject_0', '{{ k }}');">{{ v }}</a></li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </div>
+                                                            <input value="{% trans "删除" %}" onclick="deleteSubject('0')" class="btn btn-outline btn-danger btn-xs" type="button">
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="margin-top-5">
+                                                    <input value="{% trans "新增主题" %}" onclick="addSubject()" type="button" class="btn btn-outline btn-primary btn-xs">
+                                                    <span><strong class="txt-color-red">{% trans "提示：" %}</strong>{% trans "一个模板允许有多个主题" %}</span>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                                <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+                                <!--上传附件-->
+                                <tr>
+                                    <td class="no-border text-right myself-width-small vertical-align-middle">
+                                        <label class="control-label">{% trans "上传附件" %}</label>
+                                    </td>
+                                    <td class="no-border">
+                                        <fieldset>
+                                            <div class="col-md-12 form-inline">
+                                                <div id="fileQueue"></div>
+                                                <input type="file" name="uploadify" id="uploadify" style="margin-bottom: 2px!important;"/>
+                                                <small>{% trans "允许常见图片类型、压缩文件、OFFICE文档上传" %}(*.jpg;*.png;*.gif;*.bmp;*.jpeg;*.txt;*.pdf;*.doc;*.docx;*.xls;*.xlsx;*.csv;*.ppt;*.pps;*.pptx;*.ppsx;*.htm;*.html;*.zip;*.rar;*.gz;*.bz2;*.ics)</small><br>
+                                                <small>{% trans "支持多文件自动上传，单个附件最大允许15M，单个图片最大允许1M。附件大小和计费有关，请谨慎控制邮件大小！" %}</small>
+                                            </div>
+                                            <div class="col-md-12 form-inline">
+                                                <ul class="list-inline" id="id_attachlist_ul">
+                                                    {% autoescape off %}{{ attach_list }}{% endautoescape %}
+                                                </ul>
+                                            </div>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                                <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+                                <!--编辑方式-->
+                                <tr>
+                                    <td class="no-border text-right myself-width-small {% if content_type_flag != 2 %}vertical-align-middle{% endif %}">
+                                        <label class="control-label">{% trans "编辑方式" %}</label>
+                                    </td>
+                                    <td class="no-border">
+                                        <fieldset>
+                                            <div class="col-md-12 form-inline">
+                                                <select onchange="shift_edit_mode(this);" id="id_edit_type" class="form-control">
+                                                    {% for k, v in edit_types %}
+                                                        <option value="{{ k }}">{{ v }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <span id="id_edit_type_show" class="form-control myself-bgcolor-4b981d no-border display-none"></span>
+                                            </div>
+                                            <div class="col-md-12 form-inline margin-top-5 display-none" id="id_edit_from_url">
+                                                <input id="id_from_url" name="from_url" type="text" value="http://"  maxlength="200" size="70" style="width: 50%;" class="form-control">
+                                                <div class="btn-group margin-left-negative3">
+                                                    <button type="button" onclick="ajax_get_content_from_url()" id="id_from_url_button" class="btn btn-primary dropdown-toggle">{% trans "解析到正文" %}</button>
+                                                </div>
+                                                <span class="form-control no-border">{% trans "(网址格式：http://www.example.com)" %}</span>
+                                            </div>
+                                            <div class="col-md-12 form-inline margin-top-5 display-none" id="id_edit_from_html">
+                                                <input id="id_from_html" name="htmlfile" type="file" class="form-control padding-top-0">
+                                                <div class="btn-group margin-left-negative3">
+                                                    <button type="button" onclick="ajax_get_content('id_from_html', '3', 'htmlfile')" id="id_from_html_button" class="btn btn-primary dropdown-toggle">{% trans "解析到正文" %}</button>
+                                                </div>
+                                                <span class="form-control no-border">{% trans "(文件类型为.txt | .htm | .html,文件的编码为utf-8,文件大小：<2M)" %}</span>
+                                            </div>
+                                            <div class="col-md-12 form-inline margin-top-5 display-none" id="id_edit_from_eml">
+                                                <input id="id_from_eml" name="emlfile" type="file" class="form-control padding-top-0">
+                                                <div class="btn-group margin-left-negative3">
+                                                    <button type="button" onclick="ajax_get_content('id_from_eml', '4', 'emlfile')" id="id_from_eml_button" class="btn btn-primary dropdown-toggle">{% trans "解析到正文" %}</button>
+                                                </div>
+                                                <span class="form-control no-border">{% trans "(文件类型为.eml,文件大小：<2M)" %}</span>
+                                            </div>
+                                            <div class="col-md-12 form-inline margin-top-5 display-none" id="id_edit_from_zip">
+                                                <input id="id_from_zip" name="zipfile" type="file" class="form-control padding-top-0">
+                                                <div class="btn-group margin-left-negative3">
+                                                    <button type="button" onclick="ajax_get_content('id_from_zip', '5', 'zipfile')" id="id_from_zip_button" class="btn btn-primary dropdown-toggle">{% trans "解析到正文" %}</button>
+                                                </div>
+                                                <span class="form-control no-border">{% trans "(文件类型为.zip或.rar,如:example.html, 子目录放附件或引用图片, 文件大小：<2M)" %}</span>
+                                            </div>
+                                        </fieldset>
+                                    </td>
+                                </tr>
+                                <!--模板编辑-->
+                                <tr>
+                                    <td colspan="2" class="no-border">
+                                        <div class="padding-gutter">
+                                            <div class="col-sm-12 ">
+                                                <ul id="myTab1" class="nav nav-tabs bordered">
+                                                    <li class="active">
+                                                        <a href="#s1" data-toggle="tab" aria-expanded="true" style="color:#333!important;" class="no-margin">{% trans "邮件模板编辑" %}<i class="fa fa-caret-down margin-left-5"></i></a>
+                                                    </li>
+                                                    <li class="">
+                                                        <a href="#s2" data-toggle="tab" aria-expanded="false" style="color:#333!important;" class="no-margin">{% trans "参考模板" %}</a>
+                                                    </li>
+                                                    <li class="">
+                                                        <a href="#s3" data-toggle="tab" aria-expanded="false" style="color:#333!important;" class="no-margin">{% trans "高级设置" %}</a>
+                                                    </li>
+                                                </ul>
+                                                <div id="myTabContent1" class="tab-content bg-color-white padding-10">
+
+                                                    <div class="tab-pane fade active in" id="s1">
+                                                        <button onclick="ajaxSaveTemplate()" type="button" class="btn btn-primary btn-xs" style="margin-left: 13px;">手动保存</button>
+                                                        <div class="padding-gutter">
+                                                            <textarea cols="40" id="id_content" name="content" rows="15" style="display: none;">{{ template_obj.content|default_if_none:'' }}</textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="tab-pane fade" id="s2">
+                                                        <div class="padding-gutter" style="min-height: 450px;">
+                                                            <div class="col-sm-12 form-inline">
+                                                                <label class="control-label pull-left text-right margin-right-10">{% trans "选择分类" %}</label>
+                                                                <select onchange="changeRefImg(this.value)" autocomplete="off" id="id_category" class="form-control">
+                                                                    {% for cate_obj in cate_objs %}
+                                                                        <option value="{{ cate_obj.id }}" {% if cate_obj.id == 1 %} selected="selected" {% endif %}>{{ cate_obj.name }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                            <div id="id_ref_page" class="col-sm-12">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="tab-pane fade" id="s3">
+                                                        <div class="padding-gutter form-horizontal" style="min-height: 450px;">
+                                                            <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed" width="100%">
+                                                                <tbody>
+                                                                <tr>
+                                                                    <td class="no-border text-right myself-width-small">
+                                                                        <label class="control-label">{% trans "邮件编码" %}</label>
+                                                                    </td>
+                                                                    <td class="no-border">
+                                                                        <fieldset>
+                                                                            <div class="col-md-12 form-inline">
+                                                                                <select name="encoding" id="id_encoding" class="form-control" autocomplete="off" style="width: 150px;">
+                                                                                    {% for k, v in encoding_types %}
+                                                                                        <option value="{{ k }}" {% if k == template_obj.encoding %} selected="selected" {% endif %}>{{ v }}</option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+                                                                <tr>
+                                                                    <td class="no-border text-right myself-width-small">
+                                                                        <label class="control-label">{% trans "转换字符集" %}</label>
+                                                                    </td>
+                                                                    <td class="no-border">
+                                                                        <fieldset>
+                                                                            <div class="col-md-12 form-inline">
+                                                                                <select name="character" id="id_character" class="form-control" autocomplete="off" style="width: 150px;">
+                                                                                    {% for k, v in character_types %}
+                                                                                        <option value="{{ k }}" {% if k == template_obj.character %} selected="selected" {% endif %}>{{ v }}</option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+                                                                <tr>
+                                                                    <td class="no-border text-right myself-width-small">
+                                                                        <label class="control-label">{% trans "是否内嵌照片" %}</label>
+                                                                    </td>
+                                                                    <td class="no-border">
+                                                                        <fieldset>
+                                                                            <div class="col-md-12 form-inline">
+                                                                                <select name="image_encode" id="id_image_encode" class="form-control" autocomplete="off" style="width: 150px;" onchange="onchange_image_encode('{{ template_id }}', this.value, 'image_encode')">
+                                                                                    {% for k, v in image_encode_types %}
+                                                                                        <option value="{{ k }}" {% if k == template_obj.image_encode %} selected="selected" {% endif %}>{{ v }}</option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                                <br>
+
+                                                                                <small>
+                                                                                    {% trans "否：邮件内的图片会自动上传到U-Mail服务器上，以外部图像链接的方式显示图片。" %}<br>
+                                                                                    {% trans "是：邮件所使用的图像内嵌在邮件消息中。 这将导致邮件大小的增加(扣除更多群发点数), 但是邮件却可以脱机浏览。" %}
+                                                                                </small>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+                                                                <tr>
+                                                                    <td class="no-border text-right myself-width-small">
+                                                                        <label class="control-label">{% trans "附件设置" %}</label>
+                                                                    </td>
+                                                                    <td class="no-border">
+                                                                        <fieldset>
+                                                                            <div class="col-md-12 form-inline">
+                                                                                <select name="attachtype" id="id_attachtype" class="form-control" autocomplete="off" style="width: 150px;" onchange="onchange_image_encode('{{ template_id }}', this.value, 'attachtype')">
+                                                                                    {% for k, v in attachtype_types %}
+                                                                                        <option value="{{ k }}" {% if k == template_obj.attachtype %} selected="selected" {% endif %}>{{ v }}</option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                                <br>
+                                                                                <small>
+                                                                                    {% trans "传统附件：以普通的邮件附件形式发送，附件大小会增加邮件大小，但是附件可以脱机查看。" %}<br>
+                                                                                    {% trans "在线附件：邮件的附件以HTML超链接的形式内嵌在邮件消息中，不会增大邮件大小，但是需要网络才可访问。" %}
+                                                                                </small>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </td>
+                                                                </tr>
+                                                                <!--<tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+                                                                <tr>
+                                                                    <td class="no-border text-right myself-width-small">
+                                                                        <label class="control-label">{% trans "优先投递级别" %}</label>
+                                                                    </td>
+                                                                    <td class="no-border">
+                                                                        <fieldset>
+                                                                            <div class="col-md-12 form-inline">
+                                                                                <select name="priority" id="id_priority" class="form-control" autocomplete="off" style="width: 150px;">
+                                                                                    {% for k, v in priority_types %}
+                                                                                        <option value="{{ k }}" {% if k == template_obj.priority %} selected="selected" {% endif %}>{{ v }}</option>
+                                                                                    {% endfor %}
+                                                                                </select>
+                                                                                <br>
+                                                                                <small>
+                                                                                {% trans "最高投递级别将2倍扣除点数、较高投递级别将1.5倍扣除点数。" %}
+                                                                                </small>
+                                                                            </div>
+                                                                        </fieldset>
+                                                                    </td>
+                                                                </tr>-->
+                                                                <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="margin-left-20">
+                                            {% if content_type_flag != 2 %}
+                                                <button onclick="checkForm()" type="button" class="btn btn-primary pull-left margin-right-5" id="id_save_button">{% trans "保存" %}</button>
+                                            {% endif %}
+                                            <button type="button" class="btn btn-default pull-left" onclick="location.href='{% url "template_list" %}?isvalid=1'">{% trans "取消" %}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 用于区分是新增还是添加  -->
+                            <input name="create_or_update" value="{% if content_type_flag == 0 %}1{% else %}2{% endif %}" type="hidden">
+                            <!-- 模板类型  -->
+                            <input name="content_type" value="{{ template_obj.content_type }}" type="hidden" id="id_content_type">
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </article>
+    </div>
+
+</section>
+
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'editor/css/default.css' %}" />
+    <link rel="stylesheet" href="{% static 'uploadifive-master/uploadifive.css' %}" />
+    <style>
+        .myself-width-small{width: 120px;}
+        .myself-color-fff{color:#fff!important;}
+        .myself-bgcolor-4b981d{background:#4b981d;}
+        #ref_img_ul{list-style:none;float:left;width:750px;}
+        #ref_img_ul li{float:left;width:150px;height:165px;margin-left:8px;text-align:center;position:relative;margin-top:8px;border:1px solid #eee;}
+        .list_li {border:3px solid #fff;}
+        .img_title {width:100px;background:rgba(0,0,0,0.5);color:#fff;display:block;position:absolute;overflow:hidden;white-space:nowrap;z-index:999;left: 27px;}
+        .uploadify{margin-bottom: 2px;}
+        .self-font-md {font-size:115%!important}
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script type="text/javascript">
+        // ajax post 设置
+        $.ajaxSetup({ data: {csrfmiddlewaretoken: '{{ csrf_token }}' }, });
+        // 下载eml文件、预览html
+        function template_preview(){ location.href = "/template/preview/{{ template_id }}/"; };
+    </script>
+    {% if content_type_flag != 2 %}
+        <script charset="utf-8" src="{% static 'editor/kindeditor.js' %}"></script>
+        <script charset="utf-8" src="{% static 'editor/lang/zh_CN.js' %}"></script>
+        <script charset="utf-8" src="{% static 'medias/js/ajaxfileupload.js' %}"></script>
+        <script charset="utf-8" src="{% static 'uploadifive-master/jquery.uploadifive.js' %}"></script>
+        <script type="text/javascript">
+            /********** 主题列表 **********/
+            // js主题鼠标位置插入变量
+            var lastFocusSubject;
+            function onblurSubjectAction() { lastFocusSubject = event.srcElement; }
+            // 插入变量
+            function InsertSubjectVarString(tbid, str) {
+                var tb = document.getElementById(tbid);
+                tb.focus();
+                if (document.all) {
+                    var r = document.selection.createRange();
+                    document.selection.empty();
+                    r.text = str;
+                    r.collapse();
+                    r.select();
+                } else {
+                    var newstart = tb.selectionStart+str.length;
+                    tb.value=tb.value.substr(0,tb.selectionStart)+str+tb.value.substring(tb.selectionEnd);
+                    tb.selectionStart = newstart;
+                    tb.selectionEnd = newstart;
+                }
+            }
+            function S4(){ return (((1+Math.random())*0x10000)|0).toString(16).substring(1); }
+            function GenerateGuid(){ return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4()); }
+            // 新增主题
+            function addSubject() {
+                var subject_id = GenerateGuid();
+                var subject_html = '<div class="margin-top-5" id="id_subject_div_' + subject_id +'">' +
+                        '<input class="form-control" id="id_subject_' + subject_id + '" name="subject_list[]" onblur="onblurSubjectAction();" ' + ' value="" maxlength="150" type="text" style="width: 50%;">' +
+                        '<div class="btn-group">' +
+                        '<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"> <span class="margin-right-5">{% trans "插入变量" %}</span> <span class="caret"></span></button>' +
+                        '<ul class="dropdown-menu no-margin">' +
+                        {% for k,v in subject_vars %}
+                            '<li><a href="#" onclick="InsertSubjectVarString(\'id_subject_' + subject_id + '\', \'{{ k }}\');">{{ v }}</a></li>' +
+                        {% endfor %}
+                        '</ul></div><input value="{% trans "删除" %}" onclick="deleteSubject(\'' + subject_id + '\')" type="button" class="btn btn-outline btn-danger btn-xs" style="margin-left: 3px !important;"></div>';
+                $("#id_subject_html").append(subject_html);
+            };
+            // 删除主题
+            function deleteSubject(subject_id) { $("#id_subject_div_" + subject_id).remove(); };
+            /********** 高级设置 **********/
+            // 更改是否内嵌照片设置，用于KindEditor处理保存数据
+            function onchange_image_encode(template_id, value, field){ $.post('/template/ajax_onchange_image_encode/', {'template_id': template_id, 'value': value, 'field': field}); };
+
+            /********** 邮件模板 **********/
+            var editor;
+            KindEditor.ready(function(K) {
+                var options = {
+                    width: '900', minHeight: '450',
+                    items: ['source', 'preview', 'fullscreen', '|', 'undo', 'redo', '|', 'cut', 'copy', 'paste', 'plainpaste', 'wordpast', '|',
+                        'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', '|', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', '|',
+                        'template', 'clearhtml', 'quickformat', 'selectall', '|', 'lineheight', '/', 'formatblock', 'fontname', 'fontsize', '|',
+                        'forecolor', 'hilitecolor', 'bold', 'italic', 'underline', 'strikethrough', 'linehieght', 'removeformat', '|',
+                        'localimage', 'table', 'hr', 'link', 'unlink', '|', 'umail_link','var_tag', 'common_var'],
+                    // 'localimage', 'flash', 'media', 'insertfile', 'table', 'hr', 'link', 'unlink', '|', 'umail_link','var_tag', 'common_var'],
+                    filterMode: false, wellFormatMode: false, allowImageUpload: false, allowFlashUpload: false, allowMediaUpload: false, allowFileUpload: false, resizeType: 2,
+                    maillist: [], imagelist: [], umailLinkName: '{% trans "退订/投诉" %}', langType: 'zh_CN', syncType: "", urlType: '',
+
+                    // afterBlur:function(){this.sync();},
+                    colorTable: [
+                        ["#F8E0E0", "#F8E6E0", "#F8ECE0", "#F7F2E0", "#F7F8E0", "#F1F8E0", "#ECF8E0", "#E6F8E0", "#E0F8E0", "#E0F8E6", "#E0F8EC", "#E0F8F1", "#E0F8F7", "#E0F2F7", "#E0ECF8", "#E0E6F8", "#E0E0F8", "#E6E0F8", "#ECE0F8", "#F2E0F7", "#F8E0F7", "#F8E0F1", "#F8E0EC", "#F8E0E6", "#FAFAFA"],
+                        ["#F6CECE", "#F6D8CE", "#F6E3CE", "#F5ECCE", "#F5F6CE", "#ECF6CE", "#E3F6CE", "#D8F6CE", "#CEF6CE", "#CEF6D8", "#CEF6E3", "#CEF6EC", "#CEF6F5", "#CEECF5", "#CEE3F6", "#CED8F6", "#CECEF6", "#D8CEF6", "#E3CEF6", "#ECCEF5", "#F6CEF5", "#F6CEEC", "#F6CEE3", "#F6CED8", "#F2F2F2"],
+                        ["#F5A9A9", "#F5BCA9", "#F5D0A9", "#F3E2A9", "#F2F5A9", "#E1F5A9", "#D0F5A9", "#BCF5A9", "#A9F5A9", "#A9F5BC", "#A9F5D0", "#A9F5E1", "#A9F5F2", "#A9E2F3", "#A9D0F5", "#A9BCF5", "#A9A9F5", "#BCA9F5", "#D0A9F5", "#E2A9F3", "#F5A9F2", "#F5A9E1", "#F5A9D0", "#F5A9BC", "#E6E6E6"],
+                        ["#F78181", "#F79F81", "#F7BE81", "#F5DA81", "#F3F781", "#D8F781", "#BEF781", "#9FF781", "#81F781", "#81F79F", "#81F7BE", "#81F7D8", "#81F7F3", "#81DAF5", "#81BEF7", "#819FF7", "#8181F7", "#9F81F7", "#BE81F7", "#DA81F5", "#F781F3", "#F781D8", "#F781BE", "#F7819F", "#D8D8D8"],
+                        ["#FA5858", "#FA8258", "#FAAC58", "#F7D358", "#F4FA58", "#D0FA58", "#ACFA58", "#82FA58", "#58FA58", "#58FA82", "#58FAAC", "#58FAD0", "#58FAF4", "#58D3F7", "#58ACFA", "#5882FA", "#5858FA", "#8258FA", "#AC58FA", "#D358F7", "#FA58F4", "#FA58D0", "#FA58AC", "#FA5882", "#BDBDBD"],
+                        ["#FE2E2E", "#FE642E", "#FE9A2E", "#FACC2E", "#F7FE2E", "#C8FE2E", "#9AFE2E", "#64FE2E", "#2EFE2E", "#2EFE64", "#2EFE9A", "#2EFEC8", "#2EFEF7", "#2ECCFA", "#2E9AFE", "#2E64FE", "#2E2EFE", "#642EFE", "#9A2EFE", "#CC2EFA", "#FE2EF7", "#FE2EC8", "#FE2E9A", "#FE2E64", "#A4A4A4"],
+                        ["#FF0000", "#FF4000", "#FF8000", "#FFBF00", "#FFFF00", "#BFFF00", "#80FF00", "#40FF00", "#00FF00", "#00FF40", "#00FF80", "#00FFBF", "#00FFFF", "#00BFFF", "#0080FF", "#0040FF", "#0000FF", "#4000FF", "#8000FF", "#BF00FF", "#FF00FF", "#FF00BF", "#FF0080", "#FF0040", "#848484"],
+                        ["#DF0101", "#DF3A01", "#DF7401", "#DBA901", "#D7DF01", "#A5DF00", "#74DF00", "#3ADF00", "#01DF01", "#01DF3A", "#01DF74", "#01DFA5", "#01DFD7", "#01A9DB", "#0174DF", "#013ADF", "#0101DF", "#3A01DF", "#7401DF", "#A901DB", "#DF01D7", "#DF01A5", "#DF0174", "#DF013A", "#6E6E6E"],
+                        ["#B40404", "#B43104", "#B45F04", "#B18904", "#AEB404", "#86B404", "#5FB404", "#31B404", "#04B404", "#04B431", "#04B45F", "#04B486", "#04B4AE", "#0489B1", "#045FB4", "#0431B4", "#0404B4", "#3104B4", "#5F04B4", "#8904B1", "#B404AE", "#B40486", "#B4045F", "#B40431", "#585858"],
+                        ["#8A0808", "#8A2908", "#8A4B08", "#886A08", "#868A08", "#688A08", "#4B8A08", "#298A08", "#088A08", "#088A29", "#088A4B", "#088A68", "#088A85", "#086A87", "#084B8A", "#08298A", "#08088A", "#29088A", "#4B088A", "#6A0888", "#8A0886", "#8A0868", "#8A084B", "#8A0829", "#424242"],
+                        ["#610B0B", "#61210B", "#61380B", "#5F4C0B", "#5E610B", "#4B610B", "#38610B", "#21610B", "#0B610B", "#0B6121", "#0B6138", "#0B614B", "#0B615E", "#0B4C5F", "#0B3861", "#0B2161", "#0B0B61", "#210B61", "#380B61", "#4C0B5F", "#610B5E", "#610B4B", "#610B38", "#610B21", "#2E2E2E"],
+                        ["#3B0B0B", "#3B170B", "#3B240B", "#3A2F0B", "#393B0B", "#2E3B0B", "#243B0B", "#173B0B", "#0B3B0B", "#0B3B17", "#0B3B24", "#0B3B2E", "#0B3B39", "#0B2F3A", "#0B243B", "#0B173B", "#0B0B3B", "#170B3B", "#240B3B", "#2F0B3A", "#3B0B39", "#3B0B2E", "#3B0B24", "#3B0B17", "#1C1C1C"],
+                        ["#2A0A0A", "#2A120A", "#2A1B0A", "#29220A", "#292A0A", "#222A0A", "#1B2A0A", "#122A0A", "#0A2A0A", "#0A2A12", "#0A2A1B", "#0A2A22", "#0A2A29", "#0A2229", "#0A1B2A", "#0A122A", "#0A0A2A", "#120A2A", "#1B0A2A", "#220A29", "#2A0A29", "#2A0A22", "#2A0A1B", "#2A0A12", "#151515"],
+                        ["#190707", "#190B07", "#191007", "#181407", "#181907", "#141907", "#101907", "#0B1907", "#071907", "#07190B", "#071910", "#071914", "#071918", "#071418", "#071019", "#070B19", "#070719", "#0B0719", "#100719", "#140718", "#190718", "#190714", "#190710", "#19070B", "#000000"]
+                    ],
+                    uploadJson: {{ uploadJson_url|safe }},
+                    jsonUrl: {{ jsonUrl|safe }},
+                    tpl_id: {{ template_id }},
+                    user_id: {{ request.user.id }},
+                    service: {{ service|safe }},
+                    common_var_link: {{ common_var_link|safe }},
+                    common_var_content: {{ common_var_content|safe }},
+                    customer_var_link: {{ customer_var_link|safe }},
+                    customer_var_content: {{ customer_var_content|safe }},
+                };
+                editor = K.create('#id_content', options);
+            });
+
+
+            // 每隔5分钟
+
+            function ajaxSaveTemplate(){
+                editor.sync();
+                var content = $.trim(editor.html());
+                $.post("{% url 'ajax_save_template' template_id %}", { 'content': content }, function(data){})
+            };
+            /*
+            window.setInterval("ajaxSaveTemplate()", 300000);
+            */
+
+            /********** 上传附件 **********/
+            $(function() {
+                $('#uploadify').uploadifive({
+                    'auto' : true,
+                    'multi': true,
+                    'removeCompleted' : true,
+                    'uploadScript' : '/template/ajax_multi_upload/{{ template_id }}/?user_id={{ request.user.id }}',
+                    // 'uploadScript': "https://www.bestedm.org/template/ajax_multi_upload/{{ template_id }}/?user_id={{ request.user.id }}",
+                    'fileObjName': 'filedata',
+                    'buttonText' : '<div>{% trans "选择文件" %}</div>',
+                    'queueID' : 'fileQueue',
+                    'fileSizeLimit'   : '15MB',
+                    // 'uploadLimit' : 20,
+                    'queueSizeLimit'  : 10,
+                    'formData' :{'csrfmiddlewaretoken':"{{ csrf_token }}"},
+                    /*
+                     'onUpload' : function(file) {
+                     $data    = $(this).data('uploadifive');
+                     settings = $data.settings;
+                     if (file.size > settings.fileSizeLimit && settings.fileSizeLimit != 0) {
+                     $data.error('FILE_SIZE_LIMIT_EXCEEDED', file);
+                     file.queueItem.addClass('error').find('.fileinfo').html(' - {% trans "文件超过10M, 上传失败。" %}');
+                     }
+                     },
+                     */
+
+                    'onUploadComplete' : function(file, data) {
+                        var jsondata = JSON.parse(data);
+                        // var jsondata = eval('(' + data + ')');
+                        if (jsondata.status=='M'){
+                            file.queueItem.addClass('error').find('.fileinfo').addClass('text-danger self-font-md').html(' - {% trans "图片超过大小限制 (1MB)。" %}');
+                        } else if(jsondata.status=='S'){
+                            file.queueItem.addClass('error').find('.fileinfo').addClass('text-danger self-font-md').html(' - {% trans "上传失败，出于安全性考虑，请上传本平台支持的文件。" %}');
+                        } else if(jsondata.status=='F') {
+                            file.queueItem.addClass('error').find('.fileinfo').addClass('text-danger self-font-md').html(' - {% trans "上传异常，请重新上传。" %}');
+                        } else if(jsondata.status=='H') {
+                            editor.insertHtml(jsondata.appendto_content);
+                        } else if(jsondata.status=='C') {
+                            $("#id_attachlist_ul").append(jsondata.appendto_attchlist);
+                        } else {
+                            console.log('pass...')
+                        }
+                    },
+                });
+            });
+
+
+            // 删除附件
+            function delAttachment(attach_id, template_id){
+                if(confirm("{% trans "是否确定要删除此文件？\n注意：此操作无法恢复！" %}")) {
+                    $("#id_attach_li_" + attach_id).remove();
+                    $.post("/template/ajax_delete_attach_id/", {'attach_id': attach_id, 'template_id': template_id});}
+            };
+
+            /********** 编辑方式 **********/
+            $(function(){ shift_edit_mode();setEditTypeValNULL(); })
+            // 编辑方式
+            function shift_edit_mode(){
+                var mode = $('#id_edit_type').val(), url = $('#id_edit_from_url'), file = $('#id_edit_from_html'), eml = $('#id_edit_from_eml'), zip = $('#id_edit_from_zip');
+                switch(mode){
+                    case '1': { url.addClass('display-none'); file.addClass('display-none'); eml.addClass('display-none'); zip.addClass('display-none'); }break;
+                    case '2': { url.removeClass('display-none'); file.addClass('display-none'); eml.addClass('display-none'); zip.addClass('display-none'); }break;
+                    case '3': { url.addClass('display-none'); file.removeClass('display-none'); eml.addClass('display-none'); zip.addClass('display-none'); }break;
+                    case '4': { url.addClass('display-none'); file.addClass('display-none'); eml.removeClass('display-none'); zip.addClass('display-none'); }break;
+                    case '5': { url.addClass('display-none'); file.addClass('display-none'); eml.addClass('display-none'); zip.removeClass('display-none'); }break;
+                }
+            };
+            function setEditTypeValNULL(){
+                $("#id_from_html").val("");
+                $("#id_from_eml").val("");
+                $("#id_from_zip").val("");
+                setEditTypeENDISABLE();
+            }
+            function setEditTypeENDISABLE(){
+                $("#id_from_url_button").removeAttr("disabled");
+                $("#id_from_html_button").removeAttr("disabled");
+                $("#id_from_eml_button").removeAttr("disabled");
+                $("#id_from_zip_button").removeAttr("disabled");
+            }
+
+            // 从网址导入
+            function ajax_get_content_from_url(){
+                var ajax_url = '/template/ajax_get_content_from_url/{{ template_id }}/';
+                var html_url = $('#id_from_url').val();
+                if(html_url == '' || html_url == 'http://'){ alert("{% trans "请输入网页地址" %}"); return; } else {
+                    if (!(checkeurl(html_url))) { alert("{% trans "您输入的网址不合法！" %}"); return; } else {
+                        if(!confirm("{% trans "确定要替换当前内容？" %}")){ return; } else {
+                            $("#id_from_url_button").attr("disabled","disabled");
+                            setTimeoutShow($("#id_edit_type_show"), 0, "<img src='/static/img/loading.gif'><span class='myself-color-fff'>{% trans '正在解析url...' %}</span>");
+                            $.post(ajax_url, {'html_url': html_url,}, function(data){
+                                if(data.status == 'N'){
+                                    $("#id_from_url_button").removeAttr("disabled");
+                                    setTimeoutShow($("#id_edit_type_show"), 10000, "<span class='myself-color-fff'>" + data.msg + "</span>");
+                                } else {
+                                    $("#id_from_url_button").removeAttr("disabled");
+                                    editor.html(data.content);
+                                    setTimeoutShow($("#id_edit_type_show"), 5000, "<span class='myself-color-fff'>{% trans "解析url成功" %}</span>");
+                                }
+                            });
+                        }
+                    }
+                }
+            };
+            // url 验证
+            function checkeurl(url){
+                var expression=strRegex = "^((https|http|ftp|rtsp|mms)?://)"
+                        + "?(([0-9A-Za-z_!~*'().&=+$%-]+: )?[0-9A-Za-z_!~*'().&=+$%-]+@)?" //ftp的user@
+                        + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+                        + "|" // 允许IP和DOMAIN（域名）
+                        + "([0-9A-Za-z_!~*'()-]+\.)*" // 域名- www.
+                        + "([0-9A-Za-z][0-9a-z-]{0,61})?[0-9A-Za-z]\." // 二级域名
+                        + "[A-Za-z]{2,6})" // first level domain- .com or .museum
+                        + "(:[0-9]{1,4})?" // 端口- :80
+                        + "((/?)|" // a slash isn't required if there is no file name
+                        + "(/[0-9A-Za-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+                var objexp=new RegExp(expression);
+                if ( objexp.test(url)==true ) { return true; } else { return false; }
+            };
+            function setTimeoutShow(obj, time, html) {
+                obj.html(html);
+                obj.removeClass('display-none');
+                if ( time > 0 ) {
+                    setTimeout(EditTypeShow, time, obj);
+                }
+            };
+            function EditTypeShow(obj) {
+                obj.addClass('display-none');
+            };
+
+            // 从html、eml、zip导入获取内容
+            function ajax_get_content(edit_type_id, type, type_name){
+                var attachtype = $("#id_attachtype").val();
+                var ajax_url = "{% url 'ajax_get_html_content' %}?template_id={{ template_id }}&&edit_type=" + type + "&&type_name=" + type_name + "&attachtype=" + attachtype;
+                var type_obj = $("#"+edit_type_id)
+                if (type_obj.val()==""){
+                    alert("{% trans "请选择您要上传的文件" %}"); return ;
+                } else {
+                    if (!checkfiletype(type_obj, type)){
+                        alert("{% trans "您上传的文件类型错误！" %}");
+                        return;
+                    } else {
+                        if (!confirm("{% trans "确定要替换当前内容？" %}")){
+                            return;
+                        } else {
+                            $("#"+edit_type_id + "_button").attr("disabled","disabled");
+                            setTimeoutShow($("#id_edit_type_show"), 0, "<img src='/static/img/loading.gif'><span class='myself-color-fff'>{% trans "文件正在解析中..." %}</span>");
+                            $.ajaxFileUpload({
+                                url: ajax_url,
+                                secureuri: false,
+                                fileElementId: edit_type_id,
+                                dataType: 'json',
+                                success: function (data, status){
+                                    var jsondata = eval(data);
+                                    if(jsondata.status == 'N'){
+                                        $("#"+edit_type_id + "_button").removeAttr("disabled");
+                                        setTimeoutShow($("#id_edit_type_show"), 10000, "<span class='myself-color-fff'>" + jsondata.msg + "</span>");
+                                    } else {
+                                        editor.html(jsondata.content);
+                                        $("#id_attachlist_ul").html(jsondata.attach);
+                                        $("#"+edit_type_id).val("");
+                                        $("#"+edit_type_id + "_button").removeAttr("disabled");
+                                        setTimeoutShow($("#id_edit_type_show"), 5000, "<span class='myself-color-fff'>{% trans "文件解析成功" %}</span>");
+                                    }
+                                },
+                                error: function (data, status, e){
+                                    $("#"+edit_type_id + "_button").removeAttr("disabled");
+                                    setTimeoutShow($("#id_edit_type_show"), 10000, "<span class='myself-color-fff'>{% trans "文件解析失败" %}</span>");
+                                }
+                            });
+                            return false;
+                        }
+                    }
+                }
+            };
+            // 文件类型检测
+            function checkfiletype(type_obj, type){
+                var ext = /\.[^\.]+$/.exec(type_obj.val());
+                if (type=='3'){
+                    if (!(ext == ".html" || ext == ".htm" || ext == ".txt")){
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else if (type=='4'){
+                    if (!(ext == ".eml")){
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else if (type=='5'){
+                    if (!( ext == ".zip" || ext == ".rar" )){
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            };
+
+            /********** 参考模板 **********/
+            $(function(){ changeRefImg( $("#id_category").val() ); });
+            // 改变参考模板类型
+            function changeRefImg(cate_id) {
+                var ajax_url = "{% url 'ajax_get_ref_template_imglist' %}?cate_id=" + cate_id + "&page=1";
+                $.post(ajax_url, {}, function(data){ $('#id_ref_page').html(data); });
+            };
+            // 改变参考模板页数
+            function changeRefImgPage(page){
+                var ajax_url = "{% url 'ajax_get_ref_template_imglist' %}?cate_id=" + $("#id_category").val() + "&page=" + page;
+                $.post(ajax_url, {}, function(data){ $('#id_ref_page').html(data); });
+            };
+            // 点击模板图片
+            function coverHtmlContent(template_id){
+                var ajax_url = "{% url 'ajax_reftemplate_cover_htmlcontent' %}?template_id=" + template_id;
+                $('#ref_img_ul li').removeClass('img_select');
+                $('#id_ref_template_' + template_id).addClass('img_select');
+                if ( template_id == '0' ){ showHtmlContentLabel(); return false; }
+                $.post(ajax_url, {}, function(data){ editor.html(data); setTimeout("showHtmlContentLabel()", 50); });
+            };
+            function showHtmlContentLabel(){
+                $("#myTab1 li").removeClass('active');
+                $("#myTab1 li").eq(0).addClass('active');
+                $("#myTabContent1 div").removeClass('active').removeClass('in');
+                $("#myTabContent1 div").eq(0).addClass('active in');
+            };
+
+            /********** 保存 **********/
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            function checkForm() {
+                $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+                editor.sync();
+                var name = $.trim($('#id_name').val()), content = $.trim(editor.html());
+                // var text_content = $('#id_text_content').val();
+                if(name == '') {
+                    alert("{% trans "请填写模板名称！" %}");
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    return false;
+                }
+                var subjects = $("input[name='subject_list[]']");
+                var subflag = false;
+                for (var i = 0, j = subjects.length; i < j; i++){
+                    subject = $.trim(subjects[i].value);
+                    if (subject != "") {
+                        subflag = true; break;
+                    }
+                }
+                if (subflag == false){
+                    alert("{% trans "请至少填写一个邮件主题！" %}");
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    return false;
+                }
+                if(content == '') {
+                    alert("{% trans "请填写模板内容！" %}");
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    return false;
+                }
+                jQuery.post("{% url 'ajax_check_template_size' %}", {'template_id': '{{ template_id }}', 'c_size': content.length}, function(data){
+                    if(data.size > 100){
+                        var point = Math.ceil(data.size/100);
+                        if (confirm('{% trans "邮件大小和计费有关，目前邮件大小为" %}'+data.size+'{% trans "KB，每封邮件扣" %}'+point+'{% trans "点，确定保存吗？" %}')) {
+                            jQuery('#id_templateForm').submit();
+                        } else { $("#id_save_button").removeAttr("disabled").removeClass('disabled'); }
+                    } else { jQuery('#id_templateForm').submit(); }
+                })
+            };
+        </script>
+    {% endif %}
+{% endblock %}

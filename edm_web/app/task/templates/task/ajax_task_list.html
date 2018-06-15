@@ -1,0 +1,103 @@
+{% load i18n %}
+{% load task_tags %}
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+{% autoescape off %}
+<td>
+    <a data-toggle="modal" href="{% url 'task_view' d.id %}" data-target="#myModal" data-whatever="" title="{% trans "查看任务" %}">{{ d.send_name|default_if_none:"" }}</a>
+    {% if d.is_ab %}
+        <br/>
+        <strong class="text-danger">（智能A/B发送）</strong>
+    {% endif %}
+    {% if d.trigger_set.all %}
+        <br/>
+        <strong class="text-danger">（触发任务）</strong>
+    {% endif %}
+</td>
+{% endautoescape %}
+{% autoescape off %}
+<td>
+    <div class="" id="template_info_{{ d.id }}" type="circle">
+        <p><img src="/static/img/loading.gif" />{% trans "加载中..." %}</p>
+    </div>
+    <script>
+        $(function(){
+            $.getJSON("/task/ajax_template_info/{{ d.id }}/",  function(data){
+                $('#template_info_{{ d.id }}').html(data.info);
+            });
+        })
+    </script>
+</td>
+{% endautoescape %}
+<td>
+    {% get_maillist_subject d as multi_maillists %}
+    {% for subj in multi_maillists %}
+        <p>{{ subj }}</p>
+    {% endfor %}
+    <div><font color="Gray">
+        {% if d.send_qty %}
+            {% if d.send_qty_start %} {% trans "从" %} {{ d.send_qty_start }} {% trans "至" %} {% endif %}{{ d.send_qty }}
+        {% else %}
+            {% trans "所有地址" %}
+        {% endif %}({{ d.get_real_send_qty }})
+    </font></div>
+</td>
+<td>
+    {% if d.verify_status == 1 %}
+        {{ d.get_send_status_display }}
+        {% ifinlist d.send_status "2,-2,3,-3,4,-4" as b %}
+        {% if b %}
+            <div>
+                <font color="Gray">({{ d.get_send_rate }})</font>
+            </div>
+        {% endif %}
+    {% else %}
+        <span class="text-danger">{{ d.get_verify_status_display }}</span>
+    {% endif %}
+</td>
+<td>{{ d.time_start|date:"Y-m-d H:i:s" }}</br>
+    {{ d.time_end|date:"Y-m-d H:i:s" }}
+</td>
+{% autoescape off %}
+<td>
+    <span id="stat_info_{{ d.id }}"><img src="/static/img/loading.gif" />{% trans "加载中..." %}</span>
+    <script>
+        $(function(){
+            $.getJSON("/task/ajax_stat_info/{{ d.id }}/",  function(data){
+                $('#stat_info_{{ d.id }}').html(data.info);
+            });
+        })
+    </script>
+</td>
+{% endautoescape %}
+<td>
+    {% if d.send_status != 2 and d.send_status != 3 and d.send_status != 4 and d.send_status != -5 and d.isvalid and d.verify_status == 1 %}
+        <a type="button" class="btn btn-outline btn-primary btn-xs" href="Javascript: SetStatus({{ d.id }}, '2')"><i class="ace-icon glyphicon glyphicon-play"></i>{% trans "启动" %}</a>
+    {% endif %}
+    {% if d.send_status == 2 and d.isvalid %}
+        <a type="button" class="btn btn-outline btn-warning btn-xs" href="Javascript: SetStartStatus({{ d.id }}, '-2', '{{ d.send_name|default_if_none:"" }}')">
+            <i class="ace-icon glyphicon glyphicon-pause"></i>{% trans "暂停" %}</a>
+    {% endif %}
+    {% if d.send_status == -5 and d.isvalid %}
+        <a type="button" class="btn btn-outline btn-warning btn-xs" href="Javascript: SetStartStatus({{ d.id }}, '-2', '{{ d.send_name|default_if_none:"" }}')">
+            <i class="ace-icon glyphicon glyphicon-pause"></i>{% trans "暂停" %}</a>
+    {% endif %}
+    {% if d.send_status != 2 and d.send_status != 3 and d.send_status != 4 and d.isvalid %}
+        <a type="button" class="btn btn-outline btn-warning btn-xs" href="{% url 'task_modify' d.id %}">{% trans "修改" %}</a>
+    {% endif %}
+
+    <a href="{% url 'mail_statistics_report' d.id %}" target="_blank" class="btn btn-outline btn-info btn-xs">{% trans "查看统计" %}</a>
+
+    {% if d.isvalid and d.send_status == 3 and d.get_count_error_5 > 0 %}
+        <a href="{% url 'task_add' %}?task_id={{ d.id }}&errtype=5&status=retry" title="{% trans "失败地址重发" %}" target="_blank" class="btn btn-outline btn-primary btn-xs">{% trans "失败地址重发" %}</a>
+    {% endif %}
+    {% if d.isvalid %}
+        <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: SetStatus({{ d.id }}, '-3')">{% trans "删除" %}</a>
+        <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'task_add' %}?task_id={{ d.id }}">{% trans "复制" %}</a>
+    {% else %}
+        <a type="button" class="btn btn-outline btn-success btn-xs" href="Javascript: SetStatus({{ d.id }}, '-4')">{% trans "恢复任务" %}</a>
+    {% endif %}
+    <!--{% if not d.isvalid %}
+        <a data-toggle="modal" href="{% url 'task_view' d.id %}" data-target="#myModal" data-whatever="" class="btn btn-outline btn-primary btn-xs">{% trans "查看任务" %}</a>
+    {% endif %}-->
+</td>

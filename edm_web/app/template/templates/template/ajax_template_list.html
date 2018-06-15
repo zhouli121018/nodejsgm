@@ -1,0 +1,124 @@
+{% load i18n %}
+{% load template_tags %}
+{% load tagging_tags %}
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+{% autoescape off %}
+<td>
+    {% if is_not_share %}
+        {% if d.isvalid %}
+            {% if d.is_mosaico %}
+                <a href="{% url 'mosaico_template_modify' d.id %}" {% if d.result == 'red' %}style="color: grey;" {% endif %}>{{ d|show_template_name }}</a>
+            {% else %}
+                <a href="{% url 'ck_template' d.id %}" {% if d.result == 'red' %}style="color: grey;" {% endif %}>{{ d|show_template_name }}</a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'template_preview' d.id %}" target="_blank" {% if d.result == 'red' %}style="color: grey;" {% endif %}>{{ d|show_template_name }}</a>
+        {% endif %}
+    {% else %}
+        <a href="{% url 'template_preview' d.id %}" target="_blank" {% if d.result == 'red' %}style="color: grey;" {% endif %}>{{ d|show_template_name }}</a>
+        <br/>
+        <strong class="text-danger">（{% trans "共享模板" %}）</strong>
+    {% endif %}
+</td>
+{% endautoescape %}
+{% autoescape off %}
+<td>
+    <p style="text-align: left">{{ d.formate_template_link_size }}</p>
+</td>
+{% endautoescape %}
+<td>{{ d.created|date:"Y-m-d H:i" }}</td>
+<td>{{ d.updated|date:"Y-m-d H:i" }}</td>
+<td>
+    {% if d.result %}
+        <a data-toggle="modal" href="{% url 'show_template_report' %}?template_id={{ d.id }}" data-target="#myModal" data-whatever="" title="{% trans "检测结果" %}">
+            <img src="/static/img/report_{{ d.result }}.jpg" width="16" height="16">
+        </a>
+        {% elif d.name %}
+        <div id="id_show_result_img_{{ d.id }}">{% trans "检测中..." %}<img src="/static/img/loading.gif" width="16" height="16"></div>
+        <input id="id_template_id_{{ d.id }}" value="0" type="hidden">
+    {% else %}
+        <p>-</p>
+    {% endif %}
+
+    {% if d.bool_result_status %}
+        <script>
+            window.setInterval("ajaxCheckReport('{{ d.id }}')", 2000);
+        </script>
+    {% endif %}
+</td>
+<td style="white-space: nowrap;">
+    {% if is_not_share %}
+        <div id="id_apend_test_send_html_{{ d.id }}">
+            {% if d.isvalid %}
+                {% if d.is_mosaico %}
+                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'mosaico_template_modify' d.id %}">{% trans "修改" %}</a>
+                {% else %}
+                    <!--<a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'template_modify' d.id %}">{% trans "修改" %}</a>-->
+                    <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'ck_template' d.id %}">{% trans "修改" %}</a>
+                {% endif %}
+            {% elif not d.isvalid and d.name %}
+                <a type="button" class="btn btn-outline btn-success btn-xs" href="Javascript: SetStatus({{ d.id }}, '-3')">{% trans "恢复模板" %}</a>
+            {% endif %}
+
+            {% if d.content and d.content_type == 1 %}
+                <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'template_preview' d.id %}" target="_blank">{% trans "预览" %}</a>
+                {% elif d.content and d.content_type == 2 %}
+                <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'template_preview' d.id %}" target="_blank">{% trans "下载" %}</a>
+            {% endif %}
+
+            {% if d.content_type == 1 and d.name %}
+                <a class="btn btn-outline btn-warning btn-xs" href="Javascript: copy_template('{{ d.id }}')">{% trans "复制" %}</a>
+            {% endif %}
+
+            {% if d.isvalid %}
+                <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: SetStatus({{ d.id }}, '-2')">{% trans "删除" %}</a>
+            {% endif %}
+
+            {% if d.isvalid and request.user.service.disabled == '0' %}
+                {% if d.result == 'green' or d.result == 'yellow' or d.result == 'red_pass' %}
+                    <a type="button" class="btn btn-outline btn-success btn-xs" href="Javascript: send_test_template({{ d.id }})" id="id_send_test_template_{{ d.id }}">{% trans "发送测试" %}</a>
+                    <a data-toggle="modal" href="{% url 'test_template_history' d.id %}" data-target="#myModal" data-whatever="" title="{% trans "测试记录" %}" type="button" class="btn btn-outline btn-info btn-xs">{% trans "测试记录" %}</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% else %}
+
+        {% if d.content and d.content_type == 1 %}
+            <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'template_preview' d.id %}" target="_blank">{% trans "预览" %}</a>
+            {% elif d.content and d.content_type == 2 %}
+            <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'template_preview' d.id %}" target="_blank">{% trans "下载" %}</a>
+        {% endif %}
+
+        {% if d.content_type == 1 and d.name %}
+            <a class="btn btn-outline btn-warning btn-xs" href="Javascript: copy_template('{{ d.id }}')">{% trans "复制" %}</a>
+        {% endif %}
+
+        {% if d.isvalid and request.user.service.disabled == '0' %}
+            {% if d.result == 'green' or d.result == 'yellow' or d.result == 'red_pass' %}
+                <a type="button" class="btn btn-outline btn-success btn-xs" href="Javascript: send_test_template({{ d.id }})" id="id_send_test_template_{{ d.id }}">{% trans "发送测试" %}</a>
+                <a data-toggle="modal" href="{% url 'test_template_history' d.id %}" data-target="#myModal" data-whatever="" title="{% trans "测试记录" %}" type="button" class="btn btn-outline btn-info btn-xs">{% trans "测试记录" %}</a>
+            {% endif %}
+        {% endif %}
+
+        {% if d.isvalid %}
+            <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: SetStatus({{ d.id }}, '-9')">{% trans "删除共享" %}</a>
+        {% endif %}
+
+    {% endif %}
+</td>
+{% if request.session.is_admin %}
+    <td>
+        {% if is_not_share %}
+            {% if d.name %}
+                <a data-toggle="modal" data-target="#tagTemplateModal" data-whatever="" class="btn btn-primary pull-left" href="{% url 'tag_customer' %}?tag_type=template&obj_id={{ d.id }}">模板打标签</a>
+                <span id="id_tag_info_template{{ d.id }}" class="pull-right margin-top-10 margin-right-10">
+                    {% tags_for_object d as tag_list %}
+                    {% for t in tag_list %}
+                        <a title="删除标签{{ t }}" href="Javascript:DeleteTemplateTag('{{ t }}', '{{ t.id }}', 'template', '{{ d.id }}')" class="badge bg-color-purple">{{ t }}</a>
+                    {% endfor %}
+                </span>
+            {% endif %}
+        {% endif %}
+    </td>
+{% endif %}

@@ -1,0 +1,598 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load i18n %}
+
+{% block title %}{% trans '注册新账户,U-Mail用心服务每一刻' %}{% endblock %}
+
+{% block body %}
+
+    <header id="header">
+        <div id="logo-group">
+            <span id="logo" class="font-md">{% trans 'U-Mail邮件营销平台' %}</span>
+        </div>
+
+        <span id="extr-page-header-space">
+            <a href="{% url 'my_login' %}" class="btn btn-primary">{% trans '登录' %}</a>
+        </span>
+
+
+    </header>
+
+    <div id="main" role="main">
+        <div id="content" class="container">
+
+            <div class="widget-body no-padding no-margin">
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-9">
+
+                        <div class="padding-gutter">
+
+                            <!--<article class="col-sm-12 sortable-grid ui-sortable no-padding-left">
+                                <p class="alert alert-warning">
+                                    <i class="fa fa-warning fa-fw fa-lg"></i>请填写以下信息完成注册。</br>
+                                    <i class="fa fa-warning fa-fw fa-lg"></i>完成注册后，帐号将于其支付宝帐号绑定，以后可快捷登陆，且系统会自动充值群发点数{{register_point}}点，方便测试使用。
+                                </p>
+                            </article>-->
+
+                            <section id="widget-grid" class="">
+                                <div class="row">
+                                    <article class="col-sm-12 col-md-12 col-lg-12">
+                                        <div class="jarviswidget jarviswidget-color-darken well" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                                            <header>
+                                                <span class="widget-icon"> <i class="fa fa-hand-o-right"></i></span>
+                                                <h2>{% trans '注册U-Mail' %}</h2>
+                                            </header>
+                                            <div>
+                                                <div class="jarviswidget-editbox"></div>
+                                                <div class="widget-body no-padding">
+                                                    <form role="form" action="" method="post" id="id_Form" class="form-horizontal padding-10">
+                                                        {% csrf_token %}
+                                                        <fieldset>
+
+                                                            <!--<legend>账户信息<small>(支付宝ID: {{ ali_customer.user_id }})</small></legend>-->
+                                                            <legend class="">
+                                                                <strong class="col-md-offset-3">{% trans '注册U-Mail' %}</strong>
+                                                            </legend>
+                                                            <div class="row no-margin">
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-1">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label"><span style="color: red; margin-right: 3px;">*</span>{% trans '手机号码：' %}</label>
+                                                                        <div class="col-md-6 input-group">
+                                                                            <input class="form-control" value="" name="username" id="id_username" maxlength="20" placeholder="{% trans '手机号码' %}" onblur="onblurUsername()" onfocus="onfocusUsername()">
+                                                                            <small id="id_username_error" class="text-left txt-color-red display-none">{% trans '请重新输入合法的手机号码' %}.</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-1">
+                                                                    <div class=" form-group">
+                                                                        <label class="col-md-2 control-label"><span style="color: red; margin-right: 3px;">*</span>{% trans '输入密码：' %}</label>
+                                                                        <div class="col-md-6 input-group">
+                                                                            <input class="form-control" id="id_old_password" name="old_password" type="password" maxlength="32" value="" onblur="onblurPasswd()" onfocus="onfocusPasswd()" onkeyup="onkeyupPasswd()" autocomplete="off">
+                                                                            <small id="id_old_password_error" class="text-left txt-color-red display-none"></small>
+                                                                        </div>
+                                                                        <div class="rules_check_relative display-none" id="rules_check_relative">
+                                                                            <div class="rules_check_wrap" id="aliasValidateWrap" style="z-index: 3000;">
+                                                                                <span class="rules_check_arrow">
+                                                                                    <span class="arrow_l"></span>
+                                                                                    <span class="arrow_r"></span>
+                                                                                </span>
+                                                                                <h3 class="no-margin no-padding">{% trans '密码需满足以下要求：' %}</h3>
+                                                                                <ul class="no-margin no-padding" style="white-space:nowrap;margin-left: 13px !important;">
+                                                                                    <li style="margin-bottom: 5px; line-height: normal;">
+                                                                                        <span class="icon_rules_check" id="icon_rules_check_1"></span><span id="rules_check_error_1">{% trans '必须包含字母、数字, 可以包含特殊字符' %}</span>
+                                                                                    </li>
+                                                                                    <li style="margin-top: 5px;line-height: normal;">
+                                                                                        <span class="icon_rules_check" id="icon_rules_check_4"></span><span id="rules_check_error_4">{% trans '长度为 6-32 个字符' %}</span>
+                                                                                    </li>
+                                                                                    <li style="margin-top: 5px;line-height: normal;">
+                                                                                        <span class="icon_rules_check" id="icon_rules_check_5"></span><span id="rules_check_error_5">{% trans '不包含账户名和空格' %}</span>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-1">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label"><span style="color: red; margin-right: 3px;">*</span>{% trans '确认密码：' %}</label>
+                                                                        <div class="col-md-6 input-group">
+                                                                            <input class="form-control" id="id_new_password" name="new_password" type="password" maxlength="32" value="" onblur="onblurNewPasswd()" onfocus="onfocusNewPasswd()" autocomplete="off">
+                                                                            <small id="id_new_password_error" class="text-left txt-color-red display-none"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!--<legend>基本信息</legend>-->
+                                                            <div class="row no-margin">
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-1">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label"><span style="color: red; margin-right: 3px;">*</span>{% trans '企业名称/个人：' %}</label>
+                                                                        <div class="col-md-6 input-group">
+                                                                            <input class="form-control" value="" name="company" id="id_company" maxlength="50" onfocus="onfocusField('id_company_error')">
+                                                                            <small id="id_company_error" class="text-left txt-color-red display-none"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-1">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label"><span style="color: red; margin-right: 3px;">*</span>{% trans '联系人：' %}</label>
+                                                                        <div class="col-md-6 input-group">
+                                                                            <input class="form-control" value="" name="linkman" id="id_linkman" maxlength="50" onfocus="onfocusField('id_linkman_error')">
+                                                                            <small id="id_linkman_error" class="text-left txt-color-red display-none"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-1">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label"><span style="color: red; margin-right: 3px;">*</span>{% trans '邮箱地址：' %}</label>
+                                                                        <div class="col-md-6 input-group">
+                                                                            <input class="form-control" value="" name="email" id="id_email" maxlength="50" onfocus="onfocusField('id_email_error')">
+                                                                            <small id="id_email_error" class="text-left txt-color-red display-none"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-1">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label">QQ：</label>
+                                                                        <div class="col-md-6 input-group">
+                                                                            <input class="form-control" value="" name="im" id="id_im" maxlength="50">
+                                                                            <small id="id_im_error" class="text-left txt-color-red display-none"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-1">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label"></label>
+                                                                        <div class="col-md-6 input-group">
+                                                                            <input name="smscode" id="id_smscode" class="form-control" placeholder="{% trans '短信验证码' %}" tabindex="14" type="text">
+                                                                            <div class="input-group-btn">
+                                                                                <div class="btn-group " id="id_smscode_div">
+                                                                                    <input type="button" class="btn btn-primary text-nowrap" style="border-left:none;" onclick="get_sms_code();" value="{% trans '点击获取' %}" id="id_smscode_input">
+                                                                                </div>
+                                                                                <div class="btn-group display-none" id="id_expiretime_div">
+                                                                                    <input class="btn btn-primary text-nowrap" style="border-left:none;" id="id_expiretime" value="{% trans '120s后重试' %}">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6 col-md-offset-2 input-group">
+                                                                            <small id="id_smscode_error" class="text-left txt-color-red display-none"></small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="row no-margin">
+                                                                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-1">
+                                                                    <div class="form-group">
+                                                                        <label class="col-md-2 control-label"></label>
+                                                                        <div class="col-md-6 input-group">
+                                                                            <button class="btn btn-primary btn-block" type="button" onclick="createUserInfo()" id="id_save_button">{% trans '立即注册' %}</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </fieldset>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-3 hidden-xs hidden-sm"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="page-footer">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <span class="txt-color-white"><a href="http://www.magvision.com/" target="_blank">Copyright © U-Mail Co.,Ltd</a></span>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css_block %}
+    <style>
+        #header{height: 71px;}
+        .ac-tag { cursor: pointer;  display: inline-block;  padding: 6px 12px;  margin-right: 15px;  margin-bottom: 15px;  border: 1px solid #ddd;  border-radius: 3px;  }
+        .ac-tag.is-active { border-color: #2DA280; color: #2DA280; }
+        /*密码校验提示框样式*/
+        .rules_check_relative{  margin-top: -63px;  position: relative;  width: 500px; left:66.67%; }
+        .rules_check_wrap{  position:absolute;  padding:10px;  text-align:left;  background:#fff;  font-size:12px;  color:#494949;  border-radius:5px;  border:1px solid #bbb;  box-shadow:0px 0px 5px #ccc;  }
+        .rules_check_wrap h3{  font-weight:bold;  color:#232323;  margin:0;  padding:5px 0 5px 19px;  font-size:12px;  height:14px;  line-height:14px;  }
+        .rules_check_wrap li{  height:14px;  line-height:14px;  padding:4px 0;  list-style-type:none;  }
+        .icon_rules_check{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/pwd_circle.png);  background-repeat:no-repeat;  }
+        .rules_check_pass{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) 0px -48px no-repeat;  }
+        .rules_check_error{  color:#c00 !important;  }
+        .rules_check_fail{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) -12px -48px no-repeat;  }
+        .arrow_l, .arrow_r{  position:absolute;  top:0;left:0;  margin-top:38px;  margin-left:-20px;  display:block;  width:0;  height:0;  font-size:0;  overflow:hidden;  border:10px solid transparent;  _border-color:tomato;  _filter:chroma(color=tomato);  }
+        .arrow_l{ border-right-color:#bbb;}
+        .arrow_r{ border-right-color:#fff; margin-left:-19px;}
+    </style>
+{% endblock %}
+
+{% block jsblock %}
+    <script>
+
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(function () {
+            display_none_expiretime();
+        })
+
+        function removesmscodedisabled(){
+            $("#id_smscode_input").removeAttr("disabled", "disabled").removeClass('disabled');
+        }
+
+        $(function () { removesmscodedisabled(); display_none_expiretime(); })
+        function get_sms_code(){
+            $("#id_smscode_input").attr("disabled", "disabled").addClass('disabled');
+            var username = $("#id_username").val();
+            var old_password = $("#id_old_password").val();
+            var len_old = old_password.length;
+            var new_password = $("#id_new_password").val();
+
+
+            if ( /\s/.test(username) ){
+                removesmscodedisabled();
+                $("#id_username_error").removeClass('display-none').html('{% trans '请重新输入手机号码,不能包含空格.' %}');
+                return false;
+            } else if ( !checkMobile(username) ){
+                $("#id_username_error").removeClass('display-none').html('{% trans '请重新输入合法的手机号码.' %}');
+                return false;
+            }
+
+            if ( /\s/.test(old_password) ){
+                removesmscodedisabled();
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '包含空格，请重新输入' %}');
+                return false;
+            } else if ( old_password.replace(/^ +| +$/g, '')=='' ){
+                removesmscodedisabled();
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+                return false;
+            } else if ( username &&  old_password.indexOf(username) > -1){
+                removesmscodedisabled();
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '包含账户名，请重新输入' %}');
+                return false;
+            } else if ( !(( /[a-z]/.test(old_password) || /[A-Z]/.test(old_password)) && /[0-9]/.test(old_password)) ){
+                removesmscodedisabled();
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '必须同时包含字母、数字，请重新输入' %}');
+                return false;
+            } else if (len_old<6 || len_old >32 ){
+                removesmscodedisabled();
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '密码不能少于6或大于32个字符，请重新输入' %}');
+                return false;
+            }
+            if ( old_password != new_password ){
+                removesmscodedisabled();
+                $("#id_new_password_error").removeClass('display-none').html('{% trans '两次密码不一致，请重新输入' %}');
+                return false;
+            }
+
+            var company = $.trim($("#id_company").val());
+            var linkman = $.trim($("#id_linkman").val());
+            var email = $.trim($("#id_email").val());
+
+            if ( company == '' ){
+                removesmscodedisabled();
+                $("#id_company_error").removeClass('display-none').html('{% trans '请输入企业名称/个人。' %}');
+                return false;
+            }
+
+            if ( linkman == '' ){
+                removesmscodedisabled();
+                $("#id_linkman_error").removeClass('display-none').html('{% trans '请输入联系人。' %}');
+                return false;
+            }
+
+            if ( !checkEmail(email) ){
+                removesmscodedisabled();
+                $("#id_email_error").removeClass('display-none').html('{% trans '请重新输入合法的邮箱地址。' %}');
+                return false;
+            }
+
+            $.post("{% url 'ajax_checkusername_and_smscode' %}", {'username': username, 'ali_customer_id': '{{ ali_customer.user_id }}' }, function(data){
+                if ( data.status == 'N'){
+                    removesmscodedisabled();
+                    $("#id_username_error").removeClass('display-none').html('{% trans '该帐号已被注册，请重新输入' %}');
+                    return false;
+                } else if ( data.status == 'C'){
+                    $("#id_smscode_error").removeClass('display-none').html('{% trans '请勿恶意获取验证码(一天6次).' %}');
+                    return false;
+                } else if ( data.status == 'E'){
+                    removesmscodedisabled();
+                    $("#id_smscode_error").removeClass('display-none').html('{% trans '多次发送验证码失败，请更换手机重试或重新点击获取.' %}');
+                    return false;
+                } else {
+                    removesmscodedisabled();
+                    display_none_smscode()
+                    obj = $("#id_expiretime").val('{% trans '120s后重试' %}')
+                    MyPeriodicalExecuter(obj);
+                }
+            })
+
+        }
+
+        function display_none_smscode(){
+            $("#id_smscode_div").addClass('display-none').removeAttr("disabled").removeClass('disabled');
+            $("#id_expiretime_div").removeClass('display-none');
+        }
+
+        function display_none_expiretime(){
+            $("#id_expiretime_div").addClass('display-none');
+            $("#id_smscode_div").removeClass('display-none');
+        }
+
+        function MyPeriodicalExecuter(evt){
+            succ.obj=evt;
+            succ.loop=120;
+            sh=setInterval(succ,1000);
+        }
+
+        function succ(){
+            with(arguments.callee){
+                var str = (loop--) + "{% trans 's后重试' %}";
+                obj.val(str);
+                if (loop < 0){
+                    display_none_expiretime();
+                    clearInterval(sh);
+                    return;
+                }
+            }
+        }
+
+        $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+        function createUserInfo(){
+            $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+
+            var username = $("#id_username").val();
+            var old_password = $("#id_old_password").val();
+            var len_old = old_password.length;
+            var new_password = $("#id_new_password").val();
+
+            if ( /\s/.test(username) ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_username_error").removeClass('display-none').html('{% trans '请重新输入手机号码,不能包含空格.' %}');
+                return false;
+            } else if ( !checkMobile(username) ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_username_error").removeClass('display-none').html('{% trans '请重新输入合法的手机号码.' %}');
+                return false;
+            }
+
+            if ( /\s/.test(old_password) ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '包含空格，请重新输入' %}');
+                return false;
+            } else if ( old_password.replace(/^ +| +$/g, '')=='' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+                return false;
+            } else if ( username &&  old_password.indexOf(username) > -1){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '包含账户名，请重新输入' %}');
+                return false;
+            } else if ( !(( /[a-z]/.test(old_password) || /[A-Z]/.test(old_password)) && /[0-9]/.test(old_password)) ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '必须同时包含字母、数字，请重新输入' %}');
+                return false;
+            } else if (len_old<6 || len_old >32 ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '密码不能少于6或大于32个字符，请重新输入' %}');
+                return false;
+            }
+            if ( old_password != new_password ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_new_password_error").removeClass('display-none').html('{% trans '两次密码不一致，请重新输入' %}');
+                return false;
+            }
+
+            var company = $.trim($("#id_company").val());
+            var linkman = $.trim($("#id_linkman").val());
+            var email = $.trim($("#id_email").val());
+
+            if ( company == '' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_company_error").removeClass('display-none').html('{% trans '请输入企业名称/个人。' %}');
+                return false;
+            }
+
+            if ( linkman == '' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_linkman_error").removeClass('display-none').html('{% trans '请输入联系人。' %}');
+                return false;
+            }
+
+            if ( !checkEmail(email) ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_email_error").removeClass('display-none').html('{% trans '请重新输入合法的邮箱地址。' %}');
+                return false;
+            }
+
+            $.post("{% url 'ajax_checkusername_and_checksmscode' %}", {'username': username, 'ali_customer_id': '{{ ali_customer.user_id }}', 'smscode': $.trim($("#id_smscode").val()), }, function(data){
+                if ( data.status == 'N'){
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    $("#id_username_error").removeClass('display-none').html('{% trans '该帐号已被注册，请重新输入' %}');
+                    return false;
+                } else if ( data.status == 'C'){
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    $("#id_smscode_error").removeClass('display-none').html('{% trans '手机和获取验证码的手机不一致.' %}');
+                    return false;
+                } else if ( data.status == 'E'){
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    $("#id_smscode_error").removeClass('display-none').html('{% trans '验证码错误.' %}');
+                    return false;
+                } else if ( data.status == 'F'){
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    $("#id_smscode_error").removeClass('display-none').html('{% trans '验证码已失效，请重新获取.' %}');
+                    return false;
+                } else {
+                    removesmscodedisabled();
+                    display_none_smscode()
+                    obj = $("#id_expiretime").val('120s后重试')
+                    MyPeriodicalExecuter(obj);
+                }
+
+
+                if ( data.code == 'ok'){
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    $("#id_username_error").removeClass('display-none').html('{% trans '该帐号已被注册，请重新输入' %}');
+                    return false;
+                } else {
+                    $('#id_Form').submit();
+                }
+            })
+        }
+
+        function checkMobile(text){
+            var _emp=/^\s*|\s*$/g;
+            text=text.replace(_emp,"");
+            var _d=/^1[3578][01379]\d{8}$/g;
+            var _l=/^1[34578][01256]\d{8}$/g;
+            var _y=/^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/g;
+            if(_d.test(text)){
+                return true;
+            } else if(_l.test(text)){
+                return true;
+            }else if(_y.test(text)){
+                return true;
+            }
+            return false;
+        }
+
+        function checkEmail(field){
+            var expression = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            var obj = new RegExp(expression);
+            if(obj.test(field)==true){
+                return true;
+            }else{
+                return false;
+            }
+        };
+
+        function onblurUsername(){
+            var username = $("#id_username").val();
+
+            if ( /\s/.test(username) ){
+                $("#id_username_error").removeClass('display-none').html('{% trans '请重新输入手机号码,不能包含空格.' %}');
+                return false;
+            } else if ( !checkMobile(username) ){
+                $("#id_username_error").removeClass('display-none').html('{% trans '请重新输入合法的手机号码.' %}');
+                return false;
+            }
+
+            $.post("{% url 'ajax_check_username' %}", {'loginName': username, }, function(data){
+                if ( data.code == 'ok'){
+                    $("#id_username_error").removeClass('display-none').html('{% trans '该帐号已被注册，请重新输入' %}');
+                    return false;
+                }
+            })
+        }
+
+        function onfocusUsername(){
+            $("#id_username_error").addClass('display-none');
+        }
+
+        function onblurPasswd(){
+            var old_password = $("#id_old_password").val();
+            var len = old_password.length;
+            var username = $("#id_username").val();
+
+            $("#rules_check_relative").addClass('display-none');
+            if ( /\s/.test(old_password) ){
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '包含空格，请重新输入' %}');
+                return false;
+            } else if ( old_password.replace(/^ +| +$/g, '')=='' ){
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+                return false;
+            } else if ( username &&  old_password.indexOf(username) > -1){
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '包含账户名，请重新输入' %}');
+                return false;
+            } else if ( !(( /[a-z]/.test(old_password) || /[A-Z]/.test(old_password)) && /[0-9]/.test(old_password)) ){
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '必须同时包含字母、数字，请重新输入' %}');
+                return false;
+            } else if (len<6 || len >32 ){
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '密码不能少于6或大于32个字符，请重新输入' %}');
+                return false;
+            }
+        }
+
+        function onfocusPasswd(){
+            $("#rules_check_relative").removeClass('display-none');
+            $("#id_old_password_error").addClass('display-none');
+        }
+
+        function onkeyupPasswd(){
+            var old_password = $("#id_old_password").val();
+            var len = old_password.length;
+            var username = $("#id_username").val();
+            if ( old_password=='' ){
+                $("#icon_rules_check_1").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+                $("#icon_rules_check_5").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+                $("#icon_rules_check_4").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+                $("#rules_check_error_1").removeClass('rules_check_error');
+                $("#rules_check_error_5").removeClass('rules_check_error');
+                $("#rules_check_error_4").removeClass('rules_check_error');
+                return false;
+            }
+
+            if ( ( username && old_password.indexOf(username) > -1) || /\s/.test(old_password) ){
+                $("#rules_check_error_5").addClass('rules_check_error');
+                $("#icon_rules_check_5").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+            } else {
+                $("#rules_check_error_5").removeClass('rules_check_error');
+                $("#icon_rules_check_5").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+            }
+
+            if ( !(( /[a-z]/.test(old_password) || /[A-Z]/.test(old_password)) && /[0-9]/.test(old_password)) ){
+                $("#rules_check_error_1").addClass('rules_check_error');
+                $("#icon_rules_check_1").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+            } else {
+                $("#rules_check_error_1").removeClass('rules_check_error');
+                $("#icon_rules_check_1").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+            }
+
+            if (len<6 || len >32 ){
+                $("#rules_check_error_4").addClass('rules_check_error');
+                $("#icon_rules_check_4").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+            } else {
+                $("#rules_check_error_4").removeClass('rules_check_error');
+                $("#icon_rules_check_4").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+            }
+        }
+
+        function onblurNewPasswd(){
+            var old_password = $("#id_old_password").val();
+            var new_password = $("#id_new_password").val();
+            if ( old_password != new_password ){
+                $("#id_new_password_error").removeClass('display-none').html('{% trans '两次密码不一致，请重新输入' %}');
+                return false;
+            }
+        }
+
+        function onfocusNewPasswd(){
+            $("#id_new_password_error").addClass('display-none');
+        }
+
+        function onfocusField(errid){
+            $("#"+errid).addClass('display-none');
+        }
+
+    </script>
+{% endblock %}

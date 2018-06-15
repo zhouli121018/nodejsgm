@@ -1,0 +1,69 @@
+{% load i18n %}
+
+<tr><td colspan="2" class="no-border"><legend class="no-padding no-margin" style="border-bottom-color: #4C8FBD;"></legend></td></tr>
+
+<tr>
+    <td class="no-border text-right myself-width-small">
+        <label class="control-label">{% trans "选择联系人" %}</label>
+    </td>
+    <td class="no-border">
+        <fieldset>
+            <div class="col-md-12 form-inline">
+                <div class="col-md-5 no-padding">
+                    <select name="send_maillist" id="id_send_maillist" style="width: 100%;" autocomplete="off" tabindex="-1" aria-hidden="true"
+                            class="select2"  onchange="getMaillistCount()" multiple="" required="">
+                        {% for obj in maillist_objs %}
+                            <option value="{{ obj.id }}" {% if obj.id in c_send_maillist_ids %} selected="selected" {% elif not c_send_maillist_ids and forloop.first %} selected="selected" {% endif %}>
+                                {{ obj.subject }} （{% trans '共' %}{{ obj.count_real }}{% trans '邮箱' %}）</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-5 control-label no-padding-left" style="text-align: left;">
+                    <span style="margin-left: 7px;">
+                    (<small id="id_send_maillist_count" class="text-success"></small>)</span>
+                </div>
+            </div>
+        </fieldset>
+    </td>
+</tr>
+
+<tr id="id_send_maillist_one">
+    <td class="no-border text-right myself-width-small">
+        <label class="control-label" style="margin-top: 3px;">{% trans "发送数量" %}</label>
+    </td>
+    <td class="no-border">
+        <fieldset>
+            <div class="col-md-12">
+
+                <label class="radio radio-inline padding-top-0 margin-top-0 form-inline" style="margin-top: 7px!important;">
+                    <input type="radio" class="radiobox" id="id_send_qty_all" name="send_qty_type" value="all" {% if c_send_qty_type == 'all' %} checked="" {% endif %} onchange="onchangeQty(this.value);" autocomplete="off">
+                    <span style="white-space:nowrap;">{% trans "全部地址" %}</span>
+                    <br>
+                    <small id="id_all_error" class="myself-txt-color-err display-none"></small>
+                </label>
+
+                <label class="radio radio-inline padding-top-0 margin-top-0 form-inline" style="margin-top: 3px!important;">
+                    <input type="radio" class="radiobox" id="id_send_qty_limit" name="send_qty_type" value="limit" {% if c_send_qty_type == 'limit' %} checked="" {% endif %} onchange="onchangeQty(this.value);" autocomplete="off">
+                    <span>{% trans "部分地址" %}</span>
+                    <span id="id_send_qty_hidden" class="display-none">
+                            {% trans "从" %}
+                            <input class="form-control" id="id_send_qty_start" name="send_qty_start" type="text"
+                                   value="{% if c_send_qty_type == 'limit' %}{{ c_send_qty_start }}{% endif %}" style="width: 90px;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" onfocus="onfocusQty1()">
+                            {% trans "至" %}
+                            <input class="form-control" id="id_send_qty" name="send_qty" type="text"
+                                   value="{% if c_send_qty_type == 'limit' %}{{ c_send_qty }}{% endif %}" style="width: 90px;" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" onfocus="onfocusQty2()">
+                            {% trans "封" %}
+                    </span>
+                    <br>
+                    <small id="id_limit_error" class="myself-txt-color-err display-none"></small>
+                </label>
+
+            </div>
+        </fieldset>
+    </td>
+</tr>
+
+
+<tr id="id_trigger">
+
+</tr>

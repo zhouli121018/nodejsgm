@@ -1,0 +1,399 @@
+{% extends 'base_site.html' %}
+{% load static %}
+{% load bootstrap %}
+{% load task_tags %}
+{% load core_tags %}
+{% load i18n %}
+{% load cache %}
+
+{% block title %}{% trans '概览' %}{% endblock %}
+
+{% block pushcrew_script %}
+    <script type="text/javascript">
+        (function(p,u,s,h){
+            p._pcq=p._pcq||[];
+            p._pcq.push(['_currentTime',Date.now()]);
+            s=u.createElement('script');
+            s.type='text/javascript';
+            s.async=true;
+            s.src='https://cdn.pushcrew.com/js/bc9c0262f45f3f1fcce16565f1ac21bb.js';
+            h=u.getElementsByTagName('script')[0];
+            h.parentNode.insertBefore(s,h);
+        })(window,document);
+    </script>
+{% endblock %}
+
+{% block breadcrumb %}{% endblock %}
+{% block page-title %}{% endblock %}
+
+{% block page-content %}
+
+    <section id="widget-grid" class="">
+
+        {% if not is_latest_browser %}
+            <div class="row">
+                <article class="col-sm-12">
+                    <div class="alert alert-warning fade in">
+                        <button class="close" data-dismiss="alert">
+                            ×
+                        </button>
+                        <i class="fa-fw fa alert-warning"></i>
+                        <strong>{% trans '建议使用IE10+、最新版本的Chrome、Firefox、Safari、Opera浏览器使用本平台！' %}</strong> {{ message }}
+                    </div>
+                </article>
+            </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-sm-9 col-lg-9">
+                <div class="panel panel-default">
+
+                    <div class="panel-body status">
+
+                        <div class="who clearfix">
+                            <h4><img src="/static/img/tag_01.png" style="width: 25px !important; height: 25px !important;"/>{% trans '快速上手' %}</h4>
+                        </div>
+
+                        <div class="">
+                            <div class="col-md-12 ">
+                                <div class="m-function_wrap">
+
+                                    <div class="m-function">
+                                        <div class="item">
+                                            <a href="/core/domain/">
+                                                <img src="/static/img/ico1.png" />
+                                                <h1 class="font-md">{% trans '添加域名' %}</h1>
+                                                <span class="">{% trans '添加发件人的域名' %}</span>
+                                            </a>
+                                        </div>
+                                        <div class="item">
+                                            <a href="/address/?isvalid=1">
+                                                <img src="/static/img/ico2.png" />
+                                                <h1>{% trans '添加联系人' %}</h1>
+                                                <span>{% trans '快速导入邮箱数据' %}</span>
+                                            </a>
+                                        </div>
+                                        <div class="item">
+                                            <a href="/template/?isvalid=1">
+                                                <img src="/static/img/ico3.png" />
+                                                <h1>{% trans '创建模板' %}</h1>
+                                                <span>{% trans '制作电子邮件模板 ' %}</span>
+                                            </a>
+                                        </div>
+                                        <div class="item">
+                                            <a href="/task/?isvalid=1">
+                                                <img src="/static/img/ico4.png" />
+                                                <h1>{% trans '创建任务' %}</h1>
+                                                <span>{% trans '快速创建群发任务' %}</span>
+                                            </a>
+                                        </div>
+                                        <div class="item">
+                                            <a href="/statistics/?date_type=today">
+                                                <img src="/static/img/ico5.png" />
+                                                <h1>{% trans '查看统计' %}</h1>
+                                                <span>{% trans '邮件发送统计数据' %}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3 col-lg-3">
+                <div class="panel panel-default">
+                    <div class="panel-body status">
+                        <div class="m-member_info">
+                            <div class="thumb">
+                                {% if request.user.weixin_customer.staticimgurl %}
+                                    <img src="{{ request.user.weixin_customer.staticimgurl }}" alt="me" style="width: 73px; height: 73px; border-radius: 50%;"/>
+                                {% elif request.user.ali_customer.avatar %}
+                                    <img src="{{ request.user.ali_customer.avatar }}" alt="me" style="width: 73px; height: 73px; border-radius: 50%;"/>
+                                {% else %}
+                                    <img src="/static/img/a_users.png" alt=""  style="width: 73px; height: 73px;"/>
+                                {% endif %}
+                            </div>
+                            <h3 style="margin: 13px 0;">{{ request.user.username }}</h3>
+
+                            {% if request.user.service.is_share_flag == '3' %}
+                                <p><i>+</i>{% trans '共享群发量 ' %}<span>{{ request.user.service.limit_qty }}{% trans '点 ' %}</span>
+                                    {% if request.user.parent.service.qty_count < request.user.service.limit_qty %}
+                                        ,{% trans '实际可发送' %}{{ request.user.parent.service.qty_count }}{% trans '点' %}（{% trans '母账户剩余点数为' %}{{ request.user.parent.service.qty_count }}）
+                                    {% endif %}
+                                </p>
+                                {% elif request.user.service.is_share_flag == '4' %}
+                                <p><i>+</i>{% trans '共享群发量 ' %}<span>{{ request.user.parent.service.qty_valid }}{% trans '点 ' %}</span></p>
+                            {% else %}
+                                <p><i>+</i>{% trans '剩余群发量 ' %}<span>{{ request.user.service.qty_valid }}{% trans '点 ' %}</span></p>
+                            {% endif %}
+                        </div>
+                        {% if request.user.is_hide_order != 1 %}
+                            {% if request.user.service.is_share_flag == '1' or request.user.service.is_share_flag == '2' %}
+                                <div class="m-member_tool">
+                                    <ul>
+                                        <li><a href="/setting/pricing/"><img src="/static/img/b02.png"/>{% trans '立即充值 ' %}</a></li>
+                                        <li><a href="/setting/order/"><img src="/static/img/b03.png"/>{% trans '我的订单 ' %}</a></li>
+                                        <li><a href="/setting/invoice/"><img src="/static/img/b01.png"/>{% trans '发票管理 ' %}</a></li>
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-9 col-lg-9">
+
+                <div class="panel panel-default">
+
+                    <div class="panel-body status">
+
+                        <div class="who clearfix">
+                            <h4><img src="/static/img/tag_02.png" style="width: 25px !important; height: 25px !important;"/>{% trans '最近任务报告' %}</h4>
+                        </div>
+
+                        <div class=" " id="height-n"  style="overflow: auto;"><!--<div class="padding-10">-->
+                            <table class="table table-hover" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>{% trans '任务名称' %}</th>
+                                    <th>{% trans '邮件模板列表' %}</th>
+                                    <th>{% trans '联系人列表' %}</th>
+                                    <th>{% trans '开始/结束时间' %}</th>
+                                    <th>{% trans '邮件发送统计' %}</th>
+                                </tr>
+                                </thead>
+                                <tbody id="id_ajax_cache_latest_task" >
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-3 col-lg-3 " id="height-l">
+
+                <div class="panel panel-default">
+                    <div class="panel-body status">
+                        <div class="m-more_tool">
+                            <div class="who clearfix">
+                                <h4>{% trans '您的客服' %}</h4>
+                            </div>
+                            <div class="m-contact_tool">
+                                <div class="item">
+                                    <img src="/static/img/ico_a1.png" />
+                                    <h1>
+                                        {% if request.user.service.is_share_flag != '1' and request.user.sub_accout_manager %}
+                                            {{ request.user.sub_accout_manager.fullname }}
+                                        {% else %}
+                                            {{ request.user.manager.fullname }}
+                                        {% endif %}
+                                    </h1>
+                                    <p>{% trans '专属客服 ' %}</p>
+                                </div>
+                                <div class="item">
+                                    <img src="/static/img/ico_a2.png" />
+                                    <h1>
+                                        {% if request.user.service.is_share_flag != '1' and request.user.sub_accout_manager %}
+                                            {{ request.user.sub_accout_manager.mobile }}
+                                        {% else %}
+                                            {{ request.user.manager.phone }}
+                                        {% endif %}
+                                    </h1>
+                                    <p>{% trans '联系电话 ' %}</p>
+                                </div>
+                                <div class="item">
+                                    {% if request.user.service.is_share_flag != '1' and request.user.sub_accout_manager %}
+                                        <a href="http://wpa.qq.com/msgrd?v=3&uin={{ request.user.manager.im }}&site=qq&menu=yes" target="_blank">
+                                            <img src="/static/img/ico_a3.png" />
+                                            <h1>{{ request.user.sub_accout_manager.im }}</h1>
+                                            <p>{% trans 'QQ号码 ' %}</p>
+                                        </a>
+                                    {% else %}
+                                        <a href="http://wpa.qq.com/msgrd?v=3&uin={{ request.user.manager.im }}&site=qq&menu=yes" target="_blank">
+                                            <img src="/static/img/ico_a3.png" />
+                                            <h1>{{ request.user.manager.im }}</h1>
+                                            <p>{% trans 'QQ号码 ' %}</p>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body status">
+                        <div class="m-more_tool">
+                            <div class="who clearfix">
+                                <h4>{% trans '公告' %}</h4>
+                            </div>
+                            <div class="m-contact_tool" style="margin: 3px;background: #fff;">
+                                <div class="ajax-notifications-umail-message custom-scroll" style="max-height: 350px;" id="id_ajax_customer_message"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-body status">
+                        <div class="chat-footer" style="padding:2px 6px;">
+
+                            <form action="" method="post" onsubmit="return checkSuggestForm(this);" id="id_SuggestForm">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" id="status" value="2"/>
+                                <span class="smart-form"><div class="inline-group no-margin margin-top-5"></div></span>
+                                <div class="row" style="position:relative;">
+                                    <div class="col-xs-12">
+                                        <textarea placeholder="{% trans '您有任何建议请写在这里反馈给我们，谢谢！' %}"  name="suggest" class="custom-scroll"
+                                                  style="height: 100px!important;width: 100%;resize:none;border-color:#e7e7e7;"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <input value="{% trans '提交' %}" type="submit" class="btn btn-sm btn-primary pull-right" style="margin-top: -40px;margin-right: 5px;">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                {% comment %}
+                    {% if not request.user.new_title %}
+                        <div class="panel panel-default">
+                            <div class="panel-body status">
+                                <div class="who clearfix">
+                                    <h4>{% trans '扫一扫 关注U-Mail邮件营销平台 官方微信' %}</h4>
+                                </div>
+                                <div class="text-align-center">
+                                    <div class="waiting panelContent" style="margin:13px;">
+                                        <div class="wrp_code">
+                                            <img src="/static/img/qrcode_for_umail.jpg" alt="img" style="width: 50%;height: auto;" class="qrcode lightBorder">
+                                        </div>
+                                        <div class="info margin-top-5">
+                                            <div class="status status_browser js_status" id="wx_default_tip">
+                                                <p class="font-md">{% trans '一手掌握 最新邮件营销技巧和U-Mail动态' %}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endcomment %}
+
+            </div>
+        </div>
+
+    </section>
+
+    <div id="id_bind_dialog" title="{% trans '您还未绑定微信，请绑定' %}" style="display: none">
+        <div id="BindImg" class="text-align-center"></div>
+    </div>
+    <a data-toggle="modal" href="{% url 'bind_wechat' %}" id="bindModal" data-target="#myModal" data-whatever="" style="display: none">{% trans '立即绑定' %}</a>
+
+    <!-- Modal -->
+    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="margin:150px auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans '加载中' %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% trans '页面加载中' %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">{% trans '关闭' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="/static/css/common.css"/>
+    <style>.widget-body.no-padding{  overflow:auto;  }
+    .ajax-notifications-umail-message {  height: 365px;  display: block;  overflow: auto;  margin-right: -1px;  margin-left: -10px;  border-bottom: 1px solid #CECECE;  border-top: 1px solid #CECECE;  background: #E9E9E9;  }
+    .ajax-notifications-umail-message{  overflow-x:hidden;  border-bottom:none !important;  border-top:none !important;  background:#fff;  }
+    .status .who { padding: 10px 20px;  }  .who img{width:60px!important;height:60px!important;}  .table > thead > tr > th {border-bottom: 3px solid #ddd!important;}
+
+    .chat-body li.message .message-text a.username{  font-weight: 400;  }
+    .font-xs {  max-height: 31px!important;  overflow: hidden;  display: inline-block;  }
+    .p-relative{  position:relative !important;  }
+    .d-block{  display:block !important;  }
+    .chat-body>ul>li{  border-bottom:1px solid #ddd;  margin-left:0 !important;margin-top:0 !important;margin-bottom:0 !important;  margin-right:0 !important;padding-bottom:10px;padding-top:10px;  }
+    .chat-body.custom-scroll{  padding-right:0 !important;  }
+    .message-text{  margin-left:5px !important;  }
+    .ajax-notifications-umail-message{  overflow-x:hidden;  border-bottom:none !important;  border-top:none !important;  background:#fff;  }
+    .widget-body.no-padding{  margin:0 !important;  }
+    .font-xs{  max-height: 28px;  overflow: hidden;  display: inline-block;  }
+    .chat-body{  overflow: inherit; padding-top:0; }
+    .widget-body.no-padding{  overflow:auto;  }
+    .chat-body>ul>li.read{
+        background-color:#fff;
+    }
+    .chat-body>ul>li.unread{
+        background-color:#EAF1FB;
+    }
+    </style>
+
+
+{% endblock %}
+
+{% block my_jsblock %}
+    {% if not request.user.weixin_customer %}
+        <script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+    {% endif %}
+
+    <script>
+        $(function () {
+            $.getJSON("{% url 'ajax_customer_message' %}",  function(data){
+                $("#id_ajax_customer_message").html(data.content);
+            });
+            console.log($('#height-l').height())
+            $('#height-n').css('height',$('#height-l').height()-65+'px')
+        });
+
+        $(function () {
+            $.getJSON("{% url 'ajax_cache_latest_task' %}",  function(data){
+                $("#id_ajax_cache_latest_task").html(data.content);
+            });
+        });
+
+        {% if not request.user.weixin_customer and not request.session.is_admin and not request.user.new_title %}
+            {% if not request.user.service.is_umail %}
+                $('#bindModal').click()
+            {% endif %}
+        {% endif %}
+
+        $(function () {
+            $('body').on('click','#home-tabs li',function(e){
+                e.preventDefault();
+                var hr = $(this).find('a').attr('data-h');
+                $(this).addClass('ui-tabs-active').siblings().removeClass('ui-tabs-active');
+                $(this).addClass('ui-state-active').siblings().removeClass('ui-state-active');
+                $(hr).addClass('active').siblings().removeClass('active');
+            })
+        });
+
+
+    </script>
+{% endblock %}

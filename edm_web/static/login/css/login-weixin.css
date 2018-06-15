@@ -1,0 +1,7 @@
+/* 微信登录样式 */
+/*
+.impowerBox .info{display: none!important;}
+*/
+.impowerBox .title{display: none!important;}
+.impowerBox .qrcode{margin-top: 0!important;width: 250px!important;}
+.impowerBox .status {padding:0px 14px!important;text-align: left;}

@@ -1,0 +1,52 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans "检测报告" %}</h4>
+</div>
+
+<div class="modal-body no-padding">
+    <div class="form-horizontal padding-gutter">
+        <div class="row">
+            <div class="col-md-12">{% trans "邮件等级：" %}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-10" style="margin-left: 27px!important;">
+                {% if obj.result == 'green' %}
+                    <img src="/static/img/report_green.jpg" align="absmiddle">{% trans "此模板邮件检测合格，可以发送。" %}
+                    {% elif obj.result == 'yellow'  %}
+                    <img src="/static/img/report_yellow.jpg" align="absmiddle"> {% trans "此模板邮件发送可能存在被拦截的风险，建议进行优化调整。" %}
+                    {% elif obj.result == 'red' or obj.result == 'red_pass'  %}
+                    <img src="/static/img/report_{{ obj.result }}.jpg" align="absmiddle"> {% trans "此模板邮件发送可能存在被各大服务商直接拦截的风险，建议重新编辑后再发送。" %}
+                    <br>
+                    {% if obj.spam_note %}
+                        <strong style="color: red;">{% trans "提示：" %}</strong> {{ obj.spam_note|default_if_none:"" }}
+                    {% endif %}
+                {% endif %}
+                {% if obj.result == 'yellow' or obj.result == 'red' or obj.result == 'red_pass' %}
+                    <br/>
+                    {% trans "该模板平台" %}
+                    {% if obj.result == 'red' %}
+                        <span style="color: red;">{% trans "禁止发送" %}</span>
+                    {% else %}
+                        <span style="color: green;">{% trans "允许发送" %}</span>
+                    {% endif %}。
+                {% endif %}
+            </div>
+        </div>
+
+        {% if obj.get_edm_check_result %}
+            <div class="row" style="margin-top: 15px;">
+                <div class="col-md-12">{% trans "增强检测：" %}</div>
+            </div>
+            <div class="row">
+                <div class="col-md-10">
+                    {% autoescape off %} {{ obj.get_edm_check_result }}{% endautoescape %}
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "关闭" %}</button>
+</div>

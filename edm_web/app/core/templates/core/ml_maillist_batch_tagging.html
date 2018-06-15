@@ -1,0 +1,248 @@
+{% load tagging_tags %}
+<form action="{% url 'ml_maillist_batch_tag' %}" method="post" id="id_createForm" role="form">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <button type="button" class="btn btn-default pull-right margin-right-5" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn btn-primary pull-right margin-right-5">保存</button>
+        <h4 class="modal-title" id="myModalLabel" style="font-weight: 600">批量打标签</h4>
+    </div>
+    <div class="modal-body">
+        {% csrf_token %}
+        <input type="hidden" name="list_ids" id="list_ids" value="{{ list_ids }}"/>
+        <input type="hidden" name="action" id="action" value="address"/>
+        <input type="hidden" name="isvalid" id="isvalid" value="{{ isvalid }}"/>
+        <div class="widget-body no-padding no-margin" style="border-color: #fff!important;">
+            <div class="form-horizontal">
+                <fieldset>
+                    <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label"><strong>搜索：</strong></label>
+                                    <div class="col-md-10 input-group">
+                                        <input class="form-control" id="id_tag_search" name="tag_search" maxlength="32" value="" onblur="onTagSearch()" type="text"  list="list" autocomplete="off">
+                                        <datalist id="list">
+                                            {% for d in seach_tags %}
+                                                <option value="{{ d.name }}">{{ d.name }}</option>
+                                            {% endfor %}
+                                        </datalist>
+                                        <br><small>输入搜索标签，移动鼠标出结果，多个标签搜索以"|"分开</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label"><strong>搜索结果：</strong></label>
+                                    <div class="col-md-10 input-group">
+                                        <div id="id_tag_search_result">
+                                        <span style="display: inline;float: left;">
+                                            <span style="display: inline;float: left;">no result</span>
+                                        </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        {% for k, v, lists in tag_lists %}
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label"><strong>{{ v }}：</strong></label>
+                                    <div class="col-md-10 input-group">
+                                        <div>
+                                            {% for d in lists %}
+                                                <span style="display: inline;float: left;">
+                                                    <span onclick="changeLists('{{ k }}','{{ d.id }}', '{{ d.name }}')" style="" id="id_change_{{ d.id }}" class="ac-tag_tag">{{ d.name }}</span>
+                                                    {% if d.isremark %}
+                                                        <input class=" ac-tag_tag" id="id_remark_{{ d.id }}" maxlength="100" name="remark_{{ d.id }}" type="text" value="" style="width: 150px;margin-left: -20px;" onfocus="onfocusRemark('{{ k }}','{{ d.id }}', '{{ d.name }}')">
+                                                    {% endif %}
+                                                    {% if d.has_children %}
+                                                        <a data-toggle="modal" data-target="#tagthreeModal" data-whatever=""
+                                                           href="{% url 'tagging_open_three' %}?obj_id={{ obj_id }}&parent_id={{ d.id }}&tag_type=address"
+                                                           class="btn btn-default" style="margin-left: -19px;margin-right: 13px;padding: 6px 5px;" title="详细"  id="id_tagthreeModal_{{ d.id }}">
+                                                            <i class="fa fa-caret-down"></i>
+                                                        </a>
+                                                        <script type="text/javascript">
+                                                            $(function () {
+                                                                $("#id_tagthreeModal_{{ d.id }}").click(function(){
+                                                                    var id_array = $("input[name='name{{ d.id }}[]']");
+                                                                    var select_id = new Array();
+                                                                    for (var i = 0, j = id_array.length; i < j; i++){
+                                                                        select_id.push($.trim(id_array[i].value));
+                                                                    }
+                                                                    $("#id_tagthreeModal_{{ d.id }}").attr('href', '{% url 'tagging_open_three' %}?obj_id={{ obj_id }}&parent_id={{ d.id }}&tag_type={{ tag_type }}&child_ids=' + select_id.toString());
+                                                                });
+                                                            });
+                                                        </script>
+                                                    {% endif %}
+                                                </span>
+                                            {% endfor %}
+                                        </div>
+                                        <div style="clear: both"></div>
+                                        <span style="display: inline;float: left;">
+                                            <strong class="text-success">已选：</strong>
+                                            {% for d in lists %}
+                                                <span id="id_lists_parent_{{ d.id }}"></span>
+                                                {% if d.has_children %}
+                                                    <span id="id_lists_children_{{ d.id }}"></span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </fieldset>
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade " id="tagthreeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="margin:30px auto; width: 800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">加载中</h4>
+                </div>
+                <div class="modal-body">
+                    页面加载中
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close_bak_2" class="btn btn-default hidden" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <!--<button type="button" class="btn btn-primary" onclick="saveTag();">保存</button>-->
+        <button type="submit" class="btn btn-primary">保存</button>
+        <button id="modal_close" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+    </div>
+</form>
+
+<style>
+    .ac-tag_tag {
+        cursor: pointer;
+        display: inline-block;
+        padding: 6px 12px;
+        margin-right: 15px;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+    }
+    .ac-tag_tag.is-active_tag { border-color: #2c699d; color: #fff; background: #3276b1;}
+    .self-margin-left-5 {margin-left: 5px!important;}
+    .self-show-share-log {display:inline-block;min-width:10px;padding:3px 7px;font-size:12px;font-weight:700;color:#fff;line-height:1;vertical-align:middle;vertical-align:baseline;white-space: nowrap;text-align:center;background-color:#999;border-radius:10px;background:#3276B1!important}
+</style>
+
+<script>
+
+    /*====================django ajax ======*/
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+    /*===============================django ajax end===*/
+
+    $(function () {
+        $('#tagthreeModal').on('show.bs.modal', function (event) {
+            $(this).removeData('bs.modal');
+        })
+    });
+
+    function onTagSearch(){
+        var tag_search = $("#id_tag_search").val();
+        if ( tag_search == ""){
+            return;
+        }
+        $.getJSON("{% url 'ajax_tag_search' %}?s="+tag_search,  function(data){
+            $('#id_tag_search_result').html(data.info);
+        });
+    }
+
+    function changeSearchLists(category_id, parent_id, parent_name, tag_id, tag_name, has_parent){
+        var obj = $("#id_tag_search_change_" + tag_id);
+        // if (obj.hasClass('is-active_tag')){return;}
+        obj.addClass('is-active_tag');
+        if (has_parent=='1'){
+            $("#id_name_" + tag_id).remove();
+            $("#id_tag_span_" + tag_id).remove();
+            $("#id_lists_children_" + parent_id).append('<input type="text" class="display-none" name="name' + parent_id + '[]" id="id_name_' + tag_id + '" value="' + tag_id + '"/>');
+            $("#id_lists_children_" + parent_id).append('<span class="self-show-share-log self-margin-left-5" id="id_tag_span_' + tag_id + '">' + tag_name + '</span>');
+            var obj2 = $("#id_change_"+parent_id);
+            if ( obj2.hasClass('is-active_tag') ){
+                return;
+            } else {
+                $("#id_change_" + parent_id).addClass('is-active_tag');
+                $("#id_lists_parent_" + parent_id).append('<input type="text" class="display-none" name="name[]" id="id_name_' + parent_id + '" value="' + parent_id + '"/>');
+                $("#id_lists_parent_" + parent_id).append('<span class="self-show-share-log self-margin-left-5" id="id_tag_span_' + parent_id + '">' + parent_name + '</span>');
+            }
+        } else {
+            var obj2 = $("#id_change_"+tag_id);
+            if ( obj2.hasClass('is-active_tag') ){
+                return;
+            } else {
+                $("#id_change_" + parent_id).addClass('is-active_tag');
+                $("#id_lists_parent_" + parent_id).append('<input type="text" class="display-none" name="name[]" id="id_name_' + tag_id + '" value="' + tag_id + '"/>');
+                $("#id_lists_parent_" + parent_id).append('<span class="self-show-share-log self-margin-left-5" id="id_tag_span_' + tag_id + '">' + tag_name + '</span>');
+            }
+        }
+    }
+
+    function changeLists(cat_id, tag_id, tag_name) {
+        var obj = $("#id_change_" + tag_id);
+        if (obj.hasClass('is-active_tag')) {
+            obj.removeClass('is-active_tag');
+            $("#id_name_" + tag_id).remove();
+            $("#id_tag_span_" + tag_id).remove();
+            $("#id_lists_children_" + tag_id).html('');
+        } else {
+            obj.addClass('is-active_tag');
+            $("#id_lists_parent_" + tag_id).append('<input type="text" class="display-none" name="name[]" id="id_name_' + tag_id + '" value="' + tag_id + '"/>');
+            $("#id_lists_parent_" + tag_id).append('<span class="self-show-share-log self-margin-left-5" id="id_tag_span_' + tag_id + '">'+tag_name+'</span>');
+        }
+    }
+
+    function onfocusRemark(cat_id, tag_id, tag_name){
+        var obj = $("#id_change_"+tag_id);
+        if ( obj.hasClass('is-active_tag') ){
+            console.log('1')
+        } else {
+            obj.addClass('is-active_tag');
+            $("#id_lists_parent_" + tag_id).append('<input type="text" class="display-none" name="name[]" id="id_name_' + tag_id + '" value="' + tag_id + '"/>');
+            $("#id_lists_parent_" + tag_id).append('<span class="self-show-share-log self-margin-left-5" id="id_tag_span_' + tag_id + '">'+tag_name+'</span>');
+        }
+    }
+
+    function saveTag(){
+        var names = $("input[name='name[]']");
+        var aReturn = new Array();
+        var kwargs = {};
+        for (var i = 0, j = names.length; i < j; i++){
+            var aData = $.trim(names[i].value);
+            aReturn.push( aData );
+            // 处理备注
+            var remark = $("#id_remark_"+aData).val();
+            if ( remark == undefined || remark=='' ){
+                kwargs['remark_'+aData] = '';
+            } else {
+                kwargs['remark_'+aData] = remark;
+            }
+            // 处理三级标签
+            var names2 = $("input[name='name" + aData + "[]']");
+            if ( names2.length >= 1){
+                var aaReturn = new Array();
+                kwargs['name'+aData+'[]'] = new Array();
+                for (var x = 0, y = names2.length; x < y; x++){
+                    var aaData = names2[x].value;
+                    aaReturn.push( aaData );
+                }
+                kwargs['name'+aData+'[]'] = aaReturn;
+            }
+        }
+        kwargs['names'] = aReturn;
+        kwargs['action'] = 'address';
+        kwargs['list_ids'] = '{{ list_ids }}';
+        $('#modal_close').click();
+        $.post("{% url 'ml_maillist_batch_tag' %}", kwargs, function(data){});
+    }
+
+</script>
+

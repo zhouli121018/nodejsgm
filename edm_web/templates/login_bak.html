@@ -1,0 +1,247 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load core_tags %}
+{% block title %}帐号登录{% endblock %}
+{% block body %}
+    <body class="animated fadeInDown">
+
+    <header id="header">
+        <div id="logo-group">
+            <span id="logo"> <img src="/static/sa/img/logo.png" alt="U-MAIL 邮件营销平台"> </span>
+        </div>
+        <span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Need an account?</span> <a href="register.html" class="btn btn-danger">Create account</a> </span>
+    </header>
+
+    <div id="main" role="main">
+        <div id="content" class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
+                    <h1 class="txt-color-red login-header-big">SmartAdmin</h1>
+                    <div class="hero">
+
+                        <div class="pull-left login-desc-box-l">
+                            <h4 class="paragraph-header">It's Okay to be Smart. Experience the simplicity of SmartAdmin, everywhere you go!</h4>
+                            <div class="login-app-icons">
+                                <a href="javascript:void(0);" class="btn btn-danger btn-sm">Frontend Template</a>
+                                <a href="javascript:void(0);" class="btn btn-danger btn-sm">Find out more</a>
+                            </div>
+                        </div>
+
+                        <img src="/static/sa/img/demo/iphoneview.png" class="pull-right display-image" alt="" style="width:210px">
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <h5 class="about-heading">About SmartAdmin - Are you up to date?</h5>
+                            <p>
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa.
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <h5 class="about-heading">Not just your average template!</h5>
+                            <p>
+                                Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi voluptatem accusantium!
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+                    <div class="well no-padding">
+                        <form action="" onsubmit="return LoginCheck(this);" method="POST" class="smart-form client-form">
+                            {% csrf_token %}
+                            <header role="heading" class="no-padding">
+                                <ul class="nav nav-tabs in">
+                                    <li class="col-sm-6 active">
+                                        <a data-toggle="tab" href="#faq-tab-1">
+                                            <i class="fa fa-user bigger-120 margin-right-5 text-primary"></i>账号登陆
+                                        </a>
+                                    </li>
+
+                                    <li class="col-sm-6">
+                                        <a data-toggle="tab" href="#faq-tab-2">
+                                            <i class="fa fa-weixin bigger-120 margin-right-5 text-success"></i>微信登陆
+                                        </a>
+                                    </li>
+                                </ul>
+                            </header>
+
+                            <div class="tab-content">
+                                <div id="faq-tab-1" class="tab-pane fade in active">
+                                    <fieldset>
+                                        {% if messages %}
+                                            {% for message in messages %}
+                                                <div class="alert alert-block alert-success">
+                                                    <button type="button" class="close" data-dismiss="alert">
+                                                        <i class="ace-icon fa fa-times"></i>
+                                                    </button>
+
+                                                    <i class="ace-icon fa fa-check green"></i>
+
+                                                    <strong class="green">
+                                                        {{ message }}
+                                                    </strong>,
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                        {% if form.errors and not form.non_field_errors %}
+                                            <p class="errornote txt-color-red"> 错误提示： </p>
+                                        {% endif %}
+
+                                        {% if form.non_field_errors %}
+                                            {% for error in form.non_field_errors %}
+                                                <p class="errornote txt-color-red">
+                                                    {{ error }}
+                                                </p>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                        <section>
+                                            <!--<label class="label">用户名</label>-->
+                                            <label class="input">
+                                                <i class="icon-append fa fa-user"></i>
+                                                <input type="text" name="username" id="username" value="{{ form.data.username }}" placeholder="用户名">
+                                                <!--<b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal margin-right-5"></i>请输入用户名</b>-->
+                                            </label>
+                                            <label class="label txt-color-red">{{ form.username.errors }}</label>
+                                        </section>
+
+                                        <section>
+                                            <!--<label class="label">密码</label>-->
+                                            <label class="input">
+                                                <i class="icon-append fa fa-lock"></i>
+                                                <input type="password" name="password" id="password" value="{{ form.data.password }}" placeholder="密码">
+                                                <!--<b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal margin-right-5"></i>请输入密码</b>-->
+                                            </label>
+                                            <label class="label txt-color-red">{{ form.password.errors }}</label>
+                                        </section>
+
+                                        <section>
+                                            <label class="block clearfix">
+                                                <div id="slider">
+                                                    <div id="slider_bg"></div>
+                                                    <span id="label">>></span> <span id="labelTip">拖动滑块验证</span>
+                                                    <input type="hidden" id="code_id"  name="captcha" />
+                                                </div>
+                                            </label>
+                                            <div class="note">
+                                                <a href="{% url 'password_reset' %}">忘记密码?</a>
+                                            </div>
+                                        </section>
+
+                                        <section>
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="remember" checked="">
+                                                <i></i>记住我</label>
+                                        </section>
+                                    </fieldset>
+                                    <footer>
+                                        <button type="submit" class="btn btn-primary">
+                                            登录平台
+                                        </button>
+                                    </footer>
+                                </div>
+
+                                <div id="faq-tab-2" class="tab-pane fade in">
+                                    <div class="erweimaImgDiv">
+                                        <div id="erweimaImg" class="text-center"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <!--<h5 class="text-center"> - Or sign in using -</h5>
+
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href="javascript:void(0);" class="btn btn-primary btn-circle"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="btn btn-info btn-circle"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0);" class="btn btn-warning btn-circle"><i class="fa fa-linkedin"></i></a>
+                        </li>
+                    </ul>-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    </body>
+
+{% endblock %}
+
+{% block css_block %}
+    <link rel="stylesheet" href="{% static 'slide-unlock/slide-unlock.css' %}" />
+    <style>
+        #header{height: 71px!important;}
+    </style>
+{% endblock %}
+
+{% block jsblock %}
+    <!-- inline scripts related to this page -->
+
+    <script src="{% static 'slide-unlock/slide-unlock.js' %}"></script>
+    <script src="{% static 'layer/layer.js' %}"></script>
+    <script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+
+    <script type="text/javascript">
+
+        runAllForms();
+
+        jQuery(function($) {
+            var slider = new SliderUnlock("#slider",{
+                successLabelTip : "恭喜你，验证成功"
+            },function(){
+                $('#code_id').val('1');
+            });
+            slider.init();
+        });
+
+        function LoginCheck(form){
+            if(form.username.value == "") {
+                layer.tips("用户名不能为空！", '#username');
+                form.username.focus();
+                return false;
+            }
+            if(form.password.value == "") {
+                layer.tips("登录密码不能为空！", '#password');
+                form.password.focus();
+                return false;
+            }
+            if(form.captcha.value != "1") {
+                layer.tips("请拖动滑块完成验证!", '#slider');
+                return false;
+            }
+            return true;
+        };
+
+        window.onload = function(){
+            function guid() {
+                function S4() {
+                    return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+                }
+                return (S4()+S4()+S4()+S4());
+            }
+            var obj = new WxLogin({
+                id:"erweimaImg",
+                appid: "{% settings_value "OPEN_WX_APPID" %}",
+                scope: "snsapi_login",
+                redirect_uri: "{% settings_value "OPEN_WX_LOGIN_URI" %}",
+                state: guid(),
+                style: "",
+                href: ""
+            });
+        }
+
+    </script>
+{% endblock %}

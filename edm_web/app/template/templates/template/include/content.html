@@ -1,0 +1,65 @@
+{% load i18n %}
+
+<div class="form-group " style="background: #fbfbfb; border: solid 1px #bbb; border-bottom: none; /*border-top: none;*/margin-bottom: 0px;">
+    <div class="col-md-12">
+        <div class="form-inline" style="padding-top: 5px;padding-bottom: 5px;">
+            <div style="float: left;padding-top: 7px;">{% trans "从网址导入" %}</div>
+            <div class="smart-form" style="float: left;margin-left: 5px;">
+                <label class="input" style="width: 400px;display: inline-block">
+                    <input id="id_from_url" name="from_url" type="text" value="http://"  maxlength="200">
+                </label>
+            </div>
+            <!--<input class="form-control" id="id_from_url" name="from_url" type="text" value="http://"  maxlength="200" style="width: 400px;">-->
+            <div class="btn-group margin-left-negative3">
+                <button type="button" onclick="ajax_get_content_from_url()" id="id_from_url_button" class="btn btn-primary dropdown-toggle">{% trans "解析到正文" %}</button>
+            </div>
+            <span id="id_edit_type_show1" class="form-control myself-bgcolor-4b981d no-border display-none"></span>
+            <a onclick="ajaxPreTemplate()" class="btn btn-outline btn-link btn-xs pull-right margin-left-5" type="button" target="_blank">
+                <img src="/static/img/ckzoom.gif">{% trans "预览" %}
+            </a>
+            <a onclick="ajaxSaveTemplate()" class="pull-right btn btn-outline btn-link btn-xs" id="id_ajaxSaveTemplate">
+                <img src="/static/img/cksave.gif">{% trans "保存" %}
+            </a>
+            <span class="pull-right display-none" style="color: red;margin-top: 5px;" id="id_ajaxSaveTemplateSpan"></span>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-inline" style="padding-top: 5px;padding-bottom: 5px;">
+            <div style="float: left;padding-top: 7px;">{% trans "从文件导入" %}</div>
+            <div class="smart-form" style="float: left;margin-left: 5px;">
+                <!--<label class="label">File input</label>-->
+                <div class="input input-file" style="width: 400px;display: inline-block">
+                    <span class="button"><input type="file" id="id_from_html" name="htmlfile" onchange="this.parentNode.nextSibling.value = this.value">{% trans "浏览" %}</span><input type="text" readonly>
+                </div>
+                <!--<div class="note note-error">File size must be less than 3Mb.</div>-->
+            </div>
+            <!--<input id="id_from_html" name="htmlfile" type="file" class="form-control" style="width: 400px;padding-top: 1px;">-->
+            <div class="btn-group margin-left-negative3">
+                <button type="button" onclick="ajax_get_content('htmlfile')" id="id_from_html_button" class="btn btn-primary dropdown-toggle">{% trans "解析到正文" %}</button>
+            </div>
+            <span id="id_edit_type_show2" class="form-control myself-bgcolor-4b981d no-border display-none"></span>
+            <span class="help-block " style="margin-bottom:0px;margin-top: 0px;">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {% trans "支持 txt、htm、html、eml、rar、zip文件，其中rar、zip文件结构为:example.html, 子目录放附件或引用图片；文件大小：<2M。" %}
+            </span>
+        </div>
+    </div>
+
+</div>
+
+<div class="form-group {% if form.content.errors %}has-error{% endif %}" >
+    <label class="control-label  " for="id_content"></label>
+    <div class=" ">
+        <textarea class=" form-control form-control" cols="40" id="id_content" name="content" rows="10">{{ form.content.value|default_if_none:"" }}</textarea>
+        {% if form.content.errors %}
+            <div class=" ">
+                <div class="input-group margin-top-5">
+                    {% for error in form.content.errors %}
+                        <span class="help-block ">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>

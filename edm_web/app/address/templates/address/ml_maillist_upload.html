@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<!--
+/*
+ * jQuery File Upload Plugin Basic Demo
+ * https://github.com/blueimp/jQuery-File-Upload
+ *
+ * Copyright 2013, Sebastian Tschan
+ * https://blueimp.net
+ *
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/MIT
+ */
+-->
+{% load i18n %}
+{% load static from staticfiles %}
+<html lang="en">
+<head>
+    <!-- Force latest IE rendering engine or ChromeFrame if installed -->
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+    <meta charset="utf-8">
+    <title>{% trans "地址文件上传" %}</title>
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/sa/css/bootstrap.min.css' %}">
+    <!-- Generic page styles -->
+    <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+    <link rel="stylesheet" href="{% static 'file_upload/css/jquery.fileupload.css' %}">
+</head>
+<body>
+<div class="container" style="float:left">
+    <!-- The fileinput-button span is used to style the file input field as button -->
+    {% blocktrans %}地址打散上传：{% endblocktrans %}<input type="checkbox" id="is_disorder" name="is_disorder" checked="checked">&nbsp;&nbsp;&nbsp;&nbsp;
+    {% blocktrans %}是否忽略文件第一行：{% endblocktrans %}<input type="checkbox" id="is_ignore" name="is_ignore" >
+    <br/>
+    <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>{% blocktrans %}上传地址文件(txt, csv, xls, xlsx){% endblocktrans %}</span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" type="file" name="files[]" multiple>
+    </span>
+    <br>
+    <br>
+    <!-- The global progress bar -->
+    <div id="progress" class="progress">
+        <div class="progress-bar progress-bar-success"></div>
+    </div>
+    <!-- The container for the uploaded files -->
+    <div id="files" class="files"></div>
+    <div id="result" style="display:none">
+        <span style="color: green;">{% blocktrans %}上传成功{% endblocktrans %}</span>
+        <span style="margin-left:20px;">{% blocktrans %}点击{% endblocktrans %} <a target="_blank" href="{% url 'ml_import_log' %}">{% blocktrans %}查看地址导入记录{% endblocktrans %}</a> {% blocktrans %}查看地址导入情况{% endblocktrans %}</span>
+    </div>
+    <br>
+</div>
+<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
+<script src="{% static '/sa/js/libs/jquery-2.1.1.min.js' %}"></script>
+
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="{% static 'file_upload/js/vendor/jquery.ui.widget.js' %}"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="{% static 'file_upload/js/jquery.iframe-transport.js' %}"></script>
+<!-- The basic File Upload plugin -->
+<script src="{% static 'file_upload/js/jquery.fileupload.js' %}"></script>
+<!-- The File Upload processing plugin -->
+<script src="{% static 'file_upload/js/jquery.fileupload-process.js' %}"></script>
+<!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
+<!--<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
+<script src="{% static '/sa/js/bootstrap/bootstrap.min.js' %}"></script>
+<!-- The File Upload validation plugin -->
+<script src="{% static 'file_upload/js/jquery.fileupload-validate.js' %}"></script>
+
+<script>
+    /*jslint unparam: true */
+    /*global window, $ */
+    $(function () {
+        'use strict';
+        // Change this to the location of your server-side upload handler:
+
+        var url = '';
+        $('#fileupload').fileupload({
+            url: url,
+            dataType: 'json',
+            acceptFileTypes: /(\.|\/)(txt|xls|csv|xlsx)$/i,
+            maxFileSize: 20971520,
+            sequentialUploads: true,
+            done: function (e, data) {
+                $('#result').show()
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $('#progress .progress-bar').css(
+                        'width',
+                        progress + '%'
+                );
+                $('#id-progress').html(progress + '%');
+            }
+        }).bind('fileuploadsubmit', function (e, data) {
+            data.formData = {csrfmiddlewaretoken: "{{csrf_token}}",
+                is_disorder: $('#is_disorder').is(':checked'),
+                is_ignore: $('#is_ignore').is(':checked'),
+            };
+        }).on('fileuploadadd', function (e, data) {
+            $('#files').text('');
+            $('#result').hide()
+            data.context = $('<div/>').appendTo('#files');
+            $.each(data.files, function (index, file) {
+                var node = $('<p/>')
+                        .append($('<span/>').text(file.name))
+                        .append($('<span/>').attr('class', 'file-size').text('('+formatFileSize(file.size)+')'))
+                        .append($('<span/>').attr('id', 'id-progress'));
+                if (!index) {
+                    node.append('<br>');
+                }
+                node.appendTo(data.context);
+            });
+        }).on('fileuploadprocessalways', function (e, data) {
+            var currentFile = data.files[data.index];
+            if (data.files.error && currentFile.error) {
+                $('<p style="color: red;">Upload file error: ' + currentFile.error + '<i class="elusive-remove" style="padding-left:10px;"/></p>')
+                        .appendTo('#files');
+            }
+        }) .on('fileuploadadd', function (e, data) {
+            //alert(data.files.error);
+        }).prop('disabled', !$.support.fileInput)
+                .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    });
+
+    function formatFileSize(fileSizeInBytes) {
+
+        var i = -1;
+        var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+        do {
+            fileSizeInBytes = fileSizeInBytes / 1024;
+            i++;
+        } while (fileSizeInBytes > 1024);
+
+        return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
+    };
+</script>
+</body>
+</html>

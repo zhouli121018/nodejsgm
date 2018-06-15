@@ -1,0 +1,20 @@
+{% load i18n %}
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+<td>{{ d.name }}</td>
+<td>
+    {% if d.is_odd_consume %}<p>{% trans '异常消费提醒' %}</p>{% endif %}
+    {% if d.is_remote_login %}<p>{% trans '异地登录提醒' %}</p>{% endif %}
+    {% if d.is_odd_domain %}<p>{% trans '域名解析记录异常提醒' %}</p>{% endif %}
+    {% if d.is_reduce_credit %}<p>{% trans '信誉度降低提醒' %}</p>{% endif %}
+    {% if d.is_alter_contacts %}<p>{% trans '联系人信息修改提醒' %}</p>{% endif %}
+    {% if d.is_success_recharge %}<p>{% trans '充值成功提醒' %}</p>{% endif %}
+</td>
+<td>
+    {% if d.email %}<p>{% trans '邮件' %}：{{ d.email }}</p>{% endif %}
+    {% if d.mobile %}<p>{% trans '短信' %}：{{ d.mobile }}</p>{% endif %}
+</td>
+<td>
+    <a data-toggle="modal" href="{% url 'customer_notice_modify' d.id %}" data-target="#myModal" class="btn btn-outline btn-primary btn-sm" data-whatever="">{% trans '修改' %}</a>
+    <a type="button" class="btn btn-outline btn-danger btn-sm" href="Javascript: SetStatus({{ d.id }}, '-1')">{% trans '删除' %}</a>
+</td>

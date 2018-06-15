@@ -1,0 +1,332 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "联系人分类管理" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "联系人管理" %}</li>
+    <li>{% if is_subscribe == '1' %}
+        {% trans "非订阅地址" %}
+        {% elif is_subscribe == '2' %}
+        {% trans "订阅地址" %}
+    {% else %}
+        {% trans "全部地址" %}
+    {% endif %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-list margin-right-5"></i>{% trans "联系人分类：" %}<span><code>{{ subject }}</code></span>
+            </h1>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+
+    <section id="widget-grid" class=""><!-- widget grid -->
+        <div class="row"><!-- row -->
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12"><!-- NEW WIDGET START -->
+                <div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <!-- widget options:
+                    usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                    data-widget-colorbutton="false"
+                    data-widget-editbutton="false"
+                    data-widget-togglebutton="false"
+                    data-widget-deletebutton="false"
+                    data-widget-fullscreenbutton="false"
+                    data-widget-custombutton="false"
+                    data-widget-collapsed="true"
+                    data-widget-sortable="false"
+                    -->
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>{% if is_subscribe == '1' %}{% trans "非订阅地址" %}{% elif is_subscribe == '2' %}{% trans "订阅地址" %}{% else %}{% trans "全部地址" %}{% endif %}{% trans " 列表" %}</h2>
+                    </header>
+
+                    <!-- widget div-->
+                    <div>
+                        <!-- widget edit box -->
+                        <div class="jarviswidget-editbox">
+                            <!-- This area used as dropdown edit box -->
+                        </div>
+                        <!-- end widget edit box -->
+
+                        <!-- widget content -->
+                        <div class="widget-body no-padding">
+                            <form id="id_form" action="" method="POST">
+                                {% csrf_token %}
+                                <div class="myself-dt-toolbar">
+                                    <div class="col-xs-12 col-sm-12">
+                                        <div class="margin-left-negative13">
+                                            <button type="button" class="btn btn-sm btn-link no-padding-left" onclick="fnGetAll();">{% trans "全选" %}</button>/
+                                            <button type="button" class="btn btn-sm btn-link " onclick="fnGetReverse();">{% trans "取消" %}</button>
+                                            <a type="button" class="btn btn-sm btn-primary" href="#" onclick="changeStatus()">{% trans "全部地址" %}</a>
+                                            <a type="button" class="btn btn-sm btn-primary" href="#" onclick="changeStatus('1')">{% trans "非订阅地址" %}</a>
+                                            <a type="button" class="btn btn-sm btn-primary" href="#" onclick="changeStatus('2')">{% trans "订阅地址" %}</a>
+                                            <a type="button" class="btn btn-sm btn-primary" href="#" onclick="changeStatus('3')">{% trans "投诉地址" %}</a>
+                                            {% if is_modify_flag %}
+                                                <button type="button" class="btn btn-sm btn-danger" onclick="DelteSelected();" id="id_deleteselected">{% trans "删除选中地址" %}</button>
+                                            {% endif %}
+                                            <br >
+                                            <span class="text-nowrap">
+                                                <span class="txt-color-green text-success"><strong>{% trans "域名占比：" %}</strong></span>
+                                                <span id="id_domain_content"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="id" id="id" />
+                                <input type="hidden" name="status" id="status" />
+                                <input type="hidden" name="ids" id="ids" />
+                                <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th width="4%">ID</th>
+                                        <th width="10%">{% trans "邮件地址" %}</th>
+                                        <th>{% trans "是否订阅" %}</th>
+                                        <th>{% trans "详细信息" %}</th>
+                                        <th >{% trans "变量1" %}</th>
+                                        <th >{% trans "变量2" %}</th>
+                                        <th >{% trans "变量3" %}</th>
+                                        <th >{% trans "变量4" %}</th>
+                                        <th >{% trans "变量5" %}</th>
+                                        <th >{% trans "变量6" %}</th>
+                                        <th >{% trans "变量7" %}</th>
+                                        <th>{% trans "变量8" %}</th>
+                                        <th>{% trans "变量9" %}</th>
+                                        <th>{% trans "变量10" %}</th>
+                                        {% for var_x in field_lists %}
+                                            <th>{{ var_x }}</th>
+                                        {% endfor %}
+                                        <th width="10%">{% trans "操作" %}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans "加载中" %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% blocktrans %}页面加载中{% endblocktrans %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">{% trans "关闭" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block css_block %}
+    <link href="/static/sa/css/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="{% static 'sa/js/plugin/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block my_jsblock %}
+    <!-- PAGE RELATED PLUGIN(S) -->
+    <script src="/static/sa/js/plugin/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.colVis.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.tableTools.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="/static/sa/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+
+    <script src="{% static 'sa/js/plugin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static 'sa/js/plugin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+
+    <script type="text/javascript">
+
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(function () {
+            $('#myModal').on('show.bs.modal', function (event) {
+                $(this).removeData('bs.modal');
+            })
+        });
+
+        $(function () {
+            var ajax_url = "{% url 'ajax_domain_content' list_id %}?is_subscribe={{ is_subscribe }}";
+            $("#id_domain_content").html("<img style='width: 18px;height: 18px;color: #fff;' src='/static/img/loading.gif'><span>&nbsp;&nbsp;{% trans "加载中..." %}</span>")
+            $.post(ajax_url, {}, function(data){
+                $("#id_domain_content").html(data)
+            });
+        });
+
+        var ip_table;
+        $(function () {
+            var ajax_url = "{% url 'ajax_subscribe_list' list_id %}" + window.location.search;
+            ip_table = $('#dt_basic').dataTable({
+                // "columnDefs": [ { "targets": [ 0 ], "visible": false, "searchable": false }],
+                "iDisplayLength": 25,
+                "processing": false,
+                "serverSide": true,
+                "stateSave": true,
+                {% if is_modify_flag %}
+                    "lengthMenu": [[25, 50, 100, 250, 500], [25, 50, 100, 250, 500]],
+                {% else %}
+                    "lengthMenu": [[25], [25]],
+                {% endif %}
+                "ajax": {'url': ajax_url,
+                        data: function (data) {
+                          for (var i = 0, len = data.columns.length; i < len; i++) {
+                              if (! data.columns[i].search.value) delete data.columns[i].search;
+                              if (data.columns[i].searchable === true) delete data.columns[i].searchable;
+                              if (data.columns[i].orderable === true) delete data.columns[i].orderable;
+                              if (data.columns[i].data === data.columns[i].name) delete data.columns[i].name;
+                          }
+                          delete data.search.regex;
+                      }
+                },
+                "drawCallback": function(oSettings, json) {
+                    $('#dt_basic tr').click( function() {
+                        if ( $(this).hasClass('row_selected') )
+                            $(this).removeClass('row_selected');
+                        else
+                            $(this).addClass('row_selected');
+                    } );
+                },
+                "aaSorting": [
+                    [ 1, "asc" ]
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "{% blocktrans %}显示 _MENU_ 每页{% endblocktrans %}",
+                    "sZeroRecords": "{% blocktrans %}对不起! 信息筛选结果为空!{% endblocktrans %}",
+                    "sInfo": "{% blocktrans %}从 _START_ 到 _END_ 总计: _TOTAL_ 条记录{% endblocktrans %}",
+                    "sInfoEmpty": "{% blocktrans %}总计: 0 条记录{% endblocktrans %}",
+                    "sInfoFiltered": "{% blocktrans %}(从 _MAX_ 条记录筛选出){% endblocktrans %}",
+                    //"sSearch": "搜索: ",
+                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+                    "oPaginate": {
+                        "sFirst":    " {% blocktrans %}第一页{% endblocktrans %} ",
+                        "sPrevious": " {% blocktrans %}上一页{% endblocktrans %} ",
+                        "sNext":     " {% blocktrans %}下一页{% endblocktrans %} ",
+                        "sLast":     " {% blocktrans %}最后一页{% endblocktrans %} "
+                    }
+                },
+
+                "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+ "t"+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+            });
+            //$("#dt_basic_length").addClass('pull-right');
+        });
+
+        $.fn.dataTableExt.oApi.fnGetFilteredNodes = function ( oSettings ) {
+            var anRows = [];
+            //var length = oSettings._iDisplayLength > 0 ? oSettings._iDisplayLength: oSettings.aiDisplay.length;
+            var length = oSettings.aiDisplay.length;
+            for ( var i=0, iLen=length ; i<iLen ; i++ ) {
+                var nRow = oSettings.aoData[ oSettings.aiDisplay[i] ].nTr;
+                anRows.push( nRow );
+            }
+            return anRows;
+        };
+
+        function fnGetAll() {
+            var aTrs = ip_table.fnGetFilteredNodes();
+            for ( var i=0 ; i<aTrs.length ; i++ ) {
+                if ( !$(aTrs[i]).hasClass('row_selected') )
+                    $(aTrs[i]).addClass('row_selected');
+            }
+        };
+
+        function fnGetReverse() {
+            var aTrs = ip_table.fnGetFilteredNodes();
+            for (var i=0 ; i<aTrs.length ; i++ ) {
+                if ( $(aTrs[i]).hasClass('row_selected') ) {
+                    $(aTrs[i]).removeClass('row_selected');
+                }
+            }
+        };
+
+        function fnGetSelected() {
+            var aReturn = new Array();
+            var aTrs = ip_table.fnGetFilteredNodes();
+            for ( var i=0 ; i<aTrs.length ; i++ ) {
+                if ( $(aTrs[i]).hasClass('row_selected') ) {
+                    var aData = ip_table.fnGetData( aTrs[i]);
+                    var iId = aData[0];
+                    aReturn.push( iId );
+                }
+            }
+            return aReturn;
+        };
+
+        function DelteSelected(){
+            var id_array = fnGetSelected();
+            if (id_array.length == 0){
+                alert("{% blocktrans %}你还没有选中要删除的地址！请点击需要删除的行{% endblocktrans %}");
+                return false;
+            }
+            if (!confirm("{% trans "你确定要删除" %} " + id_array.length + ' {% trans "个地址？" %}')) {
+                return false;
+            } else {
+                $('#ids').val(id_array);
+                $('#status').val('-1');
+                $('#id_form').submit();
+            }
+        }
+
+        function SetStatus(id, status){
+            var str = '{% trans "是否确认此操作？" %}';
+            if(confirm(str)) {
+                $('#id').val(id);
+                $('#status').val(status);
+                $('#id_form').submit();
+            }
+            return;
+        }
+
+        function changeStatus(is_subscribe){
+            var url = "/address/subscribe/{{ list_id }}/";
+            if ( is_subscribe == '1' ){
+                url += "?is_subscribe=1"
+            } else if ( is_subscribe == '2' ){
+                url += "?is_subscribe=2"
+            } else if ( is_subscribe == '3' ){
+                url = "/address/unsubscribe/{{ list_id }}/";
+            }
+            window.location.href = url;
+        }
+
+        function checkForm() {
+            $('#id_addressForm').submit();
+        };
+
+        function checkAddress(address){
+            var expression = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            var obj = new RegExp(expression);
+            if(obj.test(address)==true){
+                return true;
+            }else{
+                return false;
+            }
+        };
+
+    </script>
+
+{% endblock %}

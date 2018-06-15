@@ -1,0 +1,30 @@
+<html lang="en-us" class="smart-style-0">
+<head>
+    <meta charset="{{ charset }}">
+</head>
+<body>
+{% autoescape off %}
+{{ content }}
+{% endautoescape %}
+<script>
+    $('#model').find('a').each(function(){
+        if($(this).attr('href')){
+            $(this).css({'border':'2px solid red'});
+        }
+    });
+    $('#model a').click(function(e){
+        e.preventDefault();
+        $('#model').hide();
+        $('#model-content').html('');
+        console.log(sessionStorage['action_order']);
+        console.log($(".action-list .action-item:eq("+sessionStorage['action_order']+") [name='con_url']"));
+        var href_url = $(this).attr('href');
+        if(href_url.indexOf('{')>0){
+            console.log("?:"+href_url.indexOf('?'));
+            href_url = href_url.slice(0,href_url.indexOf('?'));
+        }
+        $(".action-list .action-item:eq("+sessionStorage['action_order']+") [name='con_url']").val(href_url)
+    })
+</script>
+</body>
+</html>

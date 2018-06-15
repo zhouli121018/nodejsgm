@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load static from staticfiles %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
+    <title>分享-Share</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'share/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'share/bootstrap-theme.min.css' %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'share/interactive.css' %}">
+<body>
+<div class="content contentbg3">
+    <div class="content_box">
+        <div class="share_block">
+            <div class="share_info">
+                <div class="share_info_block" style="margin-top: 10%;">
+                    <div class="share_infobox">
+                        <h2>分享此邮件</h2>
+                        <div class="share_icon">
+                            <!--
+                            http://share.baidu.com/code/advance
+                            http://blog.csdn.net/qq_36407760/article/details/72842845
+                            -->
+                            <span class="tt">社交媒体 <em>（请点击下面的社交网络与朋友分享此邮件）</em></span>
+                            <div class="bdsharebuttonbox">
+                                <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                                <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                                <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                                <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣"></a>
+                                <a href="#" class="bds_huaban" data-cmd="huaban" title="花瓣网"></a>
+                                <a href="#" class="bds_renren" data-cmd="renren" title="人人网"></a>
+                                <a href="#" class="bds_fbook" data-cmd="fbook" title="Facebook"></a>
+                                <a href="#" class="bds_twi" data-cmd="twi" title="Twitter"></a>
+                                <a href="#" class="bds_linkedin" data-cmd="linkedin" title="linkedin"></a>
+                                <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                                <a href="#" class="bds_kaixin001" data-cmd="kaixin001" title="分享到开心网"></a>
+                                <a href="#" class="bds_more" data-cmd="more"></a>
+                            </div>
+                            <script>
+                                window._bd_share_config={
+                                    "common":{
+                                        "bdSnsKey":{},
+                                        "bdText":"{{ subject }}", //分享的内容
+                                        "bdUrl": "{{ uri }}", // 分享的Url地址
+                                        "bdDesc": "{{ subject }}", //分享的摘要
+                                        "bdPic":"", // 分享的图片
+                                        "bdMini":"3", //
+                                        "bdMiniList":false,
+                                        "bdStyle":"0",
+                                        "bdSize":"16"
+                                    },
+                                    "share":{
+                                        "bdSize" : 32,
+                                    },
+                                    "image": {
+                                        "viewList": ["weixin", "tsina","tqq", "douban", "huaban", "renren", "fbook", "twi", "linkedin", "qzone", "kaixin001"],
+                                        "viewText":"分享到：","viewSize":"16"
+                                    },
+                                    "selectShare": {
+                                        "bdContainerClass":null,
+                                        "bdSelectMiniList":["weixin", "tsina","tqq", "douban", "huaban", "renren", "fbook", "twi", "linkedin", "qzone", "kaixin001"]
+                                    }
+                                };
+                                with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src = '{% static 'api/js/share.js' %}?v=89860593.js?'];
+                            </script>
+                        </div>
+                        <div class="share_link">
+                            <span class="tt">共享连接 <em>（将下面的链接粘贴到电子邮件中）</em></span>
+                            <span><input name="shareurl" id="shareurl" value="{{ uri }}" type="text"></span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+
+{% load i18n %}
+<div class="form-group">
+    <label class="control-label" for="id_name"></label>
+    <div class=" ">
+        <div id="fileQueue"></div>
+        <input type="file" name="uploadify" id="uploadify" style="margin-bottom: 2px!important;"/>
+        <span class="help-block " style="margin-bottom:0px;margin-top: 0px;">
+            {% trans "允许常见图片类型、压缩文件、OFFICE文档上传" %}(*.jpg;*.png;*.gif;*.bmp;*.jpeg;*.txt;*.pdf;*.doc;*.docx;*.xls;*.xlsx;*.csv;*.ppt;*.pps;*.pptx;*.ppsx;*.htm;*.html;*.zip;*.rar;*.gz;*.bz2;*.ics)
+        </span>
+        <span class="help-block " style="margin-bottom:0px;margin-top: 0px;">
+            {% trans "支持多文件自动上传，单个附件最大允许15M，单个图片最大允许1M。附件大小和计费有关，请谨慎控制邮件大小！" %}
+        </span>
+    </div>
+    <div class="col-md-12 form-inline" style="padding-left: 7px;padding-right: 7px;">
+        <ul class="list-inline" id="id_attachlist_ul">
+            {% autoescape off %}{{ attach_list }}{% endautoescape %}
+        </ul>
+    </div>
+</div>

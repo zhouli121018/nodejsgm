@@ -1,0 +1,190 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans '发票信息' %}</h4>
+</div>
+
+<div class="modal-body padding-gutter">
+    <form action="/setting/invoice/view/{{ invoice_id }}/" method="post" id="id_viewForm" role="form" class="form-horizontal">
+        {% csrf_token %}
+        <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed" width="100%">
+            <tbody>
+            <tr><td class="no-border" colspan="4"><legend class="no-padding no-margin">{% trans '发票明细' %}</legend></td></tr>
+            <tr>
+                <td class="no-border text-right myself-width-small text-muted">{% trans '发票金额' %}</td>
+                <td class="no-border myself-width-big">
+                    <div class="col-md-12 form-inline">
+                        <span class="txt-color-yellow"><strong>{{ invoice_obj.amount }}</strong></span>
+                    </div>
+                </td>
+                <td class="no-border text-right myself-width-small text-muted">{% trans '发票编号' %}</td>
+                <td class="no-border">
+                    <div class="col-md-12 form-inline">
+                        <span class="">{{ invoice_obj.invoice_no|default_if_none:"-" }}</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="no-border text-right myself-width-small text-muted">{% trans '申请时间' %}</td>
+                <td class="no-border myself-width-big">
+                    <div class="col-md-12 form-inline">
+                        <span class="">{{ invoice_obj.created|date:"Y-m-d H:i:s" }}</span>
+                    </div>
+                </td>
+                <td class="no-border text-right myself-width-small text-muted">{% trans '发票抬头' %}</td>
+                <td class="no-border">
+                    <div class="col-md-12 form-inline">
+                        <span class="">{{ invoice_obj.invoice_title|default_if_none:"" }}</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="no-border text-right myself-width-small text-muted">{% trans '发票状态' %}</td>
+                <td class="no-border myself-width-big">
+                    <div class="col-md-12 form-inline">
+                        <span class="
+                        {% if invoice_obj.status == 'apply' %} badge bg-color-red
+                        {% elif invoice_obj.status == 'invoiced' %} badge bg-color-orange
+                        {% elif invoice_obj.status == 'wait' %} badge
+                        {% else %} badge bg-color-greenLight
+                        {% endif %}">{{ invoice_obj.get_status_display }}</span>
+                    </div>
+                </td>
+                <td class="no-border text-right myself-width-small text-muted">{% trans '发票类型' %}</td>
+                <td class="no-border">
+                    <div class="col-md-12 form-inline">
+                        <span class="">{{ invoice_obj.get_invoice_type_display }}</span>
+                    </div>
+                </td>
+            </tr>
+
+            {% if invoice_obj.invoice_type == '2' %}
+                <tr>
+                    <td class="no-border text-right myself-width-small text-muted">{% trans '纳税人识别号' %}</td>
+                    <td class="no-border">
+                        <div class="col-md-12 form-inline">
+                            <span class="">{{ invoice_obj.tax_number|default_if_none:"" }}</span>
+                        </div>
+                    </td>
+                    <td class="no-border text-right myself-width-small text-muted"></td>
+                    <td class="no-border"></td>
+                </tr>
+
+                <tr>
+                    <td class="no-border text-right myself-width-small text-muted">{% trans '开户银行' %}</td>
+                    <td class="no-border">
+                        <div class="col-md-12 form-inline">
+                            <span class="">{{ invoice_obj.bank|default_if_none:"" }}</span>
+                        </div>
+                    </td>
+                    <td class="no-border text-right myself-width-small text-muted">{% trans '银行账号' %}</td>
+                    <td class="no-border">
+                        <div class="col-md-12 form-inline">
+                            <span class="">{{ invoice_obj.acc_number|default_if_none:"" }}</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="no-border text-right myself-width-small text-muted">{% trans '企业注册地址' %}</td>
+                    <td class="no-border">
+                        <div class="col-md-12 form-inline">
+                            <span class="">{{ invoice_obj.company_addr|default_if_none:"" }}</span>
+                        </div>
+                    </td>
+                    <td class="no-border text-right myself-width-small text-muted">{% trans '企业注册电话' %}</td>
+                    <td class="no-border">
+                        <div class="col-md-12 form-inline">
+                            <span class="">{{ invoice_obj.company_phone|default_if_none:"" }}</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="no-border text-right myself-width-small text-muted">{% trans '一般纳税人资格认证复印件' %}</td>
+                    <td class="no-border" colspan="3">
+                        <div class="col-md-12 form-inline">
+                            <a href="/setting/invoice/upload/view/?user_id={{ request.user.id }}&aid=2" target="_blank">
+                                <img src="/setting/invoice/upload/view/?user_id={{ request.user.id }}&aid=1" height="100" width="100">
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+
+
+            <tr><td class="no-border" colspan="4"><legend class="no-padding no-margin">{% trans '物流信息' %}</legend></td></tr>
+            <tr>
+                <td class="no-border text-right myself-width-small text-muted">{% trans '快递单号' %}</td>
+                <td class="no-border">
+                    <div class="col-md-12 form-inline">
+                        <span class="">{{ invoice_obj.track_no|default_if_none:"-" }}</span>
+                    </div>
+                </td>
+                <td class="no-border text-right myself-width-small text-muted"></td>
+                <td class="no-border"></td>
+            </tr>
+            <tr>
+                <td class="no-border text-right myself-width-small text-muted">{% trans '收取地址' %}</td>
+                <td class="no-border">
+                    <div class="col-md-12 form-inline">
+                        <span class="">{{ invoice_obj.address|default_if_none:"" }}</span>
+                    </div>
+                </td>
+                <td class="no-border text-right myself-width-small text-muted">{% trans '邮政编码' %}</td>
+                <td class="no-border">
+                    <div class="col-md-12 form-inline">
+                        <span class="">{{ invoice_obj.zipcode|default_if_none:"-" }}</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="no-border text-right myself-width-small text-muted">{% trans '收件人' %}</td>
+                <td class="no-border myself-width-big">
+                    <div class="col-md-12 form-inline">
+                        <span class="">{{ invoice_obj.recipient|default_if_none:"" }}</span>
+                    </div>
+                </td>
+                <td class="no-border text-right myself-width-small text-muted">{% trans '联系电话' %}</td>
+                <td class="no-border myself-width-big">
+                    <div class="col-md-12 form-inline">
+                        <span class="">{{ invoice_obj.phone|default_if_none:"" }}</span>
+                    </div>
+                </td>
+            </tr>
+
+            <tr><td class="no-border" colspan="4" style="margin-bottom:0!important;padding-bottom:0!important;"><legend class="no-padding no-margin">{% trans '关联订单' %}</legend></td></tr>
+            <tr>
+                <td class="no-border" colspan="4" style="margin-top:0!important;padding-top:0!important;">
+                    <table class="table table-hover no-margin" width="100%">
+                        <thead>
+                        <tr>
+                            <th style="background-color:#f6f8fa!important;">{% trans '订单号' %}</th>
+                            <th style="background-color:#f6f8fa!important;">{% trans '金额' %}</th>
+                            <th style="background-color:#f6f8fa!important;">{% trans '充值点数' %}</th>
+                            <th style="background-color:#f6f8fa!important;">{% trans '支付时间' %}</th>
+                            <th style="background-color:#f6f8fa!important;">{% trans '商品描述' %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for d in order_obj %}
+                            <tr>
+                                <td>{{ d.orderno|default_if_none:"" }}</td>
+                                <td>{{ d.fee }}</td>
+                                <td>{{ d.qty_buy }}</td>
+                                <td>{{ d.dt_pay|date:"Y-m-d H:i:s" }}</td>
+                                <td>{{ d.product_desc|default_if_none:"" }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </form>
+    <div class="modal-footer margin-left-negative13 margin-right-negative13">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+    </div>
+</div>

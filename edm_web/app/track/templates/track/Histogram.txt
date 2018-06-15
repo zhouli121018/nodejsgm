@@ -1,0 +1,17 @@
+Histogram使用说明
+引入js和css文件
+可以将histogram文件夹整个放入项目
+如果需整个导入，至少需要的文件:jQuery.js, histogram.js, histogram.css
+使用说明
+写一段js来引用histogram插件，源码中vote.js为示例代码
+$(function(){
+	var list = [createFun('微团购',200),createFun('微商场',300),createFun('微酒店',400),createFun('留言板',500),createFun('微调研',700),createFun('微投票',800)];
+	console.log(list);
+	//创建表格
+	getTable('container',5,6,1000,list);
+	//动态宽高
+    getWidth();
+});
+createFun为封装好的创建对象的方法，可以用来创建柱状图需要显示的内容的对象，创建方法见a
+getTable('container',5,6,1000,list);
+container为柱状图的父容器，5行，6列，最大值为1000，list是需要被显示的对象的列表建议list的length=col(列大小)

@@ -1,0 +1,13 @@
+<td>{{ d.task_date|date:"Y-m-d" }}</td>
+<td>
+    {{ d.company|default_if_none:"" }}		<span style="color: Gray;">（{{ d.username|default_if_none:"" }}）</span>
+</td>
+<td>
+    {{ d.sender|default_if_none:"" }}
+</td>
+<td>
+    {{ d.send_count|floatformat:"0" }}
+</td>
+<td>
+    {{ d.lastip|default_if_none:"-" }}
+</td>

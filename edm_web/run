@@ -1,0 +1,2 @@
+#sudo lsof -t -i tcp:8069| xargs kill -9
+/home/python/pyenv/versions/edm_web/bin/python manage.py runserver 0.0.0.0:8069

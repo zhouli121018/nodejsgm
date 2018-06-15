@@ -1,0 +1,165 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans '共享发件人' %} ({% trans '子账户' %}：{{ user_obj.username }})</h4>
+</div>
+
+<form action="{% url 'sub_account_share' user_id %}" method="post" id="id_ShareForm" role="form" class="padding-gutter form-horizontal">
+    {% csrf_token %}
+    <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed " width="100%">
+        <tbody>
+        <tr>
+            <td class="no-border text-right myself-width-small text-muted">
+                <label class="control-label">{% trans '选择发送域名' %}</label>
+            </td>
+            <td class="no-border">
+                <fieldset>
+                    <div class="col-md-12 form-inline">
+                        <select name="send_domain" id="id_send_domain" class="form-control" style="width: 220px;" autocomplete="off" onchange="getAccountByDomain(this.value)">
+                            <option value="0" selected="selected">{% trans '请选择发送域名' %}</option>
+                            {% for obj in domain_objs %}
+                                <option value="{{ obj.id }}">{{ obj.domain }}</option>
+                            {% endfor %}
+                        </select>
+                        <br><small id="id_send_domain_error" class="myself-txt-color-err display-none">{% trans '请选择发送域名' %}</small>
+                        <p class="help-block">{% trans '选择发送域名，获取发件人，将发件人共享给子账户。' %}</p>
+                    </div>
+                </fieldset>
+            </td>
+        </tr>
+        <tr class="padding-gutter"></tr>
+        <tr><td colspan="2" class="no-border" style="margin-bottom:0!important;padding-bottom:0!important;"><legend class="no-padding no-margin">{% trans '发件人列表' %}</legend></td></tr>
+        <tr>
+            <td class="no-border" colspan="4" style="margin-top:0!important;padding-top:0!important;">
+                <table class="table table-hover no-margin" width="100%">
+                    <thead>
+                    <tr>
+                        <th style="background-color:#f6f8fa!important;">
+                            <input name="chkall" value="1" onclick="selectCheckboxAll()" type="checkbox">
+                        </th>
+                        <th style="background-color:#f6f8fa!important;">{% trans '序号' %}</th>
+                        <th style="background-color:#f6f8fa!important;">{% trans '邮箱账号' %}</th>
+                    </tr>
+                    </thead>
+                    <tbody id="id_send_domain_list">
+                    </tbody>
+                </table>
+                <br>
+                <small id="id_send_domain_list_error" class="txt-color-red display-none">
+                    <i class="fa fa-warning fa-fw fa-lg"></i>{% trans '请选择发件人' %}
+                </small>
+            </td>
+        </tr>
+
+        <tr class="padding-gutter"></tr>
+        <tr><td colspan="2" class="no-border" style="margin-bottom:0!important;padding-bottom:0!important;"><legend class="no-padding no-margin">{% trans '已共享发件人' %}</legend></td></tr>
+        <tr>
+            <td class="no-border" colspan="4" style="margin-top:0!important;padding-top:0!important;">
+                <table class="table table-hover no-margin" width="100%">
+                    <thead>
+                    <tr>
+                        <th style="background-color:#f6f8fa!important;">{% trans '序号' %}</th>
+                        <th style="background-color:#f6f8fa!important;">{% trans '邮箱账号' %}</th>
+                        <th style="background-color:#f6f8fa!important;">{% trans '操作' %}</th>
+                    </tr>
+                    </thead>
+                    <tbody id="id_send_domain_share_list">
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div class="modal-footer margin-left-negative13 margin-right-negative13">
+        <input value="{% trans '确定' %}" onclick="checkShareForm()" type="button" class="btn btn-primary" id="id_save_button">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+
+    $(function(){
+        var send_domain = $("#id_send_domain").val();
+        getAccountByDomain(send_domain);
+    })
+
+    function deleteSubbox(delid, action, mailbox, child_id){
+        $("#id_subdel_"+delid).remove();
+        $.post('{% url 'sub_account_share_del_ajax' %}', {delid: delid, action: action, mailbox: mailbox, child_id:child_id}, function(data){
+            $("#id_send_domain_list").append(data.info);
+        });
+    }
+
+    function getAccountByDomain(send_domain){
+        $("#id_send_domain_list").html('<tr><td colspan="3">{% blocktrans %}正在加载发件人{% endblocktrans %}</td></tr>');
+        if ( send_domain == '0' || send_domain == undefined){
+            $("#id_send_domain_list").html('<tr><td colspan="3">{% blocktrans %}没有发件人{% endblocktrans %}</td></tr>');
+            $("#id_send_domain_share_list").html('<tr><td colspan="2">{% blocktrans %}没有发件人{% endblocktrans %}</td></tr>');
+            return;
+        }
+        $.getJSON("{% url 'sub_account_share_ajax' %}?user_id={{ request.user.id }}&child_id={{ user_id }}&domain_id="+send_domain,  function(data){
+            if (data.msg == 'Y'){
+                $("#id_send_domain_list").html(data.info);
+                $("#id_send_domain_share_list").html(data.share_info);
+            } else {
+                $("#id_send_domain_list").html('<tr><td colspan="3">{% blocktrans %}没有发件人{% endblocktrans %}</td></tr>');
+                $("#id_send_domain_share_list").html('<tr><td colspan="2">{% blocktrans %}没有发件人{% endblocktrans %}</td></tr>');
+            }
+        });
+
+        return;
+    }
+
+    function selectCheckboxAll(){
+        var form = document.getElementById('id_ShareForm');
+        var prefix = 'mailbox_ids';
+        var checkall = checkall ? checkall : 'chkall';
+        for(var i = 0; i < form.elements.length; i++) {
+            var e = form.elements[i];
+            if(e.name && e.name != checkall && (!prefix || (prefix && e.name.match(prefix)))) {
+                e.checked = form.elements[checkall].checked;
+            }
+        }
+    }
+
+    function getCheckboxValue() {
+        var form = document.getElementById('id_ShareForm');
+        var prefix = 'mailbox_ids';
+        var data_list = [];
+        for(var i = 0; i < form.elements.length; i++) {
+            var e = form.elements[i];
+            if(e.name && e.name.match(prefix) && e.checked) {
+                data_list.push(e.value);
+            }
+        }
+
+        return data_list;
+    }
+
+    $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+    function checkShareForm(){
+        $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+        var send_domain = $("#id_send_domain").val();
+        if ( send_domain == '0' || send_domain == undefined){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_send_domain_error").removeClass('display-none');
+            return;
+        }
+
+        var data_list = getCheckboxValue();
+        if (data_list.length == 0){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_send_domain_list_error").removeClass('display-none');
+            return false;
+        }
+
+        $('#id_ShareForm').submit();
+    }
+
+</script>

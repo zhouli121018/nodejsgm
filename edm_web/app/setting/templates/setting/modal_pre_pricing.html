@@ -1,0 +1,104 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 class="modal-title" id="myModalLabel" style="font-weight: 600">{% trans '购买套餐' %}: <span class="text-warning">{{ obj.name }}</span></h4>
+</div>
+<div class="modal-body" style="height: 280px;margin-top: -12px;">
+    <div class="widget-body no-padding no-margin">
+        <form class="padding-5 form-horizontal" style="font-size: 14px;">
+            <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed" width="100%">
+                <tbody>
+                <tr>
+                    <td class="no-border text-right myself-width-small">
+                        <label class="control-label">{% trans '剩余群发' %}</label>
+                    </td>
+                    <td class="no-border">
+                        <div class="col-md-12 form-inline">
+                            <span class="form-control no-border no-padding-left"><span class="text-success margin-right-5">{{ request.user.service.qty_valid }}</span>{% trans '点' %}</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="no-border text-right myself-width-small">
+                        <label class="control-label">{% trans '套餐名称' %}</label>
+                    </td>
+                    <td class="no-border">
+                        <div class="col-md-12 form-inline">
+                            <span class="form-control no-border no-padding-left"><span class="text-warning margin-right-5">{{ obj.name }}</span></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="no-border text-right myself-width-small">
+                        <label class="control-label">{% trans '套餐金额' %}</label>
+                    </td>
+                    <td class="no-border">
+                        <div class="col-md-12 form-inline">
+                            <span class="form-control no-border no-padding-left"><span class="text-success margin-right-5">{{ obj.pricing }}</span>{% trans '元' %}</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="no-border text-right myself-width-small">
+                        <label class="control-label">{% trans '充值点数' %}</label>
+                    </td>
+                    <td class="no-border">
+                        <div class="col-md-12 form-inline">
+                            <span class="form-control no-border no-padding-left"><span class="text-success margin-right-5">{{ obj.buy_count }}</span>{% trans '点' %}</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="no-border text-right myself-width-small vertical-align-middle">
+                        <label class="control-label">{% trans '付款方式' %}</label>
+                    </td>
+                    <td class="no-border">
+                        <fieldset>
+                            <div class="col-md-12">
+                                <label class="radio radio-inline padding-top-0 margin-top-0 form-inline">
+                                    <input type="radio" class="radiobox" name="payway" value="wxpay" checked="">
+                                    <span><img src="/static/img/wxpay.png" style="width:127px;height:42px;"></span>
+                                </label>
+                                <label class="radio radio-inline padding-top-0 margin-top-0 form-inline">
+                                    <input type="radio" class="radiobox" name="payway" value="alipay" >
+                                    <span><img src="/static/img/alipay.png" style="width:127px;height:42px;"></span>
+                                </label>
+                            </div>
+                        </fieldset>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <!--<input value="立即生成订单并支付" onclick="Pay()" type="button" class="btn btn-primary">-->
+    <div class="btn btn-primary" id="id_pay">{% trans '立即生成订单并支付' %}</div>
+    <button id="modal_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+</div>
+<script>
+    $('#id_pay').unbind('click').bind('click',function(){
+        $('#modal_close').click();
+        $.ajax({
+            url:"{% url 'ajax_add_order' %}",
+            'type':'POST',
+            async:false,
+            dataType:'json',
+            "data": {'pricing': {{ obj.id }}, 'payway': $('.radiobox:checked').val()},
+            success: function(data){
+                window.open(data.url, '_blank');
+                $('#modal_success').click();
+            }
+        });
+    });
+
+    function Pay(){
+        $('#modal_close').click();
+        $.post("{% url 'ajax_add_order' %}", {'pricing': {{ obj.id }}, 'payway': $('.radiobox:checked').val()}, function(data){
+            window.open(data.url, '_blank');
+            $('#modal_success').click();
+        });
+    }
+
+</script>

@@ -1,0 +1,9 @@
+{% load i18n %}
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+<td>{{ d.addr|default_if_none:"" }}</td>
+<td><span style="white-space: nowrap;">{{ d.created|date:"Y-m-d H:i:s" }}</span></td>
+<td>
+     <a type="button" class="btn btn-outline btn-primary btn-xs" href="{% url 'rcpblack_modify' d.id %}">{% trans "修改" %}</a>
+    <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: SetStatus({{ d.id }}, 'delete')">{% trans "删除" %}</a>
+</td>

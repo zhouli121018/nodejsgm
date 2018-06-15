@@ -1,0 +1,9 @@
+{% load i18n %}
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+<td>{{ d.email }}</td>
+<td><a href="{% url 'trigger_modify' d.trigger_action.trigger.id %}">{{ d.trigger_action.trigger }}</a></td>
+<td><a href="{% url 'trigger_modify' d.trigger_action.trigger.id %}"> {{ d.trigger_action }}</a> </td>
+<td> {{ d.get_status_display }} </td>
+<td>{{ d.create_time|date:"Y-m-d H:i:s" }}</td>
+<td>{{ d.action_time|date:"Y-m-d H:i:s" }}</td>

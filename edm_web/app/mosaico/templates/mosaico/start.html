@@ -1,0 +1,507 @@
+{% load staticfiles %}
+{% load jsonify %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=1024, initial-scale=1">
+
+    <link rel="canonical" href="http://mosaico.io" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+    <script src="{% static 'mosaico/dist/vendor/knockout.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.ui.touch-punch.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/load-image.all.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/canvas-to-blob.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.iframe-transport.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.fileupload.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.fileupload-process.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.fileupload-image.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/jquery.fileupload-validate.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/knockout-jqueryui.min.js' %}"></script>
+    <script src="{% static 'mosaico/dist/vendor/evol.colorpicker.min.js' %}"></script>
+
+    <script>
+        //变量
+        var var_sourse_keys = {{ subject_list|safe }};
+        var sourse_formats = {{ subject_vals|safe }};
+        console.log(var_sourse_keys);
+        console.log(sourse_formats);
+    </script>
+    <script src="{% static 'mosaico/dist/vendor/tinymce.min.js' %}"></script>
+
+    <script src="{% static 'mosaico/dist/mosaico.min.js' %}"></script>
+    <script>
+//        toolbar1:"bold italic forecolor backcolor hr styleselect removeformat fontselect fontsizeselect | link unlink | commonvar commonvartag | table | code "
+        $(function() {
+            if (!Mosaico.isCompatible()) {
+                alert('请更新你的浏览器!');
+                return;
+            }
+            // var basePath = window.location.href.substr(0, window.location.href.lastIndexOf('/')).substr(window.location.href.indexOf('/','https://'.length));
+            // var basePath = window.location.href.substr(0 ,window.location.href.lastIndexOf('/'));
+            // var basePath = "/mosaico";
+
+            // var plugins;
+            // A basic plugin that expose the "viewModel" object as a global variable.
+            // plugins = [function(vm) {window.viewModel = vm;}];
+            var plugins = [
+                function(vm) {console.log('PROCESS PLUGIN'); window.viewModel = vm;},
+                // plugin for integrating save button
+                function(viewModel) {
+
+                    // ---- 保存至服务器 -------
+                    var saveToServerCmd = {
+                        name: 'Save', // l10n happens in the template
+                        enabled: ko.observable(true)
+                    };
+
+                    saveToServerCmd.execute = function() {
+                        saveToServerCmd.enabled(false);
+                        viewModel.metadata.changed = Date.now();
+                        if (typeof viewModel.metadata.key == 'undefined') {
+                            viewModel.metadata.key = 'generate your unique key here';
+                        }
+
+                        // This is the simplest for sending it as POST
+                        // append postData with csrfToken
+                        var meta_data = viewModel.exportMetadata();
+                        var template_data = viewModel.exportJSON();
+                        var postData = {
+                            csrf_token: '{{ csrf_token }}', // this is only required if your back-end requires csrf token
+                            meta_data: meta_data,
+                            template_data: template_data,
+                            html: viewModel.exportHTML(),
+                            key: viewModel.metadata.key,
+                            action: "save"
+                        };
+
+                        $.post( "{% url "mosaico_template" %}", postData)
+                                .done(function() {
+                                    localStorage.setItem("metadata-" + viewModel.metadata.key, JSON.stringify(meta_data));
+                                    localStorage.setItem("template-" + viewModel.metadata.key, JSON.stringify(template_data));
+                                    viewModel.notifier.success(viewModel.t('保存成功。'));
+                                    location.href = "{% url "template_list" %}?isvalid=1";
+                                })
+                                .fail(function(jqXHR, textStatus, error) {
+                                    console.log(textStatus);
+                                    console.log(error);
+                                    console.log(jqXHR);
+                                    viewModel.notifier.error(viewModel.t('Saving failed. Please try again in a few moment or contact us.'));
+                                })
+                                .always(function() {
+                                    saveToServerCmd.enabled(true);
+                                }
+                        );
+                    };
+
+                    //保存不返回
+                    saveToServerCmd.executeOnly = function() {
+                        viewModel.metadata.changed = Date.now();
+                        if (typeof viewModel.metadata.key == 'undefined') {
+                            viewModel.metadata.key = 'generate your unique key here';
+                        }
+
+                        // This is the simplest for sending it as POST
+                        // append postData with csrfToken
+                        var meta_data = viewModel.exportMetadata();
+                        var template_data = viewModel.exportJSON();
+                        var postData = {
+                            csrf_token: '{{ csrf_token }}', // this is only required if your back-end requires csrf token
+                            meta_data: meta_data,
+                            template_data: template_data,
+                            html: viewModel.exportHTML(),
+                            key: viewModel.metadata.key,
+                            action: "save"
+                        };
+
+                        $.post( "{% url "mosaico_template" %}", postData)
+                        .done(function() {
+                            localStorage.setItem("metadata-" + viewModel.metadata.key, JSON.stringify(meta_data));
+                            localStorage.setItem("template-" + viewModel.metadata.key, JSON.stringify(template_data));
+                            viewModel.notifier.success(viewModel.t('保存成功。'));
+//                            location.href = "{% url "template_list" %}?isvalid=1";
+                        })
+                                .fail(function(jqXHR, textStatus, error) {
+                                    console.log(textStatus);
+                                    console.log(error);
+                                    console.log(jqXHR);
+                                    viewModel.notifier.error(viewModel.t('Saving failed. Please try again in a few moment or contact us.'));
+                                })
+                    };
+
+                    // ---- 返回按钮 -------
+                    var downloadCmd = {
+                        name: 'Download', // l10n happens in the template
+                        enabled: ko.observable(true)
+                    };
+                    downloadCmd.execute = function() {
+                        downloadCmd.enabled(false);
+                        location.href = "{% url "template_list" %}?isvalid=1";
+                        downloadCmd.enabled(true);
+                    }
+
+                    // ---- 预览按钮 -------
+
+                    // and this is the alternative by sending it as POST but the html content as blob.
+                    // you can ignore and remove this part.
+
+                    viewModel.download = downloadCmd;
+                    viewModel.saveToServer = saveToServerCmd;
+                    viewModel.logoPath = "{% static 'img/u.png' %}";
+                    viewModel.logoUrl = "#";
+                },
+            ];
+
+            var strings = $.ajax('{% static 'mosaico/dist/lang/mosaico-zh.json' %}', {type: "GET", async: false}).responseText;
+            strings = $.parseJSON(strings);
+
+            $.ajax({
+                url:  "{% url 'mosaico_get' template_id %}", // Path to load.php
+                type: 'get',
+                dataType: 'JSON',
+                success: function(data){
+                    console.log(data);
+                    var metadata = {{ original.meta_data|jsonify }};
+                    var content = {{ original.template_data|jsonify }};
+                    var template = "/static/mosaico/templates/versafix-1/template-{{ original.name }}.html";
+                    console.log(" urlmosaico_img")
+                    console.log("{% url 'mosaico_img' %}")
+                    var ok = Mosaico.start({
+                        strings: strings,
+                        imgProcessorBackend: "{% url 'mosaico_img' %}",
+                        emailProcessorBackend: "{% url 'mosaico_download' %}",
+                        saveProcessorBackend: "{% url 'mosaico_template' %}",
+                        titleToken: "MOSAICO Responsive Email Designer",
+                        fileuploadConfig: {
+                            url: "{% url 'mosaico_upload' original.user_id %}",
+                            // messages??
+                        }
+                    }, template, metadata /* metadata */, content /* model */, plugins);
+                    if (!ok) {
+                        console.log("Missing initialization hash, redirecting to main entrypoint"+ok);
+                        //document.location = server + '';
+                    }
+                },
+
+            });
+
+
+
+        });
+    </script>
+
+    <link rel="stylesheet" href="{% static 'mosaico/dist/mosaico-material.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'mosaico/dist/vendor/notoregular/stylesheet.css' %}" />
+    <link rel="stylesheet" href="{% static 'mosaico/dist/vendor/evol.colorpicker.min.css' %}" /> <!-- 2k -->
+    <style>
+        #toolblocks>.block-list:after{
+            content:"";
+            display:block;
+            clear:both;
+        }
+        #toolblocks>.block-list{
+            width:200px;
+        }
+        #toolblocks>.block-list>.draggable-item{
+            width:48%;
+            box-sizing: border-box;
+            margin-right:2%;
+            float:left;
+            padding:14px 20px;
+            background:#fff;
+            border:1px solid #cdcdcd;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        #toolblocks>.block-list>.draggable-item:hover{
+            box-shadow:0 0 2px #cdcdcd;
+        }
+        #main-toolbox .draggable-item:hover .block img {
+            box-shadow: none;
+        }
+        #main-toolbox .draggable-item .image, #main-toolbox .draggable-item .block img {
+            box-shadow: none;
+            margin: 3px 0;
+        }
+        #main-toolbox{
+            width:230px;
+        }
+        .withToolbox #main-edit-area, .withToolbox #toolbar {
+            left: 230px;
+        }
+        #tooltabs .ui-tabs-nav{
+            width:256px;
+        }
+        #main-wysiwyg-area{
+            margin-right:280px;
+        }
+        #toolblocks{
+            display:block !important;
+        }
+        #toolcontents,#toolstyles{
+            position:fixed !important;
+            width:280px;
+            right:0 !important;
+            left:auto !important;
+
+        }
+        #toolcontents{
+            display:block !important;
+        }
+        #toolbar .rightButtons {
+            float: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            padding: 6px;
+            background: #E7E6E8;
+            width: 100%;
+            box-shadow: 0 0 3px #333;
+        }
+        #main-edit-area, #main-toolbox, #main-preview {
+            bottom: 50px;
+        }
+        #main-preview{
+            /*left:230px;*/
+            width:auto;
+            z-index: 100;
+            left:0;
+            background:rgba(0,0,0,.4);
+
+        }
+        #main-preview #frame-container{
+            margin-left:230px;
+
+        }
+        #main-preview #preview-toolbar {
+            background: #900000;
+        }
+        #tooltabs>.ui-tabs-nav>li:nth-child(1){
+            display:none;
+        }
+        #tooltabs>.ui-tabs-nav>li:nth-child(2){
+            position:fixed;
+            right:140px;
+        }
+        #tooltabs>.ui-tabs-nav>li:nth-child(3){
+            position:fixed;
+            right:70px;
+        }
+        #toolbar {
+            right: 280px;
+        }
+        @media screen and (min-width:1500px){
+            #toolcontents,#toolstyles{
+                width:500px;
+            }
+            #main-wysiwyg-area{
+                margin-right:500px;
+            }
+            #tooltabs>.ui-tabs-nav>li:nth-child(2){
+                right:250px;
+            }
+            #tooltabs>.ui-tabs-nav>li:nth-child(3){
+                right:180px;
+            }
+            #toolbar {
+                right: 500px;
+            }
+        }
+        #frame-container{
+            text-align:center;
+        }
+        #frame-container>iframe {
+            width: 400px;
+            height:700px;
+            padding:12px;
+        }
+        #frame-container.desktop>iframe {
+            transform: scale(1);
+            width: 768px;
+            height: 100%;
+        }
+        #frame-container.large>iframe {
+            padding: 15px;
+            width: 100%;
+            height: 100%;
+            transform: scale(1);
+        }
+
+        /*颜色*/
+        /*body{*/
+            /*background-color:#60CAFB;*/
+        /*}*/
+        /*#toolbar .ui-button, #preview-toolbar .ui-button {*/
+            /*background-color: #60CAFB;*/
+        /*}*/
+        /*#toolbar{*/
+            /*background-color:#60CAFB;*/
+        /*}*/
+        /*.mo a, .mo a:link, .mo a:visited, .mo a:active, .mo #site-slogan {*/
+            /*color: #2EB9FA;*/
+        /*}*/
+        /*.mo .ui-tabs.tabs_horizontal.button_color>ul li>a:hover {*/
+            /*background-color: #2EB9FA;*/
+        /*}*/
+        /*#toolbar .ui-button:hover,#preview-toolbar .ui-button:hover,*/
+        /*#toolbar .ui-button.pressed,#preview-toolbar .ui-button.pressed{*/
+            /*background-color: #2EB9FA;*/
+        /*}*/
+        /*.mo .ui-button{*/
+            /*background-color:#60CAFB;*/
+        /*}*/
+        /*.mo .ui-button:hover,.mo .ui-button.pressed,.mo .ui-button.selected{*/
+            /*background-color:#2EB9FA;*/
+        /*}*/
+
+        body,#toolbar,#toolbar .ui-button, #preview-toolbar .ui-button,#main-preview #preview-toolbar{
+            background:#2368A4;
+        }
+        .uploadzone .midtools div.tool.delete{
+            display:none;
+        }
+        .draggable.image.ui-draggable.ui-draggable-handle>img{
+            width:100px;
+        }
+        .hide_pic_btn{
+            display:none;
+        }
+        /*#toolblocks>.block-list>div:last-child{*/
+            /*display:none;*/
+        /*}*/
+        #main-edit-area, #main-toolbox, #main-preview{
+            bottom:50px;
+        }
+        #main-toolbox #tooltabs.ui-tabs #toolcontents,#main-toolbox #tooltabs.ui-tabs #toolstyles{
+            bottom:50px;
+        }
+        .mo .objPreview>div{
+            left:2px;
+            padding-left: 0 !important;
+        }
+        a.mce-content-body,span.mce-content-body{
+            display:inline-block;
+            min-width:1em;
+        }
+        img[data-mce-src]{
+            display:inline-block !important;
+        }
+        center:after{
+            content:"";
+            display:block;
+            clear:both;
+        }
+        div#main-wysiwyg-area replacedbody{
+            max-width:100%;
+        }
+    </style>
+</head>
+<body class="mo-standalone">
+
+
+</body>
+<script>
+    function test(){
+        if($('#toolimages').hasClass('hidden')){
+            $('#showGallery').trigger('click');
+            $('body').find('#toolimagestab .ui-tabs-nav>li:nth-child(2) a').trigger('click')
+        }
+    }
+    function blurtest(o){
+        var vals = $(o).val();
+        if($(o).attr('data-bind')=="value: imageHeight3, focusable: true, event: { focus: function(ui, event) { $($element).click(); },blur:blurtest($element) } ")
+        {
+
+            var x = 'auto';
+            /^\d+$/.test(vals)? x=vals+'px':/^\d+px$/.test(vals)?x =vals: x='auto';
+            console.log(x);
+            $(o).val(x);
+            $(o).trigger('change');
+        }else if($(o).attr('data-bind')=="value: imageWidthPercent, focusable: true, event: { focus: function(ui, event) { $($element).click(); },blur:blurtest($element) } "){
+
+            var x = 'auto';
+            /^\d+$/.test(vals)? x=vals+'px':/^\d+px$/.test(vals)?x =vals:/^\d+%$/.test(vals)?x=vals:x='auto';
+            console.log(x);
+            $(o).val(x);
+            $(o).trigger('change');
+        }
+
+    }
+    function srctest(o,src0){
+        console.log(444444);
+        console.log(o)
+        $(o).find('img').attr('src',src0);
+    }
+    $(function(){
+        setTimeout(function(){
+            $('body').find('#tooltabs>.ui-tabs-nav>li:nth-child(2) a').trigger('click');
+            $('#toolblocks>.block-list>.draggable-item').each(function(i,dom){
+                var alt = $(this).find('img').attr('alt');
+                if(i==0){
+                    $(this).attr('title','logo版块')
+                }else if(i==1){
+                    $(this).attr('title','分享板块')
+                }else if(i==2){
+                    $(this).attr('title','左右图文版块')
+                }else if(i==3){
+                    $(this).attr('title','上下图文版块')
+                }else if(i==4){
+                    $(this).attr('title','标题版块')
+                }else if(i==5){
+                    $(this).attr('title','文字版块')
+                }else if(i==6){
+                    $(this).attr('title','三列上下图文版块')
+                }else if(i==7){
+                    $(this).attr('title','并列图文版块')
+                }else if(i==8){
+                    $(this).attr('title','分隔线版块')
+                }else if(i==9){
+                    $(this).attr('title','按钮版块')
+                }else if(i==10){
+                    $(this).attr('title','图片版块')
+                }else if(i==11){
+                    $(this).attr('title','两列图片版块')
+                }else if(i==12){
+                    $(this).attr('title','三列图片版块')
+                }else if(i==13){
+                    $(this).attr('title','间隔版块')
+                }else if(i==14){
+                    $(this).attr('title','社交媒体版块')
+                }
+            })
+        },2000)
+        $('body').on('click','[data_tip="previewFrameToggle"]',function(){
+            if(!$('#toolimages').hasClass('hidden')){
+                $('#showGallery').trigger('click');
+            }
+            if($('[data_tip="previewFrameToggle"]').attr('aria-pressed')=="true"){
+                $('.edit_btn').addClass('ui-state-active');
+            }else{
+                $('.edit_btn').removeClass('ui-state-active');
+            }
+
+        })
+        $('body').on('click','.edit_btn',function(){
+            if($('[data_tip="previewFrameToggle"]').attr('aria-pressed')=="true"){
+                $(this).addClass('ui-state-active');
+                $('#previewFrameToggle').trigger('click');
+            }
+        })
+
+        $('body').on('click','#main-wysiwyg-area',function(){
+
+            $('#showGallery').trigger('click');
+        })
+
+        function clickLocal(){
+            concole.log(12)
+            $('.data-boolean.blockCheck').trigger('click');
+            $(".checkbox-replacer.checkbox-replacer-onoff").trigger("click");$(".checkbox-replacer.checkbox-replacer-onoff").parents(".editor").parent().removeClass("workGlobal").addClass("workLocal");
+        }
+    })
+</script>
+</html>

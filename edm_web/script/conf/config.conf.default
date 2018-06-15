@@ -1,0 +1,27 @@
+# Config file
+#
+
+[redis]
+host = 127.0.0.1
+port = 6379
+
+[mysql_ms]
+host   = 192.168.50.51
+port   = 3306
+user   = edm_web
+pass   = XnLaT34LxaQViNB
+dbname = mm-ms
+
+[pgsql_log]
+host   = 192.168.50.51
+port   = 5432
+user   = mm-log
+pass   = 3ViVTOdrA0L2
+dbname = mm-log
+
+[pgsql_ms]
+host   = 192.168.50.51
+port   = 5432
+user   = mm-ms
+pass   = 3ViVTOdrA0L2
+dbname = mm-ms

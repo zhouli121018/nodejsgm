@@ -1,0 +1,147 @@
+.reg-att{width:890px;height:190px;margin:60px 0 4px 148px;border:#b1d4e7 1px dashed;background-color:#f1f9fc}
+.reg-att .safe-logo{float:left;margin-top:17px;margin-left:40px;}
+.company .reg-att p{float:left;margin-top:25px;margin-left:25px;font-size:18px;color:#000;line-height:120%;}
+.company .reg-att .shm{color:#e38336;font-weight:bold}
+.reg-nr{width:700px;font-size:18px;color:#333;line-height:250%;margin:0 auto}
+.radio{padding:30px 0px 20px  0px;font-size:18px;color:#333;text-align:center;}
+.radio label{padding-right:30px;}
+.red{color:#ff0000}
+
+
+.f-item {margin-bottom: 12px;}
+.f-label { float: left; text-align: right;  width: 180px;}
+.f-content {padding: 0 14px 14px 200px;;}
+.f-text, .f-horizontal .f-textarea { border: 1px solid #bbb;  margin: 0;  padding: 5px; width: 100%;height:43px;}
+.hoverline{color:#fff; background:#3276b1;font-size:14px;padding:8px;}
+.button_blue{background-color: #3276b1;   font-size:14px;  border-radius: 4px;   box-shadow: 0 1px 1px rgba(172, 192, 218, 0.7);   color: #fff;   cursor: pointer;  display: inline-block;height: 32px;  line-height: 32px;  padding: 0 25px;   text-align: center;   text-shadow: 0 -1px #08223b; vertical-align: middle;}
+.f-actions {padding-bottom: 100px;text-align: center;}
+.company .w{background:#f2f3e4;margin-top:20px;min-height:500px;-webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);-moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15); border-radius:4px}
+/*关于我们页面样式*/
+
+/*背景图*/
+.banner {
+    width: 1920px;
+    height: 283px;
+    background:  #00000c url("../img/banner-about.jpg") no-repeat;
+}
+
+/*公司介绍*/
+.company{/*    height: 637px;*/ background-color: #f8f8f8;padding-bottom:30px;}
+.company .comtop{
+    text-align: center;
+}
+
+.company .top-p1 {
+    line-height: 34px;
+    padding-top: 30px;
+    font-size: 34px;
+    color: #000;
+}
+
+.company .top-p2 {
+    line-height: 28px;
+    margin-top: 22px;
+    margin-bottom: 48px;
+    font-size: 28px;
+    color: #636363;
+}
+
+.company .combom{
+    width: 1076px;
+    height: 241px;
+    margin-top: 50px;
+    margin-left: 77px;
+    text-indent:2em;
+    font-size: 16px;
+    color: #000;
+}
+.company .combom p {
+    margin-bottom: 24px;
+}
+
+.combom .bom-p1,.bom-p2{
+    line-height: 24px;
+}
+
+.combom .bom-p3 {
+    line-height: 30px;
+}
+
+
+/*公司发展历程*/
+.course {
+    height: 1550px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.course .cour-im1{
+    width: 304px;
+    height: 62px;
+    margin: 65px 0  51px 0;
+}
+
+/*时间线*/
+.cour-time img{
+    margin: 0 64px;
+}
+.cour-time .cour-u1{
+    width: 524px;
+    height: 679px;
+    padding-top: 67px;
+    text-align: right;
+}
+.cour-time .cour-u2{
+    width: 450px;
+    height: 746px;
+    text-align: left;
+}
+.cour-time li{
+    height: 57px;
+    margin-bottom: 76px;
+}
+
+.cour-time span {
+    display: inline-block;
+    width: 87px;
+    height: 27px;
+    line-height: 27px;
+    margin-bottom: 15px;
+    text-align: center;
+    background-color: #217bc4;
+    border-radius: 15px;
+    font-size: 16px;
+    color: #fff;
+}
+
+.course .cour-our {
+    height: 40px;
+    line-height: 40px;
+    margin-top: 52px;
+    font-size: 40px;
+    color: #3d3d3d;
+}
+
+.course .cour-p1 {
+    height: 20px;
+    line-height: 20px;
+    margin-top: 30px;
+    letter-spacing: 15px;
+    font-size: 20px;
+    color: #3d3d3d;
+}   
+.course .cour-im2 {
+    margin-top: 28px;
+    margin-bottom: 40px;
+}
+
+.course .cour-p2 {
+    width: 815px;
+    margin: auto;
+    line-height: 37px;
+    font-size: 18px;
+    color: #585858;
+}
+.course .cour-p2 span{
+    color: #3c86c8;
+}

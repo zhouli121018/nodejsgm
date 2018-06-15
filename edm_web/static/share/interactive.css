@@ -1,0 +1,100 @@
+/* CSS Document */
+*{ margin:0; padding:0; font-size:14px; font-family:Arial, '微软雅黑'; color:#464646; line-height:1.6;}
+html,body{ width:100%; height:100%; margin:0 auto;}
+ul,li,ol,em,i,span,p,img{ margin:0; padding:0; border:0; list-style:none; font-style:normal;}
+h2,h3,h4,h5,h6{ margin:0; padding:0;}
+.mb10{ margin-bottom:10px !important;}
+.mb15{ margin-bottom:15px !important;}
+.mb20{ margin-bottom:20px !important;}
+.content{ width:100%; height:100%; float:left;}
+.content_box{ width:100%; height:100%; float:left; background:rgba(190,190,190,0.2);}
+.contentbg1, .contentbg2, .contentbg3, .contentbg4{ background-color:transparent !important; background-size:cover !important; background-position:50% 50% !important; background-repeat:no-repeat !important;}
+.contentbg1{ background:#888 url(images/3.jpg) no-repeat center top;}
+.contentbg2{ background:#888 url(images/4.jpg) no-repeat center top;}
+.contentbg3{ background:#888 url(images/1.jpg) no-repeat center top;}
+.contentbg4{ background:#888 url(images/5.jpg) no-repeat center top;}
+
+.sub_block{ width:100%; height:100%; display:table; vertical-align:middle; max-width:800px; margin:0 auto;}
+.sub_info{ width:100%; display:table-cell; vertical-align:middle;}
+.sub_info_block{ width:90%; float:left; background:rgba(255,255,255,0.95); margin:0 5%;}
+.sub_infobox{ width:90%; float:left; margin:30px 5% 40px 5%;}
+.sub_infobox span{ width:100%; float:left; line-height:1.6;}
+.sub_infobox span.tt{ font-size:32px; margin-bottom:10px;}
+.sub_infobox span.stt{ font-size:18px; margin-bottom:10px; font-weight:bold;}
+.sub_infobox li{ width:100%; float:left; margin-bottom:5px;}
+.sub_infobox li input{ width:15px; float:left; margin:6px 6px 0 0;}
+.sub_infobox li textarea{ width:98%; float:left; margin:10px 0 20px 0; border:solid 1px #cacaca; padding:1%; text-indent:5px;}
+.sub_infobox span a{ float:left; margin-right:15px; line-height:26px; padding:5px 32px; font-size:16px; color:#fff; text-decoration:none;}
+.sub_infobox span a.sure{ background:#5bc0de;}
+.sub_infobox span a:hover.sure{ background:#2aabd2;}
+.sub_infobox span a.cancel{ background:#bababa;}
+.sub_infobox span a:hover.cancel{ background:#ababab;}
+
+.log_block{ width:100%; height:100%; display:table; vertical-align:middle; max-width:800px; margin:0 auto;}
+.log_info{ width:100%; display:table-cell; vertical-align:middle;}
+.log_info_block{ width:90%; float:left; background:rgba(255,255,255,0.95); margin:0 5%;}
+.log_infobox{ width:90%; float:left; margin:40px 5%;}
+.log_infobox span{ width:100%; float:left; line-height:1.6;}
+.log_infobox span.tt{ font-size:32px;}
+.log_infobox span input{ width:98%; float:left; margin-bottom:10px; border:solid 1px #dddddd; padding:1%; text-indent:5px; color:#767676 !important; font-family:'微软雅黑';}
+.log_infobox span a{ float:left; margin-right:15px; line-height:26px; padding:5px 32px; font-size:16px; color:#fff; text-decoration:none; margin-top:10px;}
+.log_infobox span a.sure{ background:#5bc0de;}
+.log_infobox span a:hover.sure{ background:#2aabd2;}
+.log_infobox span a.cancel{ background:#bababa;}
+.log_infobox span a:hover.cancel{ background:#ababab;}
+
+.share_block{ width:100%; height:100%; display:table; vertical-align:middle; max-width:800px; margin:0 auto;}
+.share_info{ width:100%; display:table-cell; /* vertical-align:middle; */}
+.share_info_block{ width:90%; float:left; background:rgba(255,255,255,0.95); margin:0 5%;}
+.share_infobox{ width:90%; float:left; margin:40px 5%;}
+
+.share_infobox{ width:90%; float:left; margin:40px 5%;}
+.share_infobox h2{ width:100%; float:left; line-height:1.6; font-size:32px; font-weight:normal;}
+.share_icon{ width:100%; float:left; margin:20px 0 10px 0;}
+.share_icon span.tt{ width:100%; float:left; font-size:18px; margin-bottom:15px;}
+.share_icon span.tt em{ color:#999;}
+.share_icon li{ float:left; margin-right:15px; margin-bottom:15px;}
+.share_icon li.green{ border:solid 1px #05af10;}
+.share_icon li a{ float:left; width:50px; height:50px; line-height:50px; border:solid 1px #ccc; border-radius:25px; text-align:center; text-decoration:none;}
+.share_icon li a.green:hover{ background:#5db52b; border:solid 1px #5db52b;}
+.share_icon li a.green2:hover{ background:#99cc33; border:solid 1px #99cc33;}
+.share_icon li a.red:hover{ background:#f83c0e; border:solid 1px #f83c0e;}
+.share_icon li a.blue:hover{ background:#009fe3; border:solid 1px #009fe3;}
+.share_icon li a.blue2:hover{ background:#336799; border:solid 1px #336799;}
+.share_icon li a.blue3:hover{ background:#00acee; border:solid 1px #00acee;}
+.share_icon li a.blue4:hover{ background:#0977b6; border:solid 1px #0977b6;}
+.share_icon li a i{ width:100%; float:left; text-align:center; font-size:30px; color:#666;}
+.share_icon li a:hover i{ color:#fff;}
+.share_link{ width:100%; float:left; margin-bottom:10px;}
+.share_link span.tt{ width:100%; float:left; font-size:18px; margin-bottom:10px;}
+.share_link span.tt em{ color:#999;}
+.share_link span input{ width:98%; float:left; border:solid 1px #cacaca; padding:1%; text-indent:5px;}
+
+.prop_block{ width:100%; height:100%; display:table; vertical-align:middle; max-width:800px; margin:0 auto;}
+.prop_info{ width:100%; display:table-cell; vertical-align:middle;}
+.prop_info_block{ width:90%; float:left; background:rgba(255,255,255,0.95); margin:0 5%;}
+.prop_infobox{ width:90%; float:left; margin:40px 5%;}
+
+.prop_infobox{ width:90%; float:left; margin:40px 5%;}
+.prop_infobox h2{ width:100%; float:left; line-height:1.6; font-size:32px; font-weight:normal;}
+.prop_infobox span{ width:100%; float:left;}
+.prop_infobox span textarea{ width:98%; float:left; border:solid 1px #cacaca; background:none; padding:1%; height:100px;}
+.prop_infobox span.last a{ float:left; margin-right:15px; line-height:26px; padding:5px 32px; font-size:16px; background:#5bc0de; color:#fff; text-decoration:none; margin-top:20px;}
+.prop_infobox span.last a:hover{ background:#2aabd2;}
+
+.nav-tabs li{ float:left; width:20%; text-align:center;}
+.nav-tabs li a{ border-style: none !important;
+	border-color: inherit !important;
+	border-width: 0 !important;
+	background-position: 0% 0%;
+	color:#666; 	background-color:none !important;
+	background-image: none !important;
+	background-repeat: repeat !important;
+	background-attachment: scroll !important;
+}
+.nav-tabs li:hover a{ color:#5bc0de !important;}
+.nav-tabs li.active a{ color:#5bc0de !important; border-bottom:solid 2px #5bc0de !important;}
+
+@media only screen and (max-width:768px){
+.sub_info_block, .share_info_block, .log_info_block{ width:100%; float:left; background:rgba(255,255,255,0.95); margin:0 auto;}
+}

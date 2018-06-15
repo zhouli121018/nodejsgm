@@ -1,0 +1,259 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "精准邮件数据服务" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "精准邮件数据服务" %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-list margin-right-5"></i>{% trans "精准邮件数据服务" %}
+            </h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget well" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>{% trans '精准邮件数据服务' %}</h2>
+                    </header>
+
+                    <div>
+                        <div class="widget-body no-padding no-margin">
+                            <form role="form" action="" method="post" id="id_Form" class="form-horizontal">
+                                <legend class="pull-left padding-gutter padding-top-0 padding-bottom-0 jcrop-api-tabs-options">
+                                    <h2 class="no-margin no-padding">
+                                        <span class="text-success margin-left-5">{% trans '好的邮件营销就是知道把什么内容发给什么人，精准营销才是王道！' %}</span>
+                                    </h2>
+                                    <h2 class="no-margin no-padding">
+                                        <span class="text-success margin-left-5">{% trans 'U-MAIL联合阿里等第三方大数据公司为精准行业客户提供此增值数据服务，有此需求的客户请填写下面的表单，谢谢！' %}</span>
+                                    </h2>
+                                </legend>
+                                {% csrf_token %}
+                                <div id="id_tag_lists"></div>
+                                <div style="clear: both;height: 13px;"></div>
+                                <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed table-content table-tr-dashed" width="100%">
+                                    <tbody>
+
+                                    {% for k, v, lists in tag_lists %}
+                                        <tr>
+                                            <td class="no-border text-right text-muted myself-width-120 text-label">
+                                                <label class="control-label">{{ v }}</label>
+                                            </td>
+                                            <td class="no-border">
+                                                <div style="width: 90%;float: left;">
+                                                    {% for d in lists %}
+                                                        <span style="display: inline;">
+                                                            <span onclick="changeLists('{{ k }}','{{ d.id }}', '{{ d.name }}')" style="" id="id_change_{{ d.id }}" class="ac-tag_tag">{{ d.name }}</span>
+                                                            {% if d.has_children %}
+                                                                <a data-toggle="modal" data-target="#tagthreeModal" data-whatever=""
+                                                                   href="{% url 'mail_accurate_service_open_three' %}?parent_id={{ d.id }}&tag_type=address"
+                                                                   class="btn btn-default" style="margin-left: -19px;margin-right: 13px;padding: 6px 5px;" title="{% trans '详细' %}"  id="id_tagServicethreeModal_{{ d.id }}">
+                                                                    <i class="fa fa-caret-down"></i>
+                                                                </a>
+                                                            {% endif %}
+                                                        </span>
+                                                    {% endfor %}
+                                                </div>
+                                                <div style="clear: both"></div>
+                                                <span style="display: inline;">
+                                                    <strong class="text-success">{% trans '已选' %}：</strong>
+                                                    {% for d in lists %}
+                                                        <span id="id_lists_parent_{{ d.id }}"></span>
+                                                        {% if d.has_children %}
+                                                            <span id="id_lists_children_{{ d.id }}"></span>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    <tr>
+                                        <td class="no-border text-right text-muted myself-width-120 text-label">
+                                            <label class="control-label">{% trans '其他说明' %}</label>
+                                        </td>
+                                        <td class="no-border">
+                                            <textarea id="id_remark" name="remark" rows="3" style="width: 70%;"></textarea>
+                                            <br><small id="id_remark_error" class="myself-txt-color-err display-none"></small>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="no-border text-right text-muted myself-width-120 text-label">
+                                            <label class="control-label">{% trans '联系人' %}</label>
+                                        </td>
+                                        <td class="no-border">
+                                            <input id="id_linkman" name="linkman" maxlength="50" type="text" value="{{ request.user.linkman }}" class="form-control" style="width: 35%;">
+                                            <br><small id="id_linkman_error" class="myself-txt-color-err display-none"></small>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="no-border text-right text-muted myself-width-120 text-label">
+                                            <label class="control-label">{% trans '电话' %}</label>
+                                        </td>
+                                        <td class="no-border">
+                                            <input id="id_phone" name="phone" maxlength="20" type="text" value="{{ request.user.mobile }}" class="form-control" style="width: 35%;">
+                                            <br><small id="id_phone_error" class="myself-txt-color-err display-none"></small>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="no-border text-right text-muted myself-width-120 text-label">
+                                        </td>
+                                        <td class="no-border">
+                                            <button class="btn btn-primary" type="button" style="width: 35%!important;" onclick="saveTag()" id="id_save_button">{% trans '申请数据' %}</button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <div class="modal fade " id="tagthreeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="margin:60px auto; width: 1200px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">加载中</h4>
+                </div>
+                <div class="modal-body">
+                    页面加载中
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close_bak_2" class="btn btn-default hidden" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css_block %}
+    <link href="/static/sa/css/dataTables.bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/addcss.css"/>
+    <style>
+        .myself-width-120{width:140px;}
+        .ac-tag_tag {  cursor: pointer;  display: inline-block;  padding: 6px 12px;  margin-right: 15px;  margin-bottom: 15px;  border: 1px solid #ddd;  border-radius: 3px;  }
+        .ac-tag_tag.is-active_tag { border-color: #2c699d; color: #fff; background: #3276b1;}
+        .widget-body .form-control{  color: #333;  }
+        .self-margin-left-5 {margin-left: 5px!important;}
+        .self-show-share-log {display:inline-block;min-width:10px;padding:3px 7px;font-size:12px;font-weight:700;color:#fff;line-height:1;vertical-align:middle;vertical-align:baseline;white-space: nowrap;text-align:center;background-color:#999;border-radius:10px;background:#3276B1!important}
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <!-- PAGE RELATED PLUGIN(S) -->
+    <script src="/static/sa/js/plugin/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.colVis.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.tableTools.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="/static/sa/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+
+    <script type="text/javascript">
+
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(function () {
+            $('#tagthreeModal').on('show.bs.modal', function (event) {
+                $(this).removeData('bs.modal');
+            })
+        });
+
+        {% for k, v, lists in tag_lists %}
+            {% for d in lists %}
+                {% if d.has_children %}
+                    $(function () {
+                        $("#id_tagServicethreeModal_{{ d.id }}").click(function(){
+                            var id_array = $("input[name='name{{ d.id }}[]']");
+                            var select_id = new Array();
+                            for (var i = 0, j = id_array.length; i < j; i++){
+                                select_id.push($.trim(id_array[i].value));
+                            }
+                            $("#id_tagServicethreeModal_{{ d.id }}").attr('href', '{% url 'mail_accurate_service_open_three' %}?parent_id={{ d.id }}&tag_type=address&child_ids=' + select_id.toString());
+                        });
+                    });
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
+        function changeLists(cat_id, tag_id, tag_name) {
+            var obj = $("#id_change_" + tag_id);
+            if (obj.hasClass('is-active_tag')) {
+                obj.removeClass('is-active_tag');
+                $("#id_name_" + tag_id).remove();
+                $("#id_tag_span_" + tag_id).remove();
+            } else {
+                obj.addClass('is-active_tag');
+                $("#id_lists_parent_" + tag_id).append('<input type="text" class="display-none" name="name[]" id="id_name_' + tag_id + '" value="' + tag_id + '"/>');
+                $("#id_lists_parent_" + tag_id).append('<span class="self-show-share-log self-margin-left-5" id="id_tag_span_' + tag_id + '">'+tag_name+'</span>');
+            }
+        }
+
+        function checkMobile(text){
+            var _emp=/^\s*|\s*$/g;
+            text=text.replace(_emp,"");
+            var _d=/^1[3578][01379]\d{8}$/g;
+            var _l=/^1[34578][01256]\d{8}$/g;
+            var _y=/^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/g;
+            if(_d.test(text)){
+                return true;
+            } else if(_l.test(text)){
+                return true;
+            }else if(_y.test(text)){
+                return true;
+            }
+            return false;
+        }
+
+        $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+        function saveTag(){
+            $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+            var names = $("input[name='name[]']");
+            var remark = $.trim($("#id_remark").val());
+            var linkman = $.trim($("#id_linkman").val());
+            var phone = $.trim($("#id_phone").val());
+            if ( names.length==0 && remark=='' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_remark_error").removeClass('display-none').html('{% trans '所属行业或主要邮箱地区必须选一项，可多选；若没有可选的请进行说明。' %}');
+                return false;
+            }
+            if ( linkman=='' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_linkman_error").removeClass('display-none').html('{% trans '联系人不能为空' %}');
+                return false;
+            }
+            if ( phone=='' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_phone_error").removeClass('display-none').html('{% trans '手机不能为空。' %}');
+                return false;
+            }
+            if ( !checkMobile(phone) ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_phone_error").removeClass('display-none').html('{% trans '手机号码格式不正确。' %}');
+                return false;
+            }
+            $('#id_Form').submit();
+        }
+
+    </script>
+
+{% endblock %}

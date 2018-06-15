@@ -1,0 +1,624 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load bootstrap %}
+{% load task_tags %}
+{% block title %}{% trans "修改任务" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "邮件任务管理" %}</li><li>{% trans "修改任务" %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-pencil-square-o fa-fw "></i>
+                {% trans "发送批次：" %}<code>{{ task_obj.send_name }}</code>
+            </h1>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6">
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-sortable jarviswidget-color-teal" id="wid-id-1" data-widget-editbutton="false"
+                     data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-hand-o-right"></i></span>
+                        <h2>{% trans "修改任务" %}</h2>
+                    </header>
+
+                    <div>
+                        <div class="jarviswidget-editbox"></div>
+                        <div class="widget-body no-padding">
+                            <form role="form" action="" method="post" id="id_taskFormModify" class="padding-gutter form-horizontal">
+                                {% csrf_token %}
+                                <input id="id_send_name" name="send_name" value="{{ task_obj.send_name }}" type="hidden">
+                                <input name="send_addr_count" id="id_send_addr_count" value="0" type="hidden">
+                                <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed" width="100%">
+                                    <tbody>
+
+                                    <!-- 模板 -->
+                                    {% include 'task/include/template_modify.html' %}
+
+                                    <!-- 联系人 -->
+                                    {% include 'task/include/maillist_modify.html' %}
+
+                                    <!-- 发件人 -->
+                                    {% include 'task/include/rcp_modify.html' %}
+
+                                    <!-- 发送设置 -->
+                                    {% include 'task/include/send_modify.html' %}
+
+                                    </tbody>
+                                </table>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="margin-left-20">
+                                                <button onclick="checkForm()" type="button" class="btn btn-primary pull-left margin-right-5" id="id_save_button">{% trans "保存" %}</button>
+                                                <button type="button" class="btn btn-default pull-left" onclick="location.href='{% url "task_list" %}?isvalid={{ task_obj.isvalid|show_isvalid }}'">{% trans "取消" %}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <input id="id_exist_domamin" type="hidden" value="{% if domain_objs or share_domain_objs %}1{% else %}0{% endif %}">
+
+{% endblock %}
+
+{% block css_block %}
+    <link href="{% static 'sa/js/plugin/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+    <style>
+        .myself-width-small{width: 130px!important;}
+        .myself-template-width{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .no-padding-right{padding-right: 0px!important;}
+        .ac-tag_tag {  cursor: pointer;  display: inline-block;  padding: 6px 12px;  margin-right: 7px;  margin-bottom: 3px;  border: 1px solid #ddd;  border-radius: 3px;  }
+        .ac-tag_tag.is-active_tag { border-color: #2c699d; color: #fff; background: #3276b1;}
+        {% if task_obj.send_status == 1 or task_obj.verify_status == 0 %}
+        {% else %}
+            .select2-container-multi .select2-choices .select2-search-choice, .select2-selection__choice{
+                background-color: #eee!important;
+                color: gray!important;
+            }
+        {% endif %}
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <script src="{% static 'sa/js/plugin/select2/select2.min.js' %}"></script>
+    <script src="{% static 'sa/js/plugin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js' %}"></script>
+    <script src="{% static 'sa/js/plugin/bootstrap-datetimepicker/js/bootstrap-datetimepicker.zh-CN.js' %}"></script>
+
+    <script type="text/javascript">
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        {% if not template_ids %}
+            $(function(){
+                loadFivePage();
+            });
+        {% endif %}
+        // 加载5个模板
+        function loadFivePage(page){
+            var ajax_url = "{% url 'ajax_load_template' %}?template_ids={{ template_ids_str|safe }}&page=1";
+            $.post(ajax_url, {}, function(data){
+                $('#id_ajax_load_template').append(data);
+            });
+        }
+        // 再加载5个模板
+        function loadNextFivePage(page){
+            $("#id_page_previous").remove();
+            var ajax_url = "{% url 'ajax_load_template' %}?template_ids={{ template_ids_str|safe }}&page=" + page;
+            $.post(ajax_url, {}, function(data){
+                $('#id_ajax_load_template').append(data);
+            });
+        };
+
+        // 初始化
+        $(function(){
+
+            {% if task_obj.send_status == 1 or task_obj.verify_status == 0 %}
+                $("#id_send_maillist").select2({
+                    // placeholder: "Select a release...",
+                    language: {
+                        noResults: function (params) {
+                            return "{% trans "暂无数据" %}";
+                        }
+                    }
+                });
+            {% else %}
+                $("#id_send_maillist").select2({
+                    // placeholder: "Select a release...",
+                    language: {
+                        noResults: function (params) {
+                            return "{% trans "暂无数据" %}";
+                        }
+                    },
+                    disabled: true,
+                });
+                $("#id_send_maillist").prop("disabled", true);
+            {% endif %}
+
+
+
+            // 初始化 选择联系人
+            getMaillistCount();
+
+            // 初始化 选择发件人
+            getAccountByDomain($("#id_send_domain").val());
+
+            // 初始化 发送状态
+            changeDataArea($("#id_send_status").val());
+
+            // 初始化 邮件跟踪
+            var track_status = $("#id_track_status").val();
+            showDomainArea(track_status);
+
+            // 初始化日期
+            $('.dateinput').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                language: 'zh-CN',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                // minView: 2,
+                pickerPosition: "top-right",
+            });
+            // 发送数量
+            {% if task_obj.send_qty == 0 %}
+                onchangeQty("all");
+            {% else %}
+                onchangeQty("limit");
+            {% endif %}
+
+            // AB
+            onchangeABSend();
+        });
+
+        // A/B发送
+        function onchangeABSend(){
+            var checkboxval = $("input[name='is_ab']:checked").val();
+            if ( checkboxval == undefined ){
+                $("#id_ab_send").addClass("display-none");
+            } else {
+                $("#id_ab_send").removeClass("display-none");
+            }
+        }
+
+        // 添加新模板
+        function send_template_add(){
+            $.post("{% url 'ajax_template_id' %}", {}, function(data){
+                var template_id = data.template_id
+                var url = "/template/modify/template_id/".replace("template_id", template_id);
+                location.href = url;
+            });
+        }
+
+        function changeTriggerLists(trigger_id, name){
+            var obj = $("#id_change_trigger_" + trigger_id);
+            if (obj.hasClass('is-active_tag')) {
+                obj.removeClass('is-active_tag');
+                $("#id_trigger_" + trigger_id).remove();
+            } else {
+                obj.addClass('is-active_tag');
+                $("#id_trigger").append('<input type="hidden" name="trigger[]" id="id_trigger_' + trigger_id + '" value="' + trigger_id + '"/>');
+            }
+        }
+
+        // 获取获取联系人地址数量
+        function getMaillistCount(){
+            var sendlists = $('#id_send_maillist').val();
+            var obj = $("#id_send_maillist_count");
+            var trigger_obj = $("#id_trigger");
+            if ( sendlists == null){
+                obj.html("");
+                trigger_obj.html("");
+                $("#id_send_maillist_one").removeClass("display-none");
+                $("#id_send_addr_count").val(0);
+                {% if request.user.service.is_verify == '1' %}
+                    show_track_status(0);
+                {% endif %}
+                return false;
+            }
+            var length = sendlists.length;
+            sendlists = sendlists.toString();
+            if (length>=2){
+                $("#id_send_maillist_one").addClass("display-none");
+            } else {
+                $("#id_send_maillist_one").removeClass("display-none");
+            }
+
+            var ajax_url = "{% url 'ajax_get_maillistcount_and_triggers' %}?list_ids=" + sendlists;
+            obj.html('{% trans "共" %}<span class="myself-txt-color-blue"><img src="/static/img/loading.gif"></span>{% trans "个地址" %}');
+            trigger_obj.html("");
+            $.get(ajax_url, {}, function(data){
+                $("#id_send_addr_count").val(data.count);
+                obj.html('{% trans "共" %}<span class="myself-txt-color-blue margin-right-5 margin-left-5">' + data.count + '</span>{% trans "个地址" %}');
+                trigger_obj.html(data.html);
+                {% if request.user.service.is_verify == '1' %}
+                    show_track_status(data.count);
+                {% endif %}
+            });
+
+            /*
+             // var list_id = String({{ task_obj.send_maillist_id }});
+             var obj = $("#id_send_maillist_count");
+             var trigger_obj = $("#id_trigger");
+             if ( (list_id == '') || list_id == null ){
+             obj.html("");
+             trigger_obj.html("");
+             $("#id_send_addr_count").val(0);
+             return false;
+             };
+             var ajax_url = "{% url 'ajax_get_maillist_trigger' %}?list_id=" + list_id + "&task_id={{ task_obj.id }}";
+             obj.html('{% trans "共" %}<span class="myself-txt-color-blue"><img src="/static/img/loading.gif"></span>{% trans "个地址" %}');
+             $.post(ajax_url, {}, function(data){
+             $("#id_send_addr_count").val(data.count);
+             trigger_obj.html(data.html);
+             obj.html('{% trans "共" %}<span class="myself-txt-color-blue margin-right-5 margin-left-5">' + data.count + '</span>{% trans "个地址" %}');
+             });
+             */
+        };
+
+        // 选择发件人
+        function getAccountByDomain(domain){
+            var objAcc = $("#id_send_account");
+            var objNote = $('#id_all_sender_note');
+            var ajax_url = "{% url 'ajax_get_mailbox' %}?domain=" + domain;
+            if(domain == 'all') {
+                objNote.html('{% trans "本次任务将使用所有发件人轮流发送。" %}');
+                objAcc.html('<option value="all" selected="selected">{% trans "所有发件人" %}</option>');
+                return;
+            } else {
+                var send_acct_address = '';
+                var select_html = '';
+                {% if task_obj.send_acct_address != "all" %}
+                    send_acct_address = "{{ task_obj.send_acct_address }}";
+                    select_html += '<option value="'+ send_acct_address +'" selected="selected">' + send_acct_address + '</option>'
+                {% endif %}
+                objNote.html('{% trans "本次任务将使用域名" %} <strong class="myself-txt-color-blue">' + domain + '</strong> {% trans "下所有发件人轮流发送。" %}');
+                $.post(ajax_url, {}, function(data){
+                    if (data.json_list.length > 0){
+                        if (send_acct_address == '' ){
+                            select_html += '<option value="all" selected="selected">{% trans "所有发件人" %}</option>';
+                        } else {
+                            select_html += '<option value="all">{% trans "所有发件人" %}</option>';
+                        }
+                        for(var i=0;i<data.json_list.length;i++) {
+                            if (data.json_list[i] != send_acct_address){
+                                select_html += '<option value="'+ data.json_list[i] +'">' + data.json_list[i] + '</option>';
+                            }
+                        };
+                        objAcc.html(select_html);
+                        //showSenderNote(objAcc);
+                    } else {
+                        objAcc.html('<option value="all" selected="selected">{% trans "所有发件人" %}</option>');
+                        //showSenderNote(objAcc);
+                    };
+                });
+                return false;
+            };
+        };
+        // onChange 发件人
+        function showSenderNote(obj){
+            var objNote = $('#id_all_sender_note');
+            if(obj.value == 'all') {
+                var domain = $("#id_send_domain").val();
+                if (domain != 'all'){
+                    objNote.html('{% trans "本次任务将使用域名" %}<strong class="myself-txt-color-blue">' + domain + '</strong> {% trans "下所有发件人轮流发送。" %}');
+                } else {
+                    objNote.html('{% trans "本次任务将使用所有发件人轮流发送。" %}');
+                }
+            } else {
+                objNote.html('');
+            }
+        };
+
+        // 部分数量
+        function onchangeQty(value){
+            if ( value == "limit" ){
+                $("#id_send_qty_hidden").removeClass("display-none");
+            } else if ( value == "all" ){
+                $("#id_send_qty_hidden").addClass("display-none");
+            }
+        }
+
+        // 获取当前时间后10分钟
+        function getServerTimeAfter10Min() {
+            var d=new Date();
+            var minuter=d.getMinutes();
+            d.setMinutes(minuter + 10);
+            var year=d.getFullYear();
+            var month=d.getMonth()+1;
+            if(month<10)
+                month="0"+month;
+            var day=d.getDate();
+            if(day<10)
+                day="0"+day;
+
+            var hour=d.getHours();
+            if(hour<10)
+                hour="0"+hour;
+            var minuter=d.getMinutes();
+            if(minuter<10)
+                minuter="0"+minuter;
+
+            var time = year + "-" + month + "-" + day + " " + hour + ":" + minuter;
+            return time;
+        }
+
+        // 发送状态 onChange
+        function changeDataArea(status){
+            var obj = $('#id_send_date_area');
+            if (status == '1') {
+                obj.show();
+                // $("#id_send_date").val(getServerTimeAfter10Min());
+            } else {
+                obj.hide();
+            }
+        };
+
+        // 邮件跟踪 onChange
+        function showDomainArea(track_status) {
+            if( track_status > 0 ) {
+                document.getElementById('id_domain_for_track').style.display = '';
+                document.getElementById('id_track_domain').disabled = false;
+                checkDomain(document.getElementById('id_track_domain'));
+            }else{
+                document.getElementById('id_track_domain').disabled = true;
+                document.getElementById('id_track_domain').value = 'count.comingchina.com';
+                document.getElementById('id_test_domain_result').innerHTML = '';
+                document.getElementById('id_domain_for_track').style.display = 'none';
+                document.getElementById('id_domain_test_result').value = '0';
+            }
+        }
+
+        //add by lbh 20120720
+        function checkDomain(obj) {
+            var domain = obj.value;
+            if(domain == '') {
+                document.getElementById('id_test_domain_result').innerHTML = '';
+                return false;
+            }
+            // 测试使用
+            //document.getElementById('id_domain_test_result').value = '1';
+            //return false;
+
+            var ajax_url = "{% url 'ajax_check_track_domain' %}?domain=" + domain;
+            document.getElementById('id_test_domain_result').innerHTML = '<span style="color:green;">{% trans "正在检测，请稍等......" %}</span>';
+            $.get(ajax_url, {}, function(data){
+                if(data.res == 'success'){
+                    document.getElementById('id_test_domain_result').innerHTML = '<span style="color:green;">{% trans "测试链接成功" %}</span>';
+                    document.getElementById('id_domain_test_result').value = '1';
+                } else if ( data.res == 'M' ){
+                    document.getElementById('id_test_domain_result').innerHTML = '<span style="color:red;">{% trans "不能添加本平台域名：comingchina.com，magvision.com，bestedm.org。" %}</span>';
+                    document.getElementById('id_domain_test_result').value = '0';
+                    obj.focus();
+                } else {
+                    document.getElementById('id_test_domain_result').innerHTML = '<span style="color:red;">{% trans "该域名未解析到系统域名" %}</span>';
+                    document.getElementById('id_domain_test_result').value = '0';
+                    obj.focus();
+                }
+            });
+        }
+
+        // 获取当前时间
+        function getServerTime() {
+            var d=new Date();
+            var year=d.getFullYear();
+            var month=d.getMonth()+1;
+            if(month<10)
+                month="0"+month;
+            var day=d.getDate();
+            if(day<10)
+                day="0"+day;
+
+            var hour=d.getHours()
+            if(hour<10)
+                hour="0"+hour;
+            var minuter=d.getMinutes()
+            if(minuter<10)
+                minuter="0"+minuter;
+
+            var time = year + "-" + month + "-" + day + " " + hour + ":" + minuter;
+            return time;
+        }
+
+        function checkAddress(address){
+            var expression = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            var obj = new RegExp(expression);
+            if(obj.test(address)==true){
+                return true;
+            }else{
+                return false;
+            }
+        };
+
+        function onfocusReplyto(){$("#id_send_replyto_error").addClass('display-none');}
+        function onfocusDate(){$("#id_send_date_error").addClass('display-none');}
+
+        // 保存
+        $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+        function checkForm() {
+            $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+            // 域名是否存在，并验证通过
+            if ( $("#id_exist_domamin").val() == '0' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                alert('{% trans "请前往（发送域名列表）添加域名并验证！" %}');
+                return false;
+            }
+
+            // AB发送
+            var checkboxvalAB = $("input[name='is_ab']:checked").val();
+            var ab_appraise_qty = Number($("#id_ab_appraise_qty").val());
+            var ab_content_limit = Number($("#id_ab_content_limit").val());
+            var id_array=new Array();
+            $('input[name="template"]:checked').each(function(){
+                id_array.push($(this).val());//向数组中添加元素
+            });
+            var tpl_len = id_array.length;
+            if ( checkboxvalAB == undefined ){
+                console.log(checkboxvalAB);
+            } else {
+                if (ab_appraise_qty<2000){
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    alert('{% trans "A/B发送，评估封数必须大于等于2000！" %}');
+                    return false;
+                }
+                if (ab_content_limit<1){
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    alert('{% trans "A/B发送，最终保留模板必须大于等于1！" %}');
+                    return false;
+                }
+                if (tpl_len<=ab_content_limit){
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    alert('{% trans "A/B发送，选择的模板不能少于等于最终保留的模板！" %}');
+                    return false;
+                }
+            }
+
+
+            // 模板验证
+            var checkboxval = $("input[name='template']:checked").val();
+            if ( (checkboxval === undefined) || (checkboxval == null) || (checkboxval == '') ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_template_error").removeClass('display-none');
+                return false;
+            }
+
+            var send_replyto = $.trim($("#id_send_replyto").val());
+            if ( (send_replyto != '') && (!(checkAddress(send_replyto)))){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_send_replyto_error").removeClass('display-none');
+                return;
+            }
+
+            // 发送时间验证
+            var send_date = $("#id_send_date").val();
+            var send_status = $("#id_send_status").val();
+            if ( ( send_status == '1') && (send_date < getServerTime()) ) {
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_send_date_error").removeClass('display-none');
+                return false;
+            }
+
+            // 发送数量验证
+            {% if task_obj.send_status == 1 or task_obj.verify_status == 0 %}
+                var sendlists = $('#id_send_maillist').val();
+                if ( sendlists == null){
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    // $("#id_limit_error").removeClass('display-none').html("{% trans "请选择联系人!" %}");
+                    alert("{% trans "请选择联系人!" %}");
+                    return false;
+                }
+                var sendlists_length = sendlists.length;
+                var send_addr_count = Number($("#id_send_addr_count").val());
+                var custQtyValid = Number("{{ custQtyValid }}"); //客户有效群发数量
+                var send_qty_type = $("input[name='send_qty_type']:checked").val();
+                var send_qty = Number($("#id_send_qty").val());
+                var send_qty_start = Number($("#id_send_qty_start").val());
+                var realQty = send_qty-send_qty_start;
+                var regExp=/^\d+(\.\d+)?$/;
+                if (sendlists_length<2){
+                    if( (send_qty_type == 'all') && (send_addr_count > custQtyValid) ) {
+                        $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                        $("#id_all_error").removeClass('display-none').html("{% trans "您当前剩余群发量为" %}" + custQtyValid + "{% trans "，不足以发送此次任务!" %}");
+                        return false;
+                    } else if( send_qty_type == 'limit'){
+                        if (!( regExp.test(send_qty) )){
+                            $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                            $("#id_limit_error").removeClass('display-none').html("{% trans "请填写正确的发送数量!"%}");
+                            return false;
+                        }
+                        if (!( regExp.test(send_qty_start) )){
+                            $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                            $("#id_limit_error").removeClass('display-none').html("{% trans "请填写正确的发送数量!"%}");
+                            return false;
+                        }
+                        if ( send_qty_start > send_addr_count ){
+                            $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                            $("#id_limit_error").removeClass('display-none').html("{% trans "起始数量不能大于地址总数." %}");
+                            return false;
+                        }
+                        if (send_qty_start > send_qty){
+                            $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                            $("#id_limit_error").removeClass('display-none').html("{% trans "发送开始数量必须小于结束数量!" %}");
+                            return false;
+                        }
+                        if(send_qty > send_addr_count) {
+                            $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                            $("#id_limit_error").removeClass('display-none').html("{% trans "您输入的邮件发送数量超过了当前地址池邮件总数，请重新输入!" %}");
+                            return false;
+                        }
+                        if(realQty > custQtyValid){
+                            $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                            $("#id_limit_error").removeClass('display-none').html("{% trans "您当前剩余群发量为" %}" + custQtyValid + "{% trans "，不足以发送此次任务!" %}");
+                            return false;
+                        }
+                    }
+                } else {
+                    if ( send_addr_count > custQtyValid ){
+                        $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                        alert("{% trans "您当前剩余群发量为" %}" + custQtyValid + "{% trans "，不足以发送此次任务!" %}");
+                        return false;
+                    }
+                }
+            {% endif %}
+
+            // 邮件跟踪， 域名解析
+            var track_status = $("#id_track_status").val();
+            var track_domain = $("#id_track_domain").val();
+            var domain_test_result = $("#id_domain_test_result").val()
+            if(track_status>0 && track_domain && domain_test_result == '0') {
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                alert('{% trans "指定域名未解析！" %}');
+                return false;
+            }
+
+            // 如果模板和地址分类有改变，则检查是否存在相同地址池分类，相同模板的任务
+            /*
+             if(form.send_template_id.value != '155491' || form.send_maillist_id.value != '') {
+             var has_task = checkTaskRepeat(35,form.send_maillist_id.value,form.send_template_id.value);
+             if(has_task == '1') {
+             if(confirm('24小时内，存在相同地址池，邮件模板的群发任务！\n点击确定继续创建，点击取消返回编辑页面')) {
+             //return false;
+             }else{
+             return false;
+             }
+             }
+             }
+             */
+
+            // 如果发送状态是暂时发送, 加个提示
+            if ( send_status == '-1' ){
+                if(!confirm('{% trans "该邮件确定为暂不发送吗？如若不是，请返回修改“发送状态”！" %}')) {
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    return false;
+                }
+            }
+
+            {% if is_service_disabled %}
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_limit_error").removeClass('display-none').html("{% trans "该账户已禁止发送任务，请联系您的客服！" %}");
+                return false;
+            {% endif %}
+
+            $('#id_taskFormModify').submit();
+        };
+
+    </script>
+{% endblock %}

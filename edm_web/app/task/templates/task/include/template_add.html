@@ -1,0 +1,65 @@
+{% load i18n %}
+{% load static %}
+
+<tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+<!--选择模板-->
+<tr>
+    <td class="no-border text-right myself-width-small vertical-align-middle">
+        <label class="control-label myself-width-small">{% trans "选择模板" %}</label>
+    </td>
+    <td class="no-border">
+        <fieldset>
+            {% for obj in template_lists %}
+                <label class="margin-top-0 col-md-12 no-padding-left" >
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 inline-group no-padding-left">
+                        <input type="checkbox" class="checkbox style-0" id="id_template_{{ obj.id }}" name="template" value="{{ obj.id }}" checked>
+                        <span class="col-md-4 myself-template-width" title="{{ obj.name }}">{{ obj.name }}</span>
+                        (<a href="{% url 'template_preview' obj.id %}" target="_blank" class="margin-right-5">{% trans "查看模板" %}</a>
+                        {% trans "该模板约扣" %}<span class="myself-txt-color-blue margin-right-5 margin-left-5">{{ obj.get_template_point }}</span>{% trans "个点数" %})
+                    </div>
+                </label>
+            {% endfor %}
+            <div id="id_ajax_load_template"></div>
+            <label class="margin-top-0 col-md-12 ">
+                <small id="id_template_error" class="myself-txt-color-err display-none">{% trans "提示：请至少选择一个模板！" %}</small>
+            </label>
+            {% if template_ids and exclude_template_existed %}
+                <label class="margin-top-0 col-md-12" id="id_page_previous">
+                    <div class="inline-group">
+                        <a href="Javascript: loadNextFivePage('1')" class="btn btn-primary btn-xs">{% trans "再显示5个模板" %}</a>
+                    </div>
+                </label>
+            {% endif %}
+            {% if not template_existed %}
+                <label class="margin-top-0 col-md-12">
+                    <span>{% trans "还没有建立邮件模板？" %} <a href="Javascript: send_template_add()">{% trans "点此添加新模板！" %}</a></span>
+                </label>
+            {% endif %}
+            {% if retry_flag %}
+                <label class="margin-top-0 col-md-12">
+                    <span class="text-success">{% trans "为取得更好的发送效果建议使用新邮件模板！" %} </span>
+                </label>
+            {% endif %}
+
+            <label class="margin-top-0 col-md-12 no-padding-left">
+                <div class="inline-group no-padding-left" style="margin-left: 13px;">
+                    <input type="checkbox" class="checkbox style-0" id="id_is_ab" name="is_ab" onclick="onchangeABSend();" {% if c_is_ab %}checked{% endif %}>
+                    <span class="text-success"><strong>{% trans "智能A/B发送" %}</strong></span>
+                </div>
+            </label>
+            <label class="margin-top-0 col-md-12 " id="id_ab_send">
+                <span>{% trans "每隔" %}</span>
+                <input class="" id="id_ab_appraise_qty" name="ab_appraise_qty" value="{{ c_ab_appraise_qty }}" type="number" style="width: 100px;">
+                <span>{% trans "封评估一次" %}</span>，
+                <span>{% trans "剔除打开率较低的模板" %}</span>，
+                <span>{% trans "最终保留效果最好的" %}</span>
+                <input class="" id="id_ab_content_limit" name="ab_content_limit" value="{{ c_ab_content_limit }}" type="number" style="width: 50px;">
+                <span>{% trans "个模板发送" %}</span>
+            </label>
+            <label class="margin-top-0 col-md-12 ">
+                <small id="id_ab_send_error" class="myself-txt-color-err display-none"></small>
+            </label>
+
+        </fieldset>
+    </td>
+</tr>

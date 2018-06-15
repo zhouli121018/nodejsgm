@@ -1,0 +1,20 @@
+{% load i18n %}
+<td>{{ number }}</td>
+<td><span class="text-success">{{ d.time_upload|date:"Y-m-d H:i" }}</span></td>
+<td>{{ d.filename|default_if_none:'' }}</td>
+<td>{{ d.maillist }}</td>
+<td><span class="{% if d.status == '-2' %}text-danger {% elif d.status == '1' %}text-success{% endif %}">{{ d.get_status_display }}</span></td>
+<td>{{ d.count_all }}</td>
+<td>{{ d.count_success }}(
+    {% if d.count_err_1 > 0 %}
+        <a title="{% trans "查看无效地址" %}" href="{% url 'import_invalid_view' d.id %}" target="_blank"> {{ d.count_err_1 }}  </a>
+    {% else %}
+        <span class="text-muted" title="{% trans "查看无效地址" %}">0</span>
+    {% endif %}
+    ,
+    {% if d.count_err_2 > 0 %}
+        <a title="{% trans "重复地址数量" %}" href="Javascript: DownloadLog({{ d.id }}, '2')">{{ d.count_err_2 }}</a>
+    {% else %}
+        <span class="text-muted" title="{% trans "重复地址数量" %}">0</span>
+    {% endif %})
+</td>

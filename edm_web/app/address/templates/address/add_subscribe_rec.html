@@ -1,0 +1,114 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+{% load static from staticfiles %}
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <!-- Basic Styles -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/sa/css/bootstrap.min.css' %}">
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/sa/css/smartadmin-production.min.css' %}">
+    <script src="{% static '/sa/js/libs/jquery-2.1.1.min.js' %}"></script>
+    <script src="{% static '/sa/js/libs/jquery-ui-1.10.3.min.js' %}"></script>
+    <title>订阅</title>
+
+    <style>
+        .mp {background: #FFFFFF; /*border-bottom: 1px solid #000;  padding: 5px 10px 10px 10px;*/}
+        .mp h2 {font-family: arial,helvetica,clean,"微软雅黑",sans-serif;font-weight: bold;font-size: 16px;margin-bottom: 10px;}
+        .mp ul {list-style: none;margin: 0px;}
+        .mp li {list-style: none;margin: 5px 0px;}
+        .mp li label {border: 0px solid #0F0;display: inline-block;font-weight: bold;text-align: right;width: 100px;}
+        .note {background: #EBEFF9;border: 1px solid #C2CFF1;border-left: none;border-right: none;font-size: 14px;line-height: 1.5em;padding: 8px;margin-bottom: 10px;}
+        .w150 {width: 200px; height: 32px;}
+        .button {padding-left: 100px;}
+    </style>
+
+</head>
+<body>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form role="form" action="" method="post" id="id_Form">
+                            {% csrf_token %}
+                            <div class="mp">
+                                <div>
+                                    <ul>
+                                        <li>
+                                            <label for="id_fullname" style="vertical-align:middle;">
+                                                <div>
+                                                    <div style="float:right;height:28px;width:10px;line-height:28px;text-align:center;">:</div>
+                                                    <div style="float:right;white-space: nowrap;">如何称呼您<br><span style="font-size:11px;font-weight:normal;">(Your Name)</span></div>
+                                                </div>
+                                            </label>
+                                            <input id="id_fullname" name="fullname" value="" class="w150" type="text">
+                                        </li>
+                                        <li>
+                                            <label for="id_address" style="vertical-align:middle;">
+                                                <div>
+                                                    <div style="float:right;height:28px;width:10px;line-height:28px;text-align:center;">:</div>
+                                                    <div style="white-space: nowrap;">您的邮件地址<br><span style="font-size:11px;font-weight:normal;">(Your E-mail)</span></div>
+                                                </div>
+                                            </label>
+                                            <input id="id_address" name="address" value="" class="w150" type="text">
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="button">
+                                    <input value="提交(Submit)" type="button" onclick="submitForm()" class="btn btn-outline btn-primary">
+                                    &nbsp;
+                                    <input value="重置(Reset)" type="button" onclick="resetForm()" class="btn btn-outline btn-primary">
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                <!-- /.row (nested) -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+</body>
+
+<script type="text/javascript">
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+
+    function resetForm(){
+        $("#id_fullname").val('');
+        $("#id_address").val('');
+        return false;
+    }
+    function submitForm(){
+        var fullname = $("#id_fullname").val();
+        var address = $("#id_address").val();
+        var user_id = '{{ user_id }}';
+        var list_id = '{{ list_id }}';
+        if( fullname == '' ) {
+            alert("请填写您的称呼方式！\n (Please enter your name)");
+            return false;
+        }
+        if( address == '' ) {
+            alert("请填写您的邮件地址！\n (Please enter your e-mail)");
+            return false;
+        }
+        var pattern = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+        if(pattern.test(address) == false) {
+            alert("请正确填写您的邮件地址！\n (Please enter correct e-mail)");
+            return false;
+        }
+        var ajax_url = "/address/ajax_add_subscriber/";
+        $.post(ajax_url, {'fullname': fullname, 'address': address, 'list_id': list_id, 'user_id': user_id}, function(data){
+            resetForm();
+            alert(data);
+        })
+        return true;
+    }
+</script>
+
+</html>

@@ -1,0 +1,115 @@
+{% load i18n %}
+
+<tr><td colspan="2" class="no-border"><legend class="no-padding no-margin" style="border-bottom-color: #4C8FBD;"></legend></td></tr>
+
+{% if request.user.service.is_verify == '1' %}
+    <tr id="id_send_status_tr">
+        <td class="no-border text-right myself-width-small">
+            <label class="control-label">{% trans "审核状态" %}</label>
+        </td>
+        <td class="no-border">
+            <div class="col-md-12 form-inline margin-top-5">
+                <span class="text-danger">{% trans "未审核" %}</span>
+            </div>
+        </td>
+    </tr>
+{% endif %}
+
+<!--发送状态-->
+<tr>
+    <td class="no-border text-right myself-width-small">
+        <label class="control-label">{% trans "发送状态" %}</label>
+    </td>
+    <td class="no-border">
+        <fieldset>
+            <div class="col-md-12 form-inline">
+                <div class="col-md-2 no-padding-left no-padding-right">
+                    <select id="id_send_status" name="send_status" class="form-control" style="width: 100%;" autocomplete="off" onchange="changeDataArea(this.value)">
+                        <option value="-1">{% trans "暂不发送" %}</option>
+                        <option value="1">{% trans "定时发送" %}</option>
+                        <option value="2" selected="selected" id="id_send_status_2">{% trans "立刻发送" %}</option>
+                    </select>
+                </div>
+                <div id="id_send_date_area" style="display:none;">
+                    <div class="col-md-1 no-padding-left no-padding-right" style="text-align: right;">
+                        <label class="control-label">{% trans "选择时间" %}</label>
+                    </div>
+                    <div class="col-md-3 no-padding-right">
+                        <input class="dateinput form-control" type="text" name="send_date"  style="width: 100%;"
+                               id="id_send_date" readonly="" size="16" value="" data-date-format="yyyy-mm-dd hh:ii" onfocus="onfocusDate();">
+                        <br>
+                        <small id="id_send_date_error" class="myself-txt-color-err display-none">{% trans "提示：发送时间不能设置为已经过去的时间！" %}</small>
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+    </td>
+</tr>
+
+<!--邮件跟踪-->
+<tr>
+    <td class="no-border text-right myself-width-small">
+        <label class="control-label">{% trans "邮件跟踪" %}</label>
+    </td>
+    <td class="no-border">
+        <fieldset>
+            <div class="col-md-12 form-inline">
+                <select id="id_track_status" name="track_status" class="form-control" style="width: 50%" autocomplete="off" onchange="showDomainArea(this.value)">
+                    <option value="0" {% if c_track_status == 0 %} selected="selected" {% endif %}>{% trans "不跟踪" %}</option>
+                    <option value="1" {% if c_track_status == 1 %} selected="selected" {% endif %}>{% trans "跟踪邮件打开情况" %}</option>
+                    <option value="2" {% if c_track_status == 2 %} selected="selected" {% endif %}>{% trans "跟踪邮件打开与链接点击情况" %}</option>
+                </select>
+            </div>
+        </fieldset>
+    </td>
+</tr>
+<!--指定跟踪统计链接域名-->
+<tr id="id_domain_for_track">
+    <td class="no-border text-right myself-width-small">
+        <label class="control-label">{% trans "跟踪统计域名" %}</label>
+    </td>
+    <td class="no-border">
+        <fieldset>
+            <div class="col-md-12 form-inline">
+                <input id="id_track_domain" name="track_domain" value="{{ track_domain|default_if_none:'' }}"  maxlength="100" class="form-control"
+                       style="width: 50%;" onblur="checkDomain(this)" type="text" list="list" autocomplete="off">
+                {% if track_domain_list %}
+                    <datalist id="list">
+                        {% for d in track_domain_list %}
+                            <option value="{{ d.domain }}">{{ d.domain }}</option>
+                        {% endfor %}
+                    </datalist>
+                {% endif %}
+                <br>
+                <small class="text-success">
+                    {% trans "推荐使用自有域名，将该域名的CNAME记录指向count.bestedm.org；默认使用随机域名(xxx.count.bestedm.org) xxx为随机字符串" %}
+                </small>
+                <div id="id_test_domain_result"></div>
+                <input id="id_domain_test_result" value="0" type="hidden">
+            </div>
+        </fieldset>
+    </td>
+</tr>
+
+<!--每小时发送速度-->
+<tr id="id_domain_for_track">
+    <td class="no-border text-right myself-width-small">
+        <label class="control-label">{% trans "发送速度" %}</label>
+    </td>
+    <td class="no-border">
+        <fieldset>
+            <div class="col-md-12 form-inline">
+                <select  name="hour_speed" id="id_hour_speed" style="width: 50%;" autocomplete="off" class="form-control">
+                    {% for k, v in hour_speeds  %}
+                        <option value="{{ k }}" {% if k == c_hour_speed  %}selected{% endif %}>{{ v }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <small class="text-success">
+                    {% trans "单位：小时，每小时最大发送数量" %}
+                </small>
+            </div>
+        </fieldset>
+    </td>
+</tr>

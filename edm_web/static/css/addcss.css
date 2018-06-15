@@ -1,0 +1,194 @@
+#content{
+    background-color: #f3f3f3;
+}
+/*.page-title {*/
+    /*margin: 12px 0 17px 6px;*/
+    /*font-family: "Microsoft Yahei";*/
+    /*font-weight: bold;*/
+    /*font-size: 19px;*/
+/*}*/
+
+.jarviswidget.well{
+    border: 0!important;
+    background-color: #f3f3f3!important;
+}
+.jarviswidget.well>div[role="content"]{
+    padding: 0;
+    margin-bottom: 27px;
+}
+.jarviswidget.well>div[role="content"]:last-child{
+    /*background-color: #f3f3f3!important;*/
+    background-color: #fff!important;
+}
+.widget-body{
+    border: 1px;
+    border-color: #ddd;
+    border-style: solid;
+}
+.widget-body h2,
+.text-label,
+.text-value span,
+.widget-body label.control-label {
+    font-size: 17px;
+    font-family: "Microsoft Yahei";
+    font-weight: 500;
+}
+.well{
+    background-color: #fff;
+    box-shadow: none;
+}
+.widget-body > legend,.widget-body > form > legend {
+    border-bottom: 1px rgb(239,239,239) solid;
+    margin: 14px 0 0 0;
+    padding-bottom: 14px!Important;
+    background: url(/static/img/legend.gif) no-repeat 37px 3px;
+}
+.widget-body > legend > h2, .widget-body > form > legend > h2{
+    margin-left: 41px!important;
+}
+.table-condensed.table>tbody>tr>td, .table-condensed.table>tbody>tr>th, .table-condensed.table>tfoot>tr>td, .table-condensed.table>tfoot>tr>th, .table-condensed.table>thead>tr>td, .table-condensed.table>thead>tr>th{
+    padding: 5px 16px!important;
+}
+
+.userhead{
+    height: 113px;
+    border-radius: 50%;
+    margin-left: 27px;
+    /*padding-top: 22px!Important;*/
+    /*padding-left: 54px!Important;*/
+    /*padding-bottom: 22px!Important;*/
+    /*border-right: 8px!important;*/
+    /*border-right-style: solid;*/
+    /*border-right-color: #ccc;*/
+    /*padding-right: 19px;*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: 144px 23px;*/
+}
+.username{
+    width: 100%;
+    display: block;
+    color: #000;
+    font-family: "Microsoft Yahei";
+    font-size: 21px;
+    margin-top: 18px;
+    text-align: left;
+}
+.left-label{
+    margin-top: 13px;
+    float: left;
+    font-family: "Microsoft Yahei";
+    background-image: url(/static/img/plus.gif);
+    background-repeat: no-repeat;
+    background-position: 3px 12px;
+    text-align: left;
+    padding-left: 19px;
+}
+.myself-text-success{
+    color: #fb8009;
+    font-size: 22px;
+    margin-left: 9px;
+}
+.myself-width-250{
+    width: 250px;
+}
+.usersubmit{
+    width: 90px;
+    display: block;
+    height: 30px;
+    text-align: center;
+    background-color: #3ca0e4;
+    border-radius: 5px;
+    position: relative;
+    top: 61px;
+    left: 71px;
+}
+.usersubmit a{
+    color: #fff;
+    font-size: 15px;
+    font-family: "Microsoft Yahei";
+    padding-top: 4px;
+    display: block;
+}
+
+.table-content{
+    margin-left: 30px;
+}
+.table-content-t28{
+    margin-left: 30px;
+    top: 16px;
+    position: relative;
+}
+.text-label{
+    color: #000;
+    width:200px;
+}
+/*.text-value span{*/
+/*color: #919191;*/
+/*min-width: 130px;*/
+/*display: inline-block;*/
+/*}*/
+.widget-body td div span {
+    margin-top: -5px;
+}
+.widget-body .table-tr-dashed tr{
+    /*border-bottom: 1px #f7f7f7 dashed;*/
+    height: 41px;
+}
+span.text-muted{
+    /*font-family: "������";*/
+    font-size: 12px;
+    color:#999999;
+    width: auto;
+    margin-left: 10px;;
+}
+.text-value a{
+    /*color:#3ca0e4;*/
+    font-size: 17px;
+    font-family: "Microsoft Yahei";
+}
+.myself-seperate-icon {
+    border-right: 1px solid #888;
+    display: inline-block;
+    height: 15px;
+    margin-left: 5px;
+    margin-right: 0px;
+    vertical-align: middle;
+    margin-bottom: 5px;
+}
+
+.widget-body .ac-tag{
+    border-radius: 1px;
+    /*width:85px;*/
+    font-family: "Microsoft Yahei";
+    margin-right: 11px;
+    text-align:center;
+    white-space:nowrap;
+}
+.widget-body .ac-tag.is-active{
+    border-color: #3ca0e4;
+    color: #3ca0e4;
+}
+.widget-body .form-control{
+    color: #3ca0e4;
+}
+.widget-body .control-label{
+    margin-bottom: 16px;
+}
+.widget-body td div span{
+    margin-top: -5px;
+}
+
+.widget-body label.control-label{
+    color: #000;
+}
+#id_save_button{
+    /*width: 390px!important;*/
+    margin: 0 auto;
+    height: 38px;
+    border-radius: 13px;
+    background-color: #3ca0e4;
+    border: 0;
+    font-size: 19px;
+    font-family: "Microsoft Yahei";
+    /*margin-top: 58px;*/
+}

@@ -1,0 +1,739 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load i18n %}
+{% load tagging_tags %}
+
+{% block body %}
+    <!-- #HEADER -->
+    <header id="header">
+        <div id="logo-group">
+
+            <!-- PLACE YOUR LOGO HERE -->
+            <span id="logo" class="font-md">{% if request.user.new_title %}{{ request.user.new_title }}{% else %}{% trans 'U-Mail邮件营销平台' %}{% endif %}</span>
+
+            <!-- END LOGO PLACEHOLDER -->
+
+            <!-- Note: The activity badge color changes when clicked and resets the number to 0
+                 Suggestion: You may want to set a flag when this happens to tick off all checked messages / notifications -->
+            <span id="activity" class="activity-dropdown"> <i class="fa fa-user"></i> <b class="badge" id="id_activity_statistics"> 1 </b> </span>
+
+            <!-- AJAX-DROPDOWN : control this dropdown height, look and feel from the LESS variable file -->
+            <div class="ajax-dropdown">
+
+                <!-- the ID links are fetched via AJAX to the ajax container "ajax-notifications" -->
+                <div class="btn-group btn-group-justified" data-toggle="buttons">
+                    <label class="btn btn-default">
+                        <input type="radio" name="activity" id="{% url 'customer_message' %}">
+                        {% trans '公告 ' %}(<span id="id_activity_statistics_msg"></span>) </label>
+                    <label class="btn btn-default">
+                        <input type="radio" name="activity" id="{% url 'core_notification' %}">
+                        {% trans '通知 ' %}(<span id="id_activity_statistics_notify"></span>) </label>
+                </div>
+
+                <!-- notification content -->
+                <div class="ajax-notifications custom-scroll">
+
+                    <div class="alert alert-transparent">
+                        <h4>{% trans '单击按钮可在此处显示消息' %}</h4>
+                        {% trans '此空白页消息有助于保护您的隐私，或者您可以自动在此显示第一条消息。' %}
+                        <!--<h4>Click a button to show messages here</h4>
+                        This blank page message helps protect your privacy, or you can show the first message here automatically.-->
+                    </div>
+
+                    <i class="fa fa-lock fa-4x fa-border"></i>
+
+                </div>
+                <!-- end notification content -->
+
+                <!-- footer: refresh area -->
+                <span> {% trans '最后更新时间' %}: <span id="id_activity_statistics_time"></span>
+                    {% comment %}<button type="button" data-loading-text="<i class='fa fa-refresh fa-spin'></i> Loading..." class="btn btn-xs btn-default pull-right">
+                        <i class="fa fa-refresh"></i>
+                    </button>{% endcomment %}
+                </span>
+                <!-- end footer -->
+
+            </div>
+            <!-- END AJAX-DROPDOWN -->
+        </div>
+
+
+        <!-- #TOGGLE LAYOUT BUTTONS -->
+        <!-- pulled right: nav area -->
+        <div class="pull-right">
+
+            <!-- collapse menu button  Collapse Menu -->
+            <div id="hide-menu" class="btn-header pull-right">
+                <span> <a href="javascript:void(0);" data-action="toggleMenu" title="{% trans '打开菜单' %}"><i class="fa fa-reorder"></i></a> </span>
+            </div>
+            <!-- end collapse menu -->
+
+            <!-- #MOBILE -->
+            <!-- Top menu profile link : this shows only when top menu is active -->
+            <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+                <li class="">
+                    <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
+                        <img src="/static/sa/img/avatars/sunny.png" alt="John Doe" class="online" />
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Setting</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-user"></i> <u>P</u>rofile</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <u>S</u>hortcut</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> Full <u>S</u>creen</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="login.html" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong><u>L</u>ogout</strong></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- logout button Sign Out-->
+            <div id="logout" class="btn-header transparent pull-right">
+                <span> <a href="{% url 'logout' %}" title="{% trans '退出' %}" data-action="userLogout" data-logout-msg="{% trans '您确认注销退出吗？' %}"><i class="fa fa-sign-out"></i></a> </span>
+            </div>
+            <!-- end logout button -->
+
+            <!-- search mobile button (this is hidden till mobile view port) -->
+            <div id="search-mobile" class="btn-header transparent pull-right">
+                <span> <a href="javascript:void(0)" title="Search"><i class="fa fa-search"></i></a> </span>
+            </div>
+            <!-- end search mobile button -->
+
+            <!-- #SEARCH -->
+            <!-- input: search field -->
+            <!-- end input: search field -->
+
+            <!-- fullscreen button Full Screen-->
+            <div id="fullscreen" class="btn-header transparent pull-right">
+                <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="{% trans '全屏' %}"><i class="fa fa-arrows-alt"></i></a> </span>
+            </div>
+            <!-- end fullscreen button -->
+
+            <!-- #Voice Command: Start Speech -->
+            <div id="speech-btn" class="btn-header transparent pull-right hidden-sm hidden-xs">
+                <div>
+                    <a href="javascript:void(0)" title="Voice Command" data-action="voiceCommand"><i class="fa fa-microphone"></i></a>
+                    <div class="popover bottom"><div class="arrow"></div>
+                        <div class="popover-content">
+                            <h4 class="vc-title">Voice command activated <br><small>Please speak clearly into the mic</small></h4>
+                            <h4 class="vc-title-error text-center">
+                                <i class="fa fa-microphone-slash"></i> Voice command failed
+                                <br><small class="txt-color-red">Must <strong>"Allow"</strong> Microphone</small>
+                                <br><small class="txt-color-red">Must have <strong>Internet Connection</strong></small>
+                            </h4>
+                            <a href="javascript:void(0);" class="btn btn-success" onclick="commands.help()">See Commands</a>
+                            <a href="javascript:void(0);" class="btn bg-color-purple txt-color-white" onclick="$('#speech-btn .popover').fadeOut(50);">Close Popup</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end voice command -->
+
+            <!-- multiple lang dropdown : find all flags in the flags page -->
+
+            <!-- end multiple lang -->
+
+            <ul class="header-dropdown-list hidden-xs">
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="{% static '/sa/img/blank.gif' %}" class="flag" alt="black" style="background-color: {% if request.user.web_style == '0' %}#4E463F;{% else %}#f78c40;{% endif %}"> <span> {{ request.user.get_web_style_display }} </span> <i class="fa fa-angle-down"></i> </a>
+                    <ul class="dropdown-menu pull-left">
+                        <li {% if request.user.web_style == '0' %}class="active" {% endif %}>
+                            <a href="javascript:ChangeStyle(0);"><img src="{% static '/sa/img/blank.gif' %}" class="flag" alt="black" style="background-color:#4E463F;"> {% trans '默认黑' %}</a>
+                        </li>
+                        <li {% if request.user.web_style == '3' %}class="active" {% endif %}>
+                            <a href="javascript:ChangeStyle(3);"><img src="{% static '/sa/img/blank.gif' %}" class="flag" alt="black" style="background-color:#f78c40;"> {% trans '商务白' %}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="header-dropdown-list hidden-xs">
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="{% static '/sa/img/blank.gif' %}" class="flag {% if request.user.lang_code == 'zh-hans' %}flag-cn{% else %}flag-us{% endif %}" alt="China">
+                        <span> {{ request.user.get_lang_code_display }} </span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu pull-left">
+                        <li class="{% if request.user.lang_code == 'zh-hans' %} active {% else %} btn {% endif %}" style="padding: 0px {% if request.user.lang_code == 'zh-hans' %} 14px {% else %} 12px {% endif %} !important;">
+                            <a href="javascript:ChangeLang('zh-hans');"><img src="{% static '/sa/img/blank.gif' %}" class="flag flag-cn" alt="China"> {% trans '中文' %}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        </li>
+                        <li class="{% if request.user.lang_code == 'en-us' %} active {% else %} btn {% endif %}" style="padding: 0px {% if request.user.lang_code == 'en-us' %} 14px {% else %} 12px {% endif %} !important;">
+                            <a href="javascript:ChangeLang('en-us');"><img src="{% static '/sa/img/blank.gif' %}" class="flag flag-us" alt="United States"> English (US)</a>
+                        </li>
+                    </ul>
+                </li>
+                <form id="id_language_code_form" action="{% url 'set_lang' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="language_code" id="id_language_code" value="{{ request.user.lang_code }}"/>
+                </form>
+            </ul>
+
+
+            <!--<ul class="header-dropdown-list hidden-xs margin-right-5">
+                <li>
+                    <a href="http://simple.bestedm.org" class="dropdown-toggle" >{% trans '切换至老版本' %}</a>
+                </li>
+            </ul>-->
+
+        </div>
+        <!-- end pulled right: nav area -->
+
+    </header>
+    <!-- END HEADER -->
+
+    <!-- #NAVIGATION -->
+    <!-- Left panel : Navigation area -->
+    <!-- Note: This width of the aside area can be adjusted through LESS variables -->
+
+    <aside id="left-panel">
+
+        <!-- User info -->
+        <!-- User image size is adjusted inside CSS, it should stay as it -->
+        <div class="login-info">
+            <span>
+                    <a href="#">
+                        {% if request.user.weixin_customer.staticimgurl %}
+                            <img src="{{ request.user.weixin_customer.staticimgurl }}" alt="me" class="online" />
+                        {% elif request.user.ali_customer.avatar %}
+                            <img src="{{ request.user.ali_customer.avatar }}" alt="me" class="online" />
+                        {% endif %}
+                        <span>
+                            {{ request.user.username }}
+                        </span>
+                    </a>
+				</span>
+        </div>
+        <!-- end user info -->
+
+        <nav>
+            <!--
+            NOTE: Notice the gaps after each icon usage <i></i>..
+            Please note that these links work a bit different than
+            traditional href="" links. See documentation for details.
+            -->
+            <ul>
+                <li id="nav_home" class="">
+                    <a href="/" title="{% trans '概览' %}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">{% trans '概览' %}</span></a>
+                </li>
+                <li id="nav_mail" class="">
+                    <a href="#">
+                        <i class="fa fa-lg fa-fw fa-inbox"></i> <span class="menu-item-parent">{% trans '邮件发送' %}</span>
+                    </a>
+                    <ul style="">
+                        <li class="">
+                            <a href="{% url 'send_domain' %}" title="domain"><span class="menu-item-parent">{% trans '发送域名管理' %}</span></a>
+                        </li>
+                        <li class="">
+                            <a href="{% url 'ml_maillist' %}?isvalid=1" title="maillist"><span class="menu-item-parent">{% trans '联系人分类管理' %}</span></a>
+                        </li>
+                        <li class="">
+                            <a href="{% url 'template_list' %}?isvalid=1">{% trans '邮件模板管理' %}</a>
+                        </li>
+                        <li class="">
+                            <a href="{% url 'task_list' %}?isvalid=1">{% trans '邮件任务管理' %}</a>
+                        </li>
+                        <li class="">
+                            <a href="{% url 'mail_statistics' %}?date_type=today">{% trans '邮件发送统计' %}</a>
+                        </li>
+                        <li class="">
+                            <a href="{% url 'mail_accurate_service' %}" id="id_mail_accurate_service" class="display-none">{% trans '精准邮件数据服务' %}</a>
+                        </li>
+                        <li class="">
+                            <a href="{% url 'trigger_task' %}" id="">{% trans '触发器' %}</a>
+                        </li>
+                    </ul>
+                </li>
+                <li id="nav_setting" class="">
+                    <a href="#"><i class="fa fa-lg fa-fw fa-gear"></i> <span class="menu-item-parent">{% trans '设置中心' %}</span></a>
+                    <ul script="">
+                        <li class=""><a href="{% url 'account' %}">{% trans '账户信息' %}</a></li>
+                        <li class=""><a href="{% url 'security' %}">{% trans '安全设置' %}</a></li>
+                        {% if not request.user.parent %}
+                            <li class=""><a href="{% url 'sub_account' %}">{% trans '子账户' %}</a></li>
+                        {% endif %}
+                        <li class=""><a href="{% url 'notice' %}">{% trans '通知设置' %}</a></li>
+                        <li class=""><a href="{% url 'core_notification_lists' %}">{% trans '消息提醒' %}</a></li>
+
+                        {% if request.user.is_hide_order != 1 %}
+                            {% if request.user.service.is_share_flag == '1' or request.user.service.is_share_flag == '2' %}
+                                <li class=""><a href="{% url 'pricing' %}">{% trans '自助充值' %}</a></li>
+                                <li class=""><a href="{% url 'order' %}">{% trans '我的订单' %}</a></li>
+                                <li class="">
+                                    <a href="#" title="invoice"><span class="menu-item-parent">{% trans '发票管理' %}</span></a>
+                                    <ul style="">
+                                        <li class="">
+                                            <a href="{% url 'invoice' %}">{% trans '索取发票' %}</a>
+                                        </li>
+                                        <li class="">
+                                            <a href="{% url 'customer_invoice_baseinfo' %}"> {% trans '发票信息管理 ' %}</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+
+                        <li class=""><a href="{% url 'operate_log' %}">{% trans '操作日志' %}</a></li>
+                        <li class=""><a href="{% url 'invalid_address' %}"> {% trans '无效地址 ' %}</a></li>
+                        <li class=""><a href="{% url 'rcpblack' %}"> {% trans '收件人黑名单 ' %}</a></li>
+                        <li class=""><a href="{% url 'customer_complaint' %}"> {% trans '投诉地址 ' %}</a></li>
+                        <li class=""><a href="{% url 'other_settings' %}">{% trans '其他设置' %}</a></li>
+                    </ul>
+                </li>
+                <li id="nav_help" class="">
+                    <a href="https://www.bestedm.org/help/doku.php" title="{% trans '新窗口打开帮助' %}" target="_blank"><i class="fa fa-lg fa-fw fa-h-square"></i> <span class="menu-item-parent">{% trans '帮助' %}</span></a>
+                </li>
+            </ul>
+        </nav>
+
+
+			<span class="minifyme" data-action="minifyMenu">
+				<i class="fa fa-arrow-circle-left hit"></i>
+			</span>
+
+    </aside>
+    <!-- END NAVIGATION -->
+
+    <!-- MAIN PANEL -->
+    <div id="main" role="main">
+        {% if request.session.is_admin %}
+            <div class="row">
+                <div class="col-lg-12 margin-bottom-5 margin-top-5">
+                    <a data-toggle="modal" data-target="#tagTemplateModal" data-whatever="" class="btn btn-primary pull-right" href="{% url 'tag_customer' %}?tag_type=customer&obj_id={{ request.user.id }}">打标签</a>
+                    <span id="id_tag_info_customer{{ request.user.id }}" class="pull-right margin-top-10 margin-right-10">
+                    {% tags_for_object request.user as tag_list %}
+                        {% for t in tag_list %}
+                            <a title="删除标签（{{ t }}）" href="Javascript:DeleteTag('{{ t }}', '{{ t.id }}', 'customer', '{{ request.user.id }}')" class="badge bg-color-purple">{{ t }}</a>
+                        {% endfor %}
+                    </span>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade " id="tagTemplateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg-self" style="margin:50px auto;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">加载中</h4>
+                            </div>
+                            <div class="modal-body">
+                                页面加载中
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    $(function () {
+                        $('#tagTemplateModal').on('show.bs.modal', function (event) {
+                            $(this).removeData('bs.modal');
+                        })
+                    });
+                    function DeleteTag(tag, tag_id, tag_type, obj_id){
+                        if (confirm("你确定要删除标签（" + tag + '）？')) {
+                            $('#id_tag_info_customer'+obj_id).html('<img src="/static/img/loading.gif" width="16" height="16">');
+                            $.post("{% url 'tag_customer' %}", {'tag': tag, 'action': 'delete', 'tag_type': tag_type, 'tag_id': tag_id}, function(data){
+                                $("#id_tag_info_customer"+obj_id).html(data.html);
+                            });
+                        }
+                    }
+                </script>
+
+            </div>
+        {% endif %}
+        <!-- RIBBON -->
+        <div id="ribbon">
+            {% comment %}
+
+                <span class="ribbon-button-alignment">
+					<span id="refresh" class="btn btn-ribbon" data-action="resetWidgets" data-title="refresh"  rel="tooltip" data-placement="bottom" data-original-title="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings." data-html="true">
+						<i class="fa fa-refresh"></i>
+					</span>
+				</span>
+            {% endcomment %}
+
+            <!-- breadcrumb -->
+            <ol class="breadcrumb">
+                <li>{% trans '概览' %}</li>
+                {% block breadcrumb %}{% endblock %}
+            </ol>
+            <!-- end breadcrumb -->
+
+            <!-- You can also add more buttons to the
+            ribbon for further usability
+
+            Example below:
+
+            <span class="ribbon-button-alignment pull-right">
+            <span id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa-grid"></i> Change Grid</span>
+            <span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa-plus"></i> Add</span>
+            <span id="search" class="btn btn-ribbon" data-title="search"><i class="fa-search"></i> <span class="hidden-mobile">Search</span></span>
+            </span> -->
+
+        </div>
+        <!-- END RIBBON -->
+
+
+
+        <!-- MAIN CONTENT -->
+        <div id="content">
+
+            <!--<div class="row">
+                <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+                    <h1 class="page-title txt-color-blueDark"><i class="fa fa-desktop fa-fw "></i> UI Elements <span>>
+                        General Elements </span></h1>
+                </div>
+                <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+                    <ul id="sparks" class="">
+                        <li class="sparks-info">
+                            <h5> My Income <span class="txt-color-blue">$47,171</span></h5>
+                            <div class="sparkline txt-color-blue hidden-mobile hidden-md hidden-sm">
+                                1300, 1877, 2500, 2577, 2000, 2100, 3000, 2700, 3631, 2471, 2700, 3631, 2471
+                            </div>
+                        </li>
+                        <li class="sparks-info">
+                            <h5> Site Traffic <span class="txt-color-purple"><i class="fa fa-arrow-circle-up" data-rel="bootstrap-tooltip" title="Increased"></i>&nbsp;45%</span></h5>
+                            <div class="sparkline txt-color-purple hidden-mobile hidden-md hidden-sm">
+                                110,150,300,130,400,240,220,310,220,300, 270, 210
+                            </div>
+                        </li>
+                        <li class="sparks-info">
+                            <h5> Site Orders <span class="txt-color-greenDark"><i class="fa fa-shopping-cart"></i>&nbsp;2447</span></h5>
+                            <div class="sparkline txt-color-greenDark hidden-mobile hidden-md hidden-sm">
+                                110,150,300,130,400,240,220,310,220,300, 270, 210
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>-->
+            {% block page-title %}{% endblock %}
+
+            {% if messages %}
+                <div class="row">
+                    <article class="col-sm-12">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} fade in">
+                                <button class="close" data-dismiss="alert">
+                                    ×
+                                </button>
+                                <i class="fa-fw fa fa-{{ message.tags }}"></i>
+                                <strong>{{ message.tags|capfirst }}</strong> {{ message }}
+                            </div>
+                        {% endfor %}
+                    </article>
+                </div>
+            {% endif %}
+            {% block page-content %}{% endblock %}
+
+            <div class="well ">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form role="form" action="" method="post">
+                            {% csrf_token %}
+                            <div class="">
+                                <div id="id_remark_base_label_div" class="col-sm-12">
+                                    <div style="font-weight: normal; display: inline-block; white-space: pre-wrap; word-wrap: break-word;" id="id_remark_base_label"></div>
+                                </div>
+                                <div id="id_remark_base_div" class="col-sm-10">
+                                    <textarea style="display: none;" class=" form-control" cols="40" id="id_remark_base" name=" " rows="10"></textarea>
+                                </div>
+                                {% if request.user.username == 'liwei' %}
+                                    <div class="col-sm-2">
+                                        <input type="button" class="btn btn-primary" value="编辑" onclick="edit_remark_base()" id="id_remark_base_button_edit">
+                                        <input type="button" class="btn btn-primary" value="保存" onclick="save_remark_base()" id="id_remark_base_button_save">
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- row -->
+            <!-- end row -->
+
+            <!--
+                The ID "widget-grid" will start to initialize all widgets below
+                You do not need to use widgets if you dont want to. Simply remove
+                the <section></section> and you can use wells or panels instead
+                -->
+
+        </div>
+        <!-- END MAIN CONTENT -->
+
+    </div>
+    <!-- END MAIN PANEL -->
+    <div  class="well display-none page-footer" id="id-suggest-project-well" style="bottom:54px;/*height:78px;*/background:#fff;/*margin-right:15px;*/background: url(/static/sa/img/mybg.png) #fff !important;border: 1px solid #eff0f0 !important;">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 hidden-xs hidden-sm"></div>
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                    <div class="input-group input-group-lg hidden-mobile" style="" >
+                        <input class="form-control input-lg" placeholder="{% trans "请描述您的建议或分享您的想法" %}" id="id-suggest-project" type="text" autocomplete="off" style="border:none;">
+                        <div class="input-group-btn">
+                            <button onclick="ajax_suggest_project()" type="button" class="btn btn-primary" >Go</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 hidden-xs hidden-sm"></div>
+            </div>
+        </div>
+    </div>
+    <!-- PAGE FOOTER -->
+    <div class="page-footer">
+        <div class="row">
+            <div class="col-xs-6 col-sm-6">
+                <span class="txt-color-white"><a href="http://www.magvision.com/" target="_blank">Copyright © U-Mail Co.,Ltd</a></span>
+
+            </div>
+            <div class="col-xs-6 text-right">
+                    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030402001566" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+                        <img src="{% static 'login/images/beian.png' %}" style="float:left;"/>
+                        <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">粤公网安备 44030402001566号</p>
+                    </a>
+            </div>
+        </div>
+    </div>
+    <!-- END PAGE FOOTER -->
+
+    <!-- SHORTCUT AREA : With large tiles (activated via clicking user name tag)
+    Note: These tiles are completely responsive,
+    you can add as many as you like
+    -->
+    <div id="shortcut">
+        <ul>
+            <li>
+                <a href="inbox.html" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-envelope fa-4x"></i> <span>Mail <span class="label pull-right bg-color-darken">14</span></span> </span> </a>
+            </li>
+            <li>
+                <a href="calendar.html" class="jarvismetro-tile big-cubes bg-color-orangeDark"> <span class="iconbox"> <i class="fa fa-calendar fa-4x"></i> <span>Calendar</span> </span> </a>
+            </li>
+            <li>
+                <a href="gmap-xml.html" class="jarvismetro-tile big-cubes bg-color-purple"> <span class="iconbox"> <i class="fa fa-map-marker fa-4x"></i> <span>Maps</span> </span> </a>
+            </li>
+            <li>
+                <a href="invoice.html" class="jarvismetro-tile big-cubes bg-color-blueDark"> <span class="iconbox"> <i class="fa fa-book fa-4x"></i> <span>Invoice <span class="label pull-right bg-color-darken">99</span></span> </span> </a>
+            </li>
+            <li>
+                <a href="gallery.html" class="jarvismetro-tile big-cubes bg-color-greenLight"> <span class="iconbox"> <i class="fa fa-picture-o fa-4x"></i> <span>Gallery </span> </span> </a>
+            </li>
+            <li>
+                <a href="profile.html" class="jarvismetro-tile big-cubes selected bg-color-pinkDark"> <span class="iconbox"> <i class="fa fa-user fa-4x"></i> <span>My Profile </span> </span> </a>
+            </li>
+        </ul>
+    </div>
+    <!-- END SHORTCUT AREA -->
+
+    <!--================================================== -->
+
+{% endblock %}
+
+{% block jsblock %}
+
+    <script charset="utf-8" src="{% static 'editor/kindeditor.js' %}"></script>
+    <script charset="utf-8" src="{% static 'editor/lang/zh_CN.js' %}"></script>
+
+    <script>
+        $('#id-suggest-project-well .input-group.input-group-lg >input').focus(function(){
+            $(this).parent().addClass('active');
+            $(this).attr('placeholder','')
+        })
+        $('#id-suggest-project-well .input-group.input-group-lg>input').blur(function(){
+            $(this).parent().removeClass('active');
+            $(this).attr('placeholder','{% trans "请描述您的建议或分享您的想法" %}')
+        })
+        function ChangeLang(lang_code){
+            var language_code_pre = $('#id_language_code').val();
+            if (language_code_pre == lang_code){
+                return;
+            }
+            $('#id_language_code').val(lang_code);
+            $('#id_language_code_form').submit();
+        }
+
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(function () {
+            $.getJSON("{% url 'ajax_mail_accurate_open' %}",  function(data){
+                if ( data.status=='Y' ){
+                    $("#id_mail_accurate_service").addClass('display-none').removeClass('display-none');
+                }
+            });
+        });
+
+        $(function(){
+            var base_url = window.location.pathname;
+            $.get('{% url 'ajax_suggest' %}', {'url': base_url}, function(data){
+                if (data.ret == 'Y') {
+                    $("#id-suggest-project-well").removeClass("display-none");
+                } else {
+                    $("#id-suggest-project-well").addClass("display-none");
+                }
+            });
+        });
+
+        function ajax_suggest_project(){
+            var base_url = window.location.pathname;
+            var sgt = $.trim($("#id-suggest-project").val());
+            if (sgt==''){
+                return false;
+            }
+            alert("{% trans '非常感谢您宝贵的建议！' %}");
+            $("#id-suggest-project").val("");
+            $.post('{% url 'ajax_suggest_post' %}', {'url': base_url, 'suggest': sgt}, function(data){});
+        }
+
+        $(function(){
+            var path = window.location.pathname;
+            if ( (path.indexOf('/core/')==0) || (path.indexOf('/service/')==0) || (path.indexOf('/address/')==0)
+                    || (path.indexOf('/template/')==0) || (path.indexOf('/task/')==0)
+                    || (path.indexOf('/statistics/')==0) || (path.indexOf('/track/')==0) ){
+                $('#nav_mail').addClass('open');
+                $('#nav_mail').find("ul").attr('style', 'display:block;');
+                $('#nav_mail').find("a b em").removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
+                //$("[href^='"+path+"']").parent().addClass('active');
+                // $('#nav_mail').find("[href^='"+path+"']").parent().addClass('active');
+                if ( path.indexOf('/core/')==0 ){
+                    $('#nav_mail').find("[href^='/core/domain/']").parent().addClass('active');
+                } else if ( path.indexOf('/service/')==0 ){
+                    $('#nav_mail').find("[href^='/service/']").parent().addClass('active');
+                } else if ( path.indexOf('/template/')==0 ){
+                    $('#nav_mail').find("[href^='/template/']").parent().addClass('active');
+                } else if ( path.indexOf('/statistics/')==0 ){
+                    $('#nav_mail').find("[href^='/statistics/']").parent().addClass('active');
+                } else if ( path.indexOf('/address/')==0 ){
+                    $('#nav_mail').find("[href^='/address/']").parent().addClass('active');
+                } else if ( (path.indexOf('/task/')==0) || (path.indexOf('/track/')==0) ){
+                    $('#nav_mail').find("[href^='/task/']").parent().addClass('active');
+                }
+            } else if ( path.indexOf('/setting/')==0 ) {
+                $('#nav_setting').addClass('open');
+                $('#nav_setting').find("ul").attr('style', 'display:block;');
+                $('#nav_setting').find("a b em").removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
+                $('#nav_setting').find("[href^='"+path+"']").parent().addClass('active');
+                if ( path.indexOf('/setting/security/')==0 ){
+                    $('#nav_setting').find("[href^='/setting/security/']").parent().addClass('active');
+                }
+            } else {
+                $('#nav_home').addClass('active');
+                $('#nav_mail').addClass('open');
+                $('#nav_mail').find("ul").attr('style', 'display:block;');
+                $('#nav_mail').find("a b em").removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
+            }
+        });
+
+        $(function () {
+            $.get("{% url 'ajax_customer_notice_active' %}", {}, function(data){
+                $("#id_activity_statistics").html(data.count);
+                $("#id_activity_statistics_msg").html(data.msg_count);
+                $("#id_activity_statistics_notify").html(data.notify_count);
+                $("#id_activity_statistics_time").html(data.time);
+            })
+        })
+        $('#activity').click(function(){
+            var count = $("#id_activity_statistics_msg").html();
+            if (count != '0'){
+                $("#id_activity_statistics_msg").click();
+            }else{
+                $("#id_activity_statistics_notify").click();
+            }
+        });
+
+        var editor_remark_base;
+        KindEditor.ready(function(K) {
+            var options = {
+                width: '100%',
+                minHeight: '350',
+                items: ['source', 'preview', 'fullscreen', '|', 'undo', 'redo', '|', 'cut', 'copy', 'paste', 'plainpaste', 'wordpast', '|', 'justifyleft', 'justifycenter', 'justifyright', 'justifyfull', '|', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', '|', 'template', 'clearhtml', 'quickformat', 'selectall', '|', 'lineheight', '/', 'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline', 'strikethrough', 'linehieght', 'removeformat', '|', 'localimage', 'flash', 'media', 'insertfile', 'table', 'hr', 'link', 'unlink', '|', 'umail_link'],
+                filterMode: false,
+                wellFormatMode: false,
+                allowImageUpload: false,
+                allowFlashUpload: false,
+                allowMediaUpload: false,
+                resizeType: 2,
+                afterBlur:function(){this.sync();},
+                colorTable: [
+                    //["#FBEFEF", "#FBF2EF", "#FBF5EF", "#FBF8EF", "#FBFBEF", "#F8FBEF", "#F5FBEF", "#F2FBEF", "#EFFBEF", "#EFFBF2", "#EFFBF5", "#EFFBF8", "#EFFBFB", "#EFF8FB", "#EFF5FB", "#EFF2FB", "#EFEFFB", "#F2EFFB", "#F5EFFB", "#F8EFFB", "#FBEFFB", "#FBEFF8", "#FBEFF5", "#FBEFF2", "#FFFFFF"],
+
+                    ["#F8E0E0", "#F8E6E0", "#F8ECE0", "#F7F2E0", "#F7F8E0", "#F1F8E0", "#ECF8E0", "#E6F8E0", "#E0F8E0", "#E0F8E6", "#E0F8EC", "#E0F8F1", "#E0F8F7", "#E0F2F7", "#E0ECF8", "#E0E6F8", "#E0E0F8", "#E6E0F8", "#ECE0F8", "#F2E0F7", "#F8E0F7", "#F8E0F1", "#F8E0EC", "#F8E0E6", "#FAFAFA"],
+
+                    ["#F6CECE", "#F6D8CE", "#F6E3CE", "#F5ECCE", "#F5F6CE", "#ECF6CE", "#E3F6CE", "#D8F6CE", "#CEF6CE", "#CEF6D8", "#CEF6E3", "#CEF6EC", "#CEF6F5", "#CEECF5", "#CEE3F6", "#CED8F6", "#CECEF6", "#D8CEF6", "#E3CEF6", "#ECCEF5", "#F6CEF5", "#F6CEEC", "#F6CEE3", "#F6CED8", "#F2F2F2"],
+
+                    ["#F5A9A9", "#F5BCA9", "#F5D0A9", "#F3E2A9", "#F2F5A9", "#E1F5A9", "#D0F5A9", "#BCF5A9", "#A9F5A9", "#A9F5BC", "#A9F5D0", "#A9F5E1", "#A9F5F2", "#A9E2F3", "#A9D0F5", "#A9BCF5", "#A9A9F5", "#BCA9F5", "#D0A9F5", "#E2A9F3", "#F5A9F2", "#F5A9E1", "#F5A9D0", "#F5A9BC", "#E6E6E6"],
+
+                    ["#F78181", "#F79F81", "#F7BE81", "#F5DA81", "#F3F781", "#D8F781", "#BEF781", "#9FF781", "#81F781", "#81F79F", "#81F7BE", "#81F7D8", "#81F7F3", "#81DAF5", "#81BEF7", "#819FF7", "#8181F7", "#9F81F7", "#BE81F7", "#DA81F5", "#F781F3", "#F781D8", "#F781BE", "#F7819F", "#D8D8D8"],
+
+                    ["#FA5858", "#FA8258", "#FAAC58", "#F7D358", "#F4FA58", "#D0FA58", "#ACFA58", "#82FA58", "#58FA58", "#58FA82", "#58FAAC", "#58FAD0", "#58FAF4", "#58D3F7", "#58ACFA", "#5882FA", "#5858FA", "#8258FA", "#AC58FA", "#D358F7", "#FA58F4", "#FA58D0", "#FA58AC", "#FA5882", "#BDBDBD"],
+
+                    ["#FE2E2E", "#FE642E", "#FE9A2E", "#FACC2E", "#F7FE2E", "#C8FE2E", "#9AFE2E", "#64FE2E", "#2EFE2E", "#2EFE64", "#2EFE9A", "#2EFEC8", "#2EFEF7", "#2ECCFA", "#2E9AFE", "#2E64FE", "#2E2EFE", "#642EFE", "#9A2EFE", "#CC2EFA", "#FE2EF7", "#FE2EC8", "#FE2E9A", "#FE2E64", "#A4A4A4"],
+
+                    ["#FF0000", "#FF4000", "#FF8000", "#FFBF00", "#FFFF00", "#BFFF00", "#80FF00", "#40FF00", "#00FF00", "#00FF40", "#00FF80", "#00FFBF", "#00FFFF", "#00BFFF", "#0080FF", "#0040FF", "#0000FF", "#4000FF", "#8000FF", "#BF00FF", "#FF00FF", "#FF00BF", "#FF0080", "#FF0040", "#848484"],
+
+                    ["#DF0101", "#DF3A01", "#DF7401", "#DBA901", "#D7DF01", "#A5DF00", "#74DF00", "#3ADF00", "#01DF01", "#01DF3A", "#01DF74", "#01DFA5", "#01DFD7", "#01A9DB", "#0174DF", "#013ADF", "#0101DF", "#3A01DF", "#7401DF", "#A901DB", "#DF01D7", "#DF01A5", "#DF0174", "#DF013A", "#6E6E6E"],
+
+                    ["#B40404", "#B43104", "#B45F04", "#B18904", "#AEB404", "#86B404", "#5FB404", "#31B404", "#04B404", "#04B431", "#04B45F", "#04B486", "#04B4AE", "#0489B1", "#045FB4", "#0431B4", "#0404B4", "#3104B4", "#5F04B4", "#8904B1", "#B404AE", "#B40486", "#B4045F", "#B40431", "#585858"],
+
+                    ["#8A0808", "#8A2908", "#8A4B08", "#886A08", "#868A08", "#688A08", "#4B8A08", "#298A08", "#088A08", "#088A29", "#088A4B", "#088A68", "#088A85", "#086A87", "#084B8A", "#08298A", "#08088A", "#29088A", "#4B088A", "#6A0888", "#8A0886", "#8A0868", "#8A084B", "#8A0829", "#424242"],
+
+                    ["#610B0B", "#61210B", "#61380B", "#5F4C0B", "#5E610B", "#4B610B", "#38610B", "#21610B", "#0B610B", "#0B6121", "#0B6138", "#0B614B", "#0B615E", "#0B4C5F", "#0B3861", "#0B2161", "#0B0B61", "#210B61", "#380B61", "#4C0B5F", "#610B5E", "#610B4B", "#610B38", "#610B21", "#2E2E2E"],
+
+                    ["#3B0B0B", "#3B170B", "#3B240B", "#3A2F0B", "#393B0B", "#2E3B0B", "#243B0B", "#173B0B", "#0B3B0B", "#0B3B17", "#0B3B24", "#0B3B2E", "#0B3B39", "#0B2F3A", "#0B243B", "#0B173B", "#0B0B3B", "#170B3B", "#240B3B", "#2F0B3A", "#3B0B39", "#3B0B2E", "#3B0B24", "#3B0B17", "#1C1C1C"],
+
+                    ["#2A0A0A", "#2A120A", "#2A1B0A", "#29220A", "#292A0A", "#222A0A", "#1B2A0A", "#122A0A", "#0A2A0A", "#0A2A12", "#0A2A1B", "#0A2A22", "#0A2A29", "#0A2229", "#0A1B2A", "#0A122A", "#0A0A2A", "#120A2A", "#1B0A2A", "#220A29", "#2A0A29", "#2A0A22", "#2A0A1B", "#2A0A12", "#151515"],
+
+                    ["#190707", "#190B07", "#191007", "#181407", "#181907", "#141907", "#101907", "#0B1907", "#071907", "#07190B", "#071910", "#071914", "#071918", "#071418", "#071019", "#070B19", "#070719", "#0B0719", "#100719", "#140718", "#190718", "#190714", "#190710", "#19070B", "#000000"]
+                ]
+            };
+            editor_remark_base = K.create('#id_remark_base', options);
+            var base_url = window.location.pathname;
+            $("#id_remark_base_button_save").hide();
+            $("#id_remark_base_div").hide();
+            $.get("{% url 'ajax_get_remark_base' %}", {'base_url': base_url}, function(data){
+                editor_remark_base.html(data.remark);
+                $("#id_remark_base").html(data.remark);
+                $("#id_remark_base_label").html(data.remark);
+            })
+        });
+
+        function edit_remark_base(){
+            $('#id_remark_base_button_edit').hide();
+            $('#id_remark_base_button_save').show();
+            $("#id_remark_base_label_div").hide();
+            $("#id_remark_base_div").show();
+        };
+
+        function save_remark_base(){
+            var remark = $("#id_remark_base").val();
+            var base_url = window.location.pathname;
+            var kwargs = {'base_url': base_url, 'remark': remark}
+            $('#id_remark_base_button_save').hide();
+            $('#id_remark_base_button_edit').show();
+            $.post("{% url 'ajax_save_remark_base' %}", kwargs,  function(data){
+                editor_remark_base.html(remark);
+                $("#id_remark_base_label").html(remark);
+                $("#id_remark_base").html(remark);
+                $("#id_remark_base_div").hide();
+                $("#id_remark_base_label_div").show();
+            });
+        }
+
+    </script>
+
+    {% block my_jsblock %}{% endblock %}
+{% endblock %}

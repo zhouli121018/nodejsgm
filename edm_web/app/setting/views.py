@@ -857,14 +857,14 @@ def ajax_operate_log(request):
     date_end = data.get('date_end', '')
     colums = ['id', 'action', 'datetime', 'desc', 'user_id', 'ip']
     lists = CoreLog.objects.filter(target=request.user)
-    if action:
-        lists = lists.filter(action=action)
     if date_start and date_end:
         lists = lists.filter(datetime__gte=date_start).filter(datetime__lte=date_end)
     elif date_start:
         lists = lists.filter(datetime__gte=date_start)
     elif date_end:
         lists = lists.filter(datetime__lte=date_end)
+    if action:
+        lists = lists.filter(action=action)
     if search:
         lists = lists.filter(desc__icontains=search)
     if lists.exists() and order_column and int(order_column) < len(colums):

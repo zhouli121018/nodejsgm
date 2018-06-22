@@ -79,7 +79,7 @@ class SendTask(models.Model):
     """
     id = models.AutoField(primary_key=True, db_column='send_id')
     user = models.ForeignKey(Customer, related_name='task_Customer', null=False, blank=False)
-    send_name = models.CharField(u'任务名称', null=True, blank=True, max_length=35)
+    send_name = models.CharField(u'任务名称', null=True, blank=True, max_length=64)
     send_acct_type = models.CharField(u'发送账号类型', null=True, blank=True, max_length=10, default='all',
                                       choices=SEND_ACCT_TYPE)
     send_acct_domain = models.CharField(u'发送账号域名', null=True, blank=True, max_length=60, default='all')

@@ -11,7 +11,7 @@ class StatTask(models.Model):
     id = models.AutoField(primary_key=True, db_column='task_id')
     customer = models.ForeignKey(Customer, related_name='track_Customer03', null=False, blank=False, db_index=True)
     task_date = models.DateField(u'任务时间', null=False, default='0000-00-00', db_index=True)
-    task_ident = models.CharField(u'任务名称', null=True, blank=True, max_length=35, db_index=True)
+    task_ident = models.CharField(u'任务名称', null=True, blank=True, max_length=64, db_index=True)
     count_send = models.IntegerField(u'发送总数', default=0)
     count_error = models.IntegerField(u'投递失败', default=0)
     count_err_1 = models.IntegerField(u'邮箱不存在', default=0)
@@ -34,7 +34,7 @@ class StatTaskReal(models.Model):
     任务统计 真实数据
     """
     customer = models.ForeignKey(Customer, related_name='track_StatTaskReal', null=False, blank=False, db_index=True)
-    task_ident = models.CharField(u'任务名称', null=True, blank=True, max_length=50, db_index=True)
+    task_ident = models.CharField(u'任务名称', null=True, blank=True, max_length=64, db_index=True)
     domain = models.CharField(u'收件人域名', max_length=100, null=False, blank=False, help_text=u'*代表其他域名')
     count_send = models.IntegerField(u'发送总数', default=0)
     count_error = models.IntegerField(u'投递失败', default=0)
@@ -81,7 +81,7 @@ class TrackStat(models.Model):
     邮件打开跟踪
     """
     id = models.AutoField(primary_key=True, db_column='track_id')
-    task_ident = models.CharField(u'任务名称', null=True, blank=True, max_length=35, db_index=True)
+    task_ident = models.CharField(u'任务名称', null=True, blank=True, max_length=64, db_index=True)
     customer = models.ForeignKey(Customer, related_name='track_Customer01', null=False, blank=False, db_index=True)
     open_unique = models.IntegerField(u'唯一打开数', null=False, blank=False, default=0)
     open_total = models.IntegerField(u'总打开数', null=False, blank=False, default=0)

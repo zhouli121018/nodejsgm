@@ -35,6 +35,10 @@
 
     <script src="{% static 'mosaico/dist/mosaico.min.js' %}"></script>
     <script>
+         function bg1() {
+             var color = $('#div1').css('backgroundColor');
+             return color;
+        }
 //        toolbar1:"bold italic forecolor backcolor hr styleselect removeformat fontselect fontsizeselect | link unlink | commonvar commonvartag | table | code "
         $(function() {
             if (!Mosaico.isCompatible()) {
@@ -198,6 +202,7 @@
     <link rel="stylesheet" href="{% static 'mosaico/dist/vendor/notoregular/stylesheet.css' %}" />
     <link rel="stylesheet" href="{% static 'mosaico/dist/vendor/evol.colorpicker.min.css' %}" /> <!-- 2k -->
     <style>
+
         #toolblocks>.block-list:after{
             content:"";
             display:block;
@@ -404,6 +409,15 @@
         #main-edit-area #main-wysiwyg-area:not(.isdragging):not(.isdraggingimg) .editable.selected .mo-blockselectionhelper{
             box-shadow: 0 0 5px #000;
         }
+        #main-toolbox #tooltabs.ui-tabs .ui-tabs-panel{
+            background-color:#E8E8E8;
+        }
+        @media screen and (min-width: 400px){
+            #main-wysiwyg-area replacedbody:before, #main-wysiwyg-area replacedbody:after{
+                display:none;
+            }
+        }
+
     </style>
 </head>
 <body class="mo-standalone">

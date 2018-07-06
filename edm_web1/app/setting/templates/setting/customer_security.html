@@ -1,0 +1,381 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans '安全设置' %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans '设置中心' %}</li><li>{% trans '安全设置' %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-list margin-right-5"></i>{% trans '安全设置' %}</h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget well" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>{% trans '安全设置' %}</h2>
+                    </header>
+
+                    <div>
+                        <div class="widget-body no-padding no-margin" style="margin-bottom: 25px!important;">
+                            <legend class="pull-left padding-gutter padding-top-0 padding-bottom-0 jcrop-api-tabs-options"><h2 class="no-margin no-padding">{% trans '登录密码' %}</h2></legend>
+                            <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed" width="100%">
+                                <tbody>
+                                <tr>
+                                    <td class="no-border text-right text-muted myself-width-36"></td>
+                                    <td class="no-border">
+                                        {% trans 'U-Mail提醒：定期修改密码是个好习惯哦~' %}
+                                        <br>
+                                        <div class="margin-top-10">
+                                            <span class="myself-text-success">{% trans '已设置' %}</span>
+                                            <i class="myself-seperate-icon"></i>
+                                            <a data-toggle="modal" href="{% url 'core_password_modify' %}" data-target="#myModal" data-whatever="">{% trans '修改' %}</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="widget-body no-padding no-margin" style="margin-bottom: 25px!important;">
+                            <legend class="pull-left padding-gutter padding-top-0 padding-bottom-0 jcrop-api-tabs-options"><h2 class="no-margin no-padding">{% trans '登录保护' %}</h2></legend>
+                            <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed" width="100%">
+                                <tbody>
+                                <tr>
+                                    <td class="no-border text-right text-muted myself-width-36"></td>
+                                    <td class="no-border">
+                                        {% if request.user.loginsafe.is_open %}{% trans '您已开启登录保护' %}{% else %}{% trans '您尚未开启登录保护' %}{% endif %}
+                                        {% if not request.user.weixin_customer %}（<span class="text-warning">{% trans '此功能开启必须先绑定微信' %}</span>）{% endif %}
+                                        <br>
+                                        <div class="margin-top-10">
+                                            {% if request.user.loginsafe.is_open %}<span class="myself-text-success">{% trans '已开启' %}</span>{% else %}<span class="myself-text-normal">{% trans '未开启' %}</span>{% endif %}
+                                            <i class="myself-seperate-icon"></i>
+                                            <a data-toggle="modal" href="{% url 'core_login_safe_set' %}" data-target="#myModal" data-whatever="">{% if request.user.loginsafe.is_open %}{% trans '查看并修改' %}{% else %}{% trans '开启' %}{% endif %}</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!--<div>
+                        <div class="widget-body no-padding no-margin" style="margin-bottom: 25px!important;">
+                            <legend class="pull-left padding-gutter padding-top-0 padding-bottom-0 jcrop-api-tabs-options"><h2 class="no-margin no-padding" style="font-weight: 500">API Token</h2></legend>
+                            <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed" width="100%">
+                                <tbody>
+                                <tr>
+                                    <td class="no-border text-right text-muted myself-width-36"></td>
+                                    <td class="no-border">
+                                        {% if request.user.security_token %}您已开启API Token{% else %}您尚未开启API Token{% endif %}
+                                        <br>
+                                        <div class="margin-top-10">
+                                            {% if request.user.security_token %}<span class="myself-text-success">已开启</span>{% else %}<span class="myself-text-normal">未开启</span>{% endif %}
+                                            <i class="myself-seperate-icon"></i>
+                                            <a href="{% url 'customer_token' %}">查看</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>-->
+
+
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" style="margin:150px auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans '加载中' %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% trans '页面加载中' %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">{% trans '关闭' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block css_block %}
+    <style>
+        .myself-width-36{width: 36px;}
+        /* -------- customer_security.html -------- */
+        /*密码校验提示框样式*/
+        .rules_check_relative{  margin-top: -63px;  position: absolute;  width: 500px; left: 75%;}
+        .rules_check_wrap{  position:absolute;  padding:10px;  text-align:left;  background:#fff;  font-size:12px;  color:#494949;  border-radius:5px;  border:1px solid #bbb;  box-shadow:0px 0px 5px #ccc;  }
+        .rules_check_wrap h3{  font-weight:bold;  color:#232323;  margin:0;  padding:5px 0 5px 19px;  font-size:12px;  height:14px;  line-height:14px;  }
+        .rules_check_wrap li{  height:14px;  line-height:14px;  padding:4px 0;  list-style-type:none;  }
+        .icon_rules_check{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/pwd_circle.png);  background-repeat:no-repeat;  }
+        .rules_check_pass{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) 0px -48px no-repeat;  }
+        .rules_check_error{  color:#c00 !important;  }
+        .rules_check_fail{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) -12px -48px no-repeat;  }
+        .arrow_l, .arrow_r{  position:absolute;  top:0;left:0;  margin-top:38px;  margin-left:-20px;  display:block;  width:0;  height:0;  font-size:0;  overflow:hidden;  border:10px solid transparent;  _border-color:tomato;  _filter:chroma(color=tomato);  }
+        .arrow_l{ border-right-color:#bbb;}
+        .arrow_r{ border-right-color:#fff; margin-left:-19px;}
+
+        /* --------  -------- */
+        .select2-results__option{ margin-left: 13px!important;}
+        .select2-selection--single{width: 220px!important;}
+    </style>
+
+{% endblock %}
+
+{% block my_jsblock %}
+
+    <script>
+        $.ajaxSetup({
+            data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+        });
+
+        $(function () {
+            $('#myModal').on('show.bs.modal', function (event) {
+                $(this).removeData('bs.modal');
+            })
+        });
+
+        function onblurPasswd(){
+            var old_password = $("#id_old_password").val();
+            var start_password = $("#id_start_password").val();
+            if( old_password.replace(/^ +| +$/g,'')=='' ){
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+                return false;
+            }
+            $.post("/setting/ajax_check_paasswd/", {'old_password': old_password, 'start_password': start_password}, function(data){
+                if(data.msg == 'N'){
+                    $("#id_old_password_error").removeClass('display-none').html('{% trans '密码错误，请重新输入' %}');
+                    return false;
+                }
+            });
+        }
+        function onfocusPasswd(){
+            $("#id_old_password_error").addClass('display-none');
+        }
+
+        function onblurPasswd1(){
+            var new_password1 = $("#id_new_password1").val();
+            var len = new_password1.length;
+            var user_name = $("#user_name").val();
+
+            $("#rules_check_relative").addClass('display-none');
+            if ( /\s/.test(new_password1) ){
+                $("#id_new_password1_error").removeClass('display-none').html('{% trans '包含空格，请重新输入' %}');
+                return false;
+            } else if ( new_password1.replace(/^ +| +$/g, '')=='' ){
+                $("#id_new_password1_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+                return false;
+            } else if (new_password1.indexOf(user_name) > -1){
+                $("#id_new_password1_error").removeClass('display-none').html('{% trans '包含账户名，请重新输入' %}');
+                return false;
+            } else if ( !(( /[a-z]/.test(new_password1) || /[A-Z]/.test(new_password1)) && /[0-9]/.test(new_password1)) ){
+                $("#id_new_password1_error").removeClass('display-none').html('{% trans '必须同时包含字母、数字，请重新输入' %}');
+                return false;
+            } else if (len<6 || len >32 ){
+                $("#id_new_password1_error").removeClass('display-none').html('{% trans '密码不能少于6或大于32个字符，请重新输入' %}');
+                return false;
+            }
+        }
+        function onfocusPasswd1(){
+            $("#rules_check_relative").removeClass('display-none');
+            $("#id_new_password1_error").addClass('display-none');
+        }
+        function onkeyupPasswd1(){
+            var new_password1 = $("#id_new_password1").val();
+            var len = new_password1.length;
+            var user_name = $("#user_name").val();
+
+            if ( new_password1=='' ){
+                $("#icon_rules_check_1").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+                $("#icon_rules_check_5").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+                $("#icon_rules_check_4").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+                $("#rules_check_error_1").removeClass('rules_check_error');
+                $("#rules_check_error_5").removeClass('rules_check_error');
+                $("#rules_check_error_4").removeClass('rules_check_error');
+                return false;
+            }
+
+            if ( (new_password1.indexOf(user_name) > -1) || /\s/.test(new_password1) ){
+                $("#rules_check_error_5").addClass('rules_check_error');
+                $("#icon_rules_check_5").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+            } else {
+                $("#rules_check_error_5").removeClass('rules_check_error');
+                $("#icon_rules_check_5").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+            }
+
+            if ( !(( /[a-z]/.test(new_password1) || /[A-Z]/.test(new_password1)) && /[0-9]/.test(new_password1)) ){
+                $("#rules_check_error_1").addClass('rules_check_error');
+                $("#icon_rules_check_1").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+            } else {
+                $("#rules_check_error_1").removeClass('rules_check_error');
+                $("#icon_rules_check_1").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+            }
+
+            if (len<6 || len >32 ){
+                $("#rules_check_error_4").addClass('rules_check_error');
+                $("#icon_rules_check_4").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+            } else {
+                $("#rules_check_error_4").removeClass('rules_check_error');
+                $("#icon_rules_check_4").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+            }
+        }
+
+        function onblurPasswd2(){
+            var new_password1 = $("#id_new_password1").val();
+            var new_password2 = $("#id_new_password2").val();
+            if ( new_password1 != new_password2 ){
+                $("#id_new_password2_error").removeClass('display-none').html('{% trans '两次密码不一致，请重新输入' %}');
+                return false;
+            }
+        }
+        function onfocusPasswd2(){
+            $("#id_new_password2_error").addClass('display-none');
+        }
+
+        function getLength(str){
+            if(/[a-z]/i.test(str)){
+                return str.match(/[a-z]/ig).length;
+            }
+            return 0;
+        }
+
+        function checkForm(){
+            {% if request.user.service.is_umail %}
+                $("#id_new_password2_error").removeClass('display-none').html('{% trans '测试帐号不允许此类操作!' %}');
+                return false;
+            {% endif %}
+            var old_password = $("#id_old_password").val();
+            var new_password1 = $("#id_new_password1").val();
+            var len = new_password1.length;
+            var new_password2 = $("#id_new_password2").val();
+            var start_password = $("#id_start_password").val();
+            var user_name = $("#user_name").val();
+            if ( old_password == '' ){
+                $("#id_old_password_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+                return false;
+            } else {
+                $("#id_old_password_error").addClass('display-none');
+            }
+
+            if ( /\s/.test(new_password1) ){
+                $("#id_new_password1_error").removeClass('display-none').html('{% trans '包含空格，请重新输入' %}');
+                return false;
+            } else if ( new_password1.replace(/^ +| +$/g, '')=='' ){
+                $("#id_new_password1_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+                return false;
+            } else if (new_password1.indexOf(user_name) > -1){
+                $("#id_new_password1_error").removeClass('display-none').html('{% trans '包含账户名，请重新输入' %}');
+                return false;
+            } else if ( !(( /[a-z]/.test(new_password1) || /[A-Z]/.test(new_password1)) && /[0-9]/.test(new_password1)) ){
+                $("#id_new_password1_error").removeClass('display-none').html('{% trans '必须同时包含字母、数字，请重新输入' %}');
+                return false;
+            } else if (len<6 || len >32 ){
+                $("#id_new_password1_error").removeClass('display-none').html('{% trans '密码不能少于6或大于32个字符，请重新输入' %}');
+                return false;
+            }
+
+            if ( new_password1 != new_password2 ){
+                $("#id_new_password2_error").removeClass('display-none').html('{% trans '两次密码不一致，请重新输入' %}');
+                return false;
+            }
+
+            $.post("/setting/ajax_check_paasswd/", {'old_password': old_password, 'start_password': start_password}, function(data){
+                if(data.msg == 'N'){
+                    $("#id_old_password_error").removeClass('display-none').html('{% trans '密码输入错误，请重新输入' %}');
+                    return false;
+                } else {
+                    $('#id_Form').submit();
+                }
+            });
+        }
+
+        function S4() {
+            return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+        }
+        function GenerateGuid() {
+            return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+        }
+
+        function addLoginIp(){
+            var ip_id = GenerateGuid();
+            var ip = $.trim($("#id_login_ip").val());
+            var flag = false;
+            var ip_list = $("input[name='ip_list[]']");
+
+            if ( !checkIP(ip) ){
+                $("#id_login_ip_error").removeClass('display-none').html('{% trans '您输入的IP无效' %}');
+                return false;
+            } else {
+                $("#id_login_ip_error").addClass('display-none');
+            }
+
+            for (var i = 0, j = ip_list.length; i < j; i++){
+                var iptemp = ip_list[i].value;
+                if ( iptemp==ip ){
+                    flag = true;
+                    break
+                }
+            }
+            if ( flag ){
+                // $("#id_login_ip_error").removeClass('display-none').html('{% trans '已添加该IP，无需重复添加' %}');
+                return false;
+            } else {
+                $("#id_login_ip_error").addClass('display-none');
+            }
+
+            $.post("/setting/ajax_check_login_ip/", {'ip': ip}, function(data){
+                if(data.msg == 'N'){
+                    $("#id_login_ip_error").removeClass('display-none').html('{% trans '您输入的IP无效' %}');
+                    return false;
+                } else {
+                    var ipHtml = '<span id="id_login_ip_' + ip_id + '" class="myself-bg-color-lighten-safe">' + ip +
+                            '<a onclick="Javascript:delLoginIP(\'' + ip_id + '\',' + '\'' + ip + '\')" class="font-md myself-bg-color-lighten-safe-a" style="margin-left: 3px;">×</a>' +
+                            '<input id="id_ip_' + ip_id + '" name="ip_list[]" value="' + ip + '" type="hidden"></span>'
+                    $("#id_login_ip_content").append(ipHtml);
+                    $("#id_login_ip_error").addClass('display-none');
+                }
+            });
+        }
+
+        function checkIP(ip){
+            var exp=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+            var reg = ip.match(exp);
+            if (reg == null){
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function delLoginIP(ip_id, ip){
+            $("#id_login_ip_" + ip_id).remove();
+        }
+
+        function checkLoginForm(){
+            $('#id_loginForm').submit();
+        }
+
+
+    </script>
+{% endblock %}

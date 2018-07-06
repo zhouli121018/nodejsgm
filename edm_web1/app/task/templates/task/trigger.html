@@ -1,0 +1,22 @@
+{% load i18n %}
+<td class="no-border text-right myself-width-small">
+    <label class="control-label" style="margin-top: 3px;">{% trans "触发器" %}</label>
+</td>
+<td class="no-border">
+    <fieldset>
+        <div class="col-md-12">
+
+            {% for d in lists %}
+                <input type="hidden" name="trigger[]" id="id_trigger_{{ d.id }}" value="{{ d.id }}"/>
+                <span style="display: inline;">
+                    <span onclick="changeTriggerLists('{{ d.id }}', '{{ d.shortname }}')" style=""
+                          id="id_change_trigger_{{ d.id }}" class="ac-tag_tag  {% if task_id and d.id in trigger_ids %}is-active_tag{% elif not task_id %}is-active_tag{% endif %}"
+                          title="{{ d.name }}">{{ d.name }}</span>
+                </span>
+            {% endfor %}
+
+            <br><span class="text-success">{% trans "该任务带有触发器，可多选；默认已全选。" %}</span>
+
+        </div>
+    </fieldset>
+</td>

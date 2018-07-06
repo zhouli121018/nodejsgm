@@ -122,7 +122,7 @@ CKEDITOR.editorConfig = function( config ) {
         ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
         ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock', '-', "lineheight"],
         '/',
-        ['Link','Unlink','Anchor'],
+        [ 'linkbutton1','Link','Unlink','Anchor'],
         ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
         '/',
         ['Styles','Format','Font','FontSize'],
@@ -130,7 +130,7 @@ CKEDITOR.editorConfig = function( config ) {
         ['aaumail',  'aavar', 'aacommon', 'aashare','-', 'Maximize', 'ShowBlocks',]
     ];
 
-    config.extraPlugins = 'lineheight,aaumail,aavar,aacommon,aashare';
+    config.extraPlugins = 'lineheight,aaumail,aavar,aacommon,aashare,linkbutton1';
     // 配置字体
     //config.font_names='楷体/楷体_GB2312;宋体/宋体;黑体/黑体;仿宋/仿宋_GB2312;隶书/隶书;幼圆/幼圆;微软雅黑/微软雅黑;'+ config.font_names;
     config.font_names='楷体/KaiTi;宋体/SimSun;新宋体/NSimSun;隶书/LiSu;华文楷体/STKaiti;华文中宋/STZhongsong;华文行楷/STXingkai;仿宋_GB2312/FangSong_GB2312;楷体_GB2312/KaiTi_GB2312;黑体/SimHei;' +

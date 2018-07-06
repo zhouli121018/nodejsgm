@@ -1,0 +1,442 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans '添加子账户' %}</h4>
+</div>
+
+{% if cannot_add %}
+    <div class="modal-body">
+        <div class="row">
+
+            <article class="col-sm-12">
+                <div class="alert alert-error fade in">
+                    <!--<button class="close" data-dismiss="alert">×</button>-->
+                    <i class="fa-fw fa fa-error"></i>
+                    <strong>Error</strong> {% trans '充值不足10万, 每充值10万封允许添加一个子账户。' %}
+                </div>
+            </article>
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+    </div>
+{% else %}
+    <form role="form" action="{% url 'sub_account_create' %}" method="post" id="id_AccountForm">
+        {% csrf_token %}
+        <input type="hidden" id="id_leave_qty" name="leave_qty" value="{{ leave_qty }}">
+        <div class="modal-body padding-10 margin-bottom-10">
+            <div class="form-horizontal">
+                <fieldset>
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{% trans '输入密码' %}</label>
+                                <div class="col-md-6 input-group">
+                                    <input class="form-control" id="id_new_password1" name="new_password1" type="password" maxlength="32" value="" onblur="onblurPasswd1()" onfocus="onfocusPasswd1()" onkeyup="onkeyupPasswd1()">
+                                </div>
+                                <div id="id_new_password1_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                                <div class="rules_check_relative display-none" id="rules_check_relative">
+                                    <div class="rules_check_wrap" id="aliasValidateWrap" style="z-index: 3000;">
+                                    <span class="rules_check_arrow">
+                                        <span class="arrow_l"></span>
+                                        <span class="arrow_r"></span>
+                                    </span>
+                                        <h3 class="no-margin no-padding">{% trans '密码需满足以下要求' %}：</h3>
+                                        <ul class="no-margin no-padding" style="white-space:nowrap;margin-left: 13px !important;">
+                                            <li style="margin-bottom: 5px; line-height: normal;">
+                                                <span class="icon_rules_check" id="icon_rules_check_1"></span><span id="rules_check_error_1">{% trans '必须包含字母、数字, 可以包含特殊字符' %}</span>
+                                            </li>
+                                            <li style="margin-top: 5px;line-height: normal;">
+                                                <span class="icon_rules_check" id="icon_rules_check_4"></span><span id="rules_check_error_4">{% trans '长度为 6-32 个字符' %}</span>
+                                            </li>
+                                            <li style="margin-top: 5px;line-height: normal;">
+                                                <span class="icon_rules_check" id="icon_rules_check_5"></span><span id="rules_check_error_5">{% trans '不包含空格' %}</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{% trans '确认密码' %}</label>
+                                <div class="col-md-6 input-group">
+                                    <input class="form-control" id="id_new_password2" name="new_password2" type="password" maxlength="32" value="" onblur="onblurPasswd2()" onfocus="onfocusPasswd2()">
+                                </div>
+                                <div id="id_new_password2_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{% trans '公司名称' %}</label>
+                                <div class="col-md-6 input-group">
+                                    <input class="form-control" id="id_company" name="company" type="text" maxlength="50" value="{{ request.user.company }}">
+                                </div>
+                                <div id="id_company_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{% trans '联系人' %}</label>
+                                <div class="col-md-6 input-group">
+                                    <input class="form-control" id="id_linkman" name="linkman" type="text" maxlength="50" value="{{ request.user.linkman }}">
+                                </div>
+                                <div id="id_linkman_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{% trans '手机号码' %}</label>
+                                <div class="col-md-6 input-group">
+                                    <input class="form-control" id="id_mobile" name="mobile" type="text" maxlength="20" value="{{ request.user.mobile }}">
+                                </div>
+                                <div id="id_mobile_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{% trans '邮箱地址' %}</label>
+                                <div class="col-md-6 input-group">
+                                    <input class="form-control" id="id_email" name="email" type="text" maxlength="50" value="{{ request.user.email }}">
+                                </div>
+                                <div id="id_email_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                            </div>
+                        </div>
+
+
+                        <legend class="col-xs-12 col-sm-12 col-md-12"></legend>
+                        <h4 style="margin-left: 15px!important;">{% trans '授权子账户发送额度' %}</h4>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{% trans '授权方式' %}</label>
+                                <div class="col-md-6 input-group">
+                                    <label class="radio radio-inline form-inline">
+                                        <input class="radiobox" id="id_create_type" name="create_type" value="1" onchange="onchangeCreateType('1')" type="radio">
+                                        <span>{% trans '分配方式' %}</span>
+                                    </label>
+                                    <label class="radio radio-inline form-inline">
+                                        <input class="radiobox" id="id_create_type" name="create_type" value="2" checked="" onchange="onchangeCreateType('2')" type="radio">
+                                        <span>{% trans '共享方式' %}</span>
+                                    </label>
+                                    <p class="help-block">{% trans '分配：分配群发量给子账户，子账户可充值。' %}</p>
+                                    <p class="help-block">{% trans '共享：母子账户共享群发量，可部分共享，亦可全部共享；子账户不可充值。' %}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 display-none" id="id_display_none_1">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{% trans '分配群发量' %}</label>
+                                <div class="col-md-6 input-group">
+                                    <input class=" form-control" id="id_qty_count" name="qty_count" value="" autocomplete="off" required="" type="number" placeholder="{% trans '账户余额' %}: {{ leave_qty }}">
+                                </div>
+                                <div id="id_qty_count_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 display-none" id="id_display_none_2">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{% trans '共享方式' %}</label>
+                                <div class="col-md-6 input-group">
+                                    <label class="radio radio-inline form-inline">
+                                        <input class="radiobox" id="id_share_type" name="share_type" value="1" onchange="onchangeType('1')" type="radio" checked="">
+                                        <span>{% trans '全部共享' %}</span>
+                                    </label>
+                                    <label class="radio radio-inline form-inline">
+                                        <input class="radiobox" id="id_share_type" name="share_type" value="2" onchange="onchangeType('2')" type="radio">
+                                        <span>{% trans '部分共享' %}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 display-none" id="id_display_none_3">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">{% trans '限制共享群发量' %}</label>
+                                <div class="col-md-6 input-group">
+                                    <input class=" form-control" id="id_limit_qty" name="limit_qty" value="" autocomplete="off" required="" type="number" placeholder="{% trans '账户余额' %}: {{ leave_qty }}">
+                                </div>
+                                <div id="id_limit_qty_error" class="col-md-8 col-md-offset-3 text-left txt-color-red display-none"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input value="{% trans '确定' %}" onclick="checkAccountForm()" type="button" class="btn btn-primary" id="id_save_button">
+            <button type="button" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+        </div>
+    </form>
+{% endif %}
+
+<style>
+    /* -------- customer_security.html -------- */
+    /*密码校验提示框样式*/
+    .rules_check_relative{  margin-top: -63px;  position: absolute;  width: 500px; left: 75%;}
+    .rules_check_wrap{  position:absolute;  padding:10px;  text-align:left;  background:#fff;  font-size:12px;  color:#494949;  border-radius:5px;  border:1px solid #bbb;  box-shadow:0px 0px 5px #ccc;  }
+    .rules_check_wrap h3{  font-weight:bold;  color:#232323;  margin:0;  padding:5px 0 5px 19px;  font-size:12px;  height:14px;  line-height:14px;  }
+    .rules_check_wrap li{  height:14px;  line-height:14px;  padding:4px 0;  list-style-type:none;  }
+    .icon_rules_check{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/pwd_circle.png);  background-repeat:no-repeat;  }
+    .rules_check_pass{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) 0px -48px no-repeat;  }
+    .rules_check_error{  color:#c00 !important;  }
+    .rules_check_fail{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) -12px -48px no-repeat;  }
+    .arrow_l, .arrow_r{  position:absolute;  top:0;left:0;  margin-top:38px;  margin-left:-20px;  display:block;  width:0;  height:0;  font-size:0;  overflow:hidden;  border:10px solid transparent;  _border-color:tomato;  _filter:chroma(color=tomato);  }
+    .arrow_l{ border-right-color:#bbb;}
+    .arrow_r{ border-right-color:#fff; margin-left:-19px;}
+    /* --------  -------- */
+</style>
+
+<script type="text/javascript">
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+
+    $(function () {
+        var create_type = $("[name='create_type']:checked").val();
+        onchangeCreateType(create_type);
+    });
+
+    $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+    function checkAccountForm(){
+        $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+        var new_password1 = $("#id_new_password1").val();
+        var len = new_password1.length;
+        var new_password2 = $("#id_new_password2").val();
+
+        var company = $("#id_company").val();
+        var linkman = $("#id_linkman").val();
+        var mobile = $("#id_mobile").val();
+        var email = $("#id_email").val();
+
+        var create_type = $("[name='create_type']:checked").val();
+        var leave_qty = $("#id_leave_qty").val();
+
+
+        if ( /\s/.test(new_password1) ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '包含空格，请重新输入' %}');
+            return false;
+        } else if ( new_password1.replace(/^ +| +$/g, '')=='' ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        } else if ( !(( /[a-z]/.test(new_password1) || /[A-Z]/.test(new_password1)) && /[0-9]/.test(new_password1)) ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '必须同时包含字母、数字，请重新输入' %}');
+            return false;
+        } else if (len<6 || len >32 ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '密码不能少于6或大于32个字符，请重新输入' %}');
+            return false;
+        }
+
+        if ( new_password1 != new_password2 ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_new_password2_error").removeClass('display-none').html('{% trans '两次密码不一致，请重新输入' %}');
+            return false;
+        }
+
+        if ( company.replace(/^ +| +$/g, '')=='' ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_company_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        }
+
+        if ( linkman.replace(/^ +| +$/g, '')=='' ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_linkman_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        }
+
+        if ( mobile.replace(/^ +| +$/g, '')=='' ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_mobile_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        }
+
+        if ( !checkMobile(mobile) ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_mobile_error").removeClass('display-none').html('{% trans '请输入正确的手机号' %}');
+            return false;
+        }
+
+        if ( email.replace(/^ +| +$/g, '')=='' ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_email_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        }
+
+        if ( !checkEmail(email) ){
+            $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+            $("#id_email_error").removeClass('display-none').html('{% trans '请输入正确的邮箱地址' %}');
+            return false;
+        }
+
+        if (create_type == '1'){
+            var qty_count = Number($("#id_qty_count").val());
+            if ( qty_count <= 0 ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_qty_count_error").removeClass('display-none').html("{% trans "分配群发量必须大于0." %}");
+                return false;
+            }
+            if ( qty_count >= Number(leave_qty)){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_qty_count_error").removeClass('display-none').html("{% trans "分配群发量不能大于剩余群发量" %}" + "("+leave_qty+").");
+                return false;
+            }
+        } else {
+            var share_type = $("[name='share_type']:checked").val();
+            if (share_type == '2'){
+                var limit_qty = Number($("#id_limit_qty").val());
+                if ( limit_qty <= 0 ){
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    $("#id_limit_qty_error").removeClass('display-none').html("{% trans "共享群发量必须大于0." %}");
+                    return false;
+                }
+            }
+        }
+
+        $('#id_AccountForm').submit();
+    }
+
+    function checkEmail(field){
+        var expression = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        var obj = new RegExp(expression);
+        if(obj.test(field)==true){
+            return true;
+        }else{
+            return false;
+        }
+    };
+
+    function checkMobile(text){
+        var _emp=/^\s*|\s*$/g;
+        text=text.replace(_emp,"");
+        var _d=/^1[3578][01379]\d{8}$/g;
+        var _l=/^1[34578][01256]\d{8}$/g;
+        var _y=/^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/g;
+        if(_d.test(text)){
+            return true;
+        } else if(_l.test(text)){
+            return true;
+        }else if(_y.test(text)){
+            return true;
+        }
+        return false;
+    }
+
+
+    function onblurPasswd1(){
+        var new_password1 = $("#id_new_password1").val();
+        var len = new_password1.length;
+
+        $("#rules_check_relative").addClass('display-none');
+        if ( /\s/.test(new_password1) ){
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '包含空格，请重新输入' %}');
+            return false;
+        } else if ( new_password1.replace(/^ +| +$/g, '')=='' ){
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        } else if ( !(( /[a-z]/.test(new_password1) || /[A-Z]/.test(new_password1)) && /[0-9]/.test(new_password1)) ){
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '必须同时包含字母、数字，请重新输入' %}');
+            return false;
+        } else if (len<6 || len >32 ){
+            $("#id_new_password1_error").removeClass('display-none').html('{% trans '密码不能少于6或大于32个字符，请重新输入' %}');
+            return false;
+        }
+    }
+    function onfocusPasswd1(){
+        $("#rules_check_relative").removeClass('display-none');
+        $("#id_new_password1_error").addClass('display-none');
+    }
+    function onkeyupPasswd1(){
+        var new_password1 = $("#id_new_password1").val();
+        var len = new_password1.length;
+
+        if ( new_password1=='' ){
+            $("#icon_rules_check_1").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+            $("#icon_rules_check_5").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+            $("#icon_rules_check_4").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+            $("#rules_check_error_1").removeClass('rules_check_error');
+            $("#rules_check_error_5").removeClass('rules_check_error');
+            $("#rules_check_error_4").removeClass('rules_check_error');
+            return false;
+        }
+
+        if ( /\s/.test(new_password1) ){
+            $("#rules_check_error_5").addClass('rules_check_error');
+            $("#icon_rules_check_5").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+        } else {
+            $("#rules_check_error_5").removeClass('rules_check_error');
+            $("#icon_rules_check_5").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+        }
+
+        if ( !(( /[a-z]/.test(new_password1) || /[A-Z]/.test(new_password1)) && /[0-9]/.test(new_password1)) ){
+            $("#rules_check_error_1").addClass('rules_check_error');
+            $("#icon_rules_check_1").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+        } else {
+            $("#rules_check_error_1").removeClass('rules_check_error');
+            $("#icon_rules_check_1").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+        }
+
+        if (len<6 || len >32 ){
+            $("#rules_check_error_4").addClass('rules_check_error');
+            $("#icon_rules_check_4").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+        } else {
+            $("#rules_check_error_4").removeClass('rules_check_error');
+            $("#icon_rules_check_4").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+        }
+    }
+
+    function onblurPasswd2(){
+        var new_password1 = $("#id_new_password1").val();
+        var new_password2 = $("#id_new_password2").val();
+        if ( new_password1 != new_password2 ){
+            $("#id_new_password2_error").removeClass('display-none').html('{% trans '两次密码不一致，请重新输入' %}');
+            return false;
+        }
+    }
+    function onfocusPasswd2(){
+        $("#id_new_password2_error").addClass('display-none');
+    }
+
+    function onchangeCreateType(type){
+        if (type=='1'){
+            $("#id_display_none_1").removeClass('display-none');
+            $("#id_display_none_2").addClass('display-none');
+            $("#id_display_none_3").addClass('display-none');
+        } else if (type=='2'){
+            $("#id_display_none_1").addClass('display-none');
+            $("#id_display_none_2").removeClass('display-none');
+            //$("#id_display_none_3").removeClass('display-none');
+            var share_type = $("[name='share_type']:checked").val();
+            if (share_type=='1'){
+                $("#id_display_none_3").addClass('display-none');
+            } else {
+                $("#id_display_none_3").removeClass('display-none');
+            }
+        }
+        return false;
+    }
+
+    function onchangeType(type){
+        if (type=='1'){
+            $("#id_display_none_3").addClass('display-none');
+        } else if (type=='2'){
+            $("#id_display_none_3").removeClass('display-none');
+        }
+        return false;
+    }
+
+
+</script>

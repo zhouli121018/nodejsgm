@@ -1,0 +1,269 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load jsonify %}
+{% load static %}
+{% block title %}{% trans "模板" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "邮件模板" %}</li>
+    <li>{% trans "模板" %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-pencil-square-o fa-fw "></i>{% trans "模板" %}
+            </h1>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6">
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-color-magenta" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-hand-o-right"></i></span>
+                        <h2>{% trans "模板" %}</h2>
+                    </header>
+
+                    <div>
+                        <div class="jarviswidget-editbox"></div>
+                        <div class="widget-body no-padding">
+                            <form role="form" action="" method="post" id="id_templateForm" class="padding-gutter form-horizontal" enctype="multipart/form-data">
+                                {% csrf_token %}
+
+                                <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed" width="100%">
+                                    <tbody>
+                                    <!--<tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>-->
+                                    <!--模板名称-->
+                                    <tr>
+                                        <td class="no-border text-right myself-width-small vertical-align-middle">
+                                            <label class="control-label">{% trans "模板名称" %}</label>
+                                        </td>
+                                        <td class="no-border">
+                                            <fieldset>
+                                                <div class="col-md-12 form-inline">
+                                                    <input class="form-control" id="id_name" name="name" maxlength="100" type="text" style="width: 50%;" value="{{ template_obj.name|default_if_none:'' }}">
+                                                </div>
+                                            </fieldset>
+                                        </td>
+                                    </tr>
+                                    <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+                                    <!--主题列表-->
+                                    <tr>
+                                        <td class="no-border text-right myself-width-small vertical-align-middle">
+                                            <label class="control-label">{% trans "主题列表" %}</label>
+                                        </td>
+                                        <td class="no-border">
+                                            <fieldset>
+                                                <div class="col-md-12 form-inline">
+                                                    <div id="id_subject_html">
+                                                        {% if subject_objs %}
+                                                            {% for d in subject_objs %}
+                                                                <div id="id_subject_div_{{ d.id }}" class="margin-top-5">
+                                                                    <input class="form-control" id="id_subject_{{ d.id }}" name="subject_list[]" onblur="onblurSubjectAction();" value="{{ d.subject|default_if_none:'' }}" maxlength="150" type="text" style="width: 50%;">
+                                                                    <div class="btn-group margin-left-negative3">
+                                                                        <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">
+                                                                            <span class="margin-right-5">{% trans "插入变量" %}</span> <span class="caret"></span>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu no-margin">
+                                                                            {% for k, v in subject_vars %}
+                                                                                <li><a href="#" onclick="InsertSubjectVarString('id_subject_{{ d.id }}', '{{ k }}');">{{ v }}</a></li>
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                    </div>
+                                                                    <input value="{% trans "删除" %}" onclick="deleteSubject('{{ d.id }}')" type="button" class="btn btn-outline btn-danger btn-xs margin-left-negative4">
+                                                                </div>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <div id="id_subject_div_0" class="margin-top-5">
+                                                                <input class="form-control" id="id_subject_0" name="subject_list[]" onblur="onblurSubjectAction();" value="" maxlength="100" style="width: 50%;" type="text">
+                                                                <div class="btn-group margin-left-negative3">
+                                                                    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button">
+                                                                        <span class="margin-right-5">{% trans "插入变量" %}</span> <span class="caret"></span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu no-margin">
+                                                                        {% for k, v in subject_vars %}
+                                                                            <li><a href="#" onclick="InsertSubjectVarString('id_subject_0', '{{ k }}');">{{ v }}</a></li>
+                                                                        {% endfor %}
+                                                                    </ul>
+                                                                </div>
+                                                                <input value="{% trans "删除" %}" onclick="deleteSubject('0')" class="btn btn-outline btn-danger btn-xs" type="button">
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="margin-top-5">
+                                                        <input value="{% trans "新增主题" %}" onclick="addSubject()" type="button" class="btn btn-outline btn-primary btn-xs">
+                                                        <span><strong class="txt-color-red">{% trans "提示：" %}</strong>{% trans "一个模板允许有多个主题" %}</span>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </td>
+                                    </tr>
+                                    <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+
+                                    <tr>
+                                        <td class="no-border text-right myself-width-small">
+                                            <label class="control-label">{% trans "邮件编码" %}</label>
+                                        </td>
+                                        <td class="no-border">
+                                            <fieldset>
+                                                <div class="col-md-12 form-inline">
+                                                    <select name="encoding" id="id_encoding" class="form-control" autocomplete="off" style="width: 150px;">
+                                                        {% for k, v in encoding_types %}
+                                                            <option value="{{ k }}" {% if k == template_obj.encoding %} selected="selected" {% endif %}>{{ v }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </fieldset>
+                                        </td>
+                                    </tr>
+                                    <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+                                    <tr>
+                                        <td class="no-border text-right myself-width-small">
+                                            <label class="control-label">{% trans "转换字符集" %}</label>
+                                        </td>
+                                        <td class="no-border">
+                                            <fieldset>
+                                                <div class="col-md-12 form-inline">
+                                                    <select name="character" id="id_character" class="form-control" autocomplete="off" style="width: 150px;">
+                                                        {% for k, v in character_types %}
+                                                            <option value="{{ k }}" {% if k == template_obj.character %} selected="selected" {% endif %}>{{ v }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </fieldset>
+                                        </td>
+                                    </tr>
+                                    <tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>
+
+                                    </tbody>
+                                </table>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="margin-left-20">
+
+                                                <button onclick="checkForm()" type="button" class="btn btn-primary pull-left margin-right-5" id="id_save_button">{% trans "可视化编辑" %}</button>
+
+                                                <button type="button" class="btn btn-default pull-left" onclick="location.href='{% url "template_list" %}?isvalid=1'">{% trans "取消" %}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+        </div>
+
+    </section>
+
+{% endblock %}
+
+{% block css_block %}
+    <style>
+        .myself-width-small{width: 120px;}
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+
+    <script type="text/javascript">
+
+
+        /********** 主题列表 **********/
+        // js主题鼠标位置插入变量
+        var lastFocusSubject;
+        function onblurSubjectAction() { lastFocusSubject = event.srcElement; }
+        // 插入变量
+        function InsertSubjectVarString(tbid, str) {
+            var tb = document.getElementById(tbid);
+            tb.focus();
+            if (document.all) {
+                var r = document.selection.createRange();
+                document.selection.empty();
+                r.text = str;
+                r.collapse();
+                r.select();
+            } else {
+                var newstart = tb.selectionStart+str.length;
+                tb.value=tb.value.substr(0,tb.selectionStart)+str+tb.value.substring(tb.selectionEnd);
+                tb.selectionStart = newstart;
+                tb.selectionEnd = newstart;
+            }
+        }
+        function S4(){ return (((1+Math.random())*0x10000)|0).toString(16).substring(1); }
+        function GenerateGuid(){ return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4()); }
+        // 新增主题
+        function addSubject() {
+            var subject_id = GenerateGuid();
+            var subject_html = '<div class="margin-top-5" id="id_subject_div_' + subject_id +'">' +
+                    '<input class="form-control" id="id_subject_' + subject_id + '" name="subject_list[]" onblur="onblurSubjectAction();" ' + ' value="" maxlength="150" type="text" style="width: 50%;">' +
+                    '<div class="btn-group">' +
+                    '<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false" type="button"> <span class="margin-right-5">{% trans "插入变量" %}</span> <span class="caret"></span></button>' +
+                    '<ul class="dropdown-menu no-margin">' +
+                    {% for k,v in subject_vars %}
+                        '<li><a href="#" onclick="InsertSubjectVarString(\'id_subject_' + subject_id + '\', \'{{ k }}\');">{{ v }}</a></li>' +
+                    {% endfor %}
+                    '</ul></div><input value="{% trans "删除" %}" onclick="deleteSubject(\'' + subject_id + '\')" type="button" class="btn btn-outline btn-danger btn-xs" style="margin-left: 3px !important;"></div>';
+            $("#id_subject_html").append(subject_html);
+        };
+        // 删除主题
+        function deleteSubject(subject_id) { $("#id_subject_div_" + subject_id).remove(); };
+        /********** 高级设置 **********/
+
+        /********** 保存 **********/
+        $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+        function checkForm() {
+            $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+            var name = $.trim($('#id_name').val());
+            if(name == '') {
+                alert("{% trans "请填写模板名称！" %}");
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                return false;
+            }
+            var subjects = $("input[name='subject_list[]']");
+            var subflag = false;
+            for (var i = 0, j = subjects.length; i < j; i++){
+                subject = $.trim(subjects[i].value);
+                if (subject != "") {
+                    subflag = true; break;
+                }
+            }
+            if (subflag == false){
+                alert("{% trans "请至少填写一个邮件主题！" %}");
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                return false;
+            }
+            var mosaico_template_data = {{ original.template_data|jsonify }};
+            var mosaico_meta_data = {{ original.meta_data|jsonify }};
+            var mdkey = mosaico_meta_data.key;
+
+            var keys = [];
+            TMP_KEYS = "{{ original.key }}"
+            if ( localStorage.getItem('edits') ){
+                keys = JSON.parse(localStorage.getItem('edits'));
+                if (  keys.indexOf(TMP_KEYS) == -1 ){
+                    keys.push(TMP_KEYS);
+                }
+            } else {
+                keys.push(TMP_KEYS);
+            }
+            localStorage.setItem("metadata-" + mdkey, JSON.stringify(mosaico_meta_data));
+            localStorage.setItem("template-" + mdkey, JSON.stringify(mosaico_template_data));
+
+            jQuery('#id_templateForm').submit();
+        };
+    </script>
+
+{% endblock %}

@@ -307,7 +307,7 @@
         }
 
         function checkName(field){
-            var expression = /^[a-z,A-Z]+(?!.*?(_|-|\.)$)[a-zA-Z0-9_,\.]+$/;
+            var expression = /^[a-z,A-Z]+(?!.*?(_|-|\.)$)[a-zA-Z0-9_\.-]+$/;
             var obj = new RegExp(expression);
             if(obj.test(field)==true){
                 return true;

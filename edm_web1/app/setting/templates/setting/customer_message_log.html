@@ -1,0 +1,100 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans '站内公告' %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans '设置中心' %}</li><li>{% trans '站内公告' %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-8">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-list margin-right-5"></i>{% trans '站内公告' %}
+            </h1>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-4">
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+<section id="widget-grid" class="">
+    <div class="row">
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="jarviswidget jarviswidget-color-darken well" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                <header>
+                    <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                    <h2>{% trans '站内公告' %}</h2>
+                </header>
+
+
+                <div>
+                    <div class="jarviswidget-editbox"></div>
+                    <div class="widget-body no-padding">
+
+                        <div class="modal-body padding-10 margin-bottom-10">
+                            <form class="form-horizontal">
+                                <fieldset>
+
+                                    {% for log_obj in lists %}
+                                    <legend> </legend>
+                                    <div class="row no-margin">
+
+                                        <div class="col-xs-12 col-sm-12 col-md-6">
+                                            <div class="form-group margin-bottom-0">
+                                                <label class="col-md-2 control-label">{% trans '公告主题' %}</label>
+                                                <div class="col-md-10 input-group">
+                                                    <span class="form-control no-border">{{ log_obj.title }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-12 col-md-6">
+                                            <div class="form-group margin-bottom-0">
+                                                <label class="col-md-2 control-label">{% trans '公告时间' %}</label>
+                                                <div class="col-md-10 input-group">
+                                                    <span class="form-control no-border">{{ log_obj.start_time|date:"Y-m-d H:i" }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                            <div class="form-group margin-bottom-0">
+                                                <label class="col-md-1 control-label vertical-align-middle">{% trans '公告内容' %}</label>
+                                                <div class="col-md-11 input-group">
+                                                    {% autoescape off %}
+                                                    <div style="position: relative;z-index: 2;float: left;width: 100%;margin-bottom: 0;padding: 6px 12px;font-size: 13px;color: #555;background-color: #fff;background-image: none;">
+                                                        {{ log_obj.content }}
+                                                    </div>
+                                                    {% endautoescape %}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    {% endfor %}
+
+
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </article>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block css_block %}
+
+{% endblock %}
+
+{% block my_jsblock %}
+
+{% endblock %}

@@ -1,0 +1,557 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load i18n %}
+
+{% block body %}
+
+    <header id="header">
+        <div id="logo-group">
+            <span id="logo" class="font-md">{% trans 'U-Mail邮件营销平台' %}</span>
+        </div>
+
+        <div class="pull-right">
+            <div id="hide-menu" class="btn-header pull-right">
+                <span> <a href="javascript:void(0);" data-action="toggleMenu" title="Collapse Menu"><i class="fa fa-reorder"></i></a> </span>
+            </div>
+
+            <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+                <li class="">
+                    <a href="#" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
+                        <img src="/static/sa/img/avatars/sunny.png" alt="John Doe" class="online" />
+                    </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0"><i class="fa fa-cog"></i> Setting</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="profile.html" class="padding-10 padding-top-0 padding-bottom-0"> <i class="fa fa-user"></i> <u>P</u>rofile</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="toggleShortcut"><i class="fa fa-arrow-down"></i> <u>S</u>hortcut</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="javascript:void(0);" class="padding-10 padding-top-0 padding-bottom-0" data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> Full <u>S</u>creen</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="login.html" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout"><i class="fa fa-sign-out fa-lg"></i> <strong><u>L</u>ogout</strong></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- logout button -->
+            <div id="logout" class="btn-header transparent pull-right">
+                <span> <a href="{% url 'logout' %}" title="Sign Out" data-action="userLogout" data-logout-msg="{% trans 'U-您确认注销退出吗？' %}"><i class="fa fa-sign-out"></i></a> </span>
+            </div>
+            <!-- end logout button -->
+
+            <!-- search mobile button (this is hidden till mobile view port) -->
+            <div id="search-mobile" class="btn-header transparent pull-right">
+                <span> <a href="javascript:void(0)" title="Search"><i class="fa fa-search"></i></a> </span>
+            </div>
+            <!-- end search mobile button -->
+
+            <!-- #SEARCH -->
+            <!-- input: search field -->
+            <!-- end input: search field -->
+
+            <!-- fullscreen button -->
+            <div id="fullscreen" class="btn-header transparent pull-right">
+                <span> <a href="javascript:void(0);" data-action="launchFullscreen" title="Full Screen"><i class="fa fa-arrows-alt"></i></a> </span>
+            </div>
+            <!-- end fullscreen button -->
+
+            <!-- #Voice Command: Start Speech -->
+            <div id="speech-btn" class="btn-header transparent pull-right hidden-sm hidden-xs">
+                <div>
+                    <a href="javascript:void(0)" title="Voice Command" data-action="voiceCommand"><i class="fa fa-microphone"></i></a>
+                    <div class="popover bottom"><div class="arrow"></div>
+                        <div class="popover-content">
+                            <h4 class="vc-title">Voice command activated <br><small>Please speak clearly into the mic</small></h4>
+                            <h4 class="vc-title-error text-center">
+                                <i class="fa fa-microphone-slash"></i> Voice command failed
+                                <br><small class="txt-color-red">Must <strong>"Allow"</strong> Microphone</small>
+                                <br><small class="txt-color-red">Must have <strong>Internet Connection</strong></small>
+                            </h4>
+                            <a href="javascript:void(0);" class="btn btn-success" onclick="commands.help()">See Commands</a>
+                            <a href="javascript:void(0);" class="btn bg-color-purple txt-color-white" onclick="$('#speech-btn .popover').fadeOut(50);">Close Popup</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end voice command -->
+
+            <!-- multiple lang dropdown : find all flags in the flags page -->
+
+            <!-- end multiple lang -->
+
+            <ul class="header-dropdown-list hidden-xs">
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="{% static '/sa/img/blank.gif' %}" class="flag" alt="black" style="background-color: {% if request.user.web_style == '0' %}#4E463F;{% else %}#f78c40;{% endif %}"> <span> {{ request.user.get_web_style_display }} </span> <i class="fa fa-angle-down"></i> </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li {% if request.user.web_style == '0' %}class="active" {% endif %}>
+                            <a href="javascript:ChangeStyle(0);"><img src="{% static '/sa/img/blank.gif' %}" class="flag" alt="black" style="background-color:#4E463F;"> {% trans '默认黑' %}</a>
+                        </li>
+                        <li {% if request.user.web_style == '3' %}class="active" {% endif %}>
+                            <a href="javascript:ChangeStyle(3);"><img src="{% static '/sa/img/blank.gif' %}" class="flag" alt="black" style="background-color:#f78c40;"> {% trans '商务白' %}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="header-dropdown-list hidden-xs">
+                <li>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <img src="{% static '/sa/img/blank.gif' %}" class="flag flag-cn" alt="China"> <span> {% trans '中文' %} </span> <i class="fa fa-angle-down"></i> </a>
+                    <ul class="dropdown-menu pull-right">
+                        <li class="active">
+                            <a href="javascript:void(0);"><img src="{% static '/sa/img/blank.gif' %}" class="flag flag-cn" alt="China"> {% trans '中文' %}</a>
+                        </li>
+                        <li class="btn disabled" disabled="disabled">
+                            <a href="javascript:void(0);"><img src="{% static '/sa/img/blank.gif' %}" class="flag flag-cn" alt="China">   {% trans '中文（繁體）' %} </a>
+                        </li>
+                        <li class="btn disabled" disabled="disabled">
+                            <a href="javascript:void(0);"><img src="{% static '/sa/img/blank.gif' %}" class="flag flag-us" alt="United States"> {% trans 'English (US)' %}</a>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+
+        </div>
+        <!-- end pulled right: nav area -->
+
+    </header>
+
+
+
+    <div id="main" role="main" style="background: url(/static/login/images/main_bg.jpg) no-repeat center center;padding-bottom: 65px;margin-left: 0px;">
+        <div id="content" class="">
+            <!--<div id="content" class="container">-->
+
+            <div class="widget-body no-padding no-margin">
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 hidden-xs hidden-sm"></div>
+                    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+
+                        <article class="col-sm-12 sortable-grid ui-sortable no-padding-left">
+                            <p class="alert alert-warning" style="margin-bottom: 0px;margin-right: -13px;">
+                                <i class="fa fa-warning fa-fw fa-lg"></i>{% trans '请完善以下资料，保存后进入用户界面.' %}
+                            </p>
+                        </article>
+
+
+                        {% if messages %}
+                            <article class="col-sm-12">
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }} fade in">
+                                        <button class="close" data-dismiss="alert">
+                                            ×
+                                        </button>
+                                        <i class="fa-fw fa fa-{{ message.tags }}"></i>
+                                        <strong>{{ message.tags|capfirst }}</strong> {{ message }}
+                                    </div>
+                                {% endfor %}
+                            </article>
+                        {% endif %}
+
+                        <section id="widget-grid" class="">
+                            <div class="row">
+                                <article class="col-sm-12 col-md-12 col-lg-12">
+                                    <div class="jarviswidget  jarviswidget-color-darken well" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false">
+                                        <header>
+                                            <span class="widget-icon"> <i class="fa fa-hand-o-right"></i></span>
+                                            <h2>{% trans '完善资料' %}</h2>
+                                        </header>
+                                        <div>
+                                            <div class="jarviswidget-editbox"></div>
+                                            <div class="widget-body ">
+                                                <form role="form" action="" method="post" id="id_Form" class="form-horizontal padding-10">
+                                                    {% csrf_token %}
+                                                    <input id="id_home_new" name="home_new" type="hidden" value="cplt_mtl">
+                                                    <fieldset>
+                                                        <legend>{% trans '基本信息' %}</legend>
+                                                        <div class="row no-margin">
+                                                            <div class="col-xs-12 col-sm-12 col-md-6">
+                                                                <div class="form-group ">
+                                                                    <label class="col-md-4 control-label">{% trans '公司名称' %}：</label>
+                                                                    <div class="col-md-8 input-group">
+                                                                        <span class="form-control no-border">{{ request.user.company|default_if_none:'' }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-6">
+                                                                <div class="form-group ">
+                                                                    <label class="col-md-4 control-label">{% trans '联系人' %}：</label>
+                                                                    <div class="col-md-8 input-group">
+                                                                        {% if request.user.is_remaintain %}
+                                                                            <input id="id_linkman" name="linkman" maxlength="50" type="text" value="{{ request.user.linkman|default_if_none:'' }}" class="form-control">
+                                                                            <br><small id="id_linkman_error" class="myself-txt-color-err display-none"></small>
+                                                                        {% else %}
+                                                                            <span class="form-control no-border">{{ request.user.linkman|default_if_none:'' }}</span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-6">
+                                                                <div class="form-group ">
+                                                                    <label class="col-md-4 control-label">{% trans '手机号码' %}：</label>
+                                                                    <div class="col-md-8 input-group">
+                                                                        {% if request.user.is_remaintain %}
+                                                                            <input id="id_mobile" name="mobile" maxlength="20" type="text" value="{{request.user.mobile|default_if_none:''}}" class="form-control">
+                                                                            <br><small id="id_mobile_error" class="myself-txt-color-err display-none"></small>
+                                                                        {% else %}
+                                                                            <span class="form-control no-border">{{request.user.mobile|default_if_none:''}}</span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-6">
+                                                                <div class="form-group ">
+                                                                    <label class="col-md-4 control-label">{% trans '邮箱地址' %}：</label>
+                                                                    <div class="col-md-8 input-group">
+                                                                        {% if request.user.is_remaintain %}
+                                                                            <input id="id_email" name="email" maxlength="50" type="text" value="{{request.user.email|default_if_none:''}}" class="form-control">
+                                                                            <br><small id="id_email_error" class="myself-txt-color-err display-none"></small>
+                                                                        {% else %}
+                                                                            <span class="form-control no-border">{{request.user.email|default_if_none:''}}</span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-6">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-4 control-label">{% trans '固定电话' %}：</label>
+                                                                    <div class="col-md-8 input-group">
+                                                                        {% if request.user.is_remaintain %}
+                                                                            <input id="id_phone" name="phone" maxlength="20" type="text" value="{{ request.user.phone|default_if_none:'' }}" class="form-control">
+                                                                            <br><small id="id_phone_error" class="myself-txt-color-err display-none"></small>
+                                                                        {% else %}
+                                                                            <span class="form-control no-border">{{ request.user.phone|default_if_none:'' }}</span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-6">
+                                                                <div class="form-group ">
+                                                                    <label class="col-md-4 control-label">{% trans 'QQ' %}：</label>
+                                                                    <div class="col-md-8 input-group">
+                                                                        {% if request.user.is_remaintain %}
+                                                                            <input id="id_im" name="im" maxlength="50" type="text" value="{{request.user.im|default_if_none:''}}" class="form-control">
+                                                                            <br><small id="id_im_error" class="myself-txt-color-err display-none"></small>
+                                                                        {% else %}
+                                                                            <span class="form-control no-border">{{request.user.im|default_if_none:''}}</span>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <legend>{% trans '用户完善资料' %}</legend>
+                                                        <div class="row no-margin">
+                                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-2 control-label">{% trans '网站主页' %}</label>
+                                                                    <div class="col-md-10 input-group">
+                                                                        <input id="id_homepage" name="homepage" maxlength="200" type="text" placeholder="www.example.com" value="{{request.user.homepage|default_if_none:''}}" class="form-control">
+                                                                        <br><small id="id_homepage_error" class="myself-txt-color-err display-none"></small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-2 control-label">{% trans '月均发信量' %}</label>
+                                                                    <div class="col-md-10 input-group">
+                                                                        <input type="hidden" name="estimate" id="id_estimate" value="{{ request.user.estimate|default_if_none:'' }}"/>
+                                                                        {% for k, v in estimate_selects %}
+                                                                            <span onclick="changeEstimate('{{ k }}')" style="" id="id_changeEstimate_{{ k }}" class="ac-tag {% if k == request.user.estimate %}is-active{% endif %}">{{ v }}</span>
+                                                                        {% endfor %}
+                                                                        <br><small id="id_estimate_error" class="myself-txt-color-err display-none">{% trans '请选择月均发信量范围。' %}</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-2 control-label">{% trans '内容偏向' %}</label>
+                                                                    <div class="col-md-10 input-group">
+                                                                        <div class="display-none" id="id_content_lists">
+                                                                            {% for content_type in content_lists %}
+                                                                                <input type="hidden" name="content_type" id="id_content_type_{{ content_type }}" value="{{ content_type }}"/>
+                                                                            {% endfor %}
+                                                                        </div>
+                                                                        {% for k, v in content_selects %}
+                                                                            <span onclick="changeContent('{{ k }}')" style="" id="id_changeContent_{{ k }}" class="ac-tag  {% if k in content_lists %}is-active{% endif %}">{{ v }}</span>
+                                                                        {% endfor %}
+                                                                        <br><small id="id_content_type_error" class="myself-txt-color-err display-none">{% trans '请选择内容偏向，可多选。' %}</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-2 control-label">{% trans '所属行业' %}</label>
+                                                                    <div class="col-md-10 input-group">
+                                                                        <input type="hidden" name="industry" id="id_industry" value="{{ request.user.industry|default_if_none:'' }}"/>
+                                                                        {% for k, v in industry_selects %}
+                                                                            <span onclick="changeIndustry('{{ k }}')" style="" id="id_changeIndustry_{{ k }}" class="ac-tag {% if k == request.user.industry %}is-active{% endif %}">{{ v }}</span>
+                                                                        {% endfor %}
+                                                                        <br><small id="id_industry_error" class="myself-txt-color-err display-none">{% trans '请选择所属行业。' %}</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-2 control-label">{% trans '获知渠道' %}</label>
+                                                                    <div class="col-md-10 input-group">
+                                                                        <div class="display-none" id="id_way_lists">
+                                                                            {% for way_type in way_lists %}
+                                                                                <input type="hidden" name="way_type" id="id_way_type_{{ way_type }}" value="{{ way_type }}"/>
+                                                                            {% endfor %}
+                                                                        </div>
+                                                                        {% for k, v in way_selects %}
+                                                                            <span onclick="changeWay('{{ k }}')" style="" id="id_changeWay_{{ k }}" class="ac-tag  {% if k in way_lists %}is-active{% endif %}">{{ v }}</span>
+                                                                        {% endfor %}
+                                                                        <br><small id="id_way_type_error" class="myself-txt-color-err display-none">{% trans '请选择获知渠道，可多选。' %}</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="col-md-2 control-label"></label>
+                                                                    <div class="col-md-8 input-group">
+                                                                        <button class="btn btn-primary btn-block" type="button" onclick="updateContactInfo()" id="id_save_button">{% trans '保存' %}</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 hidden-xs hidden-sm"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="page-footer">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <span class="txt-color-white"><a href="http://www.magvision.com/" target="_blank">Copyright © U-Mail Co.,Ltd</a></span>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css_block %}
+    <style>
+        #header{height: 71px!important;}
+        .ac-tag {
+            cursor: pointer;
+            display: inline-block;
+            padding: 6px 12px;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .ac-tag.is-active { border-color: #2DA280; color: #2DA280; }
+    </style>
+{% endblock %}
+
+{% block jsblock %}
+    <script>
+
+        function changeEstimate(value){
+            $("#id_changeEstimate_"+value).addClass('is-active');
+            $("#id_estimate").val(value);
+            var value_list = {{ estimate_value_list|safe }};
+            for(var i=0; i<value_list.length; i++){
+                if (value_list[i] != value){
+                    $("#id_changeEstimate_"+value_list[i]).removeClass('is-active');
+                }
+            }
+        }
+
+        function changeIndustry(value){
+            $("#id_changeIndustry_"+value).addClass('is-active');
+            $("#id_industry").val(value);
+            var value_list = {{ industry_value_list|safe }};
+            for(var i=0; i<value_list.length; i++){
+                if (value_list[i] != value){
+                    $("#id_changeIndustry_"+value_list[i]).removeClass('is-active');
+                }
+            }
+        }
+
+        function changeContent(value){
+            var obj = $("#id_changeContent_"+value);
+            if ( obj.hasClass('is-active') ){
+                obj.removeClass('is-active');
+                $("#id_content_type_"+value).remove();
+            } else {
+                obj.addClass('is-active');
+                $("#id_content_lists").append('<input type="hidden" name="content_type" id="id_content_type_'+value+'" value="'+value+'"/>')
+            }
+        }
+
+        function changeWay(value){
+            var obj = $("#id_changeWay_"+value);
+            if ( obj.hasClass('is-active') ){
+                obj.removeClass('is-active');
+                $("#id_way_type_"+value).remove();
+            } else {
+                obj.addClass('is-active');
+                $("#id_way_lists").append('<input type="hidden" name="way_type" id="id_way_type_'+value+'" value="'+value+'"/>')
+            }
+        }
+
+        $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+        function updateContactInfo(){
+
+            $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+
+            {% if request.user.is_remaintain %}
+                var linkman = $.trim($("#id_linkman").val());
+                var mobile = $.trim($("#id_mobile").val());
+                var phone = $.trim($("#id_phone").val());
+                var email = $.trim($("#id_email").val());
+                if ( linkman == '') {
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    $("#id_linkman_error").removeClass('display-none').html('{% trans '请填写联系人' %}');
+                    return false;
+                } else {
+                    $("#id_linkman_error").addClass('display-none');
+                    $("#id_mobile_error").addClass('display-none');
+                    $("#id_email_error").addClass('display-none');
+                }
+                if ( mobile == '') {
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    $("#id_mobile_error").removeClass('display-none').html('{% trans '请填写手机号码' %}');
+                    return false;
+                } else if ( !checkMobile(mobile) ){
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    $("#id_mobile_error").removeClass('display-none').html('{% trans '手机号码格式不正确' %}');
+                    return false;
+                } else {
+                    $("#id_linkman_error").addClass('display-none');
+                    $("#id_mobile_error").addClass('display-none');
+                    $("#id_email_error").addClass('display-none');
+                }
+                if ( email == '') {
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    $("#id_email_error").removeClass('display-none').html('{% trans '请填写邮箱地址' %}');
+                    return false;
+                } else if ( !checkEmail(email) ){
+                    $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                    $("#id_email_error").removeClass('display-none').html('{% trans '邮箱格式不正确' %}');
+                    return false;
+                } else {
+                    $("#id_linkman_error").addClass('display-none');
+                    $("#id_mobile_error").addClass('display-none');
+                    $("#id_email_error").addClass('display-none');
+                }
+            {% endif %}
+            var homepage = $.trim($("#id_homepage").val());
+            var estimate = $.trim($("#id_estimate").val());
+            var content_type = $("input[name='content_type']");
+            var industry = $.trim($("#id_industry").val());
+            var way_type = $("input[name='way_type']");
+            if ( homepage=='' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_homepage_error").removeClass('display-none').html('{% trans '请输入网站主页！' %}');
+                return false;
+            }
+            if ( !checkeurl(homepage) ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_homepage_error").removeClass('display-none').html('{% trans '请输入正确的网站主页！' %}');
+                return false;
+            }
+            if ( estimate=='' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_estimate_error").removeClass('display-none');
+                return false;
+            }
+            if ( industry=='' ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_industry_error").removeClass('display-none');
+                return false;
+            }
+            if ( content_type.length==0 ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_content_type_error").removeClass('display-none');
+                return false;
+            }
+            if ( way_type.length==0 ){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_way_type_error").removeClass('display-none');
+                return false;
+            }
+            $('#id_Form').submit();
+        }
+
+
+        function checkeurl(url){
+            var expression=strRegex = "^((https|http|ftp|rtsp|mms)?://)"
+                    + "?(([0-9A-Za-z_!~*'().&=+$%-]+: )?[0-9A-Za-z_!~*'().&=+$%-]+@)?" //ftp的user@
+                    + "(([0-9]{1,3}\.){3}[0-9]{1,3}" // IP形式的URL- 199.194.52.184
+                    + "|" // 允许IP和DOMAIN（域名）
+                    + "([0-9A-Za-z_!~*'()-]+\.)*" // 域名- www.
+                    + "([0-9A-Za-z][0-9a-z-]{0,61})?[0-9A-Za-z]\." // 二级域名
+                    + "[A-Za-z]{2,6})" // first level domain- .com or .museum
+                    + "(:[0-9]{1,4})?" // 端口- :80
+                    + "((/?)|" // a slash isn't required if there is no file name
+                    + "(/[0-9A-Za-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
+            var objexp=new RegExp(expression);
+            if ( objexp.test(url)==true ) { return true; } else { return false; }
+        };
+
+        function checkMobile(text){
+            var _emp=/^\s*|\s*$/g;
+            text=text.replace(_emp,"");
+            var _d=/^1[3578][013479]\d{8}$/g;
+            var _l=/^1[34578][012456]\d{8}$/g;
+            var _y=/^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/g;
+            if(_d.test(text)){
+                return true;
+            } else if(_l.test(text)){
+                return true;
+            }else if(_y.test(text)){
+                return true;
+            }
+            return false;
+        }
+
+        function checkPhone(str){
+            var re = /^0\d{2,3}-?\d{7,8}$/;
+            if(re.test(str)){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        function checkEmail(field){
+            var expression = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+            var obj = new RegExp(expression);
+            if(obj.test(field)==true){
+                return true;
+            }else{
+                return false;
+            }
+        };
+
+
+    </script>
+{% endblock %}

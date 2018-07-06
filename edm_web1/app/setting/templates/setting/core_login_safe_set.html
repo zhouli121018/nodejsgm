@@ -1,0 +1,110 @@
+{% load i18n %}
+{% load static %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans '开启登录保护' %}</h4>
+</div>
+
+<form role="form" action="/setting/security/login_safe/" method="post" id="id_loginForm">
+    {% csrf_token %}
+    <input type="hidden" name="id" id="id" value="{{ id }}"/>
+    <input type="hidden" name="status" id="status" value="{{ status }}"/>
+    <div class="modal-body padding-10 margin-bottom-10">
+        <div class="form-horizontal">
+            <fieldset>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 margin-top-5" id="id_login_area_li2">
+                        <div class="col-md-3 text-right" style="color: #8f9297;font-size: 14px;">{% trans '登录地区' %}：</div>
+                        <div class="col-md-8 text-left">
+                            <select class="select2" name="area_list[]" id="id_area_list" autocomplete="off" style="width: 100%;" multiple>
+                                {% for sheng, lsheng in area_confs %}
+                                    <optgroup label="{{ sheng }}">
+                                        {% for shengshi in lsheng %}
+                                            <option value="{{ shengshi }}" {% if shengshi in area_list %}selected{% endif %}>{{ shengshi }}</option>
+                                        {% endfor %}
+                                    </optgroup>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
+                        <div class="col-md-3 text-right" style="color: #8f9297;font-size: 14px;">{% trans '登录IP' %}：</div>
+                        <div class="col-md-8 text-left">
+                            <input id="id_login_ip" name="login_ip" placeholder="{% trans '请输入IP地址' %}" type="text" style="width: 180px;">
+                            <a href="#" onclick="addLoginIp()">{% trans '添加' %}</a>
+                        </div>
+                        <div class="col-md-8 col-md-offset-3 text-left txt-color-red display-none" id="id_login_ip_error"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 margin-top-5">
+                        <div class="col-md-3 text-right" style="color: #8f9297;font-size: 14px;">{% trans '已允许登录的IP' %}：</div>
+                        <div class="col-md-8 text-left" style="padding-left: 7px !important;">
+                            <div id="id_login_ip_content">
+                                {% for ip in ip_list %}
+                                    <span id="id_login_ip_{{ forloop.counter }}" class="myself-bg-color-lighten-safe">{{ ip }}
+                                        <a onclick="Javascript:delLoginIP('{{ forloop.counter }}', '{{ ip }}')" class="font-md myself-bg-color-lighten-safe-a" style="margin-left: 3px;">×</a>
+                                        <input id="id_ip_{{ forloop.counter }}" name="ip_list[]" value="{{ ip }}" type="hidden">
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input value="{% trans '保存' %}" onclick="checkLoginForm()" type="button" class="btn btn-primary">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+    </div>
+</form>
+<!-- JQUERY SELECT2 INPUT -->
+<script src="{% static 'sa/js/plugin/select2/select2.min.js' %}"></script>
+<script>
+    $(function(){
+
+        $("#id_area_list").select2({
+            // placeholder: "Select a release...",
+            language: {
+                noResults: function (params) {
+                    return "{% trans "暂无数据" %}";
+                }
+            }
+        });
+    })
+</script>
+<style>
+    .myself-bg-color-lighten-safe{
+        padding: 1px 28px 1px 8px;
+        margin: 4px 0 3px 5px;
+        position: relative;
+        line-height: 18px;
+        color: #fff;
+        cursor: default;
+        border: 1px solid #2a6395;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: #3276b1;
+    }
+    .myself-bg-color-lighten-safe-a{
+        font-family: FontAwesome;
+        font-size: 0;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1;
+        margin: 0;
+        min-height: 20px;
+        min-width: 21px;
+        position: absolute;
+        text-decoration: none !important;
+        color: #fff !important;
+        margin-left: 10px !important;
+    }
+</style>

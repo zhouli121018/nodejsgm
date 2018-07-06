@@ -1,0 +1,80 @@
+{% load i18n %}
+
+<tr><td colspan="2" class="no-border"><legend class="no-padding no-margin" style="border-bottom-color: #4C8FBD;"></legend></td></tr>
+
+<!--选择发件人-->
+<tr>
+    <td class="no-border text-right myself-width-small">
+        <label class="control-label">{% trans "选择发件人" %}</label>
+    </td>
+    <td class="no-border">
+        <fieldset>
+            <div class="col-md-12 form-inline">
+                <div class="col-md-3 no-padding-left no-padding-right">
+                    <select name="send_domain" id="id_send_domain" class="form-control" style="width: 100%;" autocomplete="off" onchange="getAccountByDomain(this.value)">
+                        <option value="all" {% if task_obj.send_acct_domain == 'all' %} selected="selected" {% endif %}>{% trans "所有域名" %}</option>
+                        {% for obj in domain_objs %}
+                            <option value="{{ obj.domain }}" {% if task_obj.send_acct_domain == obj.domain %} selected="selected" {% endif %}>{{ obj.domain }}</option>
+                        {% endfor %}
+                        {% for obj in share_domain_objs %}
+                            <option value="{{ obj.domain }}" {% if task_obj.send_acct_domain == obj.domain %} selected="selected" {% endif %}>{{ obj.domain }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3 no-padding-left no-padding-right">
+                    <select name="send_account" id="id_send_account" class="form-control" style="width: 100%;" onchange="showSenderNote(this)"></select>
+                </div>
+            </div>
+            <small id="id_all_sender_note" style="margin-left: 13px;" class="text-success"></small>
+        </fieldset>
+    </td>
+</tr>
+<!--<tr><td colspan="2" class="no-border"><legend class="no-padding no-margin"></legend></td></tr>-->
+<!--发件人名称-->
+<tr>
+    <td class="no-border text-right myself-width-small">
+        <label class="control-label">{% trans "发件人名称" %}</label>
+    </td>
+    <td class="no-border">
+        <fieldset>
+            <div class="col-md-12 form-inline">
+                <input class="form-control" id="id_send_fullname" name="send_fullname" maxlength="50" type="text"
+                       value="{{ task_obj.send_fullname }}" style="width: 50%;" placeholder="{% trans "指定发件人名称" %}">
+            </div>
+        </fieldset>
+    </td>
+</tr>
+
+<!--指定回复地址-->
+<tr>
+    <td class="no-border text-right myself-width-small">
+        <label class="control-label">{% trans "回复地址" %}</label>
+    </td>
+    <td class="no-border">
+        <fieldset>
+            <div class="col-md-12 form-inline">
+                <input class="form-control" id="id_send_replyto" name="send_replyto" maxlength="50" type="email" value="{{ task_obj.send_replyto }}"
+                       style="width: 50%;" onfocus="onfocusReplyto()" placeholder="{% trans "请输入指定回复邮箱，不建议留空" %}" minlength="6" maxlength="64">
+                <br>
+                <small id="id_send_replyto_error" class="myself-txt-color-err display-none">{% trans "所有域名" %}提示：您输入的邮箱地址不合法！</small>
+            </div>
+        </fieldset>
+    </td>
+</tr>
+{% if request.user.service.is_need_receipt %}
+    <tr>
+        <td class="no-border text-right myself-width-small vertical-align-middle">
+            <label class="control-label">{% trans "阅读回执" %}</label>
+        </td>
+        <td class="no-border">
+            <fieldset>
+                <label class="margin-top-0 col-md-12 no-padding-left">
+                    <div class="col-xs-12 col-sm-12 inline-group" style="margin-top: 8px;">
+                        <input class="checkbox style-0" id="id_is_need_receipt" name="is_need_receipt" value="1" type="checkbox" {% if task_obj.is_need_receipt %} checked="checked" {% endif %} autocomplete="off">
+                        <span><small><strong class="txt-color-red">{% trans "注：" %}</strong>{% trans "勾选，则邮件可以阅读回执" %}</small></span>
+                    </div>
+                </label>
+            </fieldset>
+        </td>
+    </tr>
+{% endif %}

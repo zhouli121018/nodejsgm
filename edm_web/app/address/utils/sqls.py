@@ -44,11 +44,19 @@ def update_address(cr, tablename, address, list_id):
     return u'您已经订阅过此邮件列表！\n(You have subscribed to the mail list)'
 
 # #### 插入订阅记录 #####
-def insert_address(cr, tablename, address, fullname, list_id):
-    cr.execute(
-        u"INSERT INTO {0} (address, fullname, created, is_subscribe, list_id) VALUES ('{1}', '{2}', now(), 1, {3});".format(
-            tablename, address, fullname, list_id)
-    )
+def insert_address(cr, tablename, **kwargs):
+    sql = u"""INSERT INTO {} (created,is_subscribe,list_id,address,fullname,sex,birthday,phone,area,var1,var2,var3,var4,var5,var6,var7,var8,var9,var10)
+              VALUES (now(),1,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""".format(tablename)
+    fields = ['list_id', 'address', 'fullname', 'sex', 'birthday', 'phone', 'area', 'var1', 'var2', 'var3', 'var4', 'var5', 'var6', 'var7', 'var8', 'var9', 'var10']
+    args = []
+    for f in fields:
+        args.append(kwargs.get(f, ''))
+    cr.execute(sql, args)
+
+    # cr.execute(
+    #     u"-- INSERT INTO {0} (address, fullname, created, is_subscribe, list_id) VALUES ('{1}', '{2}', now(), 1, {3});".format(
+    #         tablename, address, fullname, list_id)
+    # )
     return u'订阅成功！\n(Success)'
 
 def get_addr_count(cr, user_id, list_id, status):

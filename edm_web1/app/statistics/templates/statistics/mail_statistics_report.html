@@ -1,0 +1,760 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% load task_tags %}
+{% load track_tags %}
+{% block title %}{% trans "统计报告" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "统计报告" %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-bar-chart-o margin-right-5"></i>
+                {% trans "统计报告" %}: <small><code>{{ task_obj.send_name }}</code></small>
+            </h1>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <a class="btn btn-primary btn-lg pull-right header-btn hidden-mobile" href="{% url 'mail_statistics_report_pdf' task_id %}" target="_blank">{% trans "导出PDF" %}</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-12">
+
+                <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header><h2>{% trans "任务信息" %}</h2></header>
+                    <div>
+                        <div class="jarviswidget-editbox"></div>
+                        <div class="widget-body no-padding">
+                            <form class="form-horizontal">
+                                <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed margin-bottom-0" width="100%">
+                                    <tbody>
+                                    <tr>
+                                        <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "创建日期" %}</td>
+                                        <td class="no-border myself-width-big">
+                                            <div class="col-md-12 form-inline">
+                                                <span>{{ task_obj.created|date:'Y-m-d H:i:s' }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "开始执行时间" %}</td>
+                                        <td class="no-border">
+                                            <div class="col-md-12 form-inline">
+                                                <span>{{ task_obj.time_start|date:'Y-m-d H:i:s' }}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "任务名称" %}</td>
+                                        <td class="no-border myself-width-big">
+                                            <div class="col-md-12 form-inline">
+                                                <span>{{ task_obj.send_name|default_if_none:'' }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "完成执行时间" %}</td>
+                                        <td class="no-border">
+                                            <div class="col-md-12 form-inline">
+                                                <span>{{ task_obj.time_end|date:'Y-m-d H:i:s' }}</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "邮件列表" %}</td>
+                                        <td class="no-border myself-width-big">
+                                            <div class="col-md-12 form-inline">
+                                                <span>{% if task_obj.send_maillist %}{{ task_obj.send_maillist }}{% else %}{% trans "未分类地址" %}{% endif %}</span>
+                                            </div>
+                                        </td>
+                                        <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "任务发送数" %}</td>
+                                        <td class="no-border">
+                                            <div class="col-md-12 form-inline">
+                                            <span>{{ task_send_total }}
+                                            </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "发件人" %}</td>
+                                        <td class="no-border myself-width-big">
+                                            <div class="col-md-12 form-inline">
+                                                <span>{{ task_obj|show_sender_type }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="no-border text-right myself-width-small vertical-align-middle">{% trans "操作" %}</td>
+                                        <td class="no-border">
+                                            <a data-toggle="modal" href="{% url 'task_view' task_obj.id %}" data-target="#myModal" data-whatever="" class="btn btn-outline btn-primary btn-xs">{% trans "查看任务详情" %}</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header><h2>{% trans "发送情况" %}</h2></header>
+                    <div>
+                        <div class="jarviswidget-editbox">
+                            <input class="form-control" type="text">
+                        </div>
+                        <div class="widget-body no-padding">
+                            <form class="form-horizontal">
+                                <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed margin-bottom-0" width="100%">
+                                    <tbody>
+                                    <tr>
+                                        <td class="no-border myself-width-small-1">
+                                            <div style="padding-left:50px;margin-top: 20px;">
+                                                <p>{% trans "一共发送" %} {{ send_total }} {% trans "封" %}</p>
+                                                <p>{% trans "无效地址" %} {{ count_invalid.value }} {% trans "封" %}</p>
+                                                <p>{% trans "垃圾拒绝发送" %} {{ count_err_5.value }} {% trans "封" %}</p>
+                                                <p>{% trans "实际发送" %} {{ real_count_send }} {% trans "封" %}</p>
+                                                <p>{% trans "其中发送成功" %} {{ count_succes }} {% trans "封，发送失败" %} {{ real_count_error }} {% trans "封" %}</p>
+                                                <p style="color:green;font-weight:700;">{% trans "成功率" %}: {{ count_succes_rate }}</p>
+                                            </div>
+                                        </td>
+                                        <td class="no-border myself-width-big-1">
+                                            <canvas id="pieChart" height="120"></canvas>
+                                        </td>
+                                        <td class="no-border vertical-align-middle"></td>
+                                        <td class="no-border"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="jarviswidget" id="wid-id-2" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header><h2>{% trans "投递失败统计" %}</h2></header>
+                    <div>
+                        <div class="jarviswidget-editbox">
+                            <input class="form-control" type="text">
+                        </div>
+                        <div class="widget-body no-padding">
+                            <form class="form-horizontal">
+                                <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed margin-bottom-0" width="100%">
+                                    <tbody>
+                                    <tr>
+                                        <td class="no-border myself-width-small-1">
+                                            <div style="padding-left:50px;margin-top: 20px;">
+                                                <div class="display-inline margin-top-5">
+                                                    <div class="error_desc" style="">{% trans "格式错误、无效" %}</div>
+                                                    <div class="error_img" style="">
+                                                        <div class="error_percent_img" style="width:{{ count_invalid.width }};"></div>
+                                                        <div class="error_percent" style="">{{ count_invalid.rate }}</div>
+                                                    </div>
+                                                    <span style="color:green;">
+                                                        <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ task_obj.send_name }}&errtype=8,9" title="{% trans "导出地址" %}" target="_blank">{{ count_invalid.value }}</a>
+                                                    </span>
+                                                </div>
+                                                <div style="clear:both;"></div>
+                                                <div class="display-inline margin-top-5">
+                                                    <div class="error_desc" style="">{% trans "邮箱不存在" %}</div>
+                                                    <div class="error_img" style="">
+                                                        <div class="error_percent_img" style="width:{{ count_err_1.width }};"></div>
+                                                        <div class="error_percent">{{ count_err_1.rate }}</div>
+                                                    </div>
+                                                    <span style="color:green;">
+                                                        <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ task_obj.send_name }}&errtype=1" title="{% trans "导出地址" %}" target="_blank">{{ count_err_1.value }}</a>
+                                                    </span>
+                                                </div>
+                                                <div style="clear:both;"></div>
+                                                <div class="display-inline margin-top-5">
+                                                    <div class="error_desc" style="">{% trans "空间不足" %}</div>
+                                                    <div class="error_img" style="">
+                                                        <div class="error_percent_img" style="width:{{ count_err_2.width }};"></div>
+                                                        <div class="error_percent" style="">{{ count_err_2.rate }}</div>
+                                                    </div>
+                                                    <span style="color:green;">
+                                                        <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ task_obj.send_name }}&errtype=2" title="{% trans "导出地址" %}" target="_blank">{{ count_err_2.value }}</a>
+                                                    </span>
+                                                </div>
+                                                <div style="clear:both;"></div>
+                                                <div class="display-inline margin-top-5">
+                                                    <div class="error_desc" style="">{% trans "用户拒收" %}</div>
+                                                    <div class="error_img" style="">
+                                                        <div class="error_percent_img" style="width:{{ count_err_3.width }};"></div>
+                                                        <div class="error_percent" style="">{{ count_err_3.rate }}</div>
+                                                    </div>
+                                                    <span style="color:green;">
+                                                        <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ task_obj.send_name }}&errtype=3" title="{% trans "导出地址" %}" target="_blank">{{ count_err_3.value }}</a>
+                                                    </span>
+                                                </div>
+                                                <div style="clear:both;"></div>
+                                                <div class="display-inline margin-top-5">
+                                                    <div class="error_desc" style="">{% trans "垃圾拒绝发送" %}</div>
+                                                    <div class="error_img" style="">
+                                                        <div class="error_percent_img" style="width:{{ count_err_5.width }};"></div>
+                                                        <div class="error_percent" style="">{{ count_err_5.rate }}</div>
+                                                    </div>
+                                                    <span style="color:green;">
+                                                        <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ task_obj.send_name }}&errtype=5" title="{% trans "导出地址" %}" target="_blank">{{ count_err_5.value }}</a>
+                                                    </span>
+                                                </div>
+                                                {% if total_error != 0 %}
+                                                    <div style="clear:both;"></div>
+                                                    <div class="display-inline margin-top-5">
+                                                        <a href="{% url 'export_fail_addr_statistics' %}?task_name={{ task_obj.send_name }}&errtype=1,2,3,5,8,9" title="{% trans "导出所有地址" %}" target="_blank" class="btn btn-outline btn-primary btn-xs">{% trans "导出所有失败地址" %}</a>
+                                                        {% if count_err_5.value != 0 %}
+                                                            <a href="{% url 'task_add' %}?task_id={{ task_id }}&errtype=5&status=retry" title="{% trans "失败地址重发" %}" target="_blank" class="btn btn-outline btn-primary btn-xs">{% trans "失败地址重发" %}</a>
+                                                        {% endif %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td class="no-border myself-width-big-1">
+                                            <canvas id="pieChart2" height="120"></canvas>
+                                        </td>
+                                        <td class="no-border vertical-align-middle"></td>
+                                        <td class="no-border"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% if stat_objs %}
+                    <div class="jarviswidget" id="wid-id-3" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                        <header><h2>{% trans "邮件打开统计" %}</h2></header>
+                        <div>
+                            <div class="jarviswidget-editbox">
+                                <input class="form-control" type="text">
+                            </div>
+                            <div class="widget-body no-padding">
+                                <form class="form-horizontal">
+                                    <div class="col-sm-12 col-md-12 col-lg-7" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                        <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed margin-bottom-0" width="100%">
+                                            <tbody>
+                                            <tr>
+                                                <td class="no-border myself-width-small-2">
+                                                    <div style="padding-left:50px;margin-top: 20px;">
+                                                        <p>
+                                                            {% if stat_objs %}
+                                                                <a class="" href="/track/track_export_email/?ident={{ task_obj.send_name }}">{% trans "有打开邮件" %} {{ open_unique }} {% trans "封" %}</a>
+                                                            {% else %}
+                                                                {% trans "有打开邮件 0 封" %}
+                                                            {% endif %}
+                                                        </p>
+                                                        <p style="color:green;font-weight:700;" title="{% trans "打开率" %}">{% trans "打开率" %}: {{ show_stat_rate }}</p>
+                                                    </div>
+                                                </td>
+                                                <td class="no-border myself-width-big-1">
+                                                    <canvas id="pieChart3" height="120"></canvas>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-5" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                        {% if domain_data_all %}
+                                            <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed margin-bottom-0" width="100%">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="no-border" colspan="2" style="width: 600px; min-height: 240px;">
+                                                        <canvas id="pieChart5"></canvas>
+                                                        <h2 class="text-center no-padding">{% trans "各域打开情况(只显示前20位)" %}</h2>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        {% endif %}
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="jarviswidget" id="wid-id-4" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                        <header><h2>{% trans "邮件点击统计" %}</h2></header>
+                        <div>
+                            <div class="jarviswidget-editbox">
+                                <input class="form-control" type="text">
+                            </div>
+                            <div class="widget-body no-padding">
+                                <form class="form-horizontal">
+                                    <div class="col-sm-12 col-md-12 col-lg-7" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                        <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed margin-bottom-0" width="100%">
+                                            <tbody>
+                                            <tr>
+                                                <td class="no-border myself-width-small-2">
+                                                    <div style="padding-left:50px;margin-top: 20px;">
+                                                        <p>
+                                                            {% if stat_objs %}
+                                                                <a class="" href="/track/track_export_email/?ident={{ task_obj.send_name }}&action=click">{% trans "有点击链接" %} {{ click_unique }} {% trans "封" %}</a>
+                                                            {% else %}
+                                                                {% trans "有点击链接 0 封" %}
+                                                            {% endif %}
+                                                        </p>
+                                                        <p>{% trans "与打开数比例" %}: {{ show_link_rate }}</p>
+                                                        <p>{% trans "与成功数比例" %}: {{ show_link_rate_suc }}</p>
+                                                        <p>{% trans "总点击数" %}: {% if click_total %}{{ click_total }}{% else %}0{% endif %}</p>
+                                                    </div>
+                                                </td>
+                                                <td class="no-border myself-width-big-1">
+                                                    <canvas id="pieChart4" height="120"></canvas>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-5" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                        {% if domain_data_click %}
+                                            <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed margin-bottom-0" width="100%">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="no-border">
+                                                        <canvas id="pieChart6"></canvas>
+                                                        <h2 class="text-center no-padding">{% trans "各域点击情况(只显示前20位)" %}</h2>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        {% endif %}
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    {% if country_data %}
+                        <div class="jarviswidget well" id="wid-id-5" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                            <div>
+                                <div class="jarviswidget-editbox">
+                                    <input class="form-control" type="text">
+                                </div>
+                                <div class="widget-body no-padding">
+                                    <form class="form-horizontal">
+                                        <div class="col-sm-12 col-md-12 col-lg-6" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                            <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed margin-bottom-0" width="100%">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="no-border myself-width-small-1 vertical-align-middle">
+                                                        <div style="padding-left:50px;">
+                                                            <h2 class="no-margin no-padding">{% trans "浏览器" %}</h2>
+                                                            <div style="float:left;">
+                                                                <img src="/static/img/ie.png" style="vertical-align:middle;" width="50px" height="50px">
+                                                                <p style="text-align:center;">{{ browser_count.ie }}</p>
+                                                            </div>
+                                                            <div style="float:left;">
+                                                                <img src="/static/img/chrome.png" style="vertical-align:middle;" width="50px" height="50px">
+                                                                <p style="text-align:center;">{{ browser_count.chrome }}</p>
+                                                            </div>
+                                                            <div style="float:left;">
+                                                                <img src="/static/img/firefox.png" style="vertical-align:middle;" width="50px" height="50px">
+                                                                <p style="text-align:center;">{{ browser_count.firefox }}</p>
+                                                            </div>
+                                                            <div style="float:left;">
+                                                                <img src="/static/img/other.png" style="vertical-align:middle;" width="50px" height="50px">
+                                                                <p style="text-align:center;">{{ browser_count.other }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-sm-12 col-md-12 col-lg-6" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                            <table cellpadding="5" cellspacing="0" border="0" class="table table-condensed margin-bottom-0" width="100%">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="no-border myself-width-small-1 vertical-align-middle">
+                                                        <div style="padding-left:50px;">
+                                                            <h2 class="no-margin no-padding">{% trans "操作系统" %}</h2>
+                                                            <div style="float:left;">
+                                                                <img src="/static/img/win.png" style="width:50px;height:50px;">
+                                                                <p style="text-align:center;">{{ os_count.windows }}</p>
+                                                            </div>
+                                                            <div style="float:left;">
+                                                                <img src="/static/img/mac.png" style="width:50px;height:50px;">
+                                                                <p style="text-align:center;">{{ os_count.macintosh }}</p>
+                                                            </div>
+                                                            <div style="float:left;">
+                                                                <img src="/static/img/linux.png" style="width:50px;height:50px;">
+                                                                <p style="text-align:center;">{{ os_count.linux }}</p>
+                                                            </div>
+                                                            <div style="float:left;">
+                                                                <img src="/static/img/other.png" style="width:50px;height:50px;">
+                                                                <p style="text-align:center;">{{ os_count.other }}</p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="jarviswidget" id="wid-id-6" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                            <header>
+                                <span class="widget-icon"> <i class="fa fa-map-marker"></i> </span>
+                                <h2>{% trans "邮箱打开地域分布" %}</h2>
+                            </header>
+
+                            <div>
+                                <div class="jarviswidget-editbox"></div>
+                                <div class="widget-body no-padding">
+                                    {% if area_data %}
+                                        <div class="col-sm-12 col-md-12 col-lg-6" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                            <iframe src="{% url 'china_mill_zh' %}?area_data={{ area_data|safe }}&area_max={{ area_max }}" scrolling="No" frameborder="0" marginheight="0"
+                                                    style="width: 100%; height: 340px; position: relative; overflow: hidden; background-color: rgb(255, 255, 255);">
+                                            </iframe>
+                                            <table class="table table-striped table-hover table-condensed">
+                                                <thead>
+                                                <tr>
+                                                    <th>{% trans "地区" %}</th>
+                                                    <th>{% trans "总打开次数" %}</th>
+                                                    <th>{% trans "唯一打开次数" %}</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% if area_sort  %}
+                                                    {% for k, v, z in area_sort %}
+                                                        <tr>
+                                                            <td><a href="javascript:void(0);">{{ k }}</a></td>
+                                                            <td>{{ v }}</td>
+                                                            <td>{{ z }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                </tbody>
+                                                <tfoot>
+                                                <tr>
+                                                    <td colspan="3">
+                                                    </td>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="col-sm-12 col-md-12 col-lg-6" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                                        <iframe src="{% url 'world_mill_en' %}?country_data={{ country_data|safe }}&country_max={{ country_max }}" scrolling="No" frameborder="0" marginheight="0"
+                                                style="width: 100%; height: 340px; position: relative; overflow: hidden; background-color: rgb(255, 255, 255);">
+                                        </iframe>
+                                        <table class="table table-striped table-hover table-condensed">
+                                            <thead>
+                                            <tr>
+                                                <th>{% trans "国家" %}</th>
+                                                <th>{% trans "总打开次数" %}</th>
+                                                <th>{% trans "唯一打开次数" %}</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% if country_sort %}
+                                                {% for k, v, z in country_sort %}
+                                                    <tr>
+                                                        <td><a href="javascript:void(0);">{{ k }}</a></td>
+                                                        <td>{{ v }}</td>
+                                                        <td>{{ z }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <td colspan="3">
+                                                </td>
+                                            </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if link_objs %}
+                        <div class="jarviswidget" id="wid-id-7" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                            <header><h2>{% trans "点击链接" %}</h2></header>
+                            <div>
+                                <div class="jarviswidget-editbox">
+                                    <input class="form-control" type="text">
+                                </div>
+                                <div class="widget-body">
+                                    <form class="form-horizontal">
+                                        <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
+                                            <thead>
+                                            <tr>
+                                                <th width="1%">ID</th>
+                                                <th width="4%">{% trans "序号" %}</th>
+                                                <th width="30%">{% trans "链接" %}</th>
+                                                <th width="4%">{% trans "唯一点击数" %}</th>
+                                                <th width="4%">{% trans "总点击数" %}</th>
+                                                <th width="8%">{% trans "首次点击时间" %}</th>
+                                                <th width="8%">{% trans "最后点击时间" %}</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if task_obj.trigger_set.all %}
+                <div class="jarviswidget" id="" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+
+                    <header><h2>{% trans "触发任务统计" %}</h2></header>
+                    <div>
+                        <div class="jarviswidget-editbox">
+                            <input class="form-control" type="text">
+                        </div>
+                        <div class="widget-body">
+                            <form class="form-horizontal">
+                                <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th width="4%">{% trans "序号" %}</th>
+                                        <th>{% trans "触发任务名称" %}</th>
+                                        <th>{% trans "触发器" %}</th>
+                                        <th>{% trans "发送数量" %}</th>
+                                        <th>{% trans "创建时间" %}</th>
+                                        <th>{% trans "跟踪统计" %}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for d in task_obj.triggertask_set.all %}
+                                    <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ d.name }}</td>
+                                    <td><a href="{% url 'trigger_show' d.trigger.id %}">{{ d.trigger }}</a></td>
+                                    <td><a href="{% url 'trigger_task_one' d.id %}">{{ d.triggertaskone_set.count }}</a></td>
+                                    <td>{{ d.create_time|date:"Y-m-d H:i:s" }}</td>
+                                    <td><a href="{% url 'track_task_stat' %}?ident={{ task_obj.send_name }}&mode=2">查看跟踪统计</a></td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </article>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" style="margin:120px auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">{% trans "加载中" %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% trans "页面加载中" %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">{% trans "关闭" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css_block %}
+    <style>
+        .myself-width-small{width: 120px;}
+        .myself-width-big{width: 220px;}
+        .myself-width-small-1{width: 400px !important;}
+        .myself-width-big-1{width: 600px; min-height: 240px;}
+        .myself-width-small-2{width: 200px !important;}
+        .error_desc {  float: left;  width: 130px;  height: 20px;  line-height: 20px;  text-align: right;  }
+        .error_img {  float: left;  width: 150px;  height: 10px;  border: 1px solid #aaa;  margin: 5px 0px;  position: relative;  }
+        .error_percent_img {  height: 9px;  background: #058AFF;  }
+        .error_percent {  height: 10px;  line-height: 10px;  text-align: center;  width: 100%;  font-weight: 700;  z-index: 2;  position: absolute;  top: 0px;  }
+    </style>
+{% endblock %}
+
+{% block my_jsblock %}
+    <!-- PAGE RELATED PLUGIN(S) -->
+    <script src="/static/sa/js/plugin/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.colVis.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.tableTools.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="/static/sa/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+
+    <!-- SmartChat UI : plugin -->
+    <script src="/static/sa/js/smart-chat-ui/smart.chat.ui.min.js"></script>
+    <script src="/static/sa/js/smart-chat-ui/smart.chat.manager.min.js"></script>
+    <!-- PAGE RELATED PLUGIN(S)
+    <script src="..."></script>-->
+    <script src="/static/sa/js/plugin/moment/moment.min.js"></script>
+    <script src="/static/sa/js/plugin/chartjs/chart.min.js"></script>
+    <script>
+
+        $(function () {
+            $('#myModal').on('show.bs.modal', function (event) {
+                $(this).removeData('bs.modal');
+            })
+        });
+
+
+        {% if link_objs %}
+            var ip_table;
+            $(function () {
+                var ajax_url = "{% url 'ajax_mail_statistics_report' task_id %}" + window.location.search;
+                ip_table = $('#dt_basic').dataTable({
+                    "columnDefs": [ { "targets": [ 0 ], "visible": false, "searchable": false }],
+                    "iDisplayLength": 25,
+                    "processing": false,
+                    "serverSide": true,
+                    "stateSave": true,
+                    "autoWidth" : true,
+                    "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],
+                    "ajax": ajax_url,
+                    "aaSorting": [
+                        [ 1, "desc" ]
+                    ],
+                    "oLanguage": {
+                        "sLengthMenu": "{% blocktrans %}显示 _MENU_ 每页{% endblocktrans %}",
+                        "sZeroRecords": "{% blocktrans %}对不起! 信息筛选结果为空!{% endblocktrans %}",
+                        "sInfo": "{% blocktrans %}从 _START_ 到 _END_ 总计: _TOTAL_ 条记录{% endblocktrans %}",
+                        "sInfoEmpty": "{% blocktrans %}总计: 0 条记录{% endblocktrans %}",
+                        "sInfoFiltered": "{% blocktrans %}(从 _MAX_ 条记录筛选出){% endblocktrans %}",
+                        "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+                        "oPaginate": {
+                            "sFirst":    " {% blocktrans %}第一页{% endblocktrans %} ",
+                            "sPrevious": " {% blocktrans %}上一页{% endblocktrans %} ",
+                            "sNext":     " {% blocktrans %}下一页{% endblocktrans %} ",
+                            "sLast":     " {% blocktrans %}最后一页{% endblocktrans %} "
+                        }
+                    },
+                    "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+ "t"+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                    "drawCallback": function(oSettings, json) {
+                        $('#dt_basic tr').click( function() {
+                            if ( $(this).hasClass('row_selected') )
+                                $(this).removeClass('row_selected');
+                            else
+                                $(this).addClass('row_selected');
+                        } );
+                    },
+                });
+                //$("#dt_basic_length").addClass('pull-right');
+                /* END BASIC */
+            });
+        {% endif %}
+
+        $(function(){
+            // pie chart example
+            var PieConfig = {
+                type: 'pie',
+                data: {
+                    datasets: [{
+                        data: [{{ count_succes }}, {{ real_count_error }}],
+                        backgroundColor: [ "#80ff80", "#ff8080"],
+                    }],
+                    labels: ["{% trans "成功" %} ({{ count_succes_rate }})", "{% trans "失败" %} ({{ count_error_rate }})"]
+                },
+                options: { responsive: true }
+            };
+
+            var PieConfig2 = {
+                type: 'pie',
+                data: {
+                    datasets: [{
+                        data: [{{ count_invalid.value }}, {{ count_err_1.value }}, {{ count_err_2.value }}, {{ count_err_3.value }}, {{ count_err_5.value }}],
+                        backgroundColor: [ "#f00", "#0f0", '#00f', '#f90', '#f0f'],
+                    }],
+                    labels: [
+                        "{% trans "格式错误、无效" %}（{{ count_invalid.rate }}）", "{% trans "邮箱不存在" %}（{{ count_err_1.rate }}）",
+                        "{% trans "空间不足" %}（{{ count_err_2.rate }}）", "{% trans "用户拒收" %}（{{ count_err_3.rate }}）", "{% trans "垃圾拒绝发送" %}（{{ count_err_5.rate }}）"
+                    ]
+                },
+                options: { responsive: true }
+            };
+            {% if stat_objs %}
+                var PieConfig3 = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: [{{ open_unique }}, {{ no_open }}],
+                            backgroundColor: [ "#80ff80", "#ff8080"],
+                        }],
+                        labels: ["{% trans "打开" %}（{{ open_unique_rate }}）", "{% trans "未打开" %}（{{ no_open_rate }}）"]
+                    },
+                    options: { responsive: true }
+                };
+
+                var PieConfig4 = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: [{{ click_unique }}, {{ no_click }}],
+                            backgroundColor: [ "#80ff80", "#ff8080"],
+                        }],
+                        labels: ["{% trans "点击" %}（{{ show_link_rate_suc }}）", "{% trans "未点击" %}（{{ no_click_rate }}）"]
+                    },
+                    options: { responsive: true }
+                };
+            {% endif %}
+
+            {% if domain_data_all %}
+                var PieConfig5 = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: {{ domain_data_all.datalist|safe }},
+                            backgroundColor: {{ domain_data_all.bgcolor|safe }},
+                        }],
+                        labels: {{ domain_data_all.labels|safe }},
+                    },
+                    options: { responsive: true }
+                };
+            {% endif %}
+
+            {% if domain_data_click %}
+                var PieConfig6 = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: {{ domain_data_click.datalist|safe }},
+                            backgroundColor: {{ domain_data_click.bgcolor|safe }},
+                        }],
+                        labels: {{ domain_data_click.labels|safe }},
+                    },
+                    options: { responsive: true }
+                };
+            {% endif %}
+
+            window.onload = function() {
+                window.myPie1 = new Chart(document.getElementById("pieChart"), PieConfig);
+                window.myPie2 = new Chart(document.getElementById("pieChart2"), PieConfig2);
+                {% if stat_objs %}
+                    window.myPie3 = new Chart(document.getElementById("pieChart3"), PieConfig3);
+                    window.myPie4 = new Chart(document.getElementById("pieChart4"), PieConfig4);
+                {% endif %}
+                {% if domain_data_all %}
+                    window.myPie5 = new Chart(document.getElementById("pieChart5"), PieConfig5);
+                {% endif %}
+                {% if domain_data_click %}
+                    window.myPie6 = new Chart(document.getElementById("pieChart6"), PieConfig6);
+                {% endif %}
+            };
+        })
+
+    </script>
+{% endblock %}

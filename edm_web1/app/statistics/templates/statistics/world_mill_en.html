@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+{% load i18n %}
+{% load static from staticfiles %}
+<html lang="en"  style="background: #fff;margin: 5px;">
+<head>
+    <!-- Force latest IE rendering engine or ChromeFrame if installed -->
+    <!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><![endif]-->
+    <meta charset="utf-8">
+    <title>{% trans "世界地图" %}</title>
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/sa/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/sa/css/font-awesome.min.css' %}">
+
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/sa/css/smartadmin-production-plugins.min.css' %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/sa/css/smartadmin-production.min.css' %}">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/sa/css/smartadmin-skins.min.css' %}">
+</head>
+<body>
+<div class="container" style="float:left;background: #fff; min-width: 500px;">
+    <h4>{% trans "全球统计" %}</h4>
+    <div id="vector-map" class="vector-map"></div>
+    <div id="heat-fill">
+        <span class="fill-a">0</span>
+        <span class="fill-b">{{ country_max }}</span>
+    </div>
+</div>
+<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
+<script src="{% static '/sa/js/libs/jquery-2.1.1.min.js' %}"></script>
+
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="{% static 'file_upload/js/vendor/jquery.ui.widget.js' %}"></script>
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+<script src="{% static 'file_upload/js/jquery.iframe-transport.js' %}"></script>
+<!-- Bootstrap JS is not required, but included for the responsive demo navigation -->
+<!--<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
+<script src="{% static '/sa/js/bootstrap/bootstrap.min.js' %}"></script>
+
+<!-- Vector Maps Plugin: Vectormap engine, Vectormap language -->
+<script src="/static/sa/js/plugin/vectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="/static/sa/js/plugin/vectormap/jquery-jvectormap-world-mill-zh.js"></script>
+
+<script>
+    $(function(){
+        /* VECTOR MAP */
+        var data_array = {{ country_data|safe }};
+        $('#vector-map').vectorMap({
+            map : 'world_mill_en',
+            backgroundColor : '#fff',
+            regionStyle : {
+                initial : {
+                    fill : '#c4c4c4'
+                },
+                hover : {
+                    "fill-opacity" : 1
+                }
+            },
+            series : {
+                regions : [{
+                    values : data_array,
+                    scale : ['#85a8b6', '#4d7686'],
+                    normalizeFunction : 'polynomial'
+                }]
+            },
+            onRegionLabelShow : function(e, el, code) {
+                if ( typeof data_array[code] == 'undefined') {
+                    e.preventDefault();
+                } else {
+                    var countrylbl = data_array[code];
+                    el.html(el.html() + ': ' + countrylbl + ' {% trans "次打开" %}');
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

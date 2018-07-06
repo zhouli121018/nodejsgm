@@ -1,0 +1,89 @@
+{% load i18n %}
+<td>{{ d.task_date|date:"Y-m-d" }}</td>
+<td>
+    {{ d.company|default_if_none:"" }}<br><span style="color: Gray;">{{ d.username|default_if_none:"" }}</span>
+</td>
+<td>
+    {% if d.count_send %}
+        {% if subobj %}
+            {{ d.count_send }}
+        {% else %}
+            <a href="{% url 'task_list' %}?task_date={{ d.task_date|date:"Y-m-d" }}" title="{% trans "查看详情" %}" target="_blank">{{ d.count_send }}</a>
+        {% endif %}
+    {% else %}-{% endif %}
+</td>
+<td>
+    {% if d.count_error %}
+        {% if subobj %}
+            <a href="{% url 'export_fail_addr_statistics' %}?errdate={{ d.task_date|date:"Y-m-d" }}&errtype=8,9&user_id={{ subobj.id }}" title="{% trans "下载" %}" target="_blank">{{ d.count_error }}</a>
+        {% else %}
+            <a href="{% url 'export_fail_addr_statistics' %}?errdate={{ d.task_date|date:"Y-m-d" }}&errtype=8,9&user_id={{ subobj.id }}" title="{% trans "下载" %}" target="_blank">{{ d.count_error }}</a>
+        {% endif %}
+    {% else %}-{% endif %}
+</td>
+<td>
+    {% if d.count_succes %}
+        {% if subobj %}
+            {{ d.count_send }}
+        {% else %}
+            <a href="{% url 'task_list' %}?task_date={{ d.task_date|date:"Y-m-d" }}" title="{% trans "查看详情" %}" target="_blank">{{ d.count_send }}</a>
+        {% endif %}
+    {% else %}-{% endif %}
+</td>
+<td style="text-align:left;">
+    <span style="color: Gray;">{% trans "格式错误：" %}</span>
+    {% if d.error_type_9 %}
+        {% if subobj %}
+            <a href="{% url 'export_fail_addr_statistics' %}?errdate={{ d.task_date|date:"Y-m-d" }}&errtype=9&user_id={{ subobj.id }}" title="{% trans "下载" %}" target="_blank">{{ d.error_type_9 }}</a>
+        {% else %}
+            <a href="{% url 'export_fail_addr_statistics' %}?errdate={{ d.task_date|date:"Y-m-d" }}&errtype=9" title="{% trans "下载" %}" target="_blank">{{ d.error_type_9 }}</a>
+        {% endif %}
+    {% else %}-{% endif %}
+    <br>
+    <span style="color: Gray;">{% trans "无效地址：" %}</span>
+    {% if d.error_type_8 %}
+        {% if subobj %}
+            <a href="{% url 'export_fail_addr_statistics' %}?errdate={{ d.task_date|date:"Y-m-d" }}&errtype=8&user_id={{ subobj.id }}" title="{% trans "下载" %}" target="_blank">{{ d.error_type_8 }}</a>
+        {% else %}
+            <a href="{% url 'export_fail_addr_statistics' %}?errdate={{ d.task_date|date:"Y-m-d" }}&errtype=8" title="{% trans "下载" %}" target="_blank">{{ d.error_type_8 }}</a>
+        {% endif %}
+    {% else %}-{% endif %}
+</td>
+
+<td>
+    {% if subobj %}
+        {% if d.count_send_exp %}<a href="{% url 'batch_statistics' %}?date_start={{ d.task_date|date:"Y-m-d" }}&date_end={{ d.task_date|date:"Y-m-d" }}&action_type=batch&user_id={{ subobj.id }}" title="{% trans "查看详情" %}" target="_blank">{{ d.count_send_exp }}</a>{% else %}-{% endif %}
+    {% else %}
+        {% if d.count_send_exp %}<a href="{% url 'batch_statistics' %}?date_start={{ d.task_date|date:"Y-m-d" }}&date_end={{ d.task_date|date:"Y-m-d" }}&action_type=batch&user_id={{ subobj.id }}" title="{% trans "查看详情" %}" target="_blank">{{ d.count_send_exp }}</a>{% else %}-{% endif %}
+    {% endif %}
+</td>
+<td>{{ d.point_exp|floatformat:"0" }}</td>
+
+<td>
+    {% if d.count_send_real %}{{ d.count_send_real }}{% else %}-{% endif %}
+</td>
+<td>
+    {% if subobj %}
+        {% if d.count_fail %}<a href="{% url 'batch_statistics' %}?date_start={{ d.task_date|date:"Y-m-d" }}&date_end={{ d.task_date|date:"Y-m-d" }}&action_type=batch&user_id={{ subobj.id }}" title="{% trans "查看详情" %}" target="_blank">{{ d.count_fail }}</a>{% else %}-{% endif %}
+    {% else %}
+        {% if d.count_fail %}<a href="{% url 'batch_statistics' %}?date_start={{ d.task_date|date:"Y-m-d" }}&date_end={{ d.task_date|date:"Y-m-d" }}&action_type=batch" title="{% trans "查看详情" %}" target="_blank">{{ d.count_fail }}</a>{% else %}-{% endif %}
+    {% endif %}
+</td>
+<td>
+    {% if subobj %}
+        {% if d.count_err_5 %}<a href="{% url 'batch_statistics' %}?date_start={{ d.task_date|date:"Y-m-d" }}&date_end={{ d.task_date|date:"Y-m-d" }}&action_type=batch&user_id={{ subobj.id }}" title="{% trans "查看详情" %}" target="_blank">{{ d.count_err_5 }}</a>{% else %}-{% endif %}
+    {% else %}
+        {% if d.count_err_5 %}<a href="{% url 'batch_statistics' %}?date_start={{ d.task_date|date:"Y-m-d" }}&date_end={{ d.task_date|date:"Y-m-d" }}&action_type=batch" title="{% trans "查看详情" %}" target="_blank">{{ d.count_err_5 }}</a>{% else %}-{% endif %}
+    {% endif %}
+</td>
+<td>{{ d.point_real|floatformat:"0" }}</td>
+{% if not subobj %}
+    <td>
+        <div id="id-{{ d.task_date|date:"Y-m-d" }}">
+            <div class="">
+                <a href="javascript:clearErrAddr('all', '{{ d.task_date|date:"Y-m-d" }}', 'clear_by_date');" title="{% trans "清除发送失败地址" %}">{% trans "无效地址清除" %}</a>
+            </div>
+            <div class="display-none"></div>
+        </div>
+    </td>
+{% endif %}

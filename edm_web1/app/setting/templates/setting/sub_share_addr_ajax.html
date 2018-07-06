@@ -1,0 +1,36 @@
+{% load i18n %}
+{% load address_tags %}
+{% is_share_addrs d.id user_id as is_share %}
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+<td>{{ d.subject|default_if_none:"" }}</td>
+<td>
+    {% if d.is_allow_export %}
+        {{ d.description|default_if_none:"" }}
+    {% else %}
+        <span class="badge self-bg-color-greenLight">{% trans "租用数据" %}</span>
+        <br> <span class="margin-top-10">{{ d.description|default_if_none:"" }}</span>
+    {% endif %}
+</td>
+<td>
+    {{ d.created|date:"Y-m-d H:i" }}
+</td>
+<td>
+    <a type="button" href="/address/subscribe/{{ d.id }}/" target="_blank" title="{% trans "查看联系人分类邮箱列表" %}">{{ d.count_real }}</a>
+</td>
+<td>{{ d.get_invalid_rate }}</td>
+<td>
+    （<span title="{% trans '使用次数' %}">{{ d.used_count }}</span>，
+    <span title="{% trans '最后使用时间' %}">{{ d.last_used|date:"Y-m-d H:i" }}</span>）
+</td>
+<td>
+    <div>
+        {% if is_share %}
+            <a type="button" class="btn btn-outline btn-danger btn-xs" href="Javascript: SetStatus({{ d.id }}, '2')">{% trans "撤销共享" %}</a>
+        {% else %}
+            <a type="button" class="btn btn-outline btn-primary btn-xs" href="Javascript: SetStatus({{ d.id }}, '1')">{% trans "共享" %}</a>
+        {% endif %}
+        <a type="button" href="{% url 'ml_subscribe_list' d.id %}" target="_blank">{% trans "查看地址" %}</a>
+    </div>
+</td>
+

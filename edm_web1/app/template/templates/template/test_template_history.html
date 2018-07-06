@@ -1,0 +1,40 @@
+{% load i18n %}
+{% load template_tags %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans "最近3天测试记录" %}</h4>
+</div>
+
+<div class="modal-body no-padding">
+    <div class="form-horizontal">
+        <table id="dt_basic" class="table table-hover" width="100%">
+            <thead>
+            <tr>
+                <th style="border-bottom: 3px solid #ddd!important;">{% trans "模板名称" %}</th>
+                <th style="border-bottom: 3px solid #ddd!important;">{% trans "测试时间" %}</th>
+                <th style="border-bottom: 3px solid #ddd!important;">{% trans "收件箱" %}</th>
+                <th style="border-bottom: 3px solid #ddd!important;">{% trans "状态" %}</th>
+                <th style="border-bottom: 3px solid #ddd!important;">{% trans "备注" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if lists %}
+                {% for d in lists %}
+                    <tr>
+                        <th style="font-weight: 400;">{{ d.template.name|default_if_none:'' }}</th>
+                        <th style="font-weight: 400;">{{ d.test_time|show_test_time }}</th>
+                        <th style="font-weight: 400;">{{ d.emails|default_if_none:'' }}</th>
+                        <th style="font-weight: 400;">{{ d.get_status_display }}</th>
+                        <th style="font-weight: 400;">{{ d.ext|default_if_none:'' }}</th>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr><td colspan="6" style="font-weight: 400;">{% trans "对不起! 信息筛选结果为空!" %}</td></tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "关闭" %}</button>
+</div>

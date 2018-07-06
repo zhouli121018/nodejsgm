@@ -1,0 +1,134 @@
+{% extends 'base_site.html' %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans "地址导入记录" %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans "地址导入记录" %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-list margin-right-5"></i>{% trans "地址导入记录" %}
+            </h1>
+        </div>
+        <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
+            <a href="{% url 'ml_maillist' %}?isvalid=1" class="btn btn-primary btn-lg pull-right header-btn hidden-mobile">{% trans "返回" %}</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget jarviswidget-color-darken" id="wid-id-0" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-table"></i> </span>
+                        <h2>{% trans "地址导入记录" %}</h2>
+                    </header>
+
+                    <div>
+                        <div class="jarviswidget-editbox"></div>
+
+                        <div class="widget-body no-padding">
+                            <form id="id_form" action="" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="id" id="id" />
+                                <input type="hidden" name="type" id="type"/>
+                                <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th width="4%">{% trans "序号" %}</th>
+                                        <th>{% trans "上传时间" %}</th>
+                                        <th>{% trans "文件名称" %}</th>
+                                        <th>{% trans "导入列表" %}</th>
+                                        <th width="10%">{% trans "导入状态" %}</th>
+                                        <th width="8%">{% trans "地址总量" %}</th>
+                                        <th width="20%">{% trans "导入数量" %}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                        <!-- end widget content -->
+                    </div>
+                    <!-- end widget div -->
+                </div>
+                <!-- end widget -->
+            </article>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block css_block %}
+    <link href="/static/sa/css/dataTables.bootstrap.css" rel="stylesheet">
+{% endblock %}
+
+{% block my_jsblock %}
+    <!-- PAGE RELATED PLUGIN(S) -->
+    <script src="/static/sa/js/plugin/datatables/jquery.dataTables.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.colVis.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.tableTools.min.js"></script>
+    <script src="/static/sa/js/plugin/datatables/dataTables.bootstrap.min.js"></script>
+    <script src="/static/sa/js/plugin/datatable-responsive/datatables.responsive.min.js"></script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            var ajax_url = "{% url 'ajax_ml_import_log' %}" + window.location.search;
+            ip_table = $('#dt_basic').dataTable({
+                "iDisplayLength": 25,
+                "processing": false,
+                "serverSide": true,
+                "stateSave": true,
+                "autoWidth" : true,
+                "lengthMenu": [[10, 25, 50, 100, 200], [10, 25, 50, 100, 200]],
+                "ajax": ajax_url,
+                "aaSorting": [
+                    [ 1, "desc" ]
+                ],
+                "oLanguage": {
+                    "sLengthMenu": "{% blocktrans %}显示 _MENU_ 每页{% endblocktrans %}",
+                    "sZeroRecords": "{% blocktrans %}对不起! 信息筛选结果为空!{% endblocktrans %}",
+                    "sInfo": "{% blocktrans %}从 _START_ 到 _END_ 总计: _TOTAL_ 条记录{% endblocktrans %}",
+                    "sInfoEmpty": "{% blocktrans %}总计: 0 条记录{% endblocktrans %}",
+                    "sInfoFiltered": "{% blocktrans %}(从 _MAX_ 条记录筛选出){% endblocktrans %}",
+                    //"sSearch": "搜索: ",
+                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>',
+                    "oPaginate": {
+                        "sFirst":    " {% blocktrans %}第一页{% endblocktrans %} ",
+                        "sPrevious": " {% blocktrans %}上一页{% endblocktrans %} ",
+                        "sNext":     " {% blocktrans %}下一页{% endblocktrans %} ",
+                        "sLast":     " {% blocktrans %}最后一页{% endblocktrans %} "
+                    }
+                },
+                "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+ "t"+ "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+            });
+            //$("#dt_basic_length").addClass('pull-right');
+        });
+
+        function DownloadLog(id, type){
+            var str = '{% blocktrans %}是否确认下载错误地址？{% endblocktrans %}';
+            if ( type == '1' ) {
+                var str = '{% blocktrans %}是否确认下载错误地址？{% endblocktrans %}';
+            } else if ( type == '2'){
+                var str = '{% blocktrans %}是否确认下载重复地址？{% endblocktrans %}';
+            }
+            if(confirm(str)) {
+                $('#id').val(id);
+                $('#type').val(type);
+                $('#id_form').submit();
+            }
+            return;
+        }
+    </script>
+
+{% endblock %}
+

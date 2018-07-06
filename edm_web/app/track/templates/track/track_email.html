@@ -17,7 +17,7 @@
         </div>
         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-8">
             <!-- Button trigger modal -->
-            <a class="btn btn-primary btn-lg pull-right header-btn hidden-mobile margin-right-5" href="/track/task/?ident={{ ident }}&mode=2">{% trans "返回" %}</a>
+            <a class="btn btn-primary btn-lg pull-right header-btn hidden-mobile margin-right-5" href="/track/trackstat/?ident={{ ident }}&mode=2">{% trans "返回" %}</a>
             {% if request.user.service.is_track_export %}
                 <a class="btn btn-primary btn-lg pull-right header-btn hidden-mobile margin-right-5" href="{% url 'track_export_email' %}?ident={{ ident }}">{% trans "导出所有地址" %}</a>
             {% endif %}

@@ -551,7 +551,7 @@ def mail_accurate_service(request):
 @login_required
 def ajax_check_domain(request):
     id = request.POST.get('id', '')
-    print id
+    # print id
     ctype = request.POST.get('ctype', '')
     obj = get_object(CustomerDomain, request.user, id)
     res = 'f'

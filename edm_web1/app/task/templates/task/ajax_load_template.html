@@ -1,0 +1,21 @@
+{% load i18n %}
+{% load static %}
+
+{% for obj in lists %}
+    <label class="margin-top-0 col-md-12 no-padding-left" >
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 inline-group no-padding-left">
+            <input type="checkbox" class="checkbox style-0" id="id_template_{{ obj.id }}" name="template" value="{{ obj.id }}">
+            <span class="col-md-4 myself-template-width" title="{{ obj.name }}">{{ obj.name }}</span>
+            (<a href="{% url 'template_preview' obj.id %}" target="_blank" class="margin-right-5">{% trans "查看模板" %}</a>
+            {% trans "该模板约扣" %}<span class="myself-txt-color-blue margin-right-5 margin-left-5">{{ obj.get_template_point }}</span>{% trans "个点数" %})
+        </div>
+    </label>
+{% endfor %}
+
+{% if lists.has_next %}
+    <label class="margin-top-0 col-md-12" id="id_page_previous">
+        <div class="inline-group">
+            <a href="Javascript: loadNextFivePage('{{ lists.next_page_number }}')" class="btn btn-primary btn-xs">{% trans "再显示5个模板" %}</a>
+        </div>
+    </label>
+{% endif %}

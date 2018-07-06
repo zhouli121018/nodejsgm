@@ -1,0 +1,192 @@
+{% load i18n %}
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+    <h4 class="modal-title" id="myModalLabel">{% trans '修改设置' %}</h4>
+</div>
+
+<form role="form" action="{% url 'customer_notice_modify' notice_id %}" method="post" id="id_modifyForm">
+    {% csrf_token %}
+    <div class="modal-body padding-10">
+        <div class="form-horizontal">
+            <fieldset>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-md-offset-1">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label text-left" style="color: #8f9297;"><span style="color: red;">*</span>{% trans '姓名' %}</label>
+                                <div class="col-md-4 input-group">
+                                    <input class="form-control" type="text" id="id_name" name="name" maxlength="50" value="{{ notice_obj.name }}">
+                                </div>
+                                <div class="col-md-8 col-md-offset-2">
+                                    <div id="id_name_error" class="txt-color-red display-none"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label text-left" style="color: #8f9297;"><span style="color: red;">*</span>{% trans '通知方式' %}</label>
+                                <br>
+                                <div class="col-md-12 text-left">
+                                    <label class="col-md-2 control-label text-left" style="color: #8f9297;">{% trans '手机' %}</label>
+                                    <div class="col-md-4 input-group">
+                                        <input class="form-control" type="text" id="id_mobile" name="mobile"  maxlength="20" value="{{ notice_obj.mobile|default_if_none:'' }}">
+                                    </div>
+                                    <div class="col-md-4 col-md-offset-2">
+                                        <div id="id_mobile_error" class="txt-color-red display-none"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 text-left margin-top-5">
+                                    <label class="col-md-2 control-label text-left" style="color: #8f9297;">{% trans '邮箱' %}</label>
+                                    <div class="col-md-4 input-group">
+                                        <input class="form-control" type="text" id="id_email" name="email"  maxlength="50" value="{{ notice_obj.email|default_if_none:'' }}">
+                                    </div>
+                                    <div class="col-md-4 col-md-offset-2">
+                                        <div id="id_email_error" class="txt-color-red display-none"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8 col-md-offset-2">
+                                <div id="id_type_error" class="txt-color-red display-none"></div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label text-left" style="color: #8f9297;"><span style="color: red;">*</span>{% trans '余额警戒值' %}</label>
+                                    <div class="col-md-4 input-group">
+                                        <input class="form-control" type="number" id="id_balance_alert_qty" name="balance_alert_qty" maxlength="50" value="{{ notice_obj.balance_alert_qty }}" required>
+                                    </div>
+                                    <div class="col-md-8 col-md-offset-2">
+                                        <div id="id_balance_alert_qty_error" class="txt-color-red display-none"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input value="{% trans '保存' %}" onclick="checkForm('{{ notice_id }}')" type="button" class="btn btn-primary">
+        <button type="button" id="modal_close" class="btn btn-default" data-dismiss="modal">{% trans '关闭' %}</button>
+    </div>
+</form>
+<script type="text/javascript">
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+
+    function checkForm(notice_id){
+        var name = $.trim($("#id_name").val());
+        var mobile = $.trim($("#id_mobile").val());
+        var email = $.trim($("#id_email").val());
+        var balance_alert_qty = $.trim($("#id_balance_alert_qty").val());
+        if ( name == '' ){
+            $("#id_name_error").removeClass('display-none').html('{% trans '请填写姓名' %}');
+            shift_field('name');
+            return false;
+        } else {
+            $("#id_name_error").addClass('display-none');
+        }
+
+        if ( (mobile == '') && (email == '') ){
+            $("#id_type_error").removeClass('display-none').html('{% trans '至少选择一种通知方式' %}');
+            shift_field('type');
+            return false;
+        } else {
+            $("#id_type_error").addClass('display-none');
+        }
+
+        if ( mobile != '' && !checkMobile(mobile) ){
+            $("#id_mobile_error").removeClass('display-none').html('{% trans '请输入正确的手机号' %}');
+            shift_field('mobile');
+            return false;
+        } else {
+            $("#id_mobile_error").addClass('display-none');
+        }
+
+        if ( email != '' && !checkEmail(email) ){
+            $("#id_email_error").removeClass('display-none').html('{% trans '请输入正确的邮箱地址' %}');
+            shift_field('email');
+            return false;
+        } else {
+            $("#id_email_error").addClass('display-none');
+        }
+        if (Number(balance_alert_qty) < 10000 ){
+            $("#id_balance_alert_qty_error").removeClass('display-none').html('{% trans '余额警戒值必须大于等于10,000' %}');
+            return false;
+        } else {
+            $("#id_balance_alert_qty_error").addClass('display-none');
+        }
+        $.post("{% url 'ajax_check_notice_param' %}", {'notice_id': notice_id, 'name': name, 'mobile': mobile, 'email':email}, function(data){
+            if (data.status=='N'){
+                $('#id_modifyForm').submit();
+            } else if (data.status=='EN'){
+                $("#id_name_error").removeClass('display-none').html(data.msg);
+                shift_field('name');
+                return false;
+            } else if (data.status=='EM'){
+                $("#id_mobile_error").removeClass('display-none').html(data.msg);
+                shift_field('mobile');
+                return false;
+            } else if (data.status=='EE'){
+                $("#id_email_error").removeClass('display-none').html(data.msg);
+                shift_field('email');
+                return false;
+            }
+
+        })
+    };
+
+    function checkEmail(field){
+        var expression = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        var obj = new RegExp(expression);
+        if(obj.test(field)==true){
+            return true;
+        }else{
+            return false;
+        }
+    };
+
+    function checkMobile(text){
+        var _emp=/^\s*|\s*$/g;
+        text=text.replace(_emp,"");
+        var _d=/^1[3578][01379]\d{8}$/g;
+        var _l=/^1[34578][01256]\d{8}$/g;
+        var _y=/^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/g;
+        if(_d.test(text)){
+            return true;
+        } else if(_l.test(text)){
+            return true;
+        }else if(_y.test(text)){
+            return true;
+        }
+        return false;
+    }
+
+    function shift_field(field){
+        switch(field){
+            case 'name': {
+                $("#id_content_error").addClass('display-none');
+                $("#id_type_error").addClass('display-none');
+                $("#id_mobile_error").addClass('display-none');
+                $("#id_email_error").addClass('display-none');
+            }break;
+            case 'type': {
+                $("#id_name_error").addClass('display-none');
+                $("#id_mobile_error").addClass('display-none');
+                $("#id_email_error").addClass('display-none');
+            }break;
+            case 'mobile': {
+                $("#id_name_error").addClass('display-none');
+                $("#id_type_error").addClass('display-none');
+                $("#id_email_error").addClass('display-none');
+            }break;
+            case 'email': {
+                $("#id_name_error").addClass('display-none');
+                $("#id_type_error").addClass('display-none');
+                $("#id_mobile_error").addClass('display-none');
+            }break;
+        }
+    };
+
+</script>

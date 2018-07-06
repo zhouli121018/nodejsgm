@@ -1,0 +1,29 @@
+{% load i18n %}
+<td>{{ number }}</td>
+<td><span style="color: #FF6600;">{{ d.get_action_display }}</span></td>
+<td>
+    <span style="white-space: nowrap;">
+        {% if d.action == 'sys_auto_return' %}
+            {{ d.datetime|date:"Y-m-d" }}
+        {% else %}
+            {{ d.datetime|date:"Y-m-d H:i:s" }}
+        {% endif %}
+    </span>
+</td>
+<td>
+    {% if d.action == 'sys_auto_return' %}
+        <strong>{{ d.desc|default_if_none:"" }}({% trans '系统自动返量' %})</strong>
+        <span><a href="{% url 'operate_log_return' %}?daytime={{ d.datetime|date:'Y-m-d' }}" target="_blank">{% trans '详细明细' %}</a></span>
+    {% else %}
+        {% autoescape off %}<strong>{{ d.desc|default_if_none:"" }}</strong>{% endautoescape %}
+    {% endif %}
+</td>
+<td>
+    {% if d.user_type == 'manager' %}{% trans '管理员' %}
+    {% elif d.user_type == 'super' %}{% trans '管理员' %}
+    {% elif d.user_type == 'system' %}{% trans '管理员' %}
+    {% elif d.user_type == 'agents' %}{% trans '代理用户' %}
+    {% elif d.user_type == 'users' %}{{ d.user.username|default_if_none:"" }}
+    {% else %}-{% endif %}
+</td>
+<td>{{ d.ip|default_if_none:"" }}</td>

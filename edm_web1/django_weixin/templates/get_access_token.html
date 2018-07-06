@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>获取AccessToken</title>
+</head>
+<body>
+<div class="accesstoken-container">
+    <div class="get-access-token">获取AccessToken</div>
+</div>
+<div id="access-token">
+    {{ access_token }}
+</div>
+<div class="wechat-server-list">
+
+</div>
+<div class="qr-code-ticket">
+    {{ ticket }}
+</div>
+<style>
+    .accesstoken-container {
+        width: 90%;
+        margin: 0 auto;
+        height: 300px;
+    }
+
+    .get-access-token {
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    #access-token {
+        margin: 0 auto;
+        width: 100%;
+        text-align: center;
+    }
+    .qr-code-ticket {
+        margin:0 auto;
+        width: 100%;
+    }
+</style>
+</body>
+</html>

@@ -25,6 +25,7 @@ from django.db.models import F, QuerySet
 from django.contrib.contenttypes.models import ContentType
 from django_redis import get_redis_connection
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
 
 from tagging.models import Tag, TaggedItem
 from app.address.models import MailList, AddressImportLog, ShareMailList
@@ -970,19 +971,34 @@ def add_subscribe_rec(request):
     except:
         return HttpResponse(u"<body><p>{}</p></body>".format(_(u'提示信息：参数错误！')))
 
+@csrf_exempt
 def ajax_add_subscriber(request):
+    if request.method == 'GET':
+        raise Http404
     data = request.POST
     user_id = data.get('user_id', '').strip()
     list_id = data.get('list_id', '').strip()
     address = data.get('address', '').strip()
-    fullname = data.get('fullname', '').strip()
+    if not user_id or not address:
+        raise Http404
+    # fullname = data.get('fullname', '').strip()
+    fields = ['list_id', 'address', 'fullname', 'sex', 'birthday', 'phone', 'area', 'var1', 'var2', 'var3', 'var4', 'var5', 'var6', 'var7', 'var8', 'var9', 'var10']
+    kwargs = {}
+    for f in fields:
+        v = data.get(f, '').strip()
+        if f == 'sex':
+            v = address_tools.handleSex(v)
+        elif f == 'birthday':
+            v = address_tools.hanfBirthday(v)
+        kwargs[f] = v
+
     cr = connections['mm-pool'].cursor()
     tablename = 'ml_subscriber_' + str(user_id)
     list_id = list_id if MailList.objects.filter(id=list_id).exists() else 0
     if address_sqls.select_address(cr, tablename, address, list_id):
         msg = address_sqls.update_address(cr, tablename, address, list_id)
     else:
-        msg = address_sqls.insert_address(cr, tablename, address, fullname, list_id)
+        msg = address_sqls.insert_address(cr, tablename, **kwargs)
         redis = get_redis_connection()
         redis.rpush(EDM_WEB_USER_MAIL_IMPORT_COUNT_QUEUE,  '{}_{}'.format(user_id, list_id))
     response = HttpResponse(msg, content_type="text/plain")

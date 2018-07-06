@@ -196,7 +196,6 @@ def template(request):
             return HttpResponse("unknown action", status=400)
 
         html = tools.replace_template(template_id, html)
-        print(html)
         obj.html = html
         obj.template_data = template_data
         obj.meta_data = meta_data

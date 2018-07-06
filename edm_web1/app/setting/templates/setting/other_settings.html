@@ -1,0 +1,98 @@
+{% extends 'base_site.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans '其他设置' %}{% endblock %}
+
+{% block breadcrumb %}
+    <li>{% trans '设置中心' %}</li><li>{% trans '其他设置' %}</li>
+{% endblock %}
+
+{% block page-title %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <h1 class="page-title txt-color-blueDark">
+                <i class="fa fa-list margin-right-5"></i>{% trans '其他设置' %}
+            </h1>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page-content %}
+    <section id="widget-grid" class="">
+        <div class="row">
+            <article class="col-sm-12 col-md-12 col-lg-12">
+                <div class="jarviswidget" id="wid-id-1" data-widget-editbutton="false" data-widget-custombutton="false" data-widget-deletebutton="false" data-widget-collapsed="false" data-widget-sortable="false">
+                    <header>
+                        <span class="widget-icon"> <i class="fa fa-hand-o-right"></i></span>
+                        <h2>{% trans "其他设置" %}</h2>
+                    </header>
+                    <div>
+                        <div class="jarviswidget-editbox"></div>
+                        <div class="widget-body">
+                            <form role="form" action="" method="post" class="form-horizontal">
+                                {% csrf_token %}
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-6">
+                                            <div class="margin-left-20">
+
+                                                <div class="form-group">
+                                                    <div class="">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input {% if request.user.service.is_autoremove %}checked="checked"{% endif %} id="id_is_autoremove" name="is_autoremove" type="checkbox" autocomplete="off">
+                                                                <span>{% trans "无效地址自动删除开关" %}</span>
+                                                            </label>
+                                                            <!--<p class="help-block">
+                                                                {% trans "选中即为开启，默认不开启，开启表示 邮件发送后自动将无效地址从地址池中移除。" %}
+                                                            </p>-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="">
+                                                        <div class="checkbox">
+                                                            <label>
+                                                                <input {% if request.user.service.is_auto_duplicate %}checked="checked"{% endif %} id="id_is_auto_duplicate" name="is_auto_duplicate" type="checkbox" autocomplete="off">
+                                                                <span>{% trans "联系人分类之间去重开关" %}</span>
+                                                            </label>
+                                                            <!--<p class="help-block">
+                                                                {% trans "选中即为开启，默认不开启，开启表示 系统自动去重各联系人分类之间的地址，即一个邮件地址在所有联系人分类中唯一存在。" %}
+                                                            </p>-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label    " for="id_duplicate_type">{% trans "联系人分类之间去重方式" %}</label>
+                                                    <div class=" ">
+                                                        <select class=" form-control" id="id_duplicate_type" name="duplicate_type" autocomplete="off">
+                                                            <option value="old" {% if request.user.service.duplicate_type == 'old' %}selected="selected"{% endif %}>{% trans "保留之前的重复地址" %}</option>
+                                                            <option value="new" {% if request.user.service.duplicate_type == 'new' %}selected="selected"{% endif %}>{% trans "保留最新导入的重复地址" %}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="margin-left-20">
+                                                <button type="submit" class="btn btn-primary pull-left margin-right-5">{% trans "保存" %}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+    </section>
+{% endblock %}

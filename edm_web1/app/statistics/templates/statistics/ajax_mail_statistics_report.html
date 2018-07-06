@@ -1,0 +1,16 @@
+{% load i18n %}
+{% load static %}
+{% load track_tags %}
+<td>{{ obj.id }}</td>
+<td>{{ number }}</td>
+<td>
+    {{ obj.link }} &nbsp; [<a href="{{ obj.link }}" target="_blank" title="{% trans "打开链接地址" %}">{% trans "查看链接" %}</a>]
+</td>
+<td>
+    <a href="{% url 'track_export_email' %}?ident={{ ident }}&action=click&link_id={{ obj.id }}">{{ obj.click_unique }}</a>
+</td>
+<td>
+    <a href="{% url 'track_export_email' %}?ident={{ ident }}&action=click&link_id={{ obj.id }}">{{ obj.click_total }}</a>
+</td>
+<td class="f_small txt-color-blue">{{ obj.click_first|show_click_datetime }}</td>
+<td class="f_small txt-color-red">{{ obj.click_last|show_click_datetime }}</td>

@@ -1,0 +1,464 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load static %}
+{% load i18n %}
+{% load core_tags %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{% trans '注册新账户,U-Mail用心服务每一刻' %}</title>
+    <meta name="keywords" content="U-Mail邮件营销平台"/>
+    <meta name="description" content="U-Mail邮件营销平台"/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/sa/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="/static/login/css/common.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/sa/css/smartadmin-production.min.css' %}">
+    <link rel="stylesheet" href="/static/css/rabout.css"/>
+    <link rel="stylesheet" href="/static/css/reset.css"/>
+    <!--<script type="text/javascript" src="/static/login/js/jquery.1.11.0.min.js"></script>
+    <script type="text/javascript" src="/static/login/js/drag.js"></script>-->
+
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" href="{% static 'img/u.png' %}">
+    <link rel="icon" href="{% static 'img/u.png' %}" type="image/x-icon">
+
+
+    <script src="{% static '/sa/js/libs/jquery-2.1.1.min.js' %}"></script>
+    <script src="{% static '/sa/js/libs/jquery-ui-1.10.3.min.js' %}"></script>
+
+    <script src="{% static '/sa/js/bootstrap/bootstrap.min.js' %}"></script>
+    <!--<link rel="stylesheet" href="{% static 'drag/css/drag.css' %}"/>-->
+    <script src="{% static 'drag/js/drag.js' %}"></script>
+
+    <script src="{% static 'layer/layer.js' %}"></script>
+    <script src="{% static 'js/wxLogin.js' %}"></script>
+    <!--<script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>-->
+
+    <style type="text/css">
+        .txt-color-red{color:#a90329!important}.errornote{font-size: 95%;}
+        #header{height: 71px;}
+        .ac-tag { cursor: pointer;  display: inline-block;  padding: 6px 12px;  margin-right: 15px;  margin-bottom: 15px;  border: 1px solid #ddd;  border-radius: 3px;  }
+        .ac-tag.is-active { border-color: #2DA280; color: #2DA280; }
+        /*密码校验提示框样式*/
+        .rules_check_relative{  margin-top: -63px;  position: relative;  width: 500px; left:66.67%; }
+        .rules_check_wrap{  position:absolute;  padding:10px;  text-align:left;  background:#fff;  font-size:12px;  color:#494949;  border-radius:5px;  border:1px solid #bbb;  box-shadow:0px 0px 5px #ccc;  }
+        .rules_check_wrap h3{  font-weight:bold;  color:#232323;  margin:0;  padding:5px 0 5px 19px;  font-size:12px;  height:14px;  line-height:14px;  }
+        .rules_check_wrap li{  height:14px;  line-height:14px;  padding:4px 0;  list-style-type:none;  }
+        .icon_rules_check{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/pwd_circle.png);  background-repeat:no-repeat;  }
+        .rules_check_pass{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) 0px -48px no-repeat;  }
+        .rules_check_error{  color:#c00 !important;  }
+        .rules_check_fail{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) -12px -48px no-repeat;  }
+        .arrow_l, .arrow_r{  position:absolute;  top:0;left:0;  margin-top:38px;  margin-left:-20px;  display:block;  width:0;  height:0;  font-size:0;  overflow:hidden;  border:10px solid transparent;  _border-color:tomato;  _filter:chroma(color=tomato);  }
+        .arrow_l{ border-right-color:#bbb;}
+        .arrow_r{ border-right-color:#fff; margin-left:-19px;}
+    </style>
+
+</head>
+<body>
+
+<div>
+    <div class="g-doc">
+        <!--header start-->
+        <div class="m-header" style="padding: 10px 0 0 !important;">
+            <div class="logo">
+                <a href="/">
+                    <img src="/static/login/images/logo.png" alt="U-mail" />
+                    <h1>{% trans '邮件营销平台' %}</h1>
+                </a>
+            </div>
+            <div class="right_f">
+                <div class="tel">{% trans '服务热线' %}：<span>400-8181-568</span></div>
+            </div>
+        </div>
+
+        <div class="banner">
+        </div>
+
+
+        <div class="company">
+            <div class="w">
+                <div class="comtop">
+                    <p class="top-p1">{% trans '用户注册' %}</p>
+                    <!--<p class="top-p2">JOIN FREE</p>--></div>
+                <div class="reg-nr">
+                    <form action="" method="POST" id="id_form">
+                        {% csrf_token %}
+
+                        <div class="f-item" style="padding-top:40px">
+                            <label class="f-label" for="l-phone">{% trans '手机号码' %}<span class="red">*</span></label>
+                            <div class="f-content">
+                                <input class="f-text" value="" name="username" id="id_username" maxlength="20" placeholder="{% trans '请填写11位的手机号码' %}" onblur="onblurUsername()" onfocus="onfocusUsername()">
+                                <small id="id_username_error" class="text-left txt-color-red display-none">{% trans '请重新输入合法的手机号码' %}.</small>
+
+                            </div>
+                        </div>
+                        <div validmsg="手机验证码" valid="erronly#empty" class="f-item">
+                            <label class="f-label" for="smscode">{% trans '短信验证码' %}<span class="red">*</span></label>
+                            <div class="f-content">
+                                <input placeholder="{% trans '请输入手机验证码' %}" class="f-text" name="smscode" id="smscode" style=" width:280px" type="text">
+                                <input type="button" class="hoverline" style="border-left:none;float:right;height:38px;" onclick="get_sms_code();" value="{% trans '点击获取' %}" id="id_smscode">
+                                <span id="id_expiretime" style="color:#666;display:none;float:right">{% trans '60s后重试' %}</span>
+                                <div id="id_smscode_error" class="text-left txt-color-red"></div>
+                            </div>
+                        </div>
+                        <div class="f-item">
+                            <label class="f-label" for="l-phone">{% trans '输入密码' %}<span class="red">*</span></label>
+                            <div class="f-content">
+                                <input class="f-text" id="id_old_password" name="old_password" type="password" maxlength="32" value="" onblur="onblurPasswd()" onfocus="onfocusPasswd()" onkeyup="onkeyupPasswd()" autocomplete="off">
+                                <small id="id_old_password_error" class="text-left txt-color-red display-none"></small>
+                            </div>
+                        </div>
+                        <div class="f-item">
+                            <label class="f-label" for="l-phone">{% trans '确认密码' %}<span class="red">*</span></label>
+                            <div class="f-content">
+                                <input class="f-text" id="id_new_password" name="new_password" type="password" maxlength="32" value="" onblur="onblurNewPasswd()" onfocus="onfocusNewPasswd()" autocomplete="off">
+                                <small id="id_new_password_error" class="text-left txt-color-red display-none"></small>
+                            </div>
+                        </div>
+
+                        <div class="f-item ">
+                            <label class="f-label" for="l-person">{% trans '公司名称' %}<span class="red">*</span></label>
+                            <div class="f-content">
+                                <input class="f-text" placeholder="{% trans '请填写公司名称' %}" value="" name="company" id="id_company" maxlength="50" onfocus="onfocusField('id_company_error')">
+                                <small id="id_company_error" class="text-left txt-color-red display-none"></small>
+                            </div>
+                        </div>
+
+                        <div class="f-item ">
+                            <label class="f-label" for="l-person">{% trans '联系人' %}<span class="red">*</span></label>
+                            <div class="f-content">
+                                <input class="f-text" placeholder="{% trans '请填写联系人姓名' %}" value="" name="linkman" id="id_linkman" maxlength="50" onfocus="onfocusField('id_linkman_error')">
+                                <small id="id_linkman_error" class="text-left txt-color-red display-none"></small>
+                            </div>
+                        </div>
+
+                        <div class="f-item">
+                            <label class="f-label" for="l-email">{% trans '邮箱地址' %}</label>
+                            <div class="f-content">
+                                <input class="f-text" placeholder="example@example.com" value="" name="email" id="id_email" maxlength="50" onfocus="onfocusField('id_email_error')">
+                            </div>
+                        </div>
+                        <!--<div validmsg="不是正确的QQ号码|不是正确的QQ号码" valid="erronly#len:20,0,1|number:1" class="f-item">-->
+                        <!--<label class="f-label" for="l-qqnum">联系人QQ</label>-->
+                        <!--<div class="f-content">-->
+                        <!--<input placeholder="请填写联系人的QQ号码" maxlength="20" class="f-text" name="qqnum" id="l-qqnum" type="text">-->
+                        <!--</div>-->
+                        <!--</div>-->
+
+
+                        <div class="f-content"style="text-align:left">
+                            <a data-toggle="modal" data-target="#myModal" href="">{% trans 'U-Mail邮件营销平台注册协议' %}</a>
+                            <input type="checkbox" checked id="id_protocal" name="protocal">
+                            <div id="id_protocal_error" class="txt-color-red"></div>
+                        </div>
+                        <div class="f-actions">
+                            <input value="注册"  class="button_blue" id="id_save_button" onclick="createUserInfo()" type="button">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" style="margin:120px auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                    <h4 class="modal-title" style="font-size:26px;" id="myModalLabel">{% trans 'U-Mail邮件营销平台注册协议' %}</h4>
+                </div>
+                <div class="modal-body">
+                    {% autoescape off %}
+                    {{ register_protocol }}
+                    {% endautoescape %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default" data-dismiss="modal">{% trans "关闭" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="g-footer">
+        <!--<p>当前时间：<span id='timer'></span></p>-->
+        <p>{% trans '请使用IE10+、最新版本的Chrome、Firefox、Safari、Opera浏览器登录使用本平台！' %}</p>
+        <p>Copyright ©  <a href='http://www.magvision.com' target="_blank">U-Mail</a> Co.,Ltd.  <a href='#'>{% trans '深圳市安般科技有限公司' %}</a> | <a href='http://www.magvision.com/intimity.html' target="_blank">{% trans '隐私保护' %}</a> | <a target="_blank" href='http://simple.bestedm.org/help/doku.php?id=%E7%B2%BE%E5%87%86%E6%80%A7%E9%82%AE%E4%BB%B6%E6%8A%95%E9%80%92%E5%B9%B3%E5%8F%B0%E7%94%A8%E6%88%B7%E8%AE%B8%E5%8F%AF%E5%8D%8F%E8%AE%AE'>{% trans '服务协议' %}</a>   <a target="_blank" href="http://www.miitbeian.gov.cn">{% trans '粤ICP备11061369号' %}-1</a>
+    </div>
+
+
+</div>
+</body>
+<script type="text/javascript">
+    $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+
+    function get_sms_code(){
+        var username = $("#id_username").val();
+        if ( /\s/.test(username) ){
+            $("#id_username_error").removeClass('display-none').html('{% trans '请重新输入手机号码,不能包含空格.' %}');
+            return false;
+        } else if ( !checkMobile(username) ){
+            $("#id_username_error").removeClass('display-none').html('{% trans '请重新输入合法的手机号码.' %}');
+            return false;
+        }
+
+        $.post("{% url 'ajax_smscode' %}", {'username': username}, function(data){
+            if ( data.status == 'N'){
+                $("#id_username_error").removeClass('display-none').html('{% trans '该帐号已被注册，请重新输入' %}');
+                return false;
+            } else if ( data.status == 'C'){
+                $("#id_smscode_error").show().html('{% trans '请勿恶意获取验证码(一天6次).' %}');
+                return false;
+            } else if ( data.status == 'E'){
+                $("#id_smscode_error").show().html('{% trans '多次发送验证码失败，请更换手机重试或重新点击获取.' %}');
+                return false;
+            } else {
+                display_none_smscode()
+                MyPeriodicalExecuter();
+            }
+        })
+    }
+
+    function display_none_smscode(){
+        $("#id_smscode").hide();
+        $("#id_smscode_error").hide();
+        $("#id_expiretime").show();
+    }
+
+    function display_none_expiretime(){
+        $("#id_expiretime").hide();
+        $("#id_smscode").show();
+    }
+
+    function MyPeriodicalExecuter(){
+        succ.obj=$("#id_expiretime").html('{% trans '60s后重试' %}');
+        succ.loop=60;
+        sh=setInterval(succ,1000);
+    }
+
+    function succ(){
+        with(arguments.callee){
+            var str = (loop--) + "{% trans 's后重试' %}";
+            obj.html(str);
+            if (loop < 0){
+                display_none_expiretime();
+                clearInterval(sh);
+                return;
+            }
+        }
+    }
+
+    $(function(){ $("#id_save_button").removeAttr("disabled").removeClass('disabled'); });
+    function createUserInfo(){
+
+        var username = $("#id_username").val();
+        var old_password = $("#id_old_password").val();
+        var len_old = old_password.length;
+        var new_password = $("#id_new_password").val();
+
+        if ( /\s/.test(username) ){
+            $("#id_username_error").removeClass('display-none').html('{% trans '请重新输入手机号码,不能包含空格.' %}');
+            return false;
+        } else if ( !checkMobile(username) ){
+            $("#id_username_error").removeClass('display-none').html('{% trans '请重新输入合法的手机号码.' %}');
+            return false;
+        }
+
+        if ( /\s/.test(old_password) ){
+            $("#id_old_password_error").removeClass('display-none').html('{% trans '包含空格，请重新输入' %}');
+            return false;
+        } else if ( old_password.replace(/^ +| +$/g, '')=='' ){
+            $("#id_old_password_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        } else if ( username &&  old_password.indexOf(username) > -1){
+            $("#id_old_password_error").removeClass('display-none').html('{% trans '包含账户名，请重新输入' %}');
+            return false;
+        } else if ( !(( /[a-z]/.test(old_password) || /[A-Z]/.test(old_password)) && /[0-9]/.test(old_password)) ){
+            $("#id_old_password_error").removeClass('display-none').html('{% trans '必须同时包含字母、数字，请重新输入' %}');
+            return false;
+        } else if (len_old<6 || len_old >32 ){
+            $("#id_old_password_error").removeClass('display-none').html('{% trans '密码不能少于6或大于32个字符，请重新输入' %}');
+            return false;
+        }
+        if ( old_password != new_password ){
+            $("#id_new_password_error").removeClass('display-none').html('{% trans '两次密码不一致，请重新输入' %}');
+            return false;
+        }
+
+        var company = $.trim($("#id_company").val());
+        var linkman = $.trim($("#id_linkman").val());
+        var email = $.trim($("#id_email").val());
+        var smscode = $.trim($("#smscode").val());
+
+        if ( company == '' ){
+            $("#id_company_error").removeClass('display-none').html('{% trans '请输入公司名称。' %}');
+            return false;
+        }
+
+        if ( linkman == '' ){
+            $("#id_linkman_error").removeClass('display-none').html('{% trans '请输入联系人。' %}');
+            return false;
+        }
+
+        if ( smscode == '' ){
+            $("#id_smscode_error").show().html('{% trans '请输入验证码。' %}');
+            return false;
+        }
+
+        if(!$('#id_protocal').is(':checked')) {
+            $("#id_protocal_error").show().html('{% trans '请勾选同意注册协议。' %}');
+            return false;
+        }else{
+            $("#id_protocal_error").hide();
+        }
+
+        $("#id_save_button").attr("disabled", "disabled").addClass('disabled');
+        $.post("{% url 'ajax_checksmscode' %}", {'username': username, 'smscode': smscode, }, function(data){
+            if ( data.status == 'E'){
+                $("#id_save_button").removeAttr("disabled").removeClass('disabled');
+                $("#id_smscode_error").show().html('{% trans '验证码错误.' %}');
+                return false;
+            } else {
+                $('#id_form').submit();
+            }
+        })
+    }
+
+    function checkMobile(text){
+        var _emp=/^\s*|\s*$/g;
+        text=text.replace(_emp,"");
+        var _d=/^1[3578][01379]\d{8}$/g;
+        var _l=/^1[34578][01256]\d{8}$/g;
+        var _y=/^(134[012345678]\d{7}|1[34578][012356789]\d{8})$/g;
+        if(_d.test(text)){
+            return true;
+        } else if(_l.test(text)){
+            return true;
+        }else if(_y.test(text)){
+            return true;
+        }
+        return false;
+    }
+
+    function checkEmail(field){
+        var expression = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+        var obj = new RegExp(expression);
+        if(obj.test(field)==true){
+            return true;
+        }else{
+            return false;
+        }
+    };
+
+    function onblurUsername(){
+        var username = $("#id_username").val();
+
+        if ( /\s/.test(username) ){
+            $("#id_username_error").removeClass('display-none').html('{% trans '请重新输入手机号码,不能包含空格.' %}');
+            return false;
+        } else if ( !checkMobile(username) ){
+            $("#id_username_error").removeClass('display-none').html('{% trans '请重新输入合法的手机号码.' %}');
+            return false;
+        }
+
+        $.post("{% url 'ajax_check_username' %}", {'loginName': username, }, function(data){
+            if ( data.code == 'ok'){
+                $("#id_username_error").removeClass('display-none').html('{% trans '该帐号已被注册，请重新输入' %}');
+                return false;
+            }
+        })
+    }
+
+    function onfocusUsername(){
+        $("#id_username_error").addClass('display-none');
+    }
+
+    function onblurPasswd(){
+        var old_password = $("#id_old_password").val();
+        var len = old_password.length;
+        var username = $("#id_username").val();
+
+        $("#rules_check_relative").addClass('display-none');
+        if ( /\s/.test(old_password) ){
+            $("#id_old_password_error").removeClass('display-none').html('{% trans '包含空格，请重新输入' %}');
+            return false;
+        } else if ( old_password.replace(/^ +| +$/g, '')=='' ){
+            $("#id_old_password_error").removeClass('display-none').html('{% trans '输入不能为空，请重新输入' %}');
+            return false;
+        } else if ( username &&  old_password.indexOf(username) > -1){
+            $("#id_old_password_error").removeClass('display-none').html('{% trans '包含账户名，请重新输入' %}');
+            return false;
+        } else if ( !(( /[a-z]/.test(old_password) || /[A-Z]/.test(old_password)) && /[0-9]/.test(old_password)) ){
+            $("#id_old_password_error").removeClass('display-none').html('{% trans '必须同时包含字母、数字，请重新输入' %}');
+            return false;
+        } else if (len<6 || len >32 ){
+            $("#id_old_password_error").removeClass('display-none').html('{% trans '密码不能少于6或大于32个字符，请重新输入' %}');
+            return false;
+        }
+    }
+
+    function onfocusPasswd(){
+        $("#rules_check_relative").removeClass('display-none');
+        $("#id_old_password_error").addClass('display-none');
+    }
+
+    function onkeyupPasswd(){
+        var old_password = $("#id_old_password").val();
+        var len = old_password.length;
+        var username = $("#id_username").val();
+        if ( old_password=='' ){
+            $("#icon_rules_check_1").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+            $("#icon_rules_check_5").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+            $("#icon_rules_check_4").removeClass('rules_check_pass').removeClass('rules_check_fail').addClass('icon_rules_check');
+            $("#rules_check_error_1").removeClass('rules_check_error');
+            $("#rules_check_error_5").removeClass('rules_check_error');
+            $("#rules_check_error_4").removeClass('rules_check_error');
+            return false;
+        }
+
+        if ( ( username && old_password.indexOf(username) > -1) || /\s/.test(old_password) ){
+            $("#rules_check_error_5").addClass('rules_check_error');
+            $("#icon_rules_check_5").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+        } else {
+            $("#rules_check_error_5").removeClass('rules_check_error');
+            $("#icon_rules_check_5").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+        }
+
+        if ( !(( /[a-z]/.test(old_password) || /[A-Z]/.test(old_password)) && /[0-9]/.test(old_password)) ){
+            $("#rules_check_error_1").addClass('rules_check_error');
+            $("#icon_rules_check_1").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+        } else {
+            $("#rules_check_error_1").removeClass('rules_check_error');
+            $("#icon_rules_check_1").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+        }
+
+        if (len<6 || len >32 ){
+            $("#rules_check_error_4").addClass('rules_check_error');
+            $("#icon_rules_check_4").removeClass('icon_rules_check').removeClass('rules_check_pass').addClass('rules_check_fail');
+        } else {
+            $("#rules_check_error_4").removeClass('rules_check_error');
+            $("#icon_rules_check_4").removeClass('icon_rules_check').removeClass('rules_check_fail').addClass('rules_check_pass');
+        }
+    }
+
+    function onblurNewPasswd(){
+        var old_password = $("#id_old_password").val();
+        var new_password = $("#id_new_password").val();
+        if ( old_password != new_password ){
+            $("#id_new_password_error").removeClass('display-none').html('{% trans '两次密码不一致，请重新输入' %}');
+            return false;
+        }
+    }
+
+    function onfocusNewPasswd(){
+        $("#id_new_password_error").addClass('display-none');
+    }
+
+    function onfocusField(errid){
+        $("#"+errid).addClass('display-none');
+    }
+
+</script>
+</html>

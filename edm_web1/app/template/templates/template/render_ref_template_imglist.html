@@ -1,0 +1,47 @@
+{% load i18n %}
+{% load static %}
+<div class="pull-left">
+    <ul id="ref_img_ul">
+        <li class="list_li" onclick="coverHtmlContent('0')" id="id_ref_template_0">
+            <div class="padding-5">
+                <img src="{% static '/img/no.jpg' %}" alt="{% trans "不使用参考模板" %}" title="{% trans "不使用参考模板" %}" height="130px" width="130px">
+                <span class="img_title margin-top-5">{% trans "不使用参考模板" %}</span>
+            </div>
+        </li>
+        {% if lists %}
+            {% for d in lists %}
+                <li class="list_li" onclick="coverHtmlContent('{{ d.id }}')" id="id_ref_template_{{ d.id }}">
+                    <div class="padding-5">
+                        <img src="{{ img_url }}{{ d.thumb_path }}" alt="{{ d.name }}" title="{{ d.name }}" height="130px" width="130px">
+                        <span class="img_title margin-top-5">{{ d.name }}</span>
+                    </div>
+                </li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+</div>
+<br>
+<div class="text-center" style="width: 700px;">
+    <ul class="pagination no-margin">
+        {% if lists.has_previous %}
+            <li class="paginate_button previous">
+                <a href="Javascript: changeRefImgPage('{{ lists.previous_page_number }}')">{% trans "上一页" %}</a>
+                <input name="page_previous_" value="{{ lists.previous_page_number }}" type="hidden" id="id_page_previous_">
+            </li>
+        {% else %}
+            <li class="paginate_button previous disabled"><a>{% trans "上一页" %}</a></li>
+        {% endif %}
+        <li class="paginate_button active">
+            <span>{{ lists.number }}&nbsp;&nbsp;({% trans "共" %}{{ lists.paginator.num_pages }}{% trans "页" %})</span>
+        </li>
+        {% if lists.has_next %}
+            <li class="paginate_button next">
+                <a href="Javascript: changeRefImgPage('{{ lists.next_page_number }}')">{% trans "下一页" %}</a>
+                <input name="page_next_" value="{{ lists.next_page_number }}" type="hidden" id="id_page_next_">
+            </li>
+        {% else %}
+            <li class="paginate_button next disabled">
+                <a>{% trans "下一页" %}</a></li>
+        {% endif %}
+    </ul>
+</div>

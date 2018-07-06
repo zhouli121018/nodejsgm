@@ -1,0 +1,17 @@
+{% load i18n %}
+<td>{{ number }}</td>
+<td>{{ d.address|default_if_none:"" }}</td>
+<td>
+    {% if d.task %}
+        <a data-toggle="modal" href="{% url 'task_view' d.task_id %}" data-target="#myModal" data-whatever="" title="{% trans '查看任务' %}">{{ d.task.send_name }}</a>
+    {% endif %}
+</td>
+<td>
+    {% if d.template %}
+        <a href="{% url 'template_preview' d.template_id %}" target="_blank" title="{% trans '预览模板' %}">{{ d.template.name }}</a>
+    {% endif %}
+</td>
+<td>{{ d.subject|default_if_none:"" }}</td>
+<td>
+    <span style="white-space: nowrap;">{{ d.created|date:"Y-m-d H:i:s" }}</span>
+</td>

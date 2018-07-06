@@ -460,7 +460,7 @@ def sub_account_modify(request, user_id):
                 CoreLog(
                     user=request.user, user_type='users', target=request.user,
                     target_name=u'{0} - {0}'.format(request.user.username),
-                    action='recharge_subuser', ip=client_ip, desc=u'-{}（分配群发量）'.format(qty_count)
+                    action='recharge_subuser', ip=client_ip, desc=u'-{}（分配群发量给子账户：{}）'.format(qty_count, obj.username)
                 ),
                 CoreLog(
                     user=request.user, user_type='users', target=obj,

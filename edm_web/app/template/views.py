@@ -938,7 +938,7 @@ def ajax_get_network_attach(request):
                 file_name = file_name.encode('utf-8')
             except:
                 file_name = file_name.encode('cp936')
-            user_agent = request.META['HTTP_USER_AGENT'].lower()
+            user_agent = request.META.get('HTTP_USER_AGENT', '').lower()
             if user_agent.find('firefox') == -1:
                 file_name = urllib.quote_plus(file_name)
 
@@ -1005,6 +1005,8 @@ def ajax_del_html_to_text(request):
         print e
         return HttpResponse(json.dumps({'status': 'N', 'msg': _(u'异常,请重试')%{}}), content_type="application/json")
 
+from app.utils.response import get_language_unsubscribe_response, get_language_complaint_response
+
 # 退订邮件（mode=0）、订阅邮件（mode=1）、投诉（mode=2）
 def ajax_unsubscribe_or_complaints(request):
     data = request.GET
@@ -1033,6 +1035,7 @@ def ajax_unsubscribe_or_complaints(request):
                     cr.execute("DELETE FROM {0} WHERE address='{1}' AND list_id={2};".format(tablename_2, recipents, mailist_id))
             except:
                 print >>sys.stderr, traceback.format_exc()
+        return get_language_unsubscribe_response(request)
         response = HttpResponse('退订成功！  (Successfully unsubscribed!)')
     elif mode == '2':
         # http://4zy9xnsn5.count.bestedm.org/template/ajax_unsubscribe_or_complaints/?mailist=2369_745333&amp;recipents={RECIPIENTS}&amp;mode=2&amp;
@@ -1066,6 +1069,7 @@ def ajax_unsubscribe_or_complaints(request):
                 redis.rpush("edm_web_user_mail_import_count_queue", '{}_{}'.format(user_id, mailist_id))
             except BaseException as e:
                 print >>sys.stderr, traceback.format_exc()
+        return get_language_complaint_response(request)
         response = HttpResponse('投诉成功！  (Successfully Complainted!)')
     else:
         response = HttpResponseForbidden('<h1>Forbidden</h1>')

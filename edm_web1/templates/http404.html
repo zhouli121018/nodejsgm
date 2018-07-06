@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load static %}
+{% load core_tags %}
+{% load i18n %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{% trans 'U-Mail邮件营销平台-重置密码' %}</title>
+    <meta name="keywords" content="U-Mail邮件营销平台"/>
+    <meta name="description" content="U-Mail邮件营销平台"/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="stylesheet" href="/static/login/css/common.css"/>
+
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" href="{% static 'img/u.png' %}">
+    <link rel="icon" href="{% static 'img/u.png' %}" type="image/x-icon">
+
+    <script src="{% static '/sa/js/libs/jquery-2.1.1.min.js' %}"></script>
+    <script src="{% static '/sa/js/libs/jquery-ui-1.10.3.min.js' %}"></script>
+    <style>
+        .hide_span{display: none;}
+        /*校验提示框样式*/
+        .rules_check_relative{  left: 95%;  margin-top: -72px;  position: absolute;  width: 500px;  }
+        .rules_check_wrap{  position:absolute;  padding:10px;  text-align:left;  background:#fff;  font-size:12px;  color:#494949;  border-radius:5px;  border:1px solid #bbb;  box-shadow:0px 0px 5px #ccc;  }
+        .rules_check_wrap h3{  font-weight:bold;  color:#232323;  margin:0;  padding:5px 0 5px 19px;  font-size:12px;  height:14px;  line-height:14px;  }
+        .rules_check_wrap li{  height:14px;  line-height:14px;  padding:4px 0;  list-style-type:none;  }
+        .icon_rules_check{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/pwd_circle.png);  background-repeat:no-repeat;  }
+        .rules_check_pass{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) 0px -48px no-repeat;  }
+        .rules_check_error{  color:#c00 !important;  }
+        .rules_check_fail{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) -12px -48px no-repeat;  }
+        .arrow_l, .arrow_r{  position:absolute;  top:0;left:0;  margin-top:38px;  margin-left:-20px;  display:block;  width:0;  height:0;  font-size:0;  overflow:hidden;  border:10px solid transparent;  _border-color:tomato;  _filter:chroma(color=tomato);  }
+        .arrow_l{ border-right-color:#bbb;}
+        .arrow_r{ border-right-color:#fff; margin-left:-19px;}
+
+        .m-login .inputtag input { padding-left: 2%!important;width: 100%;}
+    </style>
+</head>
+<body>
+
+<div class="g-doc">
+    <!--header start-->
+    <div class="m-header" style="padding: 10px 0 0 !important;">
+        <div class="logo">
+            <a href="#">
+                <img src="/static/login/images/logo.png" alt="U-mail" />
+                <h1>{% trans '邮件营销平台' %}</h1>
+            </a>
+        </div>
+        <div class="right_f">
+            <div class="tel">{% trans '服务热线' %}：<span>400-8181-568</span></div>
+        </div>
+    </div>
+    <!--header end-->
+
+    <!--main start-->
+    <div class="g-main">
+        <div class="m-login" style="overflow: inherit; text-align: center!important;">
+            <h3 class="text-center" style="color: #fff!important; font-size: 130%!important;">{% trans '错误：链接已失效!' %}</h3>
+            <img class="mt-20" src="/static/img/404.png">
+        </div>
+    </div>
+    <!--main end-->
+
+    <!--footer end-->
+    <div class="g-footer">
+        <p>{% trans '当前时间' %}：<span id='timer'></span></p>
+        <p>Copyright ©  U-Mail Co.,Ltd.   <a href='#'>{% trans '隐私保护' %}</a> | <a href='#'>{% trans '服务协议   粤ICP备11061369号' %}</a></p>
+    </div>
+    <!--footer end-->
+</div>
+</body>
+
+<script type="text/javascript">
+
+    function getTimer (){
+        var myDate = new Date();
+        var newtimer = myDate.toLocaleString( );        //获取日期与时间
+        $('#timer').html(newtimer);
+    }
+    setInterval("getTimer()",1000); //获取本地时间
+
+    function autoHeight () {
+        var headerHeight = $('.m-header').height()+60;
+        var footerHeight = $('.g-footer').height()+60;
+        var bodyHeight=$(window).height();
+        var mainHeight=(bodyHeight-footerHeight-headerHeight);
+        $('.g-main').height(mainHeight);
+        var loginHeight=$('.m-login').height();
+        var loginTop = (mainHeight-loginHeight)/2;
+        //$('.m-login').css('padding-top',loginTop);
+        $('.m-login').css('padding-top', '100px');
+    }
+    function addFavorite(sTitle,sURL)
+    {try
+    {
+        window.external.addFavorite(sURL, sTitle);
+    }
+    catch (e)
+    {
+        try
+        {
+            window.sidebar.addPanel(sTitle, sURL, "");
+        }
+        catch (e)
+        {
+            alert("{% trans '加入收藏失败，请使用Ctrl+D进行添加' %}");
+        }
+    }
+    }
+
+    autoHeight(); //自适应高度
+
+    $(window).resize(function() {
+        autoHeight();
+    });
+
+
+</script>
+
+</html>

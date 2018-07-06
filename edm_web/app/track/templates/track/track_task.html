@@ -19,7 +19,7 @@
             <!-- Button trigger modal -->
             <a class="btn btn-primary btn-lg pull-right header-btn hidden-mobile margin-right-5" href="{% url 'track_task_pdf' %}?ident={{ ident }}" target="_blank">{% trans "导出PDF" %}</a>
             {% if request.user.service.is_track_export %}
-                <a class="btn btn-primary btn-lg pull-right header-btn hidden-mobile margin-right-5" href="{% url 'track_export_email' %}?ident={{ ident }}&action=click">{% trans "导出点击地址" %}</a>
+                <a class="btn btn-primary btn-lg pull-right header-btn hidden-mobile margin-right-5" href="{% url 'track_export_email_click' %}?ident={{ ident }}&action=click">{% trans "导出点击地址" %}</a>
                 <a class="btn btn-primary btn-lg pull-right header-btn hidden-mobile margin-right-5" href="{% url 'track_export_email' %}?ident={{ ident }}">{% trans "导出所有地址" %}</a>
             {% endif %}
         </div>
@@ -193,7 +193,11 @@
                                         <tr>
                                             <td>{{ forloop.counter }}</td>
                                             <td><a href="{% url 'task_preview' t.content_id %}">{{ t.send_content.template_name }}</a>&nbsp;
-                                                [<a href="{% url 'track_task_stat' %}?ident={{ ident }}&content_id={{ t.content_id }}">查看统计详情</a>]</td>
+                                                [<a href="{% url 'track_task_stat' %}?ident={{ ident }}&content_id={{ t.content_id }}">查看统计详情</a>]
+                                                {% if not t.send_content.isvalid %}
+                                                    <strong class="text-danger">（{% trans '修改前' %}）</strong>
+                                                {% endif %}
+                                            </td>
                                             <td>{{ t.open_unique }} / {{ t.open_total }}</td>
                                             <td>{{ t.open_first|show_trak_datetime }}<br>
                                                 {{ t.open_last|show_trak_datetime }}</td>

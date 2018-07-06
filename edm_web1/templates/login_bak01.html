@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load static %}
+{% load core_tags %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>U-Mail邮件营销平台-登录</title>
+    <meta name="keywords" content="U-Mail邮件营销平台"/>
+    <meta name="description" content="U-Mail邮件营销平台"/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="stylesheet" href="/static/login/css/common.css"/>
+    <!--<script type="text/javascript" src="/static/login/js/jquery.1.11.0.min.js"></script>
+    <script type="text/javascript" src="/static/login/js/drag.js"></script>-->
+
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" href="{% static 'img/u.png' %}">
+    <link rel="icon" href="{% static 'img/u.png' %}" type="image/x-icon">
+
+
+    <script src="{% static '/sa/js/libs/jquery-2.1.1.min.js' %}"></script>
+    <script src="{% static '/sa/js/libs/jquery-ui-1.10.3.min.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'slide-unlock/slide-unlock.css' %}" />
+    <script src="{% static 'slide-unlock/slide-unlock.js' %}"></script>
+    <script src="{% static 'layer/layer.js' %}"></script>
+    <script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+
+    <style type="text/css">
+        .txt-color-red{color:#a90329!important}.errornote{font-size: 95%;}
+        #slider {position:relative;background-color:#e8e8e8;width:100%;border:1px solid #b1afb1;border-radius:5px;height:48px;line-height:48px;text-align: center;}
+        #slider_bg {background-color:#7ac23c;height:48px;width:0px;}
+        #labelTip {position:absolute;top:0px;width: 100%;-moz-user-select: none;-webkit-user-select: none;user-select: none;-o-user-select: none;-ms-user-select: none;}
+        #label {position: absolute;top:-1px;left:0px;border-radius:5px;width: 40px;height: 48px;cursor: move;
+            background: #fff url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA3hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo0ZDhlNWY5My05NmI0LTRlNWQtOGFjYi03ZTY4OGYyMTU2ZTYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NTEyNTVEMURGMkVFMTFFNEI5NDBCMjQ2M0ExMDQ1OUYiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NTEyNTVEMUNGMkVFMTFFNEI5NDBCMjQ2M0ExMDQ1OUYiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2MTc5NzNmZS02OTQxLTQyOTYtYTIwNi02NDI2YTNkOWU5YmUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NGQ4ZTVmOTMtOTZiNC00ZTVkLThhY2ItN2U2ODhmMjE1NmU2Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+YiRG4AAAALFJREFUeNpi/P//PwMlgImBQkA9A+bOnfsIiBOxKcInh+yCaCDuByoswaIOpxwjciACFegBqZ1AvBSIS5OTk/8TkmNEjwWgQiUgtQuIjwAxUF3yX3xyGIEIFLwHpKyAWB+I1xGSwxULIGf9A7mQkBwTlhBXAFLHgPgqEAcTkmNCU6AL9d8WII4HOvk3ITkWJAXWUMlOoGQHmsE45ViQ2KuBuASoYC4Wf+OUYxz6mQkgwAAN9mIrUReCXgAAAABJRU5ErkJggg==") no-repeat center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="g-doc">
+    <!--header start-->
+    <div class="m-header" style="padding: 10px 0 0 !important;">
+        <div class="logo">
+            <a href="#">
+                <img src="/static/login/images/logo.png" alt="U-mail" />
+                <h1>邮件营销平台</h1>
+            </a>
+        </div>
+        <div class="right_f">
+            <div class="tel">服务热线：<span>400-8181-568</span></div>
+        </div>
+    </div>
+    <!--header end-->
+
+    <!--main start-->
+    <div class="g-main">
+        <div class="m-login">
+            <div class="loginbox">
+                <div class="m-ways">
+                    <div class="userlogin on">用户登陆</div>
+                    <div class="sep"></div>
+                    <div class="weixinlogin">微信登陆</div>
+                </div>
+                <div class="passmain">
+                    <div class="userpass on">
+                        <form action="" onsubmit="return LoginCheck(this);" method="POST">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="inputtag" style="margin: 0;">
+                                        <p class="errornote txt-color-red">{{ message }}</p>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            {% if form.errors and not form.non_field_errors %}
+                                <div class="inputtag" style="margin: 0;">
+                                    <p class="errornote txt-color-red"> 错误提示： </p>
+                                </div>
+                            {% endif %}
+
+                            {% if form.non_field_errors %}
+                                {% for error in form.non_field_errors %}
+                                    <div class="inputtag" style="margin: 0;">
+                                        <p class="errornote txt-color-red">
+                                            {{ error }}
+                                        </p>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                            {% csrf_token %}
+                            <div class="inputtag" style="margin-top: 10px;">
+                                <input class="username" type="text" placeholder="账号/邮箱账号/手机号" name="username" id="username" value="{{ form.data.username }}">
+                            </div>
+                            <div class="inputtag">
+                                <input class="password" type="password" placeholder="密码" name="password" id="password" value="{{ form.data.password }}">
+                            </div>
+                            <div class="inputtag" style="margin-bottom: 5px;">
+                                <div id="slider">
+                                    <div id="slider_bg"></div>
+                                    <span id="label"></span>
+                                    <span id="labelTip">拖动滑块验证</span>
+                                    <input type="hidden" id="code_id"  name="captcha" />
+                                </div>
+                            </div>
+
+                            <div class="findpassword"><a href="{% url 'password_reset' %}">忘记密码?</a></div>
+                            <div class="submit"><input type="submit" value="登录"></div>
+
+                            <div class="otherways">
+                                <h1>其他快捷登陆</h1>
+                                <a href="#"><img src="/static/login/images/alipay.png" alt=""></a>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div class="weixinpass" style="padding-top: 10px !important;">
+                        <div id="erweimaImg"></div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <!--main end-->
+
+    <!--footer end-->
+    <div class="g-footer">
+        <p>当前时间：<span id='timer'></span></p>
+        <p>Copyright ©  U-Mail Co.,Ltd.   <a href='#'>隐私保护</a> | <a href='#'>服务协议   粤ICP备11061369号</p>
+    </div>
+    <!--footer end-->
+</div>
+</body>
+
+<script type="text/javascript">
+    window.onload = function(){
+        function guid() {
+            function S4() {
+                return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+            }
+            return (S4()+S4()+S4()+S4());
+        }
+        var obj = new WxLogin({
+            id:"erweimaImg",
+            appid: "{% settings_value "OPEN_WX_APPID" %}",
+            scope: "snsapi_login",
+            redirect_uri: "{% settings_value "OPEN_WX_LOGIN_URI" %}",
+            state: guid(),
+            style: "",
+            href: "https://www2.bestedm.org/static/login/css/login-weixin.css"
+        });
+    }
+
+    jQuery(function($) {
+        var slider = new SliderUnlock("#slider",{
+            successLabelTip : "恭喜你，验证成功"
+        },function(){
+            $('#code_id').val('1');
+        });
+        slider.init();
+    });
+
+    function LoginCheck(form){
+        if(form.username.value == "") {
+            layer.tips("用户名不能为空！", '#username');
+            form.username.focus();
+            return false;
+        }
+        if(form.password.value == "") {
+            layer.tips("登录密码不能为空！", '#password');
+            form.password.focus();
+            return false;
+        }
+        if(form.captcha.value != "1") {
+            layer.tips("请拖动滑块完成验证!", '#slider');
+            return false;
+        }
+        return true;
+    };
+
+    $('.weixinlogin').click(function(){
+        $('.userlogin').removeClass('on');
+        $('.userpass').removeClass('on');
+        $(this).addClass('on');
+        $('.weixinpass').addClass('on');
+    });
+    $('.userlogin').click(function(){
+        $('.weixinlogin').removeClass('on');
+        $('.weixinpass').removeClass('on');
+        $(this).addClass('on');
+        $('.userpass').addClass('on');
+    });
+    function getTimer (){
+        var myDate = new Date();
+        var newtimer = myDate.toLocaleString( );        //获取日期与时间
+        $('#timer').html(newtimer);
+    }
+    setInterval("getTimer()",1000); //获取本地时间
+
+
+    function autoHeight () {
+        var headerHeight = $('.m-header').height()+60;
+        var footerHeight = $('.g-footer').height()+60;
+        var bodyHeight=$(window).height();
+        var mainHeight=(bodyHeight-footerHeight-headerHeight);
+        $('.g-main').height(mainHeight);
+        var loginHeight=$('.m-login').height();
+        var loginTop = (mainHeight-loginHeight)/2;
+        $('.m-login').css('padding-top',loginTop);
+    }
+    function addFavorite(sTitle,sURL)
+    {try
+    {
+        window.external.addFavorite(sURL, sTitle);
+    }
+    catch (e)
+    {
+        try
+        {
+            window.sidebar.addPanel(sTitle, sURL, "");
+        }
+        catch (e)
+        {
+            alert("加入收藏失败，请使用Ctrl+D进行添加");
+        }
+    }
+    }
+
+    autoHeight(); //自适应高度
+
+    $(window).resize(function() {
+        autoHeight();
+    });
+
+
+</script>
+
+</html>

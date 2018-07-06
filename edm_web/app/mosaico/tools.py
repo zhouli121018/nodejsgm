@@ -302,9 +302,9 @@ class VersafixSettings(object):
                            'unsubscribeText4': u'キャンセル',
                            'webversionText': u'邮件无法显示请点击这里',
                            'webversionText1': u'邮件无法显示请点击这里',
-                           'webversionText2': u'If the message content does not display properly,click here',
-                           'webversionText3': u'메시지 내용이 올바르게 표시되지 않으면여기를 클릭하십시오',
-                           'webversionText4': u'メッセージの内容が正しく表示されない場合ここをクリックしてください'
+                           'webversionText2': u'Online view',
+                           'webversionText3': u'확인하다',
+                           'webversionText4': u'オンラインチェック'
                            },
         'preheaderVisible': True,
 

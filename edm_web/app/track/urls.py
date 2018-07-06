@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^ajax_track_email/$', views.ajax_track_email, name='ajax_track_email'),
     url(r'^ajax_track_click/$', views.ajax_track_click, name='ajax_track_click'),
     url(r'^track_export_email/$', views.track_export_email, name='track_export_email'),
+    url(r'^track_export_email_click/$', views.track_export_email_click, name='track_export_email_click'),
 ]
 

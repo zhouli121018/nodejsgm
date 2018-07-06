@@ -1,0 +1,25 @@
+{% load i18n %}
+<td>{{ d.id }}</td>
+<td>{{ number }}</td>
+<td>
+    <span class="txt-color-yellow"><strong>{{ d.amount }}</strong></span>
+</td>
+<td>
+    {% for o in d.order %}
+        <p><strong class="margin-right-5">{{ forloop.counter }}.</strong>{{ o.orderno }}</p>
+    {% endfor %}
+</td>
+<td>{{ d.created|date:"Y-m-d H:i:s" }}</td>
+<td>
+    <span class="
+    {% if d.status == 'apply' %} badge bg-color-red
+    {% elif d.status == 'invoiced' %} badge bg-color-orange
+    {% elif d.status == 'wait' %} badge
+    {% else %} badge bg-color-greenLight
+    {% endif %}">{{ d.get_status_display }}</span>
+</td>
+<td>{{ d.invoice_no|default_if_none:'-' }}</td>
+<td>{{ d.track_no|default_if_none:'-' }}</td>
+<td>
+    <a data-toggle="modal" href="/setting/invoice/view/{{ d.id }}/" data-target="#myModal" data-whatever="" class="btn btn-outline btn-primary btn-xs">{% trans '查看详情' %}</a>
+</td>

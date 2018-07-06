@@ -1,0 +1,9 @@
+{% load setting_tags %}
+{% load i18n %}
+<td>{{ d.id }}</td>
+<td>{{ d.name|default_if_none:"" }}</td>
+<td>{{ d.token|default_if_none:"" }}</td>
+<td>{{ d.created|date:"Y-m-d H:i:s" }}</td>
+<td>
+    <a type="button" class="btn btn-outline btn-danger btn-sm" href="Javascript: SetStatus({{ d.id }}, '-1')">{% trans '删除' %}</a>
+</td>

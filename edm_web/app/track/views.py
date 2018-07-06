@@ -195,14 +195,20 @@ def track_statistic4(request, track_params):
             content_id = ''
             task_ident, email, link = params.split('||')[:3]
         else:
-            content_id, task_ident, email, link = params.split('||')[:4]
+            try:
+                content_id, task_ident, email, link = params.split('||')[:4]
+            except ValueError:
+                raise Http404
 
     redis = get_redis_connection()
     agent_info = get_user_agent_info(request)
     http_referer = request.META.get('HTTP_REFERER', '')
     if agent_info['ip'] not in ["171.13.131.85", "218.77.130.133", "60.28.2.248", "58.63.235.22", "60.28.175.38"] and not agent_info['ip'].startswith(
             '121.42.0.') and http_referer.find('admin.mailrelay.cn') == -1:
-        result = json.dumps([time.time(), task_ident, email, link, agent_info, content_id])
+        try:
+            result = json.dumps([time.time(), task_ident, email, link, agent_info, content_id])
+        except:
+            raise Http404
         (redis.pipeline()
          .rpush(':umailtrack:track:stat:', result)
          .rpush(':umailtrack:track:active:', result)
@@ -637,4 +643,78 @@ def track_export_email(request):
         list.append(
             [email, ip_first, title_f, ip_last, title_l, open_total, open_first, open_last, click_total, click_first,
              click_last])
+    return ExcelResponse(list, 'mail', encoding='gbk')
+
+
+# 导出地址
+@login_required
+def track_export_email_click(request):
+    if not request.user.service().is_track_export:
+        raise Http404
+    data = request.GET
+    link_id = data.get('link_id', '')
+    user_id = request.user.id
+
+    ident = data.get('ident', '')
+    content_id = data.get('content_id', '')
+    stat_objs = TrackStat.objects.filter(task_ident=ident, customer_id=user_id)
+    if content_id:
+        stat_objs = stat_objs.filter(content_id=content_id)
+    track_ids = stat_objs.values_list('id', flat=True)
+
+    cr = connections['mm-track'].cursor()
+    tablename = '{}_track_email'.format(user_id)
+    tablename_click = '{}_track_click'.format(user_id)
+    sql = """
+    SELECT b.email, b.ip_first, COALESCE(b.ip_last, '') ip_last,
+            b.open_total, b.open_first, COALESCE(b.open_last, '') open_last,
+            b.click_total, COALESCE(b.click_first, '') click_first, COALESCE(b.click_last, '') click_last,
+            a.link_id, a.click_unique, a.click_total
+    FROM {} a 
+    INNER JOIN {} b ON a.email_id = b.email_id
+    WHERE a.track_id in ({})""".format(tablename_click, tablename, ','.join(map(lambda s: str(s), track_ids)))
+
+    if request.user.lang_code == 'en-us':
+        list = [
+            [u'email', u'link', u'total click', u'unique click', u'first click', u'last click', u'first ip', u'first ip area', u'last ip', u'last ip area']
+        ]
+    else:
+        list = [
+            [u'邮件地址', u'链接', u'点击总数', u'唯一总数', u'首次点击时间', u'最后点击时间', u'首次使用IP', u'首次IP区域', u'最后使用IP', u'最后IP区域']
+        ]
+    where_str = ''
+    # if action == 'click':
+    #     where_str += " AND click_total > 0 "
+    if link_id:
+        where_str += " AND a.link_id={} ".format(link_id)
+    sql += where_str
+    cr.execute(sql)
+    rows = cr.fetchall()
+    ip_search = IpSearch()
+    # pattern ='([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])\.([01]?\d\d?|2[0-4]\d|25[0-5])'
+    pattern = '(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)'
+    ip_compile = re.compile(pattern)
+    lang_code = ( request.user.lang_code == 'en-us' and 'en-us') or "zh-hans"
+    for r in rows:
+        title_f, title_l = '', ''
+        email, ip_first, ip_last, open_total, open_first, open_last, click_total, click_first, click_last, link_id, click_unique, click_total = r
+        open_last = '' if open_last == '0000-00-00 00:00:00' else open_last
+        click_first = '' if click_first == '0000-00-00 00:00:00' else click_first
+        click_last = '' if click_last == '0000-00-00 00:00:00' else click_last
+        if ip_first:
+            m = ip_compile.search(ip_first)
+            if m:
+                ip_first = m.group(0)
+                ip_info = ip_search.Find(ip_first)
+                area, title_f = ipparse.get_ip_detail(ip_info, lang_code)
+        if ip_last:
+            m = ip_compile.search(ip_last)
+            if m:
+                ip_last = m.group(0)
+                ip_info = ip_search.Find(ip_last)
+                area, title_l = ipparse.get_ip_detail(ip_info, lang_code)
+        linkobj = TrackLink.objects.filter(id=link_id).first()
+        link = linkobj.link if linkobj else ""
+        list.append(
+            [email, link, click_total, click_unique, click_first, click_last, ip_first, title_f, ip_last, title_l ])
     return ExcelResponse(list, 'mail', encoding='gbk')

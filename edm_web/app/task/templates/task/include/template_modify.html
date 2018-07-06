@@ -10,14 +10,17 @@
     <td class="no-border">
         <fieldset>
             {% for obj in template_lists %}
-                <label class="margin-top-0 col-md-12 no-padding-left">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 inline-group no-padding-left">
-                        <input type="checkbox" class="checkbox style-0" id="id_template_{{ obj.id }}" name="template" value="{{ obj.id }}" checked="checked">
-                        <span class="col-md-4 myself-template-width" title="{{ obj.name }}">{{ obj.name }}</span>
-                        (<a href="/template/preview/{{ obj.id }}/" target="_blank" class="margin-right-5">查看模板</a>
-                        {% trans "该模板约扣" %}<span class="myself-txt-color-blue margin-right-5 margin-left-5">{{ obj.get_template_point }}</span>{% trans "个点数" %})
-                    </div>
-                </label>
+                {% with point=obj.get_template_point %}
+                    <label class="margin-top-0 col-md-12 no-padding-left">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 inline-group no-padding-left">
+                            <input type="checkbox" class="checkbox style-0" id="id_template_{{ obj.id }}" name="template" value="{{ obj.id }}" checked="checked"
+                                   {% if point > 1 %}onclick="if (this.checked) { alert('{% trans "提示：" %}{% trans "该模板约扣" %}{{ point }}{% trans "点" %}'); }"{% endif %}>
+                            <span class="col-md-4 myself-template-width" title="{{ obj.name }}">{{ obj.name }}</span>
+                            (<a href="/template/preview/{{ obj.id }}/" target="_blank" class="margin-right-5">查看模板</a>
+                            {% trans "该模板约扣" %}<span class="myself-txt-color-blue margin-right-5 margin-left-5">{{ point }}</span>{% trans "个点数" %})
+                        </div>
+                    </label>
+                {% endwith %}
             {% endfor %}
             <div id="id_ajax_load_template"></div>
             <label class="margin-top-0 col-md-12 ">

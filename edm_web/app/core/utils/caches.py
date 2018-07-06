@@ -23,6 +23,19 @@ def cache_search_address_tags():
 
 # 开启精准数据服务
 def cache_open_accurate(request):
+    status = False
+    service_obj = request.user.service()
+    if service_obj.is_open_accurate:
+        status = True
+    else:
+        m_service, _ = Prefs.objects.get_or_create(name='min_accurate_service_qty')
+        min_accurate_service_qty = int(m_service.value) if m_service.value else None
+        if not status and min_accurate_service_qty and service_obj.qty_buytotal >= min_accurate_service_qty:
+            status = True
+            service_obj.is_open_accurate = True
+            service_obj.save()
+    return status
+
     key = OPEN_ACCURATE_KEY.format(user_id=request.user.id)
     status = cache.get(key, None)
     if status is None:

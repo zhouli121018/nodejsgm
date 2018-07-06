@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% load static %}
+{% load i18n %}
+{% load core_tags %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>{% trans '注册新账户,U-Mail用心服务每一刻' %}</title>
+    <meta name="keywords" content="U-Mail邮件营销平台"/>
+    <meta name="description" content="U-Mail邮件营销平台"/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/sa/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="/static/login/css/common.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/sa/css/smartadmin-production.min.css' %}">
+    <link rel="stylesheet" href="/static/css/rabout.css"/>
+    <link rel="stylesheet" href="/static/css/reset.css"/>
+    <!--<script type="text/javascript" src="/static/login/js/jquery.1.11.0.min.js"></script>
+    <script type="text/javascript" src="/static/login/js/drag.js"></script>-->
+
+    <!-- #FAVICONS -->
+    <link rel="shortcut icon" href="{% static 'img/u.png' %}">
+    <link rel="icon" href="{% static 'img/u.png' %}" type="image/x-icon">
+
+
+    <script src="{% static '/sa/js/libs/jquery-2.1.1.min.js' %}"></script>
+    <script src="{% static '/sa/js/libs/jquery-ui-1.10.3.min.js' %}"></script>
+
+    <script src="{% static '/sa/js/bootstrap/bootstrap.min.js' %}"></script>
+    <!--<link rel="stylesheet" href="{% static 'drag/css/drag.css' %}"/>-->
+    <script src="{% static 'drag/js/drag.js' %}"></script>
+
+    <script src="{% static 'layer/layer.js' %}"></script>
+    <script src="{% static 'js/wxLogin.js' %}"></script>
+    <!--<script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>-->
+
+    <style type="text/css">
+        .txt-color-red{color:#a90329!important}.errornote{font-size: 95%;}
+        #header{height: 71px;}
+        .ac-tag { cursor: pointer;  display: inline-block;  padding: 6px 12px;  margin-right: 15px;  margin-bottom: 15px;  border: 1px solid #ddd;  border-radius: 3px;  }
+        .ac-tag.is-active { border-color: #2DA280; color: #2DA280; }
+        /*密码校验提示框样式*/
+        .rules_check_relative{  margin-top: -63px;  position: relative;  width: 500px; left:66.67%; }
+        .rules_check_wrap{  position:absolute;  padding:10px;  text-align:left;  background:#fff;  font-size:12px;  color:#494949;  border-radius:5px;  border:1px solid #bbb;  box-shadow:0px 0px 5px #ccc;  }
+        .rules_check_wrap h3{  font-weight:bold;  color:#232323;  margin:0;  padding:5px 0 5px 19px;  font-size:12px;  height:14px;  line-height:14px;  }
+        .rules_check_wrap li{  height:14px;  line-height:14px;  padding:4px 0;  list-style-type:none;  }
+        .icon_rules_check{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/pwd_circle.png);  background-repeat:no-repeat;  }
+        .rules_check_pass{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) 0px -48px no-repeat;  }
+        .rules_check_error{  color:#c00 !important;  }
+        .rules_check_fail{  float:left;  height:12px;  width:12px;  margin: 3px 2px 0 0;  background:url(/static/img/prompt0fc00c.gif) -12px -48px no-repeat;  }
+        .arrow_l, .arrow_r{  position:absolute;  top:0;left:0;  margin-top:38px;  margin-left:-20px;  display:block;  width:0;  height:0;  font-size:0;  overflow:hidden;  border:10px solid transparent;  _border-color:tomato;  _filter:chroma(color=tomato);  }
+        .arrow_l{ border-right-color:#bbb;}
+        .arrow_r{ border-right-color:#fff; margin-left:-19px;}
+    </style>
+
+</head>
+<body>
+
+<div>
+    <div class="g-doc">
+        <!--header start-->
+        <div class="m-header" style="padding: 10px 0 0 !important;">
+            <div class="logo">
+                <a href="/">
+                    <img src="/static/login/images/logo.png" alt="U-mail" />
+                    <h1>{% trans '邮件营销平台' %}</h1>
+                </a>
+            </div>
+            <div class="right_f">
+                <div class="tel">{% trans '服务热线' %}：<span>400-8181-568</span></div>
+            </div>
+        </div>
+
+        <div class="banner">
+        </div>
+
+
+        <div class="company">
+            <div class="w">
+                <div class="comtop">
+                    <p class="top-p1">{% if result == 'True' %}{% trans '验证成功' %}{% else %}{% trans '验证失败' %}{% endif %}</p>
+                    <!--<p class="top-p2">JOIN FREE</p>--></div>
+                <div class="reg-nr">
+                        {% csrf_token %}
+                        <div class="f-item {% if result == 'True' %}text-success{% else %}text-danger{% endif %}" style="text-align:center;margin-top:50px;">
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                        <div class="f-actions" style="margin-top:50px;">
+                            {% if result == 'True' %}
+                            <a href="{% url 'register_login' %}?key={{key}}" value="立即登录" class="btn btn-primary btn-lg">{% trans '进入系统' %}</a>
+                            {% else %}
+                            <a href="{% url 'register_new_step2' %}?key={{ key }}" value="返回重新验证" class="btn btn-primary btn-lg" id="id_save_button">{% trans '返回重新验证' %}</a>
+                            <!--<a href="{% url 'register_login' %}?key={{key}}" style="margin-left:10px;font-size:14px;">{% trans '跳过此步，进入系统' %}</a>-->
+                            {% endif %}
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" style="margin:120px auto;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                    <h4 class="modal-title" style="font-size:26px;" id="myModalLabel">{% trans 'U-Mail邮件营销平台注册协议' %}</h4>
+                </div>
+                <div class="modal-body">
+                    注册协议
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="modal_close" class="btn btn-default hidden" data-dismiss="modal">{% trans "关闭" %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="g-footer">
+        <!--<p>当前时间：<span id='timer'></span></p>-->
+        <p>{% trans '请使用IE10+、最新版本的Chrome、Firefox、Safari、Opera浏览器登录使用本平台！' %}</p>
+        <p>Copyright ©  U-Mail Co.,Ltd.  <a href='#'>{% trans '深圳市安般科技有限公司' %}</a> | <a href='http://www.magvision.com/intimity.html' target="_blank">{% trans '隐私保护' %}</a> | <a target="_blank" href='http://simple.bestedm.org/help/doku.php?id=%E7%B2%BE%E5%87%86%E6%80%A7%E9%82%AE%E4%BB%B6%E6%8A%95%E9%80%92%E5%B9%B3%E5%8F%B0%E7%94%A8%E6%88%B7%E8%AE%B8%E5%8F%AF%E5%8D%8F%E8%AE%AE'>{% trans '服务协议' %}</a>   <a target="_blank" href="http://www.miitbeian.gov.cn">{% trans '粤ICP备11061369号' %}-1</a>
+    </div>
+</div>
+</body>
+</html>

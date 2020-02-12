@@ -2,7 +2,7 @@
 bcrypt==3.1.4
 cffi==1.11.2
 chardet==3.0.4
-Django==1.11.3
+Django==1.11.28
 django-logtail==0.3.0
 django-redis==4.8.0
 enum34==1.1.6
